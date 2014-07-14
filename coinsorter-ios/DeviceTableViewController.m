@@ -6,11 +6,11 @@
 //  Copyright 2010 d3i. All rights reserved.
 //
 
-#import "PhotoTableViewController.h"
+#import "DeviceTableViewController.h"
 #import "SDImageCache.h"
 #import "MWCommon.h"
 
-@implementation PhotoTableViewController
+@implementation DeviceTableViewController
 
 #pragma mark -
 #pragma mark Initialization
@@ -35,11 +35,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Test toolbar hiding
-    //    [self setToolbarItems: @[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:nil action:nil]]];
-    //    [[self navigationController] setToolbarHidden:NO animated:NO];
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil];
+
+    self.devices = [[NSMutableArray alloc] init];
+    
+    // core data stuff
+    appDelegate = [[UIApplication sharedApplication] delegate];
+    context = [appDelegate managedObjectContext];
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Photo" inManagedObjectContext:context];
+    request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDesc];
     
     [self loadAssets];
 }
@@ -123,7 +129,7 @@
     BOOL displaySelectionButtons = NO;
     BOOL displayNavArrows = YES;
     BOOL enableGrid = YES;
-    BOOL startOnGrid = NO;
+    BOOL startOnGrid = YES;
 	switch (indexPath.row) {
         case 0:
             // Photos & thumbs
@@ -139,7 +145,6 @@
             [photos addObject:photo];
             [thumbs addObject:[MWPhoto photoWithURL:[NSURL URLWithString:@"http://farm9.static.flickr.com/8379/8530199945_47b386320f_q.jpg"]]];
             // Options
-            startOnGrid = YES;
 			break;
 		case 1: {
             @synchronized(_assets) {
@@ -330,7 +335,7 @@
     }
     
     // add photo to core data
-
+    
     
 }
 

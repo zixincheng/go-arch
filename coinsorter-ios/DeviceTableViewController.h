@@ -8,11 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import "MWPhotoBrowser.h"
+#import "AppDelegate.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@interface PhotoTableViewController : UITableViewController <MWPhotoBrowserDelegate> {
+@interface DeviceTableViewController : UITableViewController <MWPhotoBrowserDelegate, UITableViewDataSource> {
     NSMutableArray *_selections;
+    
+    // core data vars
+    AppDelegate *appDelegate;
+    NSManagedObjectContext *context;
+    NSFetchRequest *request;
 }
+
+@property (nonatomic, strong) NSMutableArray *devices;
 
 @property (nonatomic, strong) NSMutableArray *photos;
 @property (nonatomic, strong) NSMutableArray *thumbs;
