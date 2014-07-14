@@ -18,7 +18,7 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     if ((self = [super initWithStyle:style])) {
         if (self) {
-            // custome config (doesn't fucking work)
+            // custome config (doesn't work)
         }
         
     }
@@ -37,16 +37,10 @@
     [super viewDidLoad];
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil];
-
+    
     self.devices = [[NSMutableArray alloc] init];
     
-    // core data stuff
-    appDelegate = [[UIApplication sharedApplication] delegate];
-    context = [appDelegate managedObjectContext];
-    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Photo" inManagedObjectContext:context];
-    request = [[NSFetchRequest alloc] init];
-    [request setEntity:entityDesc];
-    
+    // load the images from iphone photo library
     [self loadAssets];
 }
 
@@ -83,9 +77,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger rows = 1;
-    @synchronized(_assets) {
-        if (_assets.count) rows++;
-    }
+    //    @synchronized(_assets) {
+    //        if (_assets.count) rows++;
+    //    }
     return rows;
 }
 
@@ -101,13 +95,7 @@
     // Configure
 	switch (indexPath.row) {
 		case 0: {
-            cell.textLabel.text = @"Web photo grid";
-            cell.detailTextLabel.text = @"asdfghjkl;";
-            break;
-        }
-		case 1: {
-            cell.textLabel.text = @"Jake's Local Photo's";
-            cell.detailTextLabel.text = @"photos from device library";
+            cell.textLabel.text = @"Jake's Local Photos";
             break;
         }
 		default: break;
@@ -120,48 +108,19 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
+    
 	// Browser
-	NSMutableArray *photos = [[NSMutableArray alloc] init];
-	NSMutableArray *thumbs = [[NSMutableArray alloc] init];
-    MWPhoto *photo;
     BOOL displayActionButton = YES;
     BOOL displaySelectionButtons = NO;
     BOOL displayNavArrows = YES;
     BOOL enableGrid = YES;
     BOOL startOnGrid = YES;
-	switch (indexPath.row) {
-        case 0:
-            // Photos & thumbs
-            photo = [MWPhoto photoWithURL:[NSURL URLWithString:@"http://farm4.static.flickr.com/3779/9522424255_28a5a9d99c_b.jpg"]];
-            photo.caption = @"Tube";
-            [photos addObject:photo];
-            [thumbs addObject:[MWPhoto photoWithURL:[NSURL URLWithString:@"http://farm4.static.flickr.com/3779/9522424255_28a5a9d99c_q.jpg"]]];
-            photo = [MWPhoto photoWithURL:[NSURL URLWithString:@"http://farm4.static.flickr.com/3777/9522276829_fdea08ffe2_b.jpg"]];
-            [photos addObject:photo];
-            [thumbs addObject:[MWPhoto photoWithURL:[NSURL URLWithString:@"http://farm4.static.flickr.com/3777/9522276829_fdea08ffe2_q.jpg"]]];
-            photo = [MWPhoto photoWithURL:[NSURL URLWithString:@"http://farm9.static.flickr.com/8379/8530199945_47b386320f_b.jpg"]];
-            photo.caption = @"Woburn Abbey";
-            [photos addObject:photo];
-            [thumbs addObject:[MWPhoto photoWithURL:[NSURL URLWithString:@"http://farm9.static.flickr.com/8379/8530199945_47b386320f_q.jpg"]]];
-            // Options
-			break;
-		case 1: {
-            @synchronized(_assets) {
-                NSMutableArray *copy = [_assets copy];
-                
-                for (ALAsset *asset in copy) {
-                    [photos addObject:[MWPhoto photoWithURL:asset.defaultRepresentation.url]];
-                    [thumbs addObject:[MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]]];
-                }
-            }
-			break;
-        }
-		default: break;
-	}
-    self.photos = photos;
-    self.thumbs = thumbs;
 	
+    //    // set the photos list to localPhotos for now
+    //    @synchronized(localPhotos) {
+    //        self.photos = localPhotos;
+    //    }
+    
 	// Create browser
 	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
     browser.displayActionButton = displayActionButton;
@@ -176,11 +135,18 @@
     browser.startOnGrid = startOnGrid;
     browser.enableSwipeToDismiss = YES;
     [browser setCurrentPhotoIndex:0];
+
+    // TODO: get this running in another thread
+    // and then update browser data in main thread
+    @synchronized(self.photos) {
+        self.photos = [self getPhotos:@"1"];
+        [browser reloadData];
+    }
     
     // Reset selections
     if (displaySelectionButtons) {
         _selections = [NSMutableArray new];
-        for (int i = 0; i < photos.count; i++) {
+        for (int i = 0; i < self.photos.count; i++) {
             [_selections addObject:[NSNumber numberWithBool:NO]];
         }
     }
@@ -191,33 +157,6 @@
 	
 	// Deselect
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    // Test reloading of data after delay
-    double delayInSeconds = 3;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        
-        //        // Test removing an object
-        //        [_photos removeLastObject];
-        //        [browser reloadData];
-        //
-        //        // Test all new
-        //        [_photos removeAllObjects];
-        //        [_photos addObject:[MWPhoto photoWithFilePath:[[NSBundle mainBundle] pathForResource:@"photo3" ofType:@"jpg"]]];
-        //        [browser reloadData];
-        //
-        //        // Test changing photo index
-        //        [browser setCurrentPhotoIndex:9];
-        
-        //        // Test updating selections
-        //        _selections = [NSMutableArray new];
-        //        for (int i = 0; i < [self numberOfPhotosInPhotoBrowser:browser]; i++) {
-        //            [_selections addObject:[NSNumber numberWithBool:YES]];
-        //        }
-        //        [browser reloadData];
-        
-    });
-    
 }
 
 #pragma mark - MWPhotoBrowserDelegate
@@ -227,14 +166,18 @@
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
-    if (index < _photos.count)
-        return [_photos objectAtIndex:index];
+    if (index < _photos.count) {
+        CSPhoto *p = [_photos objectAtIndex:index];
+        return p.photoObject;
+    }
     return nil;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
-    if (index < _thumbs.count)
-        return [_thumbs objectAtIndex:index];
+    if (index < _photos.count) {
+        CSPhoto *p = [_photos objectAtIndex:index];
+        return p.thumbObject;
+    }
     return nil;
 }
 
@@ -275,12 +218,12 @@
 
 - (void)loadAssets {
     
-    // Initialise
-    _assets = [NSMutableArray new];
     _assetLibrary = [[ALAssetsLibrary alloc] init];
+    NSString *localDeviceId = @"1";
     
     // Run in the background as it takes a while to get all assets from the library
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSMutableArray *locals = [self getPhotos:localDeviceId];
         
         NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
         NSMutableArray *assetURLDictionaries = [[NSMutableArray alloc] init];
@@ -294,10 +237,7 @@
                     [_assetLibrary assetForURL:url
                                    resultBlock:^(ALAsset *asset) {
                                        if (asset) {
-                                           @synchronized(_assets) {
-                                               // add the photo to the assets list and core data
-                                               [self addPhoto:asset];
-                                           }
+                                           [self addPhoto:asset setCompareArray:localPhotos];
                                        }
                                    }
                                   failureBlock:^(NSError *error){
@@ -322,21 +262,110 @@
                                        failureBlock:^(NSError *error) {
                                            NSLog(@"There is an error");
                                        }];
-        
+        localPhotos = locals;
+        NSLog(@"finished loading local photos");
     });
-    
 }
 
-- (void)addPhoto: (ALAsset *)asset {
-    // add photo to _assets list
-    [_assets addObject:asset];
-    if ([_assets count] == 1) {
-        [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-    }
+// add photo to core data
+- (void)addPhoto: (ALAsset *)asset setCompareArray: (NSMutableArray *)arr {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
     
     // add photo to core data
+    NSURL *url = [[asset defaultRepresentation] url];
+    NSString *urlString = [url absoluteString];
+    NSString *localDeviceId = @"1";
     
+    //    NSLog([NSString stringWithFormat:@"size is %lu", (unsigned long)arr.count]);
     
+    BOOL alreadyAdded = NO;
+    
+    for (int i=0;i<arr.count;i++) {
+        CSPhoto *ph = arr[i];
+        
+        if ([urlString isEqualToString:[ph.imageURL absoluteString]]) {
+            alreadyAdded = YES;
+            break;
+        }
+    }
+    
+    if (!alreadyAdded) {
+        @synchronized(localPhotos) {
+            CSPhoto *photo = [[CSPhoto alloc] init];
+            
+            photo.photoObject = [MWPhoto photoWithURL:url];
+            photo.thumbObject = [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
+            
+            photo.imageURL = url;
+            photo.deviceId = localDeviceId;
+            
+            [arr addObject:photo];
+            
+            NSLog(@"creating new photo object");
+            
+            NSManagedObject *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext:context];
+            
+            [newPhoto setValue:[photo.imageURL absoluteString] forKey:@"imageURL"];
+            [newPhoto setValue:photo.deviceId forKey:@"deviceId"];
+            
+            NSError *error;
+            [context save:&error];
+        }
+    }else {
+        //        NSLog(@"photo already exists in core data");
+        ;
+    }
+}
+
+- (NSMutableArray *)getPhotos: (NSString *) deviceId {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    
+    NSMutableArray *arr = [[NSMutableArray alloc] init];
+    
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Photo" inManagedObjectContext:context];
+    request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDesc];
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(deviceId = %@)", deviceId];
+    [request setPredicate:pred];
+    
+    NSError *error;
+    NSArray *phs = [context executeFetchRequest:request error:&error];
+    
+    if (phs == nil) {
+        NSLog(@"error with core data request");
+        abort();
+    }
+    
+    // add all of the photo objects to the local photo list
+    NSManagedObject *p;
+    for (int i =0; i < [phs count]; i++) {
+        p = phs[i];
+        CSPhoto *photo = [[CSPhoto alloc] init];
+        photo.deviceId = [p valueForKey:@"deviceId"];
+        
+        NSURL *url = [NSURL URLWithString:[p valueForKey:@"imageURL"]];
+        
+        [_assetLibrary assetForURL:url
+                       resultBlock:^(ALAsset *asset) {
+                           if (asset) {
+                               photo.photoObject = [MWPhoto photoWithURL:asset.defaultRepresentation.url];
+                               photo.thumbObject = [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
+                           }
+                       }
+                      failureBlock:^(NSError *error){
+                          NSLog(@"operation was not successfull!");
+                      }];
+        
+        photo.imageURL = url;
+        [arr addObject:photo];
+    }
+    
+    NSLog(@"returning all photos");
+    return arr;
 }
 
 @end

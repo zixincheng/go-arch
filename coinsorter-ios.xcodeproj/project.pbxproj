@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2052CF2E19736E8F008B4ACF /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF2C19736E8F008B4ACF /* Model.xcdatamodeld */; };
+		2052CF3119737139008B4ACF /* DeviceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF3019737139008B4ACF /* DeviceTableViewController.m */; };
+		2052CF371973B405008B4ACF /* CSPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF361973B405008B4ACF /* CSPhoto.m */; };
 		20B43B361970992D00D996A5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B351970992D00D996A5 /* Foundation.framework */; };
 		20B43B381970992D00D996A5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B371970992D00D996A5 /* CoreGraphics.framework */; };
 		20B43B3A1970992D00D996A5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B391970992D00D996A5 /* UIKit.framework */; };
@@ -14,7 +17,6 @@
 		20B43B421970992D00D996A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 20B43B401970992D00D996A5 /* InfoPlist.strings */; };
 		20B43B441970992D00D996A5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B43B431970992D00D996A5 /* main.m */; };
 		20B43B481970992D00D996A5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B43B471970992D00D996A5 /* AppDelegate.m */; };
-		20B43B4B1970992D00D996A5 /* coinsorter_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 20B43B491970992D00D996A5 /* coinsorter_ios.xcdatamodeld */; };
 		20B43B4D1970992D00D996A5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20B43B4C1970992D00D996A5 /* Images.xcassets */; };
 		20B43B541970992D00D996A5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B531970992D00D996A5 /* XCTest.framework */; };
 		20B43B551970992D00D996A5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B351970992D00D996A5 /* Foundation.framework */; };
@@ -23,7 +25,6 @@
 		20B43B5F1970992D00D996A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 20B43B5D1970992D00D996A5 /* InfoPlist.strings */; };
 		20B43B611970992D00D996A5 /* coinsorter_iosTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B43B601970992D00D996A5 /* coinsorter_iosTests.m */; };
 		20B43B6B1970995B00D996A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20B43B6A1970995B00D996A5 /* Main.storyboard */; };
-		20B43B6E197099B900D996A5 /* PhotoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B43B6D197099B900D996A5 /* PhotoTableViewController.m */; };
 		446DFC7030614FC68256D750 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20FCBE8A23424E15A19A0B14 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +39,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2052CF2D19736E8F008B4ACF /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		2052CF2F19737139008B4ACF /* DeviceTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTableViewController.h; sourceTree = "<group>"; };
+		2052CF3019737139008B4ACF /* DeviceTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewController.m; sourceTree = "<group>"; };
+		2052CF351973B405008B4ACF /* CSPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSPhoto.h; sourceTree = "<group>"; };
+		2052CF361973B405008B4ACF /* CSPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSPhoto.m; sourceTree = "<group>"; };
 		20B43B321970992D00D996A5 /* coinsorter-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "coinsorter-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		20B43B351970992D00D996A5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		20B43B371970992D00D996A5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -49,7 +55,6 @@
 		20B43B451970992D00D996A5 /* coinsorter-ios-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "coinsorter-ios-Prefix.pch"; sourceTree = "<group>"; };
 		20B43B461970992D00D996A5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		20B43B471970992D00D996A5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		20B43B4A1970992D00D996A5 /* coinsorter_ios.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = coinsorter_ios.xcdatamodel; sourceTree = "<group>"; };
 		20B43B4C1970992D00D996A5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		20B43B521970992D00D996A5 /* coinsorter-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "coinsorter-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		20B43B531970992D00D996A5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -57,8 +62,6 @@
 		20B43B5E1970992D00D996A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		20B43B601970992D00D996A5 /* coinsorter_iosTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coinsorter_iosTests.m; sourceTree = "<group>"; };
 		20B43B6A1970995B00D996A5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		20B43B6C197099B900D996A5 /* PhotoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoTableViewController.h; sourceTree = "<group>"; };
-		20B43B6D197099B900D996A5 /* PhotoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoTableViewController.m; sourceTree = "<group>"; };
 		20FCBE8A23424E15A19A0B14 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		90F80D7C1EF2452CBADD0A39 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -127,12 +130,14 @@
 			isa = PBXGroup;
 			children = (
 				20B43B461970992D00D996A5 /* AppDelegate.h */,
+				2052CF2C19736E8F008B4ACF /* Model.xcdatamodeld */,
 				20B43B471970992D00D996A5 /* AppDelegate.m */,
 				20B43B4C1970992D00D996A5 /* Images.xcassets */,
-				20B43B491970992D00D996A5 /* coinsorter_ios.xcdatamodeld */,
 				20B43B6A1970995B00D996A5 /* Main.storyboard */,
-				20B43B6C197099B900D996A5 /* PhotoTableViewController.h */,
-				20B43B6D197099B900D996A5 /* PhotoTableViewController.m */,
+				2052CF2F19737139008B4ACF /* DeviceTableViewController.h */,
+				2052CF3019737139008B4ACF /* DeviceTableViewController.m */,
+				2052CF351973B405008B4ACF /* CSPhoto.h */,
+				2052CF361973B405008B4ACF /* CSPhoto.m */,
 				20B43B3E1970992D00D996A5 /* Supporting Files */,
 			);
 			path = "coinsorter-ios";
@@ -300,8 +305,9 @@
 			files = (
 				20B43B481970992D00D996A5 /* AppDelegate.m in Sources */,
 				20B43B441970992D00D996A5 /* main.m in Sources */,
-				20B43B6E197099B900D996A5 /* PhotoTableViewController.m in Sources */,
-				20B43B4B1970992D00D996A5 /* coinsorter_ios.xcdatamodeld in Sources */,
+				2052CF3119737139008B4ACF /* DeviceTableViewController.m in Sources */,
+				2052CF371973B405008B4ACF /* CSPhoto.m in Sources */,
+				2052CF2E19736E8F008B4ACF /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,13 +522,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		20B43B491970992D00D996A5 /* coinsorter_ios.xcdatamodeld */ = {
+		2052CF2C19736E8F008B4ACF /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				20B43B4A1970992D00D996A5 /* coinsorter_ios.xcdatamodel */,
+				2052CF2D19736E8F008B4ACF /* Model.xcdatamodel */,
 			);
-			currentVersion = 20B43B4A1970992D00D996A5 /* coinsorter_ios.xcdatamodel */;
-			path = coinsorter_ios.xcdatamodeld;
+			currentVersion = 2052CF2D19736E8F008B4ACF /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
