@@ -36,7 +36,16 @@
                             <outlet property="delegate" destination="aXE-Wh-x6Q" id="fdv-dz-9C5"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Devices" id="PO8-ax-qgb"/>
+                    <navigationItem key="navigationItem" title="Devices" id="PO8-ax-qgb">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="hNo-H5-UEN">
+                            <connections>
+                                <action selector="buttonPressed:" destination="aXE-Wh-x6Q" id="Axa-wd-Vyg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="syncButton" destination="hNo-H5-UEN" id="MNt-fx-9re"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OE5-xB-gmR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
