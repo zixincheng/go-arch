@@ -11,7 +11,6 @@
 @interface CSDevice : NSObject
 
 @property (strong) NSString *remoteId;
-@property (strong) NSString *coreId;
 @property (strong) NSString *deviceName;
 
 @end

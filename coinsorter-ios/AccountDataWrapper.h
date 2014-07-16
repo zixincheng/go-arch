@@ -11,8 +11,8 @@
 @interface AccountDataWrapper : NSObject
 
 @property (strong) NSString *ip;
-@property (strong) NSString *name;
 @property (strong) NSString *token;
+@property (strong) NSString *cid;
 
 - (void) saveSettings;
 - (void) readSettings;

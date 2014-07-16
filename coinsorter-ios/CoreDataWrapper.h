@@ -20,6 +20,8 @@
 - (void) addUpdateDevice: (CSDevice *) device;
 - (NSMutableArray *) getAllPhotos;
 - (NSMutableArray *) getAllDevices;
+- (NSMutableArray *) getPhotos: (NSString *) deviceId;
 - (CSPhoto *) getPhoto: (NSURL *) url;
+- (CSDevice *) getDevice: (NSString *) cid;
 
 @end

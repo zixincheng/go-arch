@@ -9,8 +9,6 @@
 #import "DeviceTableViewController.h"
 #import "MWCommon.h"
 
-#define LOCALID @"local"
-
 @implementation DeviceTableViewController
 
 #pragma mark -
@@ -40,6 +38,11 @@
     // libraries
     self.coinsorter = [[Coinsorter alloc] init];
     self.dataWrapper = [[CoreDataWrapper alloc] init];
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    account = appDelegate.account;
+    
+    self.localDevice = [self.dataWrapper getDevice:account.cid];
     
     self.devices = [[NSMutableArray alloc] init];
     
@@ -134,11 +137,9 @@
     BOOL displayNavArrows = YES;
     BOOL enableGrid = YES;
     BOOL startOnGrid = YES;
-	
-    //    // set the photos list to localPhotos for now
-    //    @synchronized(localPhotos) {
-    //        self.photos = localPhotos;
-    //    }
+    
+    CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
+    self.photos = [self.dataWrapper getPhotos: d.remoteId];
     
 	// Create browser
 	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
@@ -154,13 +155,6 @@
     browser.startOnGrid = startOnGrid;
     browser.enableSwipeToDismiss = YES;
     [browser setCurrentPhotoIndex:0];
-//
-//    // TODO: get this running in another thread
-//    // and then update browser data in main thread
-//    @synchronized(self.photos) {
-//        self.photos = [self getPhotos:@"1"];
-//        [browser reloadData];
-//    }
     
     // Reset selections
     if (displaySelectionButtons) {
@@ -259,7 +253,7 @@
                                            photo.thumbObject = [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
                                            
                                            photo.imageURL = url;
-                                           photo.deviceId = LOCALID;
+                                           photo.deviceId = self.localDevice.remoteId;
                                            
                                            [self.dataWrapper addPhoto:photo];
                                        }

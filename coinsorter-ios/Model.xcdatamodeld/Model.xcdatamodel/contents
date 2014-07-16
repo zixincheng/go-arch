@@ -3,7 +3,6 @@
     <entity name="Device" syncable="YES">
         <attribute name="deviceName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Photo" syncable="YES">
         <attribute name="deviceId" optional="YES" attributeType="String" syncable="YES"/>
@@ -11,7 +10,7 @@
         <attribute name="remoteId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Device" positionX="-63" positionY="-18" width="128" height="90"/>
-        <element name="Photo" positionX="-288" positionY="-10" width="128" height="90"/>
+        <element name="Device" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="Photo" positionX="-288" positionY="-10" width="128" height="88"/>
     </elements>
 </model>

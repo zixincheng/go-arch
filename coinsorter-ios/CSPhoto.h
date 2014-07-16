@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MWPhoto.h"
+#import "CSDevice.h"
 
 @interface CSPhoto : NSObject
 

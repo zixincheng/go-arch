@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "MWPhotoBrowser.h"
+#import "AppDelegate.h"
+#import "AccountDataWrapper.h"
 #import "CSPhoto.h"
 #import "CSDevice.h"
 #import "Coinsorter.h"
@@ -17,7 +19,8 @@
 @interface DeviceTableViewController : UITableViewController <MWPhotoBrowserDelegate, UITableViewDataSource> {
     NSMutableArray *_selections;
     NSMutableArray *localPhotos;
-    // core data vars
+    
+    AccountDataWrapper *account;
 }
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *syncButton;
@@ -29,6 +32,8 @@
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
+
+@property (nonatomic, strong) CSDevice *localDevice;
 
 - (void)loadAssets;
 

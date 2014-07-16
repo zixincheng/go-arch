@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Coinsorter.h"
 #import "AppDelegate.h"
+#import "CoreDataWrapper.h"
 
 @interface ConnectViewController : UIViewController
 

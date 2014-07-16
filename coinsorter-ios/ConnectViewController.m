@@ -57,14 +57,14 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     AccountDataWrapper *account = appDelegate.account;
     
-    NSString *name;
-    if (account.name == nil) {
-        name = [[UIDevice currentDevice] name];
-        NSLog(@"name not saved");
-    }else {
-        name = account.name;
-        NSLog(@"name is saved");
-    }
+    NSString *name = [[UIDevice currentDevice] name];
+//    if (account.name == nil) {
+//        name = [[UIDevice currentDevice] name];
+//        NSLog(@"name not saved");
+//    }else {
+//        name = account.name;
+//        NSLog(@"name is saved");
+//    }
     
     
     [self.coinsorter getToken:self.ip name:name pass:pass callback:^(NSDictionary *authData) {
@@ -90,9 +90,16 @@
         
         account.ip = self.ip;
         account.token = token;
-        account.name = name;
+        account.cid = cid;
         
         [account saveSettings];
+        
+        CSDevice *device = [[CSDevice alloc] init];
+        device.deviceName = name;
+        device.remoteId = cid;
+        
+        CoreDataWrapper *dataWrapper = [[CoreDataWrapper alloc] init];
+        [dataWrapper addUpdateDevice:device];
         
         [self performSegueWithIdentifier:@"deviceSegue" sender:self];
     }];

@@ -21,7 +21,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xZ9-4G-GRr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1318" y="-349"/>
+            <point key="canvasLocation" x="90" y="779"/>
         </scene>
         <!--Device Table View Controller - Devices-->
         <scene sceneID="bKe-bB-NTz">
@@ -75,7 +75,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OE5-xB-gmR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="716" y="-357"/>
+            <point key="canvasLocation" x="-580" y="1179"/>
         </scene>
         <!--Handshake Table View Controller - Find a Blackbox-->
         <scene sceneID="vSK-8H-hWj">
@@ -144,7 +144,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aev-NX-pBB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1440" y="797"/>
+            <point key="canvasLocation" x="-1824" y="489"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="NVQ-qd-nCL">
@@ -215,7 +215,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dwF-T9-A83" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-214" y="371"/>
+            <point key="canvasLocation" x="-886" y="427"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zEd-21-l0W">
@@ -230,7 +230,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4AE-Bz-QL8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="182" y="-357"/>
+            <point key="canvasLocation" x="-1114" y="1179"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -239,6 +239,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="skd-as-Yn8"/>
+        <segue reference="k3g-p7-7zL"/>
     </inferredMetricsTieBreakers>
 </document>
