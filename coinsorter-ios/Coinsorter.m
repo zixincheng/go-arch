@@ -8,16 +8,23 @@
 
 #import "Coinsorter.h"
 
-#define TOKEN @"7c0d1c6437a01790ff4eebab66051a2502a60696f2d63de85c9d7a3da251ca69"
-#define ROOT_URL @"https://192.168.0.19:443"
+#define FRONT_URL @"https://"
+#define UUID_ACCOUNT @"UID_ACCOUNT"
 
 @implementation Coinsorter
 
+- (id) init {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    account = appDelegate.account;
+    
+    return self;
+}
+
 - (NSMutableURLRequest *) getHTTPGetRequest: (NSString *) path {
-    NSString *urlString = [NSString stringWithFormat:@"%@%@", ROOT_URL, path];
+    NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, account.ip, path];
     NSURL *url = [NSURL URLWithString:urlString];
     
-    NSDictionary *headers = @{@"token" : TOKEN};
+    NSDictionary *headers = @{@"token" : account.token};
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
     [request setURL:url];
@@ -30,10 +37,10 @@
 }
 
 - (NSMutableURLRequest *) getHTTPPostRequest: (NSString *) path {
-    NSString *urlString = [NSString stringWithFormat:@"%@%@", ROOT_URL, path];
+    NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, account.ip, path];
     NSURL *url = [NSURL URLWithString:urlString];
     
-    NSDictionary *headers = @{@"token" : TOKEN};
+    NSDictionary *headers = @{@"token" : account.token};
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
     [request setURL:url];
@@ -76,8 +83,8 @@
     [dataTask resume];
 }
 
-- (void) getToken:(NSString *)ip pass:(NSString *)pass callback: (void (^) (NSDictionary *authData)) callback {
-    NSString *urlString = [NSString stringWithFormat:@"%@%@", ROOT_URL, @"/auth"];
+- (void) getToken:(NSString *)ip name: (NSString *) name pass:(NSString *)pass callback: (void (^) (NSDictionary *authData)) callback {
+    NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, ip, @"/auth"];
     NSURL *url = [NSURL URLWithString:urlString];
     
     NSError *error;
@@ -85,7 +92,7 @@
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
     
-    NSString *uid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    NSString *uid = [self uniqueAppId];
     
     NSDictionary *headers = @{
                               @"pass" : pass,
@@ -97,7 +104,6 @@
     [request setHTTPMethod:@"POST"];
     [request setAllHTTPHeaderFields:headers];
     
-    NSString *name = [[UIDevice currentDevice] name];
     NSString *manufacturer = @"Apple";
     NSString *firmware_version = [[UIDevice currentDevice] systemVersion];
     
@@ -120,6 +126,19 @@
     }];
     
     [postDataTask resume];
+}
+
+// on first run this will get the app vender uid and save in the device keychain
+// if the app is reinstalled, it will get the original uid from keychain
+// without this, the uid would change if the app was reinstalled
+- (NSString *)uniqueAppId {
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+    NSString *strApplicationUUID = [SSKeychain passwordForService:appName account:UUID_ACCOUNT];
+    if (strApplicationUUID == nil) {
+        strApplicationUUID = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+        [SSKeychain setPassword:strApplicationUUID forService:appName account:UUID_ACCOUNT];
+    }
+    return strApplicationUUID;
 }
 
 # warning removing using self-signed certs in production

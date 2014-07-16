@@ -21,6 +21,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *syncButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
 
 @property (nonatomic, strong) NSMutableArray *devices;
 @property (nonatomic, strong) NSMutableArray *photos;

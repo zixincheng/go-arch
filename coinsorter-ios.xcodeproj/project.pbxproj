@@ -15,6 +15,8 @@
 		2052CF371973B405008B4ACF /* CSPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF361973B405008B4ACF /* CSPhoto.m */; };
 		20805CFE1975E75A00CE4B00 /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = 20805CFD1975E75A00CE4B00 /* Server.m */; };
 		208D2A6219765534004D6493 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A6119765534004D6493 /* ConnectViewController.m */; };
+		208D2A651976E94E004D6493 /* AccountDataWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A641976E94E004D6493 /* AccountDataWrapper.m */; };
+		208D2A6E1977026C004D6493 /* firstLoadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A6D1977026C004D6493 /* firstLoadViewController.m */; };
 		20A2268719748D1B00F70374 /* Coinsorter.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A2268619748D1B00F70374 /* Coinsorter.m */; };
 		20B43B361970992D00D996A5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B351970992D00D996A5 /* Foundation.framework */; };
 		20B43B381970992D00D996A5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B371970992D00D996A5 /* CoreGraphics.framework */; };
@@ -60,6 +62,10 @@
 		20805CFD1975E75A00CE4B00 /* Server.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Server.m; sourceTree = "<group>"; };
 		208D2A6019765534004D6493 /* ConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectViewController.h; sourceTree = "<group>"; };
 		208D2A6119765534004D6493 /* ConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectViewController.m; sourceTree = "<group>"; };
+		208D2A631976E94E004D6493 /* AccountDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountDataWrapper.h; sourceTree = "<group>"; };
+		208D2A641976E94E004D6493 /* AccountDataWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountDataWrapper.m; sourceTree = "<group>"; };
+		208D2A6C1977026C004D6493 /* firstLoadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = firstLoadViewController.h; sourceTree = "<group>"; };
+		208D2A6D1977026C004D6493 /* firstLoadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = firstLoadViewController.m; sourceTree = "<group>"; };
 		20A2268519748D1B00F70374 /* Coinsorter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coinsorter.h; sourceTree = "<group>"; };
 		20A2268619748D1B00F70374 /* Coinsorter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coinsorter.m; sourceTree = "<group>"; };
 		20B43B321970992D00D996A5 /* coinsorter-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "coinsorter-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,12 +160,16 @@
 				20B43B6A1970995B00D996A5 /* Main.storyboard */,
 				208D2A6019765534004D6493 /* ConnectViewController.h */,
 				208D2A6119765534004D6493 /* ConnectViewController.m */,
+				208D2A6C1977026C004D6493 /* firstLoadViewController.h */,
+				208D2A6D1977026C004D6493 /* firstLoadViewController.m */,
 				200170701975DFC300426EB9 /* HandshakeTableViewController.h */,
 				200170711975DFC300426EB9 /* HandshakeTableViewController.m */,
 				20805CFC1975E75A00CE4B00 /* Server.h */,
 				20805CFD1975E75A00CE4B00 /* Server.m */,
 				2052CF2F19737139008B4ACF /* DeviceTableViewController.h */,
 				2052CF3019737139008B4ACF /* DeviceTableViewController.m */,
+				208D2A631976E94E004D6493 /* AccountDataWrapper.h */,
+				208D2A641976E94E004D6493 /* AccountDataWrapper.m */,
 				2001706D1975BB0300426EB9 /* CoreDataWrapper.h */,
 				2001706E1975BB0300426EB9 /* CoreDataWrapper.m */,
 				20A2268519748D1B00F70374 /* Coinsorter.h */,
@@ -333,6 +343,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				208D2A651976E94E004D6493 /* AccountDataWrapper.m in Sources */,
 				2001706F1975BB0300426EB9 /* CoreDataWrapper.m in Sources */,
 				20B43B481970992D00D996A5 /* AppDelegate.m in Sources */,
 				200170721975DFC300426EB9 /* HandshakeTableViewController.m in Sources */,
@@ -340,6 +351,7 @@
 				20805CFE1975E75A00CE4B00 /* Server.m in Sources */,
 				20B43B441970992D00D996A5 /* main.m in Sources */,
 				2001706C1975A87200426EB9 /* CSDevice.m in Sources */,
+				208D2A6E1977026C004D6493 /* firstLoadViewController.m in Sources */,
 				2052CF3119737139008B4ACF /* DeviceTableViewController.m in Sources */,
 				208D2A6219765534004D6493 /* ConnectViewController.m in Sources */,
 				2052CF371973B405008B4ACF /* CSPhoto.m in Sources */,

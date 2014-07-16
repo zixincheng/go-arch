@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Coinsorter.h"
+#import "AppDelegate.h"
 
 @interface ConnectViewController : UIViewController
 

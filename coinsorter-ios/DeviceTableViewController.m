@@ -43,7 +43,7 @@
     
     self.devices = [[NSMutableArray alloc] init];
     
-    [self getDevicesFromApi];
+    [self syncAllFromApi];
     
     // load the images from iphone photo library
     [self loadAssets];
@@ -52,6 +52,8 @@
 - (IBAction)buttonPressed:(id)sender {
     if (sender == self.syncButton) {
         [self syncAllFromApi];
+    }else if (sender == self.settingsButton) {
+        
     }
 }
 

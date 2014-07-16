@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "41F3815E366345048BB21D48"
-               BuildableName = "libPods-PSTCollectionView.a"
-               BlueprintName = "Pods-PSTCollectionView"
+               BlueprintIdentifier = "CC3ECBD15B70468EA97B0339"
+               BuildableName = "libPods-SSKeychain.a"
+               BlueprintName = "Pods-SSKeychain"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

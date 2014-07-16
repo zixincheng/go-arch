@@ -29,8 +29,8 @@
     // Do any additional setup after loading the view.
     
     [self.passTextField addTarget:self
-                       action:@selector(connectPressed:)
-             forControlEvents:UIControlEventEditingDidEndOnExit];
+                           action:@selector(connectPressed:)
+                 forControlEvents:UIControlEventEditingDidEndOnExit];
     
     self.coinsorter = [[Coinsorter alloc] init];
     
@@ -47,14 +47,27 @@
     NSString *pass = self.passTextField.text;
     
     if (![pass isEqualToString:@""]) {
-            [self authDevice: pass];
+        [self authDevice: pass];
     }else {
         self.lblError.text = @"password is empty";
     }
 }
 
 - (void) authDevice: (NSString *) pass {
-    [self.coinsorter getToken:self.ip pass:pass callback:^(NSDictionary *authData) {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    AccountDataWrapper *account = appDelegate.account;
+    
+    NSString *name;
+    if (account.name == nil) {
+        name = [[UIDevice currentDevice] name];
+        NSLog(@"name not saved");
+    }else {
+        name = account.name;
+        NSLog(@"name is saved");
+    }
+    
+    
+    [self.coinsorter getToken:self.ip name:name pass:pass callback:^(NSDictionary *authData) {
         if (authData == nil || authData == NULL) {
             // we could not connect to server
             [self asyncSetErrorLabel:@"could not connect to server"];
@@ -75,6 +88,12 @@
         NSLog(@"token: %@", token);
         NSLog(@"cid: %@", cid);
         
+        account.ip = self.ip;
+        account.token = token;
+        account.name = name;
+        
+        [account saveSettings];
+        
         [self performSegueWithIdentifier:@"deviceSegue" sender:self];
     }];
 }
@@ -86,14 +105,14 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+ {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

@@ -16,6 +16,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.account = [[AccountDataWrapper alloc] init];
+    [self.account readSettings];
+    NSLog(@"reading settings");
+    
     return YES;
 }
 
@@ -43,6 +47,9 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    // Saves all the application's settings to a plist (XML) file
+    [self.account saveSettings];
+    
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
 }

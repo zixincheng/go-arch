@@ -11,10 +11,12 @@ PODS:
   - SDWebImage (3.5.4):
     - SDWebImage/Core
   - SDWebImage/Core (3.5.4)
+  - SSKeychain (1.2.2)
 
 DEPENDENCIES:
   - CocoaAsyncSocket
   - MWPhotoBrowser
+  - SSKeychain
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: 45bdbbc1c0a5ed0640ff4c42af325ba43a2f099a
@@ -23,5 +25,6 @@ SPEC CHECKSUMS:
   MWPhotoBrowser: 4efcdb9da34751f97992128a5356f3929d1af537
   PSTCollectionView: a63299550ad566b579479d07cb5e2bf61148686b
   SDWebImage: 571295c8acbb699505a0f68e54506147c3de9ea7
+  SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
 
 COCOAPODS: 0.33.1
