@@ -1,4 +1,5 @@
 PODS:
+  - CocoaAsyncSocket (7.3.5)
   - DACircularProgress (2.2.0)
   - MBProgressHUD (0.8)
   - MWPhotoBrowser (1.4.0):
@@ -12,9 +13,11 @@ PODS:
   - SDWebImage/Core (3.5.4)
 
 DEPENDENCIES:
+  - CocoaAsyncSocket
   - MWPhotoBrowser
 
 SPEC CHECKSUMS:
+  CocoaAsyncSocket: 45bdbbc1c0a5ed0640ff4c42af325ba43a2f099a
   DACircularProgress: 3b41941891a56dc6aa17971f5322a9a38a6f446e
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   MWPhotoBrowser: 4efcdb9da34751f97992128a5356f3929d1af537

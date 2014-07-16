@@ -15,5 +15,6 @@ typedef void (^CompletionHandlerType)();
 @interface Coinsorter : NSObject <NSURLSessionDelegate>
 
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback;
+- (NSString *) getToken: (NSString *) ip;
 
 @end

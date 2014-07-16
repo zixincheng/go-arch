@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="jTo-cQ-UpK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="wFE-xI-2ml">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -49,7 +49,66 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OE5-xB-gmR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="380" y="83"/>
+            <point key="canvasLocation" x="1128" y="171"/>
+        </scene>
+        <!--Handshake Table View Controller - Find a Blackbox-->
+        <scene sceneID="vSK-8H-hWj">
+            <objects>
+                <tableViewController id="vaL-eJ-OMA" customClass="HandshakeTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="l4N-Fo-NGx">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="serverPrototypeCell" textLabel="Ra0-gT-Nzy" style="IBUITableViewCellStyleDefault" id="89C-9A-o3u">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="89C-9A-o3u" id="Eze-xz-XZI">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ra0-gT-Nzy">
+                                            <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="vaL-eJ-OMA" id="dIT-dg-UFb"/>
+                            <outlet property="delegate" destination="vaL-eJ-OMA" id="r4v-tx-VdZ"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Find a Blackbox" id="USK-f8-Zml">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="rso-u8-sgz">
+                            <connections>
+                                <action selector="reSync:" destination="vaL-eJ-OMA" id="GGs-E6-6b5"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YK9-7x-zPk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="97" y="171"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="NVQ-qd-nCL">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="wFE-xI-2ml" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="71q-zC-5KE">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="vaL-eJ-OMA" kind="relationship" relationship="rootViewController" id="ikV-Sd-Hkz"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wa0-sL-KLB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-437" y="171"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zEd-21-l0W">
@@ -64,7 +123,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4AE-Bz-QL8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-154" y="83"/>
+            <point key="canvasLocation" x="594" y="171"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

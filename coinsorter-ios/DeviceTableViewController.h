@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "MWPhotoBrowser.h"
-#import "AppDelegate.h"
 #import "CSPhoto.h"
+#import "CSDevice.h"
+#import "Coinsorter.h"
+#import "CoreDataWrapper.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface DeviceTableViewController : UITableViewController <MWPhotoBrowserDelegate, UITableViewDataSource> {
@@ -18,9 +20,14 @@
     // core data vars
 }
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *syncButton;
+
 @property (nonatomic, strong) NSMutableArray *devices;
 @property (nonatomic, strong) NSMutableArray *photos;
 @property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
+
+@property (nonatomic, strong) Coinsorter *coinsorter;
+@property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 
 - (void)loadAssets;
 

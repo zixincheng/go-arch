@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import "AppDelegate.h"
 #import "CSDevice.h"
 #import "CSPhoto.h"
 
@@ -18,5 +20,6 @@
 - (void) addUpdateDevice: (CSDevice *) device;
 - (NSMutableArray *) getAllPhotos;
 - (NSMutableArray *) getAllDevices;
+- (CSPhoto *) getPhoto: (NSURL *) url;
 
 @end

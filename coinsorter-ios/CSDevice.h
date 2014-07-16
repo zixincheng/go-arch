@@ -10,4 +10,8 @@
 
 @interface CSDevice : NSObject
 
+@property (nonatomic, strong) NSString *remoteId;
+@property (nonatomic, strong) NSString *coreId;
+@property (nonatomic, strong) NSString *deviceName;
+
 @end

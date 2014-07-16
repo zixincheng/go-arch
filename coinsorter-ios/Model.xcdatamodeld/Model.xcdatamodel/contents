@@ -12,6 +12,6 @@
     </entity>
     <elements>
         <element name="Device" positionX="-63" positionY="-18" width="128" height="90"/>
-        <element name="Photo" positionX="-288" positionY="-10" width="128" height="88"/>
+        <element name="Photo" positionX="-288" positionY="-10" width="128" height="90"/>
     </elements>
 </model>
