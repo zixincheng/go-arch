@@ -34,8 +34,6 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    self.coinsorter = [[Coinsorter alloc] init];
-    
     self.servers = [[NSMutableArray alloc] init];
     
     self.sendUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
@@ -79,22 +77,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    Server *s = self.servers[[indexPath row]];
-    
-    UIAlertView *passInput = [[UIAlertView alloc] initWithTitle:s.ip message:@"Please Enter Password for this Server" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
-    passInput.alertViewStyle = UIAlertViewStyleSecureTextInput;
-    [passInput show];
-    
     // Deselect
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSString *buttonText = [alertView buttonTitleAtIndex:buttonIndex];
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+//    UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
+//    ConnectViewController *connectController = (ConnectViewController *)navController.topViewController;
     
-    if ([buttonText isEqualToString:@"Done"]) {
-        
-    }
+    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+    Server *s = self.servers[[path row]];
+    
+    ConnectViewController *connectController = (ConnectViewController *)segue.destinationViewController;
+    connectController.ip = s.ip;
 }
 
 - (IBAction)reSync:(id)sender {
@@ -104,13 +99,18 @@
 - (void) sendUDPMessage {
     NSData *data = [[NSString stringWithFormat:@"hello server - no connect"] dataUsingEncoding:NSUTF8StringEncoding];
     
+    [self.servers removeAllObjects];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+    
+    NSLog(@"sending udp broadcast");
+    
     NSError *err;
     [self.sendUdpSocket enableBroadcast:YES error:&err];
     //    [self.sendUdpSocket sendData:data withTimeout:-1 tag:1];
     [self.sendUdpSocket sendData:data toHost:@"255.255.255.255" port:9999 withTimeout:-1 tag:1];
-    
-    [self.servers removeAllObjects];
-    
 }
 
 - (void) setupReciveUDPMessage {

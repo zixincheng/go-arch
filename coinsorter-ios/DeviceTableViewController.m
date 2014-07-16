@@ -37,8 +37,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil];
-    
     // libraries
     self.coinsorter = [[Coinsorter alloc] init];
     self.dataWrapper = [[CoreDataWrapper alloc] init];

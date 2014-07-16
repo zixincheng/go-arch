@@ -9,23 +9,38 @@
 #import "Coinsorter.h"
 
 #define TOKEN @"7c0d1c6437a01790ff4eebab66051a2502a60696f2d63de85c9d7a3da251ca69"
-#define ROOT_URL @"https://192.168.120.71:443"
+#define ROOT_URL @"https://192.168.0.19:443"
 
 @implementation Coinsorter
 
 - (NSMutableURLRequest *) getHTTPGetRequest: (NSString *) path {
     NSString *urlString = [NSString stringWithFormat:@"%@%@", ROOT_URL, path];
-    //    NSString *urlString = @"https://api.twitter.com/1.1/statuses/mentions_timeline.json";
     NSURL *url = [NSURL URLWithString:urlString];
     
     NSDictionary *headers = @{@"token" : TOKEN};
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-    [request setURL:[NSURL URLWithString:urlString]];
+    [request setURL:url];
     [request setHTTPMethod:@"GET"];
     [request setAllHTTPHeaderFields:headers];
     
     NSLog(@"making get request to %@", urlString);
+    
+    return request;
+}
+
+- (NSMutableURLRequest *) getHTTPPostRequest: (NSString *) path {
+    NSString *urlString = [NSString stringWithFormat:@"%@%@", ROOT_URL, path];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    NSDictionary *headers = @{@"token" : TOKEN};
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+    [request setURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    
+    NSLog(@"making post request to %@", urlString);
     
     return request;
 }
@@ -59,6 +74,52 @@
     }];
     
     [dataTask resume];
+}
+
+- (void) getToken:(NSString *)ip pass:(NSString *)pass callback: (void (^) (NSDictionary *authData)) callback {
+    NSString *urlString = [NSString stringWithFormat:@"%@%@", ROOT_URL, @"/auth"];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    NSError *error;
+    
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    
+    NSString *uid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    
+    NSDictionary *headers = @{
+                              @"pass" : pass,
+                              @"uid"  : uid
+                              };
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+    [request setURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    
+    NSString *name = [[UIDevice currentDevice] name];
+    NSString *manufacturer = @"Apple";
+    NSString *firmware_version = [[UIDevice currentDevice] systemVersion];
+    
+//    NSDictionary *mapData = @{@"Device_Name": name, @"Manufacturer": manufacturer, @"Firmware": firmware_version};
+    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: name, @"Device_Name", manufacturer, @"Manufacturer", firmware_version, @"Firmware", nil];
+    
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
+    [request setHTTPBody:postData];
+    
+    NSLog(@"making post request to %@", urlString);
+    
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSError *jsonError;
+        NSDictionary *authData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        
+        callback(authData);
+    }];
+    
+    [postDataTask resume];
 }
 
 # warning removing using self-signed certs in production

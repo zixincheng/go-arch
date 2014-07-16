@@ -9,14 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "Server.h"
 #import "GCDAsyncUdpSocket.h"
-#import "Coinsorter.h"
+#import "ConnectViewController.h"
 
-@interface HandshakeTableViewController : UITableViewController <GCDAsyncUdpSocketDelegate, UIAlertViewDelegate>
+@interface HandshakeTableViewController : UITableViewController <GCDAsyncUdpSocketDelegate>
 
 @property (nonatomic, strong) NSMutableArray *servers;
 @property (nonatomic, strong) GCDAsyncUdpSocket *sendUdpSocket;
 @property (nonatomic, strong) GCDAsyncUdpSocket *recieveUdpSocket;
-
-@property (nonatomic, strong) Coinsorter *coinsorter;
 
 @end
