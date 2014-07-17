@@ -46,10 +46,12 @@
     
     self.devices = [[NSMutableArray alloc] init];
     
-    [self syncAllFromApi];
+    UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
     
-    // load the images from iphone photo library
-    [self loadAssets];
+    [refresh addTarget:self action:@selector(syncAllFromApi) forControlEvents:UIControlEventValueChanged];
+    
+    self.refreshControl = refresh;
 }
 
 - (IBAction)buttonPressed:(id)sender {
@@ -60,11 +62,20 @@
     }
 }
 
+- (void)stopRefresh {
+    [self.refreshControl endRefreshing];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     //    self.navigationController.navigationBar.barTintColor = [UIColor greenColor];
     //    self.navigationController.navigationBar.translucent = NO;
     //    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    [self syncAllFromApi];
+    
+    // load the images from iphone photo library
+    [self loadAssets];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -87,14 +98,31 @@
 #pragma mark -
 #pragma mark Coinsorter api
 - (void) syncAllFromApi {
-    [self getDevicesFromApi];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^ {
+        [self getDevicesFromApi];
+    });
+    
+    [self stopRefresh];
 }
 
 - (void) getDevicesFromApi {
     [self.coinsorter getDevices: ^(NSMutableArray *devices) {
         self.devices = devices;
-        [self.tableView reloadData];
+        [self asyncUpdateView];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
+            NSMutableArray *copy = self.devices;
+            for (CSDevice *d in copy) {
+                [self.dataWrapper addUpdateDevice:d];
+            }
+        });
     }];
+}
+
+- (void) asyncUpdateView {
+    dispatch_async(dispatch_get_main_queue(), ^ {
+        [self.tableView reloadData];
+    });
 }
 
 
@@ -121,7 +149,7 @@
     // Configure
     CSDevice *d = self.devices[[indexPath row]];
     cell.textLabel.text = d.deviceName;
-
+    
     return cell;
 	
 }
@@ -138,8 +166,8 @@
     BOOL enableGrid = YES;
     BOOL startOnGrid = YES;
     
-    CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
-    self.photos = [self.dataWrapper getPhotos: d.remoteId];
+//    CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
+//    self.photos = [self.dataWrapper getPhotos: d.remoteId];
     
 	// Create browser
 	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
@@ -232,7 +260,7 @@
 - (void)loadAssets {
     
     _assetLibrary = [[ALAssetsLibrary alloc] init];
-
+    
     // Run in the background as it takes a while to get all assets from the library
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
@@ -280,7 +308,7 @@
                                        failureBlock:^(NSError *error) {
                                            NSLog(@"There is an error");
                                        }];
-//        localPhotos = locals;
+        //        localPhotos = locals;
         NSLog(@"finished loading local photos");
     });
 }

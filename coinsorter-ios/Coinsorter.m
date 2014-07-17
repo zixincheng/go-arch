@@ -53,9 +53,13 @@
 }
 
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback {
+    NSOperationQueue *background = [[NSOperationQueue alloc] init];
+    
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
     NSMutableURLRequest *request = [self getHTTPGetRequest:@"/devices"];
+    
+    NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN USING DB!!!");
     
     //    ^(NSData *data, NSURLResponse *response, NSError *error)
     NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {

@@ -35,6 +35,7 @@
     self.coinsorter = [[Coinsorter alloc] init];
     
     self.lblIp.text = self.ip;
+    self.lblError.text = @"";
 }
 
 - (void)didReceiveMemoryWarning

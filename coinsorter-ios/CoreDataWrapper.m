@@ -21,7 +21,6 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
     
-    [context lock];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     
     NSEntityDescription *entityDesc = [NSEntityDescription entityForName:DEVICE inManagedObjectContext:context];
@@ -32,6 +31,8 @@
     
     NSError *err;
     NSArray *result = [context executeFetchRequest:request error:&err];
+    
+    NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN USING DB!!!");
     
     if (result == nil) {
         NSLog(@"error with core data request");
@@ -55,7 +56,7 @@
         
         [appDelegate saveContext];
         
-        NSLog(@"updated device");
+        NSLog(@"updated device - %@", device.deviceName);
     }
 
 }
@@ -213,6 +214,8 @@
         photo.deviceId = [p valueForKey:@"deviceId"];
 
         NSURL *url = [NSURL URLWithString:[p valueForKey:@"imageURL"]];
+        
+        NSAssert(![NSThread isMainThread], @"DB OPERATION ON MAIN THREAD");
         
         ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
         [assetLibrary assetForURL:url

@@ -56,11 +56,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Devices" id="PO8-ax-qgb">
-                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="hNo-H5-UEN">
-                            <connections>
-                                <action selector="buttonPressed:" destination="aXE-Wh-x6Q" id="9rn-9c-enF"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" id="Rdk-G4-pBF">
                             <connections>
                                 <action selector="buttonPressed:" destination="aXE-Wh-x6Q" id="pQs-mE-Bbl"/>
@@ -70,7 +65,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="settingsButton" destination="Rdk-G4-pBF" id="B2g-Tg-NBh"/>
-                        <outlet property="syncButton" destination="hNo-H5-UEN" id="MNt-fx-9re"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OE5-xB-gmR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -195,7 +189,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="join" secureTextEntry="YES"/>
                             </textField>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dP-eR-9tQ">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="error" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dP-eR-9tQ">
                                 <rect key="frame" x="59" y="194" width="188" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
