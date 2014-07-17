@@ -39,6 +39,13 @@
     self.sendUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
     self.recieveUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
     
+    UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    
+    [refresh addTarget:self action:@selector(sendUDPMessage:) forControlEvents:UIControlEventValueChanged];
+    
+    self.refreshControl = refresh;
+    
     [self setupReciveUDPMessage];
     [self sendUDPMessage];
 }
@@ -81,19 +88,45 @@
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (IBAction)buttonPressed:(id)sender {
+    if (sender == self.addServerButton) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Manually Add Server" message:@"Enter Server IP" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
+        
+        alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        [[alertView textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeURL];
+        [[alertView textFieldAtIndex:0] becomeFirstResponder];
+        
+        [alertView show];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSString *buttonTitle=[alertView buttonTitleAtIndex:buttonIndex];
+    if([buttonTitle isEqualToString:@"Cancel"]) {
+        return;
+    }
+    else if([buttonTitle isEqualToString:@"Add"]) {
+        NSString *text = [alertView textFieldAtIndex:0].text;
+        
+        if (![text isEqualToString:@""]) {
+            Server *s = [[Server alloc] init];
+            s.ip = text;
+            [self.servers addObject:s];
+            
+            [self.tableView reloadData];
+        }
+    }
+}
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-//    UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
-//    ConnectViewController *connectController = (ConnectViewController *)navController.topViewController;
+    //    UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
+    //    ConnectViewController *connectController = (ConnectViewController *)navController.topViewController;
     
     NSIndexPath *path = [self.tableView indexPathForSelectedRow];
     Server *s = self.servers[[path row]];
     
     ConnectViewController *connectController = (ConnectViewController *)segue.destinationViewController;
     connectController.ip = s.ip;
-}
-
-- (IBAction)reSync:(id)sender {
-    [self sendUDPMessage];
 }
 
 - (void) sendUDPMessage {
@@ -105,12 +138,16 @@
         [self.tableView reloadData];
     });
     
-    NSLog(@"sending udp broadcast");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
+        NSLog(@"sending udp broadcast");
+        
+        NSError *err;
+        [self.sendUdpSocket enableBroadcast:YES error:&err];
+        //    [self.sendUdpSocket sendData:data withTimeout:-1 tag:1];
+        [self.sendUdpSocket sendData:data toHost:@"255.255.255.255" port:9999 withTimeout:-1 tag:1];
+    });
     
-    NSError *err;
-    [self.sendUdpSocket enableBroadcast:YES error:&err];
-    //    [self.sendUdpSocket sendData:data withTimeout:-1 tag:1];
-    [self.sendUdpSocket sendData:data toHost:@"255.255.255.255" port:9999 withTimeout:-1 tag:1];
+    [self.refreshControl endRefreshing];
 }
 
 - (void) setupReciveUDPMessage {

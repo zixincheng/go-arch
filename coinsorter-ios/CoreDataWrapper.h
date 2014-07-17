@@ -12,7 +12,10 @@
 #import "CSDevice.h"
 #import "CSPhoto.h"
 
-@interface CoreDataWrapper : NSObject
+@interface CoreDataWrapper : NSObject {
+    // required for loading assets synchronously
+    NSConditionLock *albumReadLock;
+}
 
 - (void) addPhoto: (CSPhoto *) photo;
 - (void) addDevice: (CSDevice *) device;

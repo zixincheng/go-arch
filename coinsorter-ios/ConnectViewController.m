@@ -34,6 +34,11 @@
     
     self.coinsorter = [[Coinsorter alloc] init];
     
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resignOnTap:)];
+    [singleTap setNumberOfTapsRequired:1];
+    [singleTap setNumberOfTouchesRequired:1];
+    [self.view addGestureRecognizer:singleTap];
+    
     self.lblIp.text = self.ip;
     self.lblError.text = @"";
 }
@@ -42,6 +47,10 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)resignOnTap:(id)sender {
+    [self.passTextField endEditing:YES];
 }
 
 - (IBAction)connectPressed:(id)sender {
@@ -59,14 +68,6 @@
     AccountDataWrapper *account = appDelegate.account;
     
     NSString *name = [[UIDevice currentDevice] name];
-//    if (account.name == nil) {
-//        name = [[UIDevice currentDevice] name];
-//        NSLog(@"name not saved");
-//    }else {
-//        name = account.name;
-//        NSLog(@"name is saved");
-//    }
-    
     
     [self.coinsorter getToken:self.ip name:name pass:pass callback:^(NSDictionary *authData) {
         if (authData == nil || authData == NULL) {
@@ -80,6 +81,11 @@
         if (token == nil || token == NULL) {
             // if we get here we assume the password is incorrect
             [self asyncSetErrorLabel:@"password incorrect"];
+            
+            dispatch_async(dispatch_get_main_queue(), ^ {
+                [self.passTextField setText:@""];
+            });
+            
             NSLog(@"password incorrect");
             return;
         }
@@ -102,7 +108,9 @@
         CoreDataWrapper *dataWrapper = [[CoreDataWrapper alloc] init];
         [dataWrapper addUpdateDevice:device];
         
-        [self performSegueWithIdentifier:@"deviceSegue" sender:self];
+        dispatch_async(dispatch_get_main_queue(), ^ {
+            [self performSegueWithIdentifier:@"deviceSegue" sender:self];
+        });
     }];
 }
 

@@ -13,6 +13,10 @@
 
 @implementation CoreDataWrapper
 
+enum {
+    WDASSETURL_PENDINGREADS = 1,
+    WDASSETURL_ALLFINISHED = 0
+};
 
 - (void) addUpdateDevice:(CSDevice *)device {
     
@@ -189,6 +193,8 @@
     request = [[NSFetchRequest alloc] init];
     [request setEntity:entityDesc];
 
+    NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN CALLING DB!!!!!");
+    
     NSPredicate *pred;
     if (deviceId != nil) {
         pred = [NSPredicate predicateWithFormat:@"(deviceId = %@)", deviceId];
@@ -215,7 +221,7 @@
 
         NSURL *url = [NSURL URLWithString:[p valueForKey:@"imageURL"]];
         
-        NSAssert(![NSThread isMainThread], @"DB OPERATION ON MAIN THREAD");
+        albumReadLock = [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
         
         ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
         [assetLibrary assetForURL:url
@@ -225,11 +231,20 @@
                                photo.photoObject = [MWPhoto photoWithURL:asset.defaultRepresentation.url];
                                photo.thumbObject = [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
                            }
+                           
+                           [albumReadLock lock];
+                           [albumReadLock unlockWithCondition:WDASSETURL_ALLFINISHED];
                        }
                      failureBlock:^(NSError *error){
                          NSLog(@"operation was not successfull!");
+                         
+                         [albumReadLock lock];
+                         [albumReadLock unlockWithCondition:WDASSETURL_ALLFINISHED];
                      }];
 
+        [albumReadLock lockWhenCondition:WDASSETURL_ALLFINISHED];
+        [albumReadLock unlock];
+        
         photo.imageURL = url;
         [arr addObject:photo];
     }
