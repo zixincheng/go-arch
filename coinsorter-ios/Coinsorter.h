@@ -8,12 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "CSDevice.h"
+#import "CSPhoto.h"
 #import "AccountDataWrapper.h"
 #import "AppDelegate.h"
 #import "SSKeychain.h"
 
-
-typedef void (^CompletionHandlerType)();
 
 @interface Coinsorter : NSObject <NSURLSessionDelegate> {
     AccountDataWrapper *account;
@@ -21,5 +20,7 @@ typedef void (^CompletionHandlerType)();
 
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback;
 - (void) getToken: (NSString *) ip name: (NSString *) name pass: (NSString *) pass callback: (void (^) (NSDictionary *authData)) callback;
+- (void) getPhotos: (NSString *) lastId callback: (void (^) (NSMutableArray *devices)) callback;
+- (void) uploadPhotos: (NSMutableArray *) photos;
 
 @end

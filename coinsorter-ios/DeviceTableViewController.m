@@ -46,6 +46,8 @@
     
     self.devices = [[NSMutableArray alloc] init];
     
+    self.assetLibrary = [[ALAssetsLibrary alloc] init];
+    
     // load the images from iphone photo library
     [self loadLocalImages];
     
@@ -100,22 +102,29 @@
 - (void) syncAllFromApi {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^ {
         [self getDevicesFromApi];
+        [self getPhotosFromApi];
     });
     
     [self stopRefresh];
+}
+
+- (void) getPhotosFromApi {
+    NSString *latestId = [self.dataWrapper getLatestId];
+    [self.coinsorter getPhotos:latestId callback: ^(NSMutableArray *photos) {
+        for (CSPhoto *p in photos) {
+//            NSLog(@"adding photo %@", p.deviceId);
+            [self.dataWrapper addPhoto:p];
+        }
+    }];
 }
 
 - (void) getDevicesFromApi {
     [self.coinsorter getDevices: ^(NSMutableArray *devices) {
         self.devices = devices;
         [self asyncUpdateView];
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
-            NSMutableArray *copy = self.devices;
-            for (CSDevice *d in copy) {
-                [self.dataWrapper addUpdateDevice:d];
-            }
-        });
+        for (CSDevice *d in self.devices) {
+            [self.dataWrapper addUpdateDevice:d];
+        }
     }];
 }
 
@@ -169,8 +178,21 @@
     //    CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
     //    self.photos = [self.dataWrapper getPhotos: d.remoteId];
     
+    // get photos async
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
+        //        [self.photos removeAllObjects];
+        CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
+        self.photos = [self.dataWrapper getPhotos:d.remoteId];
+        
+        NSLog(@"photo array size %d", self.photos.count);
+    });
+    
+    CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
+    self.photos = [self.dataWrapper getPhotos:d.remoteId];
+    
 	// Create browser
 	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+    
     browser.displayActionButton = displayActionButton;
     browser.displayNavArrows = displayNavArrows;
     browser.displaySelectionButtons = displaySelectionButtons;
@@ -183,17 +205,6 @@
     browser.startOnGrid = startOnGrid;
     browser.enableSwipeToDismiss = YES;
     [browser setCurrentPhotoIndex:0];
-    
-    // get photos async
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
-        CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
-        self.photos = [self.dataWrapper getPhotos:d.remoteId];
-        
-        NSLog(@"size of photos is %d", self.photos.count);
-        dispatch_async(dispatch_get_main_queue(), ^ {
-            [browser reloadData];
-        });
-    });
     
     // Reset selections
     if (displaySelectionButtons) {
@@ -228,7 +239,7 @@
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
     if (index < _photos.count) {
         CSPhoto *p = [_photos objectAtIndex:index];
-        return p.thumbObject;
+        return p.photoObject;
     }
     return nil;
 }
@@ -269,8 +280,7 @@
 #pragma mark - Load Local Images
 
 - (void) loadLocalImages {
-    _assetLibrary = [[ALAssetsLibrary alloc] init];
-    
+
     // Run in the background as it takes a while to get all assets from the library
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
@@ -283,11 +293,28 @@
                     [assetURLDictionaries addObject:[result valueForProperty:ALAssetPropertyURLs]];
                     NSURL *url = result.defaultRepresentation.url;
                     
-                    CSPhoto *photo =[[CSPhoto alloc] init];
-                    photo.imageURL = url;
-                    photo.deviceId = self.localDevice.remoteId;
-                    
-                    [self.dataWrapper addPhoto:photo];
+                    [_assetLibrary assetForURL:url
+                                   resultBlock:^(ALAsset *asset) {
+                                       if (asset) {
+                                           
+                                           CSPhoto *photo =[[CSPhoto alloc] init];
+                                           photo.imageURL = url.absoluteString;
+                                           photo.deviceId = self.localDevice.remoteId;
+                                           photo.onServer = @"0";
+                                           
+                                           NSString *name = result.defaultRepresentation.filename;
+                                           NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                                           NSString *documentsPath = [paths objectAtIndex:0];
+                                           NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb-%@", name]];
+                                           
+                                           photo.thumbURL = filePath;
+                                           
+                                           [self.dataWrapper addPhoto:photo asset:asset];
+                                       }
+                                   }
+                                  failureBlock:^(NSError *error){
+                                      NSLog(@"operation was not successfull!");
+                                  }];
                 }
             }
         };
@@ -317,67 +344,67 @@
     
 }
 
-- (void)loadAssets {
-    
-    _assetLibrary = [[ALAssetsLibrary alloc] init];
-    
-    // Run in the background as it takes a while to get all assets from the library
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
-        NSMutableArray *assetURLDictionaries = [[NSMutableArray alloc] init];
-        
-        // Process assets
-        void (^assetEnumerator)(ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-            if (result != nil) {
-                if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-                    [assetURLDictionaries addObject:[result valueForProperty:ALAssetPropertyURLs]];
-                    NSURL *url = result.defaultRepresentation.url;
-                    
-                    CSPhoto *photo =[[CSPhoto alloc] init];
-                    photo.imageURL = url;
-                    photo.deviceId = self.localDevice.remoteId;
-                    
-                    [self.dataWrapper addPhoto:photo];
-                    //                    [_assetLibrary assetForURL:url
-                    //                                   resultBlock:^(ALAsset *asset) {
-                    //                                       if (asset) {
-                    //                                           CSPhoto *photo = [[CSPhoto alloc] init];
-                    //
-                    //                                           photo.photoObject = [MWPhoto photoWithURL:url];
-                    //                                           photo.thumbObject = [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
-                    //
-                    //                                           photo.imageURL = url;
-                    //                                           photo.deviceId = self.localDevice.remoteId;
-                    //
-                    //                                           [self.dataWrapper addPhoto:photo];
-                    //                                       }
-                    //                                   }
-                    //                                  failureBlock:^(NSError *error){
-                    //                                      NSLog(@"operation was not successfull!");
-                    //                                  }];
-                    
-                }
-            }
-        };
-        
-        // Process groups
-        void (^ assetGroupEnumerator) (ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) {
-            if (group != nil) {
-                [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetEnumerator];
-                [assetGroups addObject:group];
-            }
-        };
-        
-        // Process!
-        [self.assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
-                                         usingBlock:assetGroupEnumerator
-                                       failureBlock:^(NSError *error) {
-                                           NSLog(@"There is an error");
-                                       }];
-        //        localPhotos = locals;
-        NSLog(@"finished loading local photos");
-    });
-}
+//- (void)loadAssets {
+//
+//    _assetLibrary = [[ALAssetsLibrary alloc] init];
+//
+//    // Run in the background as it takes a while to get all assets from the library
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//        NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
+//        NSMutableArray *assetURLDictionaries = [[NSMutableArray alloc] init];
+//
+//        // Process assets
+//        void (^assetEnumerator)(ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
+//            if (result != nil) {
+//                if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+//                    [assetURLDictionaries addObject:[result valueForProperty:ALAssetPropertyURLs]];
+//                    NSURL *url = result.defaultRepresentation.url;
+//
+//                    CSPhoto *photo =[[CSPhoto alloc] init];
+//                    photo.imageURL = url;
+//                    photo.deviceId = self.localDevice.remoteId;
+//
+//                    [self.dataWrapper addPhoto:photo];
+//                                        [_assetLibrary assetForURL:url
+//                                                       resultBlock:^(ALAsset *asset) {
+//                                                           if (asset) {
+//                                                               CSPhoto *photo = [[CSPhoto alloc] init];
+//
+//                                                               photo.photoObject = [MWPhoto photoWithURL:url];
+//                                                               photo.thumbObject = [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
+//
+//                                                               photo.imageURL = url;
+//                                                               photo.deviceId = self.localDevice.remoteId;
+//
+//                                                               [self.dataWrapper addPhoto:photo];
+//                                                           }
+//                                                       }
+//                                                      failureBlock:^(NSError *error){
+//                                                          NSLog(@"operation was not successfull!");
+//                                                      }];
+//
+//                }
+//            }
+//        };
+//
+//        // Process groups
+//        void (^ assetGroupEnumerator) (ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) {
+//            if (group != nil) {
+//                [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetEnumerator];
+//                [assetGroups addObject:group];
+//            }
+//        };
+//
+//        // Process!
+//        [self.assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
+//                                         usingBlock:assetGroupEnumerator
+//                                       failureBlock:^(NSError *error) {
+//                                           NSLog(@"There is an error");
+//                                       }];
+//        //        localPhotos = locals;
+//        NSLog(@"finished loading local photos");
+//    });
+//}
 
 @end
 

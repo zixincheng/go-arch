@@ -42,7 +42,7 @@
     UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
     refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
     
-    [refresh addTarget:self action:@selector(sendUDPMessage:) forControlEvents:UIControlEventValueChanged];
+    [refresh addTarget:self action:@selector(sendUDPMessage) forControlEvents:UIControlEventValueChanged];
     
     self.refreshControl = refresh;
     

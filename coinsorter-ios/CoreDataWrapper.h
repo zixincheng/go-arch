@@ -15,8 +15,12 @@
 @interface CoreDataWrapper : NSObject {
     // required for loading assets synchronously
     NSConditionLock *albumReadLock;
+    
+    dispatch_queue_t dbInsertQueue;
+    dispatch_queue_t dbFetchQueue;
 }
 
+- (void) addPhoto: (CSPhoto *) photo asset: (ALAsset *) asset;
 - (void) addPhoto: (CSPhoto *) photo;
 - (void) addDevice: (CSDevice *) device;
 - (void) addUpdatePhoto: (CSPhoto *) photo;
@@ -24,7 +28,9 @@
 - (NSMutableArray *) getAllPhotos;
 - (NSMutableArray *) getAllDevices;
 - (NSMutableArray *) getPhotos: (NSString *) deviceId;
+- (NSMutableArray *) getPhotosToUpload;
 - (CSPhoto *) getPhoto: (NSURL *) url;
 - (CSDevice *) getDevice: (NSString *) cid;
+- (NSString *) getLatestId;
 
 @end

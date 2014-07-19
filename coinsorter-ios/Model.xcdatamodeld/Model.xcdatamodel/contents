@@ -7,10 +7,13 @@
     <entity name="Photo" syncable="YES">
         <attribute name="deviceId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="onServer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="remotePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbURL" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="Device" positionX="-63" positionY="-18" width="128" height="73"/>
-        <element name="Photo" positionX="-288" positionY="-10" width="128" height="88"/>
+        <element name="Photo" positionX="-288" positionY="-10" width="128" height="135"/>
     </elements>
 </model>

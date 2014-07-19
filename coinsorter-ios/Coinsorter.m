@@ -59,7 +59,7 @@
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
     NSMutableURLRequest *request = [self getHTTPGetRequest:@"/devices"];
     
-    NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN USING DB!!!");
+    NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN MAKING API CALL!!!");
     
     //    ^(NSData *data, NSURLResponse *response, NSError *error)
     NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -85,6 +85,94 @@
     }];
     
     [dataTask resume];
+}
+
+-(NSData *)dataFromBase64EncodedString:(NSString *)string{
+    if (string.length > 0) {
+        
+        //the iPhone has base 64 decoding built in but not obviously. The trick is to
+        //create a data url that's base 64 encoded and ask an NSData to load it.
+        NSString *data64URLString = [NSString stringWithFormat:@"data:;base64,%@", string];
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:data64URLString]];
+        return data;
+    }
+    return nil;
+}
+
+- (void) getPhotos:(NSString *)lastId callback: (void (^) (NSMutableArray *photos)) callback {
+    
+    NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN MAKING API CALL!!!");
+    
+    NSOperationQueue *background = [[NSOperationQueue alloc] init];
+    
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
+    NSMutableURLRequest *request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/photos/afterId?photo_id=%@&devNot=%@", lastId, @"1"]];
+    
+    // download the photos
+    NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error == nil) {
+            NSError *jsonError;
+            NSDictionary *photosDic = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            
+            if (photosDic == nil) {
+                NSLog(@"the response is not valid json");
+                return;
+            }
+            
+            NSArray *photoArr = [photosDic valueForKey:@"photos"];
+            
+            if (photoArr == nil) {
+                NSLog(@"there are no photos");
+                return;
+            }
+            
+            NSMutableArray *photos = [[NSMutableArray alloc] init];
+            
+            NSLog(@"Downloaded %lu photos", (unsigned long)photoArr.count);
+            
+            // parse the json
+            for (NSDictionary *p in photoArr) {
+                NSString *photoId = [p objectForKey:@"_id"];
+                NSString *deviceId = [p objectForKey:@"device_id"];
+                
+                NSArray *photo_data = [p objectForKey:@"photo_data"];
+                NSDictionary *latest = photo_data[0];
+                
+                NSString *thumbnail = [latest objectForKey:@"thumbnail"];
+                
+                CSPhoto *p = [[CSPhoto alloc] init];
+                p.deviceId = deviceId;
+                p.remoteID = photoId;
+                
+                p.onServer = @"1";
+                
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *documentsPath = [paths objectAtIndex:0];
+                NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb-%@.JPG", photoId]];
+                
+                NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
+                
+                p.thumbURL = fullPath;
+                p.imageURL = fullPath;
+                
+                NSData *data = [self dataFromBase64EncodedString:thumbnail];
+                [data writeToFile:filePath atomically:YES];
+                
+                NSLog(@"saving thumbnail to %@", filePath);
+                
+                [photos addObject:p];
+            }
+            
+            callback(photos);
+        }
+    }];
+    
+    [dataTask resume];
+}
+
+- (void) uploadPhotos:(NSMutableArray *)photos {
+    
 }
 
 - (void) getToken:(NSString *)ip name: (NSString *) name pass:(NSString *)pass callback: (void (^) (NSDictionary *authData)) callback {

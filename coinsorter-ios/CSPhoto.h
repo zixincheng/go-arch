@@ -12,9 +12,12 @@
 
 @interface CSPhoto : NSObject
 
-@property (strong) MWPhoto *photoObject;
-@property (strong) MWPhoto *thumbObject;
-@property (strong) NSString *deviceId;
-@property (strong) NSURL *imageURL;
+@property (nonatomic, strong) MWPhoto *photoObject;
+@property (nonatomic, strong) MWPhoto *thumbObject;
+@property (nonatomic, strong) NSString *deviceId;
+@property (nonatomic, strong) NSString *imageURL;
+@property (nonatomic, strong) NSString *thumbURL;
+@property (nonatomic, strong) NSString *remoteID;
+@property (nonatomic, strong) NSString *onServer;
 
 @end
