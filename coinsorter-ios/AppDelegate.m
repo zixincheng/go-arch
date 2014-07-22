@@ -106,6 +106,18 @@
         return _persistentStoreCoordinator;
     }
     
+    // This code prevents multiple threads trying to get
+    // the persistent store coordinator at the same time
+    
+    // It makes it so that all threads wanting access to this
+    // will be ordered when they come in
+    if (![NSThread currentThread].isMainThread) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            (void)[self persistentStoreCoordinator];
+        });
+        return _persistentStoreCoordinator;
+    }
+    
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Model.sqlite"];
     
     NSError *error = nil;

@@ -16,8 +16,7 @@
     // required for loading assets synchronously
     NSConditionLock *albumReadLock;
     
-    dispatch_queue_t dbInsertQueue;
-    dispatch_queue_t dbFetchQueue;
+    dispatch_queue_t dbQueue;
 }
 
 - (void) addPhoto: (CSPhoto *) photo asset: (ALAsset *) asset;
@@ -28,9 +27,9 @@
 - (NSMutableArray *) getAllPhotos;
 - (NSMutableArray *) getAllDevices;
 - (NSMutableArray *) getPhotos: (NSString *) deviceId;
-- (NSMutableArray *) getPhotosToUpload;
+- (void) getPhotosToUpload: (void (^) (NSMutableArray *photos)) callback;
 - (CSPhoto *) getPhoto: (NSURL *) url;
-- (CSDevice *) getDevice: (NSString *) cid;
+- (void) getDevice: (NSString *) cid callback: (void (^) (CSDevice *device)) callback;
 - (NSString *) getLatestId;
 
 @end

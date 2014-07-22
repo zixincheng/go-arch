@@ -10,8 +10,10 @@
 #import "CSDevice.h"
 #import "CSPhoto.h"
 #import "AccountDataWrapper.h"
+#import "CoreDataWrapper.h"
 #import "AppDelegate.h"
 #import "SSKeychain.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 
 @interface Coinsorter : NSObject <NSURLSessionDelegate> {
@@ -21,6 +23,6 @@
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback;
 - (void) getToken: (NSString *) ip name: (NSString *) name pass: (NSString *) pass callback: (void (^) (NSDictionary *authData)) callback;
 - (void) getPhotos: (NSString *) lastId callback: (void (^) (NSMutableArray *devices)) callback;
-- (void) uploadPhotos: (NSMutableArray *) photos;
+- (void) uploadPhotos: (NSMutableArray *) photos dataWrapper: (CoreDataWrapper *) dataWrapper;
 
 @end

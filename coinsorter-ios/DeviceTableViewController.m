@@ -42,7 +42,9 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
     
-    self.localDevice = [self.dataWrapper getDevice:account.cid];
+    [self.dataWrapper getDevice:account.cid callback: ^(CSDevice *device) {
+        self.localDevice = device;
+    }];
     
     self.devices = [[NSMutableArray alloc] init];
     
@@ -100,12 +102,25 @@
 #pragma mark -
 #pragma mark Coinsorter api
 - (void) syncAllFromApi {
+    
+    // run all in background thread
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^ {
-        [self getDevicesFromApi];
-        [self getPhotosFromApi];
+//        [self getDevicesFromApi];
+//        [self getPhotosFromApi];
+        [self uploadPhotosToApi];
     });
     
     [self stopRefresh];
+}
+
+- (void) uploadPhotosToApi {
+    [self.dataWrapper getPhotosToUpload:^(NSMutableArray *photos) {
+        if (photos.count > 0) {
+            [self.coinsorter uploadPhotos:photos dataWrapper:self.dataWrapper];
+        }else {
+            NSLog(@"there are no photos to upload");
+        }
+    }];
 }
 
 - (void) getPhotosFromApi {
@@ -239,7 +254,7 @@
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
     if (index < _photos.count) {
         CSPhoto *p = [_photos objectAtIndex:index];
-        return p.photoObject;
+        return p.thumbObject;
     }
     return nil;
 }
@@ -280,7 +295,7 @@
 #pragma mark - Load Local Images
 
 - (void) loadLocalImages {
-
+    
     // Run in the background as it takes a while to get all assets from the library
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
@@ -299,7 +314,7 @@
                                            
                                            CSPhoto *photo =[[CSPhoto alloc] init];
                                            photo.imageURL = url.absoluteString;
-                                           photo.deviceId = self.localDevice.remoteId;
+                                           photo.deviceId = account.cid;
                                            photo.onServer = @"0";
                                            
                                            NSString *name = result.defaultRepresentation.filename;
