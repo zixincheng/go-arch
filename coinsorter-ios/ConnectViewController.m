@@ -67,9 +67,7 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     AccountDataWrapper *account = appDelegate.account;
     
-    NSString *name = [[UIDevice currentDevice] name];
-    
-    [self.coinsorter getToken:self.ip name:name pass:pass callback:^(NSDictionary *authData) {
+    [self.coinsorter getToken:self.ip pass:pass callback:^(NSDictionary *authData) {
         if (authData == nil || authData == NULL) {
             // we could not connect to server
             [self asyncSetErrorLabel:@"could not connect to server"];
@@ -102,17 +100,14 @@
         [account saveSettings];
         
         CSDevice *device = [[CSDevice alloc] init];
-        device.deviceName = name;
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        device.deviceName = [defaults valueForKey:@"deviceName"];
         device.remoteId = cid;
         
         CoreDataWrapper *dataWrapper = [[CoreDataWrapper alloc] init];
         [dataWrapper addUpdateDevice:device];
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        
-        [defaults setValue:name forKey:@"deviceName"];
-        
-        [defaults synchronize];
         
         dispatch_async(dispatch_get_main_queue(), ^ {
             [self performSegueWithIdentifier:@"deviceSegue" sender:self];

@@ -2,6 +2,7 @@
 #import "DeviceTableViewController.h"
 #import "MWCommon.h"
 
+
 @implementation DeviceTableViewController
 
 #pragma mark -
@@ -57,11 +58,24 @@
     self.refreshControl = refresh;
 }
 
+-(void)defaultsSettingsChanged{
+    [self.coinsorter updateDevice];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    self.localDevice.deviceName = [defaults valueForKey:@"deviceName"];
+    for (CSDevice *d in self.devices) {
+        if ([d.remoteId isEqualToString:self.localDevice.remoteId]) {
+            d.deviceName = self.localDevice.deviceName;
+            break;
+        }
+    }
+    [self asyncUpdateView];
+}
+
 - (IBAction)buttonPressed:(id)sender {
     if (sender == self.syncButton) {
         [self syncAllFromApi];
-    }else if (sender == self.settingsButton) {
-        
     }
 }
 
@@ -74,11 +88,15 @@
     //    self.navigationController.navigationBar.barTintColor = [UIColor greenColor];
     //    self.navigationController.navigationBar.translucent = NO;
     //    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsSettingsChanged) name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     //    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsSettingsChanged) name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -121,13 +139,17 @@
     NSString *latestId = [self.dataWrapper getLatestId];
     [self.coinsorter getPhotos:latestId callback: ^(NSMutableArray *photos) {
         for (CSPhoto *p in photos) {
-//            NSLog(@"adding photo %@", p.deviceId);
+            //            NSLog(@"adding photo %@", p.deviceId);
             [self.dataWrapper addPhoto:p];
         }
     }];
 }
 
 - (void) getDevicesFromApi {
+    // first update this device on server
+    [self.coinsorter updateDevice];
+    
+    // then get all devices
     [self.coinsorter getDevices: ^(NSMutableArray *devices) {
         self.devices = devices;
         [self asyncUpdateView];

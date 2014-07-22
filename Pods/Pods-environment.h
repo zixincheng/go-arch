@@ -18,6 +18,12 @@
 #define COCOAPODS_VERSION_MINOR_DACircularProgress 2
 #define COCOAPODS_VERSION_PATCH_DACircularProgress 0
 
+// InAppSettingsKit
+#define COCOAPODS_POD_AVAILABLE_InAppSettingsKit
+#define COCOAPODS_VERSION_MAJOR_InAppSettingsKit 2
+#define COCOAPODS_VERSION_MINOR_InAppSettingsKit 1
+#define COCOAPODS_VERSION_PATCH_InAppSettingsKit 0
+
 // MBProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MBProgressHUD
 #define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0

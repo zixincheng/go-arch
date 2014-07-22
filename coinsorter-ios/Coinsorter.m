@@ -11,6 +11,8 @@
 #define FRONT_URL @"https://"
 #define UUID_ACCOUNT @"UID_ACCOUNT"
 
+#define DEVICE_NAME @"deviceName"
+
 @implementation Coinsorter
 
 - (id) init {
@@ -53,15 +55,15 @@
 }
 
 // update the device information on server
-- (void) updateDevice:(NSString *)deviceName {
+- (void) updateDevice {
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
     NSMutableURLRequest *request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/devices/update/id=%@", account.cid]];
     
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
-    NSDictionary *mapData = [self getThisDeviceInformation:deviceName];
+    NSDictionary *mapData = [self getThisDeviceInformation];
     
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
@@ -125,9 +127,13 @@
     return nil;
 }
 
-- (NSDictionary *) getThisDeviceInformation: (NSString *) deviceName {
+- (NSDictionary *) getThisDeviceInformation {
     NSString *manufacturer = @"Apple";
     NSString *firmware_version = [[UIDevice currentDevice] systemVersion];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *deviceName = [defaults objectForKey:DEVICE_NAME];
     
     //    NSDictionary *mapData = @{@"Device_Name": name, @"Manufacturer": manufacturer, @"Firmware": firmware_version};
     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: deviceName, @"Device_Name", manufacturer, @"Manufacturer", firmware_version, @"Firmware", nil];
@@ -320,7 +326,7 @@
     }
 }
 
-- (void) getToken:(NSString *)ip name: (NSString *) name pass:(NSString *)pass callback: (void (^) (NSDictionary *authData)) callback {
+- (void) getToken:(NSString *)ip pass:(NSString *)pass callback: (void (^) (NSDictionary *authData)) callback {
     NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, ip, @"/auth"];
     NSURL *url = [NSURL URLWithString:urlString];
     
@@ -341,7 +347,7 @@
     [request setHTTPMethod:@"POST"];
     [request setAllHTTPHeaderFields:headers];
     
-    NSDictionary *mapData = [self getThisDeviceInformation:name];
+    NSDictionary *mapData = [self getThisDeviceInformation];
     
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];

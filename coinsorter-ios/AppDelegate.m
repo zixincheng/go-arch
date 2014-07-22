@@ -20,6 +20,17 @@
     [self.account readSettings];
     NSLog(@"reading settings");
     
+    
+    NSString *deviceName = [[UIDevice currentDevice] name];
+    NSLog(@"deviceName = %@", deviceName);
+    
+    // Register the preference defaults early.
+    NSArray *values = [NSArray arrayWithObjects:deviceName, nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"deviceName", nil];
+    
+    NSDictionary *appDefaults = [NSDictionary dictionaryWithObjects:values forKeys:keys];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+    
     return YES;
 }
 
