@@ -1,4 +1,4 @@
-.DS_Store
+*.DS_Store
 
 *.pbxproj
 
@@ -13,6 +13,12 @@
 *.db-shm
 
 Cache/
+coinsorter-ios/.DS_Store
+
+coinsorter-ios.xcworkspace/contents.xcworkspacedata
+
 *.xcworkspacedata
 
-*.pbxproj
+coinsorter-ios.xcworkspace/xcuserdata/jrunzer.xcuserdatad/UserInterfaceState.xcuserstate
+
+*.xcuserstate
