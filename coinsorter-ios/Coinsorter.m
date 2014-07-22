@@ -73,7 +73,7 @@
         NSError *jsonError;
         NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
         
-        NSLog(@"%@", jsonData);
+//        NSLog(@"%@", jsonData);
     }];
     
     [postDataTask resume];
@@ -165,7 +165,7 @@
             NSArray *photoArr = [photosDic valueForKey:@"photos"];
             
             if (photoArr == nil) {
-                NSLog(@"there are no photos");
+                NSLog(@"there are no new photos from server");
                 return;
             }
             
