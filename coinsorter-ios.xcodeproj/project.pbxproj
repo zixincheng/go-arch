@@ -14,6 +14,7 @@
 		2052CF3119737139008B4ACF /* DeviceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF3019737139008B4ACF /* DeviceTableViewController.m */; };
 		2052CF371973B405008B4ACF /* CSPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF361973B405008B4ACF /* CSPhoto.m */; };
 		20805CFE1975E75A00CE4B00 /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = 20805CFD1975E75A00CE4B00 /* Server.m */; };
+		208988EB197EE54700472D01 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208988EA197EE54700472D01 /* SettingsTableViewController.m */; };
 		208D2A6219765534004D6493 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A6119765534004D6493 /* ConnectViewController.m */; };
 		208D2A651976E94E004D6493 /* AccountDataWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A641976E94E004D6493 /* AccountDataWrapper.m */; };
 		208D2A6E1977026C004D6493 /* firstLoadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A6D1977026C004D6493 /* firstLoadViewController.m */; };
@@ -60,6 +61,8 @@
 		2052CF361973B405008B4ACF /* CSPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSPhoto.m; sourceTree = "<group>"; };
 		20805CFC1975E75A00CE4B00 /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
 		20805CFD1975E75A00CE4B00 /* Server.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Server.m; sourceTree = "<group>"; };
+		208988E9197EE54700472D01 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
+		208988EA197EE54700472D01 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		208D2A6019765534004D6493 /* ConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectViewController.h; sourceTree = "<group>"; };
 		208D2A6119765534004D6493 /* ConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectViewController.m; sourceTree = "<group>"; };
 		208D2A631976E94E004D6493 /* AccountDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountDataWrapper.h; sourceTree = "<group>"; };
@@ -160,6 +163,8 @@
 				20B43B6A1970995B00D996A5 /* Main.storyboard */,
 				208D2A6019765534004D6493 /* ConnectViewController.h */,
 				208D2A6119765534004D6493 /* ConnectViewController.m */,
+				208988E9197EE54700472D01 /* SettingsTableViewController.h */,
+				208988EA197EE54700472D01 /* SettingsTableViewController.m */,
 				208D2A6C1977026C004D6493 /* firstLoadViewController.h */,
 				208D2A6D1977026C004D6493 /* firstLoadViewController.m */,
 				200170701975DFC300426EB9 /* HandshakeTableViewController.h */,
@@ -343,6 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				208988EB197EE54700472D01 /* SettingsTableViewController.m in Sources */,
 				208D2A651976E94E004D6493 /* AccountDataWrapper.m in Sources */,
 				2001706F1975BB0300426EB9 /* CoreDataWrapper.m in Sources */,
 				20B43B481970992D00D996A5 /* AppDelegate.m in Sources */,

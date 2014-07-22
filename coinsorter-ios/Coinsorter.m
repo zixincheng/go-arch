@@ -52,6 +52,31 @@
     return request;
 }
 
+// update the device information on server
+- (void) updateDevice:(NSString *)deviceName {
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject];
+    NSMutableURLRequest *request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/devices/update/id=%@", account.cid]];
+    
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSDictionary *mapData = [self getThisDeviceInformation:deviceName];
+    
+    NSError *error;
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
+    [request setHTTPBody:postData];
+    
+    NSURLSessionDataTask *postDataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSError *jsonError;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        
+        NSLog(@"%@", jsonData);
+    }];
+    
+    [postDataTask resume];
+}
+
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback {
     NSOperationQueue *background = [[NSOperationQueue alloc] init];
     
@@ -98,6 +123,16 @@
         return data;
     }
     return nil;
+}
+
+- (NSDictionary *) getThisDeviceInformation: (NSString *) deviceName {
+    NSString *manufacturer = @"Apple";
+    NSString *firmware_version = [[UIDevice currentDevice] systemVersion];
+    
+    //    NSDictionary *mapData = @{@"Device_Name": name, @"Manufacturer": manufacturer, @"Firmware": firmware_version};
+    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: deviceName, @"Device_Name", manufacturer, @"Manufacturer", firmware_version, @"Firmware", nil];
+    
+    return mapData;
 }
 
 - (void) getPhotos:(NSString *)lastId callback: (void (^) (NSMutableArray *photos)) callback {
@@ -172,7 +207,7 @@
     [dataTask resume];
 }
 
-- (void) uploadPhotos:(NSMutableArray *)photos dataWrapper:(CoreDataWrapper *)dataWrapper {
+- (void) uploadPhotos:(NSMutableArray *)photos {
     
     // check to see if we are on main thread while doing this
     NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN MAKING API CALL!!!");
@@ -252,17 +287,21 @@
                     NSError *jsonError;
                     NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
                     
-                    NSLog(@"%@", jsonData);
+//                    NSLog(@"%@", jsonData);
                     
-                    NSString *result = [jsonData valueForKeyPath:@"stat"];
-                    if (result != nil) {
-                        NSLog(@"%@", result);
-                    }else {
-                        NSLog(@"the result is null");
+                    if (jsonData != nil) {
+                        NSString *result = [jsonData valueForKeyPath:@"stat"];
+                        if (result != nil) {
+                            NSLog(@"%@", result);
+                        }else {
+                            NSLog(@"the result is null");
+                        }
+                        
+                        p.onServer = @"1";
+                        [self.dataWrapper addUpdatePhoto:p];
+                        
+                        NSLog(@"setting photo to onServer = True");
                     }
-                    
-                    //                p.onServer = @"1";
-                    //                [dataWrapper addUpdatePhoto:p];
                 }];
                 
                 [uploadTask resume];
@@ -302,11 +341,7 @@
     [request setHTTPMethod:@"POST"];
     [request setAllHTTPHeaderFields:headers];
     
-    NSString *manufacturer = @"Apple";
-    NSString *firmware_version = [[UIDevice currentDevice] systemVersion];
-    
-    //    NSDictionary *mapData = @{@"Device_Name": name, @"Manufacturer": manufacturer, @"Firmware": firmware_version};
-    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: name, @"Device_Name", manufacturer, @"Manufacturer", firmware_version, @"Firmware", nil];
+    NSDictionary *mapData = [self getThisDeviceInformation:name];
     
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];

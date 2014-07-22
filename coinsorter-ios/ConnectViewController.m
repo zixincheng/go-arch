@@ -108,6 +108,12 @@
         CoreDataWrapper *dataWrapper = [[CoreDataWrapper alloc] init];
         [dataWrapper addUpdateDevice:device];
         
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        [defaults setValue:name forKey:@"deviceName"];
+        
+        [defaults synchronize];
+        
         dispatch_async(dispatch_get_main_queue(), ^ {
             [self performSegueWithIdentifier:@"deviceSegue" sender:self];
         });

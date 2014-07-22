@@ -1,10 +1,3 @@
-//
-//  Menu.m
-//  MWPhotoBrowser
-//
-//  Created by Michael Waterfall on 21/10/2010.
-//  Copyright 2010 d3i. All rights reserved.
-//
 
 #import "DeviceTableViewController.h"
 #import "MWCommon.h"
@@ -36,8 +29,9 @@
     [super viewDidLoad];
     
     // libraries
-    self.coinsorter = [[Coinsorter alloc] init];
     self.dataWrapper = [[CoreDataWrapper alloc] init];
+    self.coinsorter = [[Coinsorter alloc] init];
+    self.coinsorter.dataWrapper = self.dataWrapper;
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
@@ -104,9 +98,9 @@
 - (void) syncAllFromApi {
     
     // run all in background thread
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^ {
-//        [self getDevicesFromApi];
-//        [self getPhotosFromApi];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
+        [self getDevicesFromApi];
+        [self getPhotosFromApi];
         [self uploadPhotosToApi];
     });
     
@@ -116,7 +110,7 @@
 - (void) uploadPhotosToApi {
     [self.dataWrapper getPhotosToUpload:^(NSMutableArray *photos) {
         if (photos.count > 0) {
-            [self.coinsorter uploadPhotos:photos dataWrapper:self.dataWrapper];
+            [self.coinsorter uploadPhotos:photos];
         }else {
             NSLog(@"there are no photos to upload");
         }

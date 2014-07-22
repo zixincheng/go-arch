@@ -103,6 +103,49 @@
     });
 }
 
+- (void) addUpdatePhoto:(CSPhoto *)photo {
+    dispatch_async(dbQueue, ^ {
+        
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        NSManagedObjectContext *context = [appDelegate managedObjectContext];
+        
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        
+        NSEntityDescription *entityDesc = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:context];
+        [request setEntity:entityDesc];
+        
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(imageURL = %@)", photo.imageURL];
+        [request setPredicate:pred];
+        
+        NSError *err;
+        NSArray *result = [context executeFetchRequest:request error:&err];
+        
+        NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN USING DB!!!");
+        
+        if (result == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        NSManagedObjectContext *photoObj;
+        if (result.count == 0) {
+            photoObj = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
+        }else {
+            photoObj = result[0];
+        }
+        
+        [photoObj setValue:photo.imageURL forKey:@"imageURL"];
+        [photoObj setValue:photo.thumbURL forKey:@"thumbURL"];
+        [photoObj setValue:photo.deviceId forKey:@"deviceId"];
+        [photoObj setValue:photo.onServer forKey:@"onServer"];
+        
+        if (photo.remoteID != nil) {
+            [photoObj setValue:photo.remoteID forKey:@"remoteId"];
+        }
+        [appDelegate saveContext];
+    });
+}
+
 - (void) addPhoto:(CSPhoto *)photo asset:(ALAsset *) asset {
     dispatch_async(dbQueue, ^ {
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];

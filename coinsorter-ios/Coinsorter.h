@@ -23,6 +23,10 @@
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback;
 - (void) getToken: (NSString *) ip name: (NSString *) name pass: (NSString *) pass callback: (void (^) (NSDictionary *authData)) callback;
 - (void) getPhotos: (NSString *) lastId callback: (void (^) (NSMutableArray *devices)) callback;
-- (void) uploadPhotos: (NSMutableArray *) photos dataWrapper: (CoreDataWrapper *) dataWrapper;
+- (void) uploadPhotos: (NSMutableArray *) photos;
+- (void) updateDevice: (NSString *) deviceName;
+
+// need reference to a data wrapper so we can change photo state when we download, upload, etc.
+@property CoreDataWrapper *dataWrapper;
 
 @end
