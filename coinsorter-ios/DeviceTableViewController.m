@@ -37,9 +37,7 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
     
-    [self.dataWrapper getDevice:account.cid callback: ^(CSDevice *device) {
-        self.localDevice = device;
-    }];
+    self.localDevice = [self.dataWrapper getDevice:account.cid];
     
     self.devices = [[NSMutableArray alloc] init];
     
@@ -115,32 +113,27 @@
 #pragma mark Coinsorter api
 - (void) syncAllFromApi {
     
-    // run all in background thread
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
-        [self getDevicesFromApi];
-        [self getPhotosFromApi];
-        [self uploadPhotosToApi];
-    });
+    [self getDevicesFromApi];
+    [self getPhotosFromApi];
+    [self uploadPhotosToApi];
     
     [self stopRefresh];
 }
 
 - (void) uploadPhotosToApi {
-    [self.dataWrapper getPhotosToUpload:^(NSMutableArray *photos) {
-        if (photos.count > 0) {
-            NSLog(@"there are %d photos to upload", photos.count);
-            [self.coinsorter uploadPhotos:photos];
-        }else {
-            NSLog(@"there are no photos to upload");
-        }
-    }];
+    NSMutableArray *photos = [self.dataWrapper getPhotosToUpload];
+    if (photos.count > 0) {
+        NSLog(@"there are %d photos to upload", photos.count);
+        [self.coinsorter uploadPhotos:photos];
+    }else {
+        NSLog(@"there are no photos to upload");
+    }
 }
 
 - (void) getPhotosFromApi {
     NSString *latestId = [self.dataWrapper getLatestId];
     [self.coinsorter getPhotos:latestId callback: ^(NSMutableArray *photos) {
         for (CSPhoto *p in photos) {
-            //            NSLog(@"adding photo %@", p.deviceId);
             [self.dataWrapper addPhoto:p];
         }
     }];
@@ -209,15 +202,6 @@
     
     //    CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
     //    self.photos = [self.dataWrapper getPhotos: d.remoteId];
-    
-    // get photos async
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
-        //        [self.photos removeAllObjects];
-        CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
-        self.photos = [self.dataWrapper getPhotos:d.remoteId];
-        
-        NSLog(@"photo array size %d", self.photos.count);
-    });
     
     CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
     self.photos = [self.dataWrapper getPhotos:d.remoteId];

@@ -8,16 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
-#import "AppDelegate.h"
+//#import "AppDelegate.h"
+#import "CoreDataStore.h"
 #import "CSDevice.h"
 #import "CSPhoto.h"
 
-@interface CoreDataWrapper : NSObject {
-    // required for loading assets synchronously
-    NSConditionLock *albumReadLock;
-    
-    dispatch_queue_t dbQueue;
-}
+@interface CoreDataWrapper : NSObject
 
 - (void) addPhoto: (CSPhoto *) photo asset: (ALAsset *) asset;
 - (void) addPhoto: (CSPhoto *) photo;
@@ -27,9 +23,8 @@
 - (NSMutableArray *) getAllPhotos;
 - (NSMutableArray *) getAllDevices;
 - (NSMutableArray *) getPhotos: (NSString *) deviceId;
-- (void) getPhotosToUpload: (void (^) (NSMutableArray *photos)) callback;
-- (CSPhoto *) getPhoto: (NSURL *) url;
-- (void) getDevice: (NSString *) cid callback: (void (^) (CSDevice *device)) callback;
+- (NSMutableArray *) getPhotosToUpload;
+- (CSDevice *) getDevice: (NSString *) cid;
 - (NSString *) getLatestId;
 
 @end

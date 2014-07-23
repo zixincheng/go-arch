@@ -86,8 +86,6 @@
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
     NSMutableURLRequest *request = [self getHTTPGetRequest:@"/devices"];
     
-    NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN MAKING API CALL!!!");
-    
     //    ^(NSData *data, NSURLResponse *response, NSError *error)
     NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error == nil) {
@@ -142,8 +140,6 @@
 }
 
 - (void) getPhotos:(NSString *)lastId callback: (void (^) (NSMutableArray *photos)) callback {
-    
-    NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN MAKING API CALL!!!");
     
     NSOperationQueue *background = [[NSOperationQueue alloc] init];
     
@@ -214,9 +210,6 @@
 }
 
 - (void) uploadPhotos:(NSMutableArray *)photos {
-    
-    // check to see if we are on main thread while doing this
-    NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN MAKING API CALL!!!");
     
     // create the post request
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
