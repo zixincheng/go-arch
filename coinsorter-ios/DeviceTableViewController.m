@@ -128,6 +128,7 @@
 - (void) uploadPhotosToApi {
     [self.dataWrapper getPhotosToUpload:^(NSMutableArray *photos) {
         if (photos.count > 0) {
+            NSLog(@"there are %d photos to upload", photos.count);
             [self.coinsorter uploadPhotos:photos];
         }else {
             NSLog(@"there are no photos to upload");

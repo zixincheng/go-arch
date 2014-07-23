@@ -35,6 +35,4 @@
 
 @property (nonatomic, strong) CSDevice *localDevice;
 
-- (void)loadAssets;
-
 @end
