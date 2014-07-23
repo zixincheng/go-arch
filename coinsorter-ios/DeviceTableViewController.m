@@ -113,17 +113,20 @@
 #pragma mark Coinsorter api
 - (void) syncAllFromApi {
     
-    [self getDevicesFromApi];
-    [self getPhotosFromApi];
-    [self uploadPhotosToApi];
-    
+    // perform all db and api calls in backgroud
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self getDevicesFromApi];
+        [self getPhotosFromApi];
+        [self uploadPhotosToApi];
+    });
+        
     [self stopRefresh];
 }
 
 - (void) uploadPhotosToApi {
     NSMutableArray *photos = [self.dataWrapper getPhotosToUpload];
     if (photos.count > 0) {
-        NSLog(@"there are %d photos to upload", photos.count);
+        NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
         [self.coinsorter uploadPhotos:photos];
     }else {
         NSLog(@"there are no photos to upload");
