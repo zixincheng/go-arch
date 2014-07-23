@@ -58,7 +58,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Devices" id="PO8-ax-qgb">
-                        <barButtonItem key="rightBarButtonItem" systemItem="organize" id="Rdk-G4-pBF">
+                        <barButtonItem key="rightBarButtonItem" image="settings-25.png" id="Rdk-G4-pBF">
                             <connections>
                                 <action selector="buttonPressed:" destination="aXE-Wh-x6Q" id="pQs-mE-Bbl"/>
                                 <segue destination="jxE-0u-sk9" kind="push" id="ick-c2-oEz"/>
@@ -243,6 +243,9 @@
             <point key="canvasLocation" x="-1114" y="1179"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="settings-25.png" width="25" height="25"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

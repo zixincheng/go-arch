@@ -209,11 +209,20 @@
     [dataTask resume];
 }
 
+enum {
+    WDASSETURL_PENDINGREADS = 1,
+    WDASSETURL_ALLFINISHED = 0
+};
+
 - (void) uploadPhotos:(NSMutableArray *)photos {
     
     // create the post request
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *uploadSession = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
+    
+    // create serial queue so all uploads will be done
+    // one after the other
+    dispatch_queue_t seralQueue = dispatch_queue_create("uploadSerial", DISPATCH_QUEUE_SERIAL);
     
     for (CSPhoto *p in photos) {
         
@@ -283,6 +292,7 @@
                 [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
                 
                 NSURLSessionDataTask *uploadTask = [uploadSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
                     NSError *jsonError;
                     NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
                     
@@ -311,11 +321,13 @@
             NSLog(@"can't get image - %@", [err localizedDescription]);
         };
         
-        NSURL *asseturl = [NSURL URLWithString:p.imageURL];
-        ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
-        [assetslibrary assetForURL:asseturl
-                       resultBlock:resultBlock
-                      failureBlock:failureBlock];
+        dispatch_sync(seralQueue, ^{
+            NSURL *asseturl = [NSURL URLWithString:p.imageURL];
+            ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
+            [assetslibrary assetForURL:asseturl
+                           resultBlock:resultBlock
+                          failureBlock:failureBlock];
+        });
     }
 }
 
