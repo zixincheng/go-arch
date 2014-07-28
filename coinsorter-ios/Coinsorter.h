@@ -14,7 +14,7 @@
 #import "AppDelegate.h"
 #import "SSKeychain.h"
 #import <AssetsLibrary/AssetsLibrary.h>
-
+#import <ImageIO/ImageIO.h>
 
 @interface Coinsorter : NSObject <NSURLSessionDelegate> {
     AccountDataWrapper *account;

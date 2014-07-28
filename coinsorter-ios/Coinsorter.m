@@ -179,11 +179,22 @@
                 
                 NSString *thumbnail = [latest objectForKey:@"thumbnail"];
                 
-                CSPhoto *p = [[CSPhoto alloc] init];
-                p.deviceId = deviceId;
-                p.remoteID = photoId;
+                CSPhoto *photo = [[CSPhoto alloc] init];
                 
-                p.onServer = @"1";
+                // TODO : Parse the string so it acutally works
+                
+                //                NSString *dateString = [latest objectForKey:@"created_date"];
+                //                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                //                [dateFormatter setLocale:[NSLocale currentLocale]];
+                //                [dateFormatter setDateFormat:@"yyyy-MM-ddTHH:mm:ssZ"];
+                //                NSDate *date = [dateFormatter dateFromString:dateString];
+                //
+                //                NSLog(@"dateString - %@ date - %@", dateString, date);
+                
+                photo.deviceId = deviceId;
+                photo.remoteID = photoId;
+                
+                photo.onServer = @"1";
                 
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                 NSString *documentsPath = [paths objectAtIndex:0];
@@ -191,15 +202,15 @@
                 
                 NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
                 
-                p.thumbURL = fullPath;
-                p.imageURL = fullPath;
+                photo.thumbURL = fullPath;
+                photo.imageURL = fullPath;
                 
                 NSData *data = [self dataFromBase64EncodedString:thumbnail];
                 [data writeToFile:filePath atomically:YES];
                 
                 NSLog(@"saving thumbnail to %@", filePath);
                 
-                [photos addObject:p];
+                [photos addObject:photo];
             }
             
             callback(photos);
@@ -209,122 +220,10 @@
     [dataTask resume];
 }
 
-enum {
-    WDASSETURL_PENDINGREADS = 1,
-    WDASSETURL_ALLFINISHED = 0
-};
-
 - (void) uploadPhotos:(NSMutableArray *)photos {
 
     // start the recursive calls
     [self uploadOnePhoto:photos index:0];
-    
-//    for (CSPhoto *p in photos) {
-//        
-//        NSString *filePath = p.imageURL;
-//        
-//        ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
-//            ALAssetRepresentation *rep = [asset defaultRepresentation];
-//            CGImageRef iref = [rep fullResolutionImage];
-//            
-//            // if the asset exists
-//            if (iref) {
-//                
-//                NSLog(@"started");
-//                UIImage *image = [UIImage imageWithCGImage:iref];
-//                NSData *imageData = UIImageJPEGRepresentation(image, 100);
-//                
-//                NSString *boundary = @"--XXXX--";
-//                
-//                // create request
-//                NSMutableURLRequest *request = [self getHTTPPostRequest:@"/photos"];
-//                [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
-//                [request setHTTPShouldHandleCookies:NO];
-//                [request setTimeoutInterval:30];
-//                [request setHTTPMethod:@"POST"];
-//                
-//                // set Content-Type in HTTP header
-//                NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
-//                [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
-//                
-//                // post body
-//                NSMutableData *body = [NSMutableData data];
-//                
-//                // get the file name from path
-//                NSString *fileName = [filePath lastPathComponent];
-//                
-//                // add image data
-//                if (imageData) {
-//                    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-//                    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", @"fileUpload", fileName] dataUsingEncoding:NSUTF8StringEncoding]];
-//                    [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-//                    [body appendData:imageData];
-//                    [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-//                }
-//                
-//                // get the thumbnail data
-//                NSString *thumbPrefix = @"file://";
-//                NSString *thumbPath = p.thumbURL;
-//                NSString *pureThumbPath = [thumbPath substringFromIndex:thumbPrefix.length];
-//                NSData *thumbData = [NSData dataWithContentsOfFile:pureThumbPath];
-//                NSString *thumbName = [pureThumbPath lastPathComponent];
-//                
-//                // add the thumbnail data
-//                if (thumbData) {
-//                    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-//                    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", @"fileThumb", thumbName] dataUsingEncoding:NSUTF8StringEncoding]];
-//                    [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-//                    [body appendData:thumbData];
-//                    [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-//                }
-//                
-//                
-//                [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-//                
-//                // setting the body of the post to the reqeust
-//                [request setHTTPBody:body];
-//                
-//                // set the content-length
-//                NSString *postLength = [NSString stringWithFormat:@"%d", [body length]];
-//                [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-//                
-//                NSURLSessionDataTask *uploadTask = [uploadSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-//                    
-//                    NSError *jsonError;
-//                    NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-//                    
-//                    //                    NSLog(@"%@", jsonData);
-//                    
-//                    if (jsonData != nil) {
-//                        NSString *result = [jsonData valueForKeyPath:@"stat"];
-//                        if (result != nil) {
-//                            NSLog(@"%@", result);
-//                        }else {
-//                            NSLog(@"the result is null");
-//                        }
-//                        
-//                        p.onServer = @"1";
-//                        [self.dataWrapper addUpdatePhoto:p];
-//                        
-//                        NSLog(@"setting photo to onServer = True");
-//                    }
-//                }];
-//                
-//                [uploadTask resume];
-//                NSLog(@"ended");
-//            }
-//        };
-//        
-//        ALAssetsLibraryAccessFailureBlock failureBlock = ^(NSError *err) {
-//            NSLog(@"can't get image - %@", [err localizedDescription]);
-//        };
-//        
-//        NSURL *asseturl = [NSURL URLWithString:p.imageURL];
-//        ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
-//        [assetslibrary assetForURL:asseturl
-//                       resultBlock:resultBlock
-//                      failureBlock:failureBlock];
-//    }
 }
 
 - (void) uploadOnePhoto: (NSMutableArray *) photos index: (int) index {
@@ -342,11 +241,9 @@ enum {
         
         // if the asset exists
         if (iref) {
-            
-            NSLog(@"started");
             UIImage *image = [UIImage imageWithCGImage:iref];
             NSData *imageData = UIImageJPEGRepresentation(image, 100);
-            
+
             NSString *boundary = @"--XXXX--";
             
             // create request
@@ -430,7 +327,6 @@ enum {
             }];
             
             [uploadTask resume];
-            NSLog(@"ended");
         }
     };
     
