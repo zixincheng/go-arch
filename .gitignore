@@ -1,24 +1,3 @@
 .DS_Store
 
-*.pbxproj
-
-*.xcworkspacedata
-
-*.xcscheme
-
-*.xcsettings
-
-*.db-wal
-
-*.db-shm
-
 Cache/
-coinsorter-ios/.DS_Store
-
-coinsorter-ios.xcworkspace/contents.xcworkspacedata
-
-*.xcworkspacedata
-
-coinsorter-ios.xcworkspace/xcuserdata/jrunzer.xcuserdatad/UserInterfaceState.xcuserstate
-
-*.xcuserstate
