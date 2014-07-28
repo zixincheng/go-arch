@@ -5,6 +5,11 @@
 
 @implementation DeviceTableViewController
 
+#pragma mark - NSUserDefaults Constants
+
+#define DEVICENAME @"deviceName"
+#define ALBUMS @"albums"
+
 #pragma mark -
 #pragma mark Initialization
 
@@ -29,72 +34,115 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // libraries
+    // init variables
     self.dataWrapper = [[CoreDataWrapper alloc] init];
     self.coinsorter = [[Coinsorter alloc] init];
-    self.coinsorter.dataWrapper = self.dataWrapper;
+    defaults = [NSUserDefaults standardUserDefaults];
+    self.allowedAlbums = [[NSMutableArray alloc] init];
+    self.assetLibrary = [[ALAssetsLibrary alloc] init];
+    self.devices = [[NSMutableArray alloc] init];
+    UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
+    needParse = NO;
     
+    // setup objects
+    self.coinsorter.dataWrapper = self.dataWrapper;
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
+        self.localDevice = [self.dataWrapper getDevice:account.cid];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    [refresh addTarget:self action:@selector(syncAllFromApi) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refresh;
     
-    self.localDevice = [self.dataWrapper getDevice:account.cid];
+    // call methods to start controller
     
-    self.devices = [[NSMutableArray alloc] init];
-    
-    self.assetLibrary = [[ALAssetsLibrary alloc] init];
+    // load the allowed albums from defaults
+    [self loadAllowedAlbums];
     
     // load the images from iphone photo library
     [self loadLocalImages];
     
+    // register for alassetlibrarynotifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetChanged:) name:ALAssetsLibraryChangedNotification object:self.assetLibrary];
+    
+    [defaults addObserver:self forKeyPath:DEVICENAME options:NSKeyValueObservingOptionNew context:NULL];
+    [defaults addObserver:self forKeyPath:ALBUMS options:NSKeyValueObservingOptionNew context:NULL];
+    
+    // get devices, photos, and upload
     [self syncAllFromApi];
-    
-    UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
-    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
-    
-    [refresh addTarget:self action:@selector(syncAllFromApi) forControlEvents:UIControlEventValueChanged];
-    
-    self.refreshControl = refresh;
 }
 
--(void)defaultsSettingsChanged{
-    [self.coinsorter updateDevice];
+// called when this controller leaves memory
+// we need to stop observing asset library and defaults
+- (void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsSettingsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObserver:self forKeyPath:DEVICENAME];
+    [defaults removeObserver:self forKeyPath:ALBUMS];
+}
+
+// called when a nsuserdefault value change
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
-    self.localDevice.deviceName = [defaults valueForKey:@"deviceName"];
-    for (CSDevice *d in self.devices) {
-        if ([d.remoteId isEqualToString:self.localDevice.remoteId]) {
-            d.deviceName = self.localDevice.deviceName;
-            break;
+    if ([keyPath isEqualToString:DEVICENAME]) {
+        // device name change
+        NSString *deviceName = [defaults valueForKey:DEVICENAME];
+        
+        for (CSDevice *d in self.devices) {
+            if ([d.remoteId isEqualToString:self.localDevice.remoteId]) {
+                
+                // check if the device name has changed
+                if (![deviceName isEqualToString:self.localDevice.deviceName]) {
+                    self.localDevice.deviceName = d.deviceName = deviceName;
+                    
+                    // if the device name has changed, update the server
+                    [self.coinsorter updateDevice];
+                }
+                break;
+            }
         }
-    }
-    [self asyncUpdateView];
-}
-
-- (IBAction)buttonPressed:(id)sender {
-    if (sender == self.syncButton) {
-        [self syncAllFromApi];
+        [self asyncUpdateView];
+    }else if ([keyPath isEqualToString:ALBUMS]) {
+        [self loadAllowedAlbums];
+        needParse = YES;
     }
 }
 
+// get the allowed albums from user defaults and load into array
+- (void) loadAllowedAlbums {
+    [self.allowedAlbums removeAllObjects];
+    NSMutableArray *arr = [defaults mutableArrayValueForKey:ALBUMS];
+    for (NSString *url in arr) {
+        [self.allowedAlbums addObject:url];
+    }
+}
+
+// stops the refreshing animation
 - (void)stopRefresh {
     [self.refreshControl endRefreshing];
 }
 
+// called when the controllers view will become forground
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     //    self.navigationController.navigationBar.barTintColor = [UIColor greenColor];
     //    self.navigationController.navigationBar.translucent = NO;
     //    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsSettingsChanged) name:NSUserDefaultsDidChangeNotification object:nil];
+    if (needParse) {
+        needParse = NO;
+        
+        NSLog(@"will parse through library to find new photos");
+        [self loadLocalImages];
+    }
 }
 
+// called when controllers view will become background
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     //    [self.navigationController setNavigationBarHidden:NO animated:YES];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsSettingsChanged) name:NSUserDefaultsDidChangeNotification object:nil];
+    [defaults synchronize];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -111,18 +159,22 @@
 
 #pragma mark -
 #pragma mark Coinsorter api
+
+// get devices, photos, and upload from server
 - (void) syncAllFromApi {
-    
     // perform all db and api calls in backgroud
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self getDevicesFromApi];
         [self getPhotosFromApi];
         [self uploadPhotosToApi];
     });
-        
+    
+    // stop the refreshing animation
     [self stopRefresh];
 }
 
+// get the photos that need to be uploaded from core data
+// and upload them to server
 - (void) uploadPhotosToApi {
     NSMutableArray *photos = [self.dataWrapper getPhotosToUpload];
     if (photos.count > 0) {
@@ -133,6 +185,7 @@
     }
 }
 
+// make api call to get all new photos from server
 - (void) getPhotosFromApi {
     NSString *latestId = [self.dataWrapper getLatestId];
     [self.coinsorter getPhotos:latestId callback: ^(NSMutableArray *photos) {
@@ -142,6 +195,8 @@
     }];
 }
 
+// api call to get all of the devices from server
+// we then store those devices in core data
 - (void) getDevicesFromApi {
     // first update this device on server
     [self.coinsorter updateDevice];
@@ -156,6 +211,7 @@
     }];
 }
 
+// switches to main thread and performs tableview reload
 - (void) asyncUpdateView {
     dispatch_async(dispatch_get_main_queue(), ^ {
         [self.tableView reloadData];
@@ -203,15 +259,14 @@
     BOOL enableGrid = YES;
     BOOL startOnGrid = YES;
     
-    //    CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
-    //    self.photos = [self.dataWrapper getPhotos: d.remoteId];
-    
+    // synchrously get photos from core data
     CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
     self.photos = [self.dataWrapper getPhotos:d.remoteId];
     
 	// Create browser
 	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
     
+    // mwphotobrowser options
     browser.displayActionButton = displayActionButton;
     browser.displayNavArrows = displayNavArrows;
     browser.displaySelectionButtons = displaySelectionButtons;
@@ -298,6 +353,75 @@
 
 #pragma mark - Load Local Images
 
+// checks if the given url is one the user wants photos from
+// returns YES if it is
+- (BOOL) urlIsAllowed: (NSString *) url {
+    for (NSString *u in self.allowedAlbums) {
+        if ([u isEqualToString:[url description]]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+// called when an asset in the photo library changes
+- (void) assetChanged: (NSNotification *) notification {
+    NSDictionary *info = [notification userInfo];
+    
+    // if the dictionary is nil
+    // load all local photos
+    if (info == nil) {
+        [self loadLocalImages];
+        return;
+    }
+    
+    [self loadLocalImages];
+    
+    // I HAVE NOTICED THAT THE NOTIFICAITON THAT SAYS WHAT HAS BEEN UPDATED IS VERY VERY INCONSISTENT
+    // INSTEAD OF USING THAT, WHEN THIS NOTIFICATION IS CALLED, ILL JUST MANUALLY LOOK FOR NEW PHOTOS
+    
+//    NSSet *updatedAssets = [info objectForKey:ALAssetLibraryUpdatedAssetsKey];
+//    NSSet *updatedAssetsGroup = [info objectForKey:ALAssetLibraryUpdatedAssetGroupsKey];
+//    if (updatedAssetsGroup != nil) {
+//        for (NSURL *group in updatedAssetsGroup) {
+//            NSString *urlString = [group absoluteString];
+//            NSLog(@"URL STRING - %@", urlString);
+//            if ([self urlIsAllowed:urlString]) {
+//                for (NSURL *a in updatedAssets) {
+//                    NSLog(@"UPDATED - %@", a);
+//                }
+//            }
+//        }
+//    }
+}
+
+// add asset to core data
+- (void) addAsset: (ALAsset *) asset {
+    NSURL *url = asset.defaultRepresentation.url;
+    
+    CSPhoto *photo =[[CSPhoto alloc] init];
+    photo.imageURL = url.absoluteString;
+    photo.deviceId = account.cid;
+    photo.onServer = @"0";
+    
+    NSDate *date = [asset valueForProperty:ALAssetPropertyDate];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setLocale:[NSLocale currentLocale]];
+    [dateFormatter setDateFormat:@"dd-mm-yyyy hh:mm:ss ZZZ"];
+    
+    photo.dateCreated = date;
+    
+    NSString *name = asset.defaultRepresentation.filename;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb-%@", name]];
+    
+    photo.thumbURL = filePath;
+    
+    [self.dataWrapper addPhoto:photo asset:asset];
+}
+
+// load all the local photos from allowed albums to core data
 - (void) loadLocalImages {
     
     // Run in the background as it takes a while to get all assets from the library
@@ -312,23 +436,13 @@
                     [assetURLDictionaries addObject:[result valueForProperty:ALAssetPropertyURLs]];
                     NSURL *url = result.defaultRepresentation.url;
                     
+                    NSDate *date = [result valueForProperty:ALAssetPropertyDate];
+                    NSLog(@"%@", date);
+                    
                     [_assetLibrary assetForURL:url
                                    resultBlock:^(ALAsset *asset) {
                                        if (asset) {
-                                           
-                                           CSPhoto *photo =[[CSPhoto alloc] init];
-                                           photo.imageURL = url.absoluteString;
-                                           photo.deviceId = account.cid;
-                                           photo.onServer = @"0";
-                                           
-                                           NSString *name = result.defaultRepresentation.filename;
-                                           NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                                           NSString *documentsPath = [paths objectAtIndex:0];
-                                           NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb-%@", name]];
-                                           
-                                           photo.thumbURL = filePath;
-                                           
-                                           [self.dataWrapper addPhoto:photo asset:asset];
+                                           [self addAsset:asset];
                                        }
                                    }
                                   failureBlock:^(NSError *error){
@@ -342,9 +456,11 @@
         void (^ assetGroupEnumerator) (ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) {
             if (group != nil) {
                 NSString *groupName = [group valueForProperty:ALAssetsGroupPropertyName];
+                NSString *groupUrl = [group valueForProperty:ALAssetsGroupPropertyURL];
                 
-                // only get pictures from the coinsorter album
-                if ([groupName isEqualToString:@"Coinsorter"]) {
+                // only get pictures from the allowed albums
+                if ([self urlIsAllowed:groupUrl]) {
+                    NSLog(@"found photo from album %@", groupName);
                     [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetEnumerator];
                     [assetGroups addObject:group];
                 }

@@ -8,6 +8,11 @@
 
 #import "GroupTableViewController.h"
 
+#define SELECTED @"selected"
+#define NAME     @"name"
+#define ALBUMS   @"albums"
+#define URL      @"url"
+
 @interface GroupTableViewController ()
 
 @end
@@ -35,6 +40,10 @@
     
     assetLibrary = [[ALAssetsLibrary alloc] init];
     self.allAlbums = [[NSMutableArray alloc] init];
+    self.selected = [[NSMutableArray alloc] init];
+    
+    // load the selected albums from nsuserdefaults
+    [self loadDefaults];
     
     // load up all the albums
     [self loadAllAlbums];
@@ -67,9 +76,64 @@
     NSDictionary *d = [self.allAlbums objectAtIndex:[indexPath row]];
     
     // Configure the cell...
-    cell.textLabel.text = [d valueForKey:@"name"];
+    cell.textLabel.text = [d valueForKey:NAME];
+
+    NSString *selString = [d valueForKey:SELECTED];
+    if ([selString isEqualToString:@"YES"]) cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    else cell.accessoryType = UITableViewCellAccessoryNone;
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    NSDictionary *d = [self.allAlbums objectAtIndex:[indexPath row]];
+    NSString *selString = [d valueForKey:SELECTED];
+    if ([selString isEqualToString:@"NO"]) {
+        [d setValue:@"YES" forKey:SELECTED];
+        NSLog(@"selected group %@", [d valueForKey:NAME]);
+    }else {
+        [d setValue:@"NO" forKey:SELECTED];
+        NSLog(@"de-selected group %@", [d valueForKey:NAME]);
+    }
+    
+    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    
+    [self setDefaults];
+}
+
+#pragma mark - asset library / defaults
+
+// load up the albums settings from defaults
+- (void) loadDefaults {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSMutableArray *arr = [defaults mutableArrayValueForKey:ALBUMS];
+    for (NSString *url in arr) {
+        [self.selected addObject:url];
+        NSLog(@"found selected album %@", url);
+    }
+}
+
+// set the currently selected albums in defaults
+- (void) setDefaults {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSMutableArray *arr = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *d in self.allAlbums) {
+        NSString *selString = [d valueForKey: SELECTED];
+        if ([selString isEqualToString:@"YES"]) {
+            NSString *url = [d valueForKey:URL];
+            [arr addObject:[url description]];
+        }
+    }
+    
+    NSLog(@"setting value for %@ to %@", ALBUMS, arr);
+    [defaults setValue:arr forKey:ALBUMS];
+    [defaults synchronize];
 }
 
 // load all albums names and urls into array
@@ -81,8 +145,13 @@
             NSString *groupUrl = [group valueForProperty:ALAssetsGroupPropertyURL];
             
             NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
-            [d setValue:groupName forKey:@"name"];
-            [d setValue:groupUrl forKey:@"url"];
+            [d setValue:groupName forKey:NAME];
+            [d setValue:groupUrl forKey:URL];
+            if ([self isURLSelected:groupUrl]) {
+                [d setValue:@"YES" forKey:SELECTED];
+            }else {
+                [d setValue:@"NO" forKey:SELECTED];
+            }
             
             [self.allAlbums addObject:d];
             
@@ -100,6 +169,17 @@
                                    failureBlock:^(NSError *error) {
                                        NSLog(@"There is an error");
                                    }];
+}
+
+// checks to see if the given url is selected
+// returns YES if selected
+- (BOOL) isURLSelected: (NSString *) url {
+    for (NSString *u in self.selected) {
+        if ([u isEqualToString:[url description]]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 /*

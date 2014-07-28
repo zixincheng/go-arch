@@ -14,5 +14,6 @@
 }
 
 @property (nonatomic, strong) NSMutableArray *allAlbums;
+@property (nonatomic, strong) NSMutableArray *selected;
 
 @end

@@ -21,6 +21,10 @@
     NSMutableArray *localPhotos;
     
     AccountDataWrapper *account;
+    
+    NSUserDefaults *defaults;
+    
+    BOOL needParse;
 }
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *syncButton;
@@ -29,6 +33,7 @@
 @property (nonatomic, strong) NSMutableArray *devices;
 @property (nonatomic, strong) NSMutableArray *photos;
 @property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
+@property (nonatomic, strong) NSMutableArray *allowedAlbums;
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
