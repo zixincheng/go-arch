@@ -20,10 +20,52 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="zEE-Nq-gLX"/>
+                    <connections>
+                        <segue destination="mZG-Td-1gf" kind="push" id="vmh-V9-vXj"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cxW-3N-PMe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="11" y="1042"/>
+            <point key="canvasLocation" x="-11" y="658"/>
+        </scene>
+        <!--Group Table View Controller - Album Selector-->
+        <scene sceneID="BZZ-gi-f7r">
+            <objects>
+                <tableViewController storyboardIdentifier="albumView" id="mZG-Td-1gf" customClass="GroupTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="y6Y-k9-7Fk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="groupCell" textLabel="DSs-U9-4oq" style="IBUITableViewCellStyleDefault" id="00p-gI-7K0">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="00p-gI-7K0" id="j7Z-QQ-4CW">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DSs-U9-4oq">
+                                            <rect key="frame" x="15" y="0.0" width="290" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="mZG-Td-1gf" id="xT4-0D-rv7"/>
+                            <outlet property="delegate" destination="mZG-Td-1gf" id="8gm-Ix-RTo"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Album Selector" id="FLo-xy-SXY"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kHo-J7-hXt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="543" y="900"/>
         </scene>
         <!--Device Table View Controller - Devices-->
         <scene sceneID="bKe-bB-NTz">
@@ -61,7 +103,7 @@
                         <barButtonItem key="rightBarButtonItem" image="settings-25.png" id="Rdk-G4-pBF">
                             <connections>
                                 <action selector="buttonPressed:" destination="aXE-Wh-x6Q" id="pQs-mE-Bbl"/>
-                                <segue destination="jxE-0u-sk9" kind="push" id="ick-c2-oEz"/>
+                                <segue destination="jxE-0u-sk9" kind="push" id="M5K-Qg-lV2"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
