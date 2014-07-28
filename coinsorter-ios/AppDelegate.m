@@ -15,17 +15,13 @@
     self.account = [[AccountDataWrapper alloc] init];
     [self.account readSettings];
     NSLog(@"reading settings");
-    
-    
-    NSString *deviceName = [[UIDevice currentDevice] name];
-    NSLog(@"deviceName = %@", deviceName);
-    
-    // Register the preference defaults early.
-    NSArray *values = [NSArray arrayWithObjects:deviceName, nil];
-    NSArray *keys = [NSArray arrayWithObjects:@"deviceName", nil];
-    
-    NSDictionary *appDefaults = [NSDictionary dictionaryWithObjects:values forKeys:keys];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+
+    // here we check if the device name has been set before
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *deviceName = [defaults valueForKey:@"deviceName"];
+    if (deviceName == nil) {
+        [defaults setObject:[[UIDevice currentDevice] name] forKey:@"deviceName"];
+    }
     
     return YES;
 }
