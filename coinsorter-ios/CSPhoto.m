@@ -10,12 +10,4 @@
 
 @implementation CSPhoto
 
-@synthesize imageURL;
-@synthesize thumbObject;
-@synthesize photoObject;
-@synthesize thumbURL;
-@synthesize deviceId;
-@synthesize remoteID;
-@synthesize onServer;
-
 @end
