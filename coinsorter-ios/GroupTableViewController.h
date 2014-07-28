@@ -10,7 +10,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface GroupTableViewController : UITableViewController {
-    ALAssetsLibrary *assetLibrary;
+  ALAssetsLibrary *assetLibrary;
 }
 
 @property (nonatomic, strong) NSMutableArray *allAlbums;

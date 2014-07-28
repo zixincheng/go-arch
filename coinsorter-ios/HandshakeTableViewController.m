@@ -17,175 +17,175 @@
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+  self = [super initWithStyle:style];
+  if (self) {
+    // Custom initialization
+  }
+  return self;
 }
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    self.servers = [[NSMutableArray alloc] init];
-    
-    self.sendUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
-    self.recieveUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
-    
-    UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
-    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
-    
-    [refresh addTarget:self action:@selector(sendUDPMessage) forControlEvents:UIControlEventValueChanged];
-    
-    self.refreshControl = refresh;
-    
-    [self setupReciveUDPMessage];
-    [self sendUDPMessage];
+  [super viewDidLoad];
+  
+  // Uncomment the following line to preserve selection between presentations.
+  // self.clearsSelectionOnViewWillAppear = NO;
+  
+  // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+  
+  self.servers = [[NSMutableArray alloc] init];
+  
+  self.sendUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
+  self.recieveUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
+  
+  UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
+  refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+  
+  [refresh addTarget:self action:@selector(sendUDPMessage) forControlEvents:UIControlEventValueChanged];
+  
+  self.refreshControl = refresh;
+  
+  [self setupReciveUDPMessage];
+  [self sendUDPMessage];
 }
 
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    return 1;
+  // Return the number of sections.
+  return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return self.servers.count;
+  // Return the number of rows in the section.
+  return self.servers.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"serverPrototypeCell" forIndexPath:indexPath];
-    
-    Server *s = self.servers[[indexPath row]];
-    cell.textLabel.text = s.ip;
-    
-    return cell;
+  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"serverPrototypeCell" forIndexPath:indexPath];
+  
+  Server *s = self.servers[[indexPath row]];
+  cell.textLabel.text = s.ip;
+  
+  return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    // Deselect
+  
+  // Deselect
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (IBAction)buttonPressed:(id)sender {
-    if (sender == self.addServerButton) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Manually Add Server" message:@"Enter Server IP" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
-        
-        alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-        [[alertView textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeURL];
-        [[alertView textFieldAtIndex:0] becomeFirstResponder];
-        
-        [alertView show];
-    }
+  if (sender == self.addServerButton) {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Manually Add Server" message:@"Enter Server IP" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
+    
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [[alertView textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeURL];
+    [[alertView textFieldAtIndex:0] becomeFirstResponder];
+    
+    [alertView show];
+  }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSString *buttonTitle=[alertView buttonTitleAtIndex:buttonIndex];
-    if([buttonTitle isEqualToString:@"Cancel"]) {
-        return;
+  NSString *buttonTitle=[alertView buttonTitleAtIndex:buttonIndex];
+  if([buttonTitle isEqualToString:@"Cancel"]) {
+    return;
+  }
+  else if([buttonTitle isEqualToString:@"Add"]) {
+    NSString *text = [alertView textFieldAtIndex:0].text;
+    
+    if (![text isEqualToString:@""]) {
+      Server *s = [[Server alloc] init];
+      s.ip = text;
+      [self.servers addObject:s];
+      
+      [self.tableView reloadData];
     }
-    else if([buttonTitle isEqualToString:@"Add"]) {
-        NSString *text = [alertView textFieldAtIndex:0].text;
-        
-        if (![text isEqualToString:@""]) {
-            Server *s = [[Server alloc] init];
-            s.ip = text;
-            [self.servers addObject:s];
-            
-            [self.tableView reloadData];
-        }
-    }
+  }
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    //    UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
-    //    ConnectViewController *connectController = (ConnectViewController *)navController.topViewController;
-    
-    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-    Server *s = self.servers[[path row]];
-    
-    ConnectViewController *connectController = (ConnectViewController *)segue.destinationViewController;
-    connectController.ip = s.ip;
+  //    UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
+  //    ConnectViewController *connectController = (ConnectViewController *)navController.topViewController;
+  
+  NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+  Server *s = self.servers[[path row]];
+  
+  ConnectViewController *connectController = (ConnectViewController *)segue.destinationViewController;
+  connectController.ip = s.ip;
 }
 
 - (void) sendUDPMessage {
-    NSData *data = [[NSString stringWithFormat:@"hello server - no connect"] dataUsingEncoding:NSUTF8StringEncoding];
+  NSData *data = [[NSString stringWithFormat:@"hello server - no connect"] dataUsingEncoding:NSUTF8StringEncoding];
+  
+  [self.servers removeAllObjects];
+  
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.tableView reloadData];
+  });
+  
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
+    NSLog(@"sending udp broadcast");
     
-    [self.servers removeAllObjects];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-    });
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
-        NSLog(@"sending udp broadcast");
-        
-        NSError *err;
-        [self.sendUdpSocket enableBroadcast:YES error:&err];
-        //    [self.sendUdpSocket sendData:data withTimeout:-1 tag:1];
-        [self.sendUdpSocket sendData:data toHost:@"255.255.255.255" port:9999 withTimeout:-1 tag:1];
-    });
-    
-    [self.refreshControl endRefreshing];
+    NSError *err;
+    [self.sendUdpSocket enableBroadcast:YES error:&err];
+    //    [self.sendUdpSocket sendData:data withTimeout:-1 tag:1];
+    [self.sendUdpSocket sendData:data toHost:@"255.255.255.255" port:9999 withTimeout:-1 tag:1];
+  });
+  
+  [self.refreshControl endRefreshing];
 }
 
 - (void) setupReciveUDPMessage {
-    NSError *err;
-    
-    if (![self.recieveUdpSocket bindToPort:9998 error:&err]) {
-        NSLog(@"error binding to port");
-        abort();
-    }
-    if (![self.recieveUdpSocket beginReceiving:&err]) {
-        NSLog(@"error begin receiving");
-        abort();
-    }
+  NSError *err;
+  
+  if (![self.recieveUdpSocket bindToPort:9998 error:&err]) {
+    NSLog(@"error binding to port");
+    abort();
+  }
+  if (![self.recieveUdpSocket beginReceiving:&err]) {
+    NSLog(@"error begin receiving");
+    abort();
+  }
 }
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext {
-    NSString *msg = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    
-    NSString *host = nil;
-    uint16_t port = 0;
-    [GCDAsyncUdpSocket getHost:&host port:&port fromAddress:address];
-    
+  NSString *msg = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+  
+  NSString *host = nil;
+  uint16_t port = 0;
+  [GCDAsyncUdpSocket getHost:&host port:&port fromAddress:address];
+  
+  if (msg)  {
     if (msg)  {
-        if (msg)  {
-            NSLog(@"found server - %@", host);
-            
-            Server *s = [[Server alloc] init];
-            s.ip = [NSString stringWithFormat:@"%@", host];
-            s.serverId = msg;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                @synchronized (self.servers) {
-                    [self.servers addObject:s];
-                    [self.tableView reloadData];
-                }
-            });
+      NSLog(@"found server - %@", host);
+      
+      Server *s = [[Server alloc] init];
+      s.ip = [NSString stringWithFormat:@"%@", host];
+      s.serverId = msg;
+      
+      dispatch_async(dispatch_get_main_queue(), ^{
+        @synchronized (self.servers) {
+          [self.servers addObject:s];
+          [self.tableView reloadData];
         }
+      });
     }
+  }
 }
 
 /*

@@ -14,99 +14,99 @@
 @implementation CoreDataWrapper
 
 - (void) addUpdateDevice:(CSDevice *)device {
-    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+  NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+  
+  [context performBlock: ^{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
     
-    [context performBlock: ^{
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        
-        NSEntityDescription *entityDesc = [NSEntityDescription entityForName:DEVICE inManagedObjectContext:context];
-        [request setEntity:entityDesc];
-        
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(remoteId = %@)", device.remoteId];
-        [request setPredicate:pred];
-        
-        NSError *err;
-        NSArray *result = [context executeFetchRequest:request error:&err];
-        
-        NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN USING DB!!!");
-        
-        if (result == nil) {
-            NSLog(@"error with core data request");
-            abort();
-        }
-        
-        NSManagedObject *photoObj;
-        
-        if (result.count == 0) {
-            photoObj = [NSEntityDescription insertNewObjectForEntityForName:DEVICE inManagedObjectContext:context];
-            NSLog(@"created new device");
-        }else {
-            photoObj = result[0];
-            NSLog(@"updated device - %@", device.deviceName);
-        }
-        
-        [photoObj setValue:device.deviceName forKey:@"deviceName"];
-        [photoObj setValue:device.remoteId forKey:@"remoteId"];
-        
-        [context save:nil];
-
-    }];
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:DEVICE inManagedObjectContext:context];
+    [request setEntity:entityDesc];
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(remoteId = %@)", device.remoteId];
+    [request setPredicate:pred];
+    
+    NSError *err;
+    NSArray *result = [context executeFetchRequest:request error:&err];
+    
+    NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN USING DB!!!");
+    
+    if (result == nil) {
+      NSLog(@"error with core data request");
+      abort();
     }
+    
+    NSManagedObject *photoObj;
+    
+    if (result.count == 0) {
+      photoObj = [NSEntityDescription insertNewObjectForEntityForName:DEVICE inManagedObjectContext:context];
+      NSLog(@"created new device");
+    }else {
+      photoObj = result[0];
+      NSLog(@"updated device - %@", device.deviceName);
+    }
+    
+    [photoObj setValue:device.deviceName forKey:@"deviceName"];
+    [photoObj setValue:device.remoteId forKey:@"remoteId"];
+    
+    [context save:nil];
+    
+  }];
+}
 
 - (CSDevice *) getDevice:(NSString *)cid {
-    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
-    CSDevice *device = [[CSDevice alloc] init];
+  NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+  CSDevice *device = [[CSDevice alloc] init];
+  
+  [context performBlockAndWait: ^{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:DEVICE];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(remoteId = %@)", cid];
+    [request setPredicate:pred];
     
-    [context performBlockAndWait: ^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:DEVICE];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(remoteId = %@)", cid];
-        [request setPredicate:pred];
-        
-        NSError *error;
-        NSArray *result = [context executeFetchRequest:request error:&error];
-        
-        if (result == nil) {
-            NSLog(@"error with core data");
-            abort();
-        }
-        
-        if (result.count > 0) {
-            NSManagedObject *obj = result[0];
-
-            device.remoteId = cid;
-            device.deviceName = [obj valueForKey:@"deviceName"];
-        }
-    }];
+    NSError *error;
+    NSArray *result = [context executeFetchRequest:request error:&error];
     
-    return device;
+    if (result == nil) {
+      NSLog(@"error with core data");
+      abort();
+    }
+    
+    if (result.count > 0) {
+      NSManagedObject *obj = result[0];
+      
+      device.remoteId = cid;
+      device.deviceName = [obj valueForKey:@"deviceName"];
+    }
+  }];
+  
+  return device;
 }
 
 //    dispatch_async(dbQueue, ^ {
 //        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 //        NSManagedObjectContext *context = [appDelegate managedObjectContext];
 //        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-//        
+//
 //        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(remoteId = %@)", cid];
 //        [request setPredicate:pred];
-//        
+//
 //        NSEntityDescription *entityDesc = [NSEntityDescription entityForName:DEVICE inManagedObjectContext:context];
 //        [request setEntity:entityDesc];
-//        
+//
 //        NSError *err;
 //        NSArray *result = [context executeFetchRequest:request error:&err];
-//        
+//
 //        if (result == nil) {
 //            NSLog(@"error with core data");
 //            abort();
 //        }
-//        
+//
 //        if (result.count > 0) {
 //            NSManagedObject *obj = result[0];
-//            
+//
 //            CSDevice *device = [[CSDevice alloc] init];
 //            device.remoteId = cid;
 //            device.deviceName = [obj valueForKey:@"deviceName"];
-//            
+//
 //            callback(device);
 //        }else {
 //            callback(nil);
@@ -115,78 +115,78 @@
 //    });
 
 - (void) addUpdatePhoto:(CSPhoto *)photo {
+  
+  NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+  
+  [context performBlock: ^{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
     
-    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(imageURL = %@)", photo.imageURL];
+    [request setPredicate:pred];
     
-    [context performBlock: ^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-        
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(imageURL = %@)", photo.imageURL];
-        [request setPredicate:pred];
-        
-        NSError *err;
-        NSArray *result = [context executeFetchRequest:request error:&err];
-        
-        if (result == nil) {
-            NSLog(@"error with core data request");
-            abort();
-        }
-        
-        NSManagedObjectContext *photoObj;
-        if (result.count == 0) {
-            photoObj = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
-        }else {
-            photoObj = result[0];
-        }
-        
-        [photoObj setValue:photo.imageURL forKey:@"imageURL"];
-        [photoObj setValue:photo.thumbURL forKey:@"thumbURL"];
-        [photoObj setValue:photo.deviceId forKey:@"deviceId"];
-        [photoObj setValue:photo.onServer forKey:@"onServer"];
-        
-        if (photo.remoteID != nil) {
-            [photoObj setValue:photo.remoteID forKey:@"remoteId"];
-        }
-        
-        [context save:nil];
-     }];
+    NSError *err;
+    NSArray *result = [context executeFetchRequest:request error:&err];
+    
+    if (result == nil) {
+      NSLog(@"error with core data request");
+      abort();
+    }
+    
+    NSManagedObjectContext *photoObj;
+    if (result.count == 0) {
+      photoObj = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
+    }else {
+      photoObj = result[0];
+    }
+    
+    [photoObj setValue:photo.imageURL forKey:@"imageURL"];
+    [photoObj setValue:photo.thumbURL forKey:@"thumbURL"];
+    [photoObj setValue:photo.deviceId forKey:@"deviceId"];
+    [photoObj setValue:photo.onServer forKey:@"onServer"];
+    
+    if (photo.remoteID != nil) {
+      [photoObj setValue:photo.remoteID forKey:@"remoteId"];
+    }
+    
+    [context save:nil];
+  }];
 }
 
 //    dispatch_async(dbQueue, ^ {
-//        
+//
 //        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 //        NSManagedObjectContext *context = [appDelegate managedObjectContext];
-//        
+//
 //        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-//        
+//
 //        NSEntityDescription *entityDesc = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:context];
 //        [request setEntity:entityDesc];
-//        
+//
 //        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(imageURL = %@)", photo.imageURL];
 //        [request setPredicate:pred];
-//        
+//
 //        NSError *err;
 //        NSArray *result = [context executeFetchRequest:request error:&err];
-//        
+//
 //        NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN USING DB!!!");
-//        
+//
 //        if (result == nil) {
 //            NSLog(@"error with core data request");
 //            abort();
 //        }
-//        
+//
 //        NSManagedObjectContext *photoObj;
 //        if (result.count == 0) {
 //            photoObj = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
 //        }else {
 //            photoObj = result[0];
 //        }
-//        
+//
 //        [photoObj setValue:photo.imageURL forKey:@"imageURL"];
 //        [photoObj setValue:photo.thumbURL forKey:@"thumbURL"];
 //        [photoObj setValue:photo.deviceId forKey:@"deviceId"];
 //        [photoObj setValue:photo.onServer forKey:@"onServer"];
-//        
+//
 //        if (photo.remoteID != nil) {
 //            [photoObj setValue:photo.remoteID forKey:@"remoteId"];
 //        }
@@ -194,172 +194,172 @@
 //    });
 
 - (void) addPhoto:(CSPhoto *)photo asset:(ALAsset *) asset {
-
-    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+  
+  NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+  
+  [context performBlock:^{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(imageURL = %@)", photo.imageURL];
+    [request setPredicate:pred];
     
-    [context performBlock:^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(imageURL = %@)", photo.imageURL];
-        [request setPredicate:pred];
+    NSArray *results = [context executeFetchRequest:request error:nil];
+    
+    if (results == nil) {
+      NSLog(@"error with core data request");
+      abort();
+    }
+    
+    if (results.count == 0) {
+      NSManagedObjectContext *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
+      
+      if (asset != nil) {
+        // we save the thumbnail to app documents folder
+        // now we can easily use later without asset library
+        UIImage *thumb = [UIImage imageWithCGImage:asset.thumbnail];
+        NSData *data = UIImagePNGRepresentation(thumb);
+        [data writeToFile:photo.thumbURL atomically:YES];
         
-        NSArray *results = [context executeFetchRequest:request error:nil];
+        photo.thumbURL = [[NSURL fileURLWithPath:photo.thumbURL] absoluteString];;
         
-        if (results == nil) {
-            NSLog(@"error with core data request");
-            abort();
-        }
-        
-        if (results.count == 0) {
-            NSManagedObjectContext *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
-            
-            if (asset != nil) {
-                // we save the thumbnail to app documents folder
-                // now we can easily use later without asset library
-                UIImage *thumb = [UIImage imageWithCGImage:asset.thumbnail];
-                NSData *data = UIImagePNGRepresentation(thumb);
-                [data writeToFile:photo.thumbURL atomically:YES];
-                
-                photo.thumbURL = [[NSURL fileURLWithPath:photo.thumbURL] absoluteString];;
-                
-                NSLog(@"will save thumbnail to %@", photo.thumbURL);
-            }
-            
-            NSLog(@"SAVING PHOTO WITH DEVICE ID %@", photo.deviceId);
-            
-            [newPhoto setValue:photo.imageURL forKey:@"imageURL"];
-            [newPhoto setValue:photo.thumbURL forKey:@"thumbURL"];
-            [newPhoto setValue:photo.deviceId forKey:@"deviceId"];
-            [newPhoto setValue:photo.onServer forKey:@"onServer"];
-            [newPhoto setValue:photo.dateCreated forKeyPath:@"dateCreated"];
-            
-            if (photo.remoteID != nil) {
-                [newPhoto setValue:photo.remoteID forKey:@"remoteId"];
-            }
-            
-            
-            [context save:nil];
-            
-            NSLog(@"added new photo to core data");
-        }else {
-            NSLog(@"photo already in core data");
-        }
-    }];
+        NSLog(@"will save thumbnail to %@", photo.thumbURL);
+      }
+      
+      NSLog(@"SAVING PHOTO WITH DEVICE ID %@", photo.deviceId);
+      
+      [newPhoto setValue:photo.imageURL forKey:@"imageURL"];
+      [newPhoto setValue:photo.thumbURL forKey:@"thumbURL"];
+      [newPhoto setValue:photo.deviceId forKey:@"deviceId"];
+      [newPhoto setValue:photo.onServer forKey:@"onServer"];
+      [newPhoto setValue:photo.dateCreated forKeyPath:@"dateCreated"];
+      
+      if (photo.remoteID != nil) {
+        [newPhoto setValue:photo.remoteID forKey:@"remoteId"];
+      }
+      
+      
+      [context save:nil];
+      
+      NSLog(@"added new photo to core data");
+    }else {
+      NSLog(@"photo already in core data");
+    }
+  }];
 }
 
 - (void) addPhoto:(CSPhoto *)photo {
-    [self addPhoto:photo asset:nil];
+  [self addPhoto:photo asset:nil];
 }
 
 - (NSMutableArray *)getPhotos: (NSString *) deviceId {
-    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
-    __block NSMutableArray *arr = [[NSMutableArray alloc] init];
+  NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+  __block NSMutableArray *arr = [[NSMutableArray alloc] init];
+  
+  [context performBlockAndWait: ^{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(deviceId = %@)", deviceId];
+    [request setPredicate:pred];
     
-    [context performBlockAndWait: ^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(deviceId = %@)", deviceId];
-        [request setPredicate:pred];
-        
-        NSArray*phs = [context executeFetchRequest:request error:nil];
-        
-        if (phs == nil) {
-            NSLog(@"error with core data request");
-            abort();
-        }
-        
-        // add all of the photo objects to the local photo list
-        for (int i =0; i < [phs count]; i++) {
-            NSManagedObject *p = phs[i];
-            CSPhoto *photo = [[CSPhoto alloc] init];
-            photo.deviceId = [p valueForKey:@"deviceId"];
-            photo.onServer = [p valueForKey:@"onServer"];
-            
-            NSString *imageURL = [p valueForKey:@"imageURL"];
-            NSString *thumbURL = [p valueForKey:@"thumbURL"];
-            
-            photo.dateCreated = (NSDate *) [p valueForKey:@"dateCreated"];
-            
-            photo.imageURL = imageURL;
-            photo.thumbURL = thumbURL;
-            
-            photo.photoObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.imageURL]];
-            photo.thumbObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.thumbURL]];
-            
-            [arr addObject:photo];
-        }
-    }];
+    NSArray*phs = [context executeFetchRequest:request error:nil];
     
-    return arr;
+    if (phs == nil) {
+      NSLog(@"error with core data request");
+      abort();
+    }
+    
+    // add all of the photo objects to the local photo list
+    for (int i =0; i < [phs count]; i++) {
+      NSManagedObject *p = phs[i];
+      CSPhoto *photo = [[CSPhoto alloc] init];
+      photo.deviceId = [p valueForKey:@"deviceId"];
+      photo.onServer = [p valueForKey:@"onServer"];
+      
+      NSString *imageURL = [p valueForKey:@"imageURL"];
+      NSString *thumbURL = [p valueForKey:@"thumbURL"];
+      
+      photo.dateCreated = (NSDate *) [p valueForKey:@"dateCreated"];
+      
+      photo.imageURL = imageURL;
+      photo.thumbURL = thumbURL;
+      
+      photo.photoObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.imageURL]];
+      photo.thumbObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.thumbURL]];
+      
+      [arr addObject:photo];
+    }
+  }];
+  
+  return arr;
 }
 
 - (NSMutableArray *) getPhotosToUpload {
-    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
-    __block NSMutableArray *arr = [[NSMutableArray alloc] init];
+  NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+  __block NSMutableArray *arr = [[NSMutableArray alloc] init];
+  
+  [context performBlockAndWait: ^{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(onServer = %@)", @"0"];
+    [request setPredicate:pred];
     
-    [context performBlockAndWait: ^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(onServer = %@)", @"0"];
-        [request setPredicate:pred];
-        
-        NSArray*phs = [context executeFetchRequest:request error:nil];
-        
-        if (phs == nil) {
-            NSLog(@"error with core data request");
-            abort();
-        }
-        
-        // add all of the photo objects to the local photo list
-        for (int i =0; i < [phs count]; i++) {
-            NSManagedObject *p = phs[i];
-            CSPhoto *photo = [[CSPhoto alloc] init];
-            photo.deviceId = [p valueForKey:@"deviceId"];
-            photo.onServer = [p valueForKey:@"onServer"];
-            
-            NSString *imageURL = [p valueForKey:@"imageURL"];
-            NSString *thumbURL = [p valueForKey:@"thumbURL"];
-            
-            photo.dateCreated = (NSDate *) [p valueForKey:@"dateCreated"];
-            
-            photo.imageURL = imageURL;
-            photo.thumbURL = thumbURL;
-            
-            photo.photoObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.imageURL]];
-            photo.thumbObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.thumbURL]];
-            
-            [arr addObject:photo];
-        }
-    }];
+    NSArray*phs = [context executeFetchRequest:request error:nil];
     
-    return arr;
+    if (phs == nil) {
+      NSLog(@"error with core data request");
+      abort();
+    }
+    
+    // add all of the photo objects to the local photo list
+    for (int i =0; i < [phs count]; i++) {
+      NSManagedObject *p = phs[i];
+      CSPhoto *photo = [[CSPhoto alloc] init];
+      photo.deviceId = [p valueForKey:@"deviceId"];
+      photo.onServer = [p valueForKey:@"onServer"];
+      
+      NSString *imageURL = [p valueForKey:@"imageURL"];
+      NSString *thumbURL = [p valueForKey:@"thumbURL"];
+      
+      photo.dateCreated = (NSDate *) [p valueForKey:@"dateCreated"];
+      
+      photo.imageURL = imageURL;
+      photo.thumbURL = thumbURL;
+      
+      photo.photoObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.imageURL]];
+      photo.thumbObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.thumbURL]];
+      
+      [arr addObject:photo];
+    }
+  }];
+  
+  return arr;
 }
 
 - (NSString *) getLatestId {
-    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
-    __block NSString *latestId = @"-1";
+  NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+  __block NSString *latestId = @"-1";
+  
+  [context performBlockAndWait: ^{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(onServer = %@)", @"1"];
+    [request setPredicate:pred];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"remoteId" ascending:NO];
+    NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
+    [request setSortDescriptors: descriptors];
     
-    [context performBlockAndWait: ^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(onServer = %@)", @"1"];
-        [request setPredicate:pred];
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"remoteId" ascending:NO];
-        NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
-        [request setSortDescriptors: descriptors];
-        
-        NSError *error;
-        NSArray *result = [context executeFetchRequest:request error:&error];
-        
-        if (result == nil) {
-            NSLog(@"error with core data");
-            abort();
-        }
-        
-        if (result.count > 0) {
-            NSManagedObject *obj = result[0];
-            
-            latestId = [obj valueForKey:@"remoteId"];
-        }
-    }];
+    NSError *error;
+    NSArray *result = [context executeFetchRequest:request error:&error];
     
-    return latestId;
+    if (result == nil) {
+      NSLog(@"error with core data");
+      abort();
+    }
+    
+    if (result.count > 0) {
+      NSManagedObject *obj = result[0];
+      
+      latestId = [obj valueForKey:@"remoteId"];
+    }
+  }];
+  
+  return latestId;
 }
 
 @end

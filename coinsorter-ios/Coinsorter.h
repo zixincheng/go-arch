@@ -17,7 +17,7 @@
 #import <ImageIO/ImageIO.h>
 
 @interface Coinsorter : NSObject <NSURLSessionDelegate> {
-    AccountDataWrapper *account;
+  AccountDataWrapper *account;
 }
 
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback;

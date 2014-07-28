@@ -17,14 +17,14 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface DeviceTableViewController : UITableViewController <MWPhotoBrowserDelegate, UITableViewDataSource> {
-    NSMutableArray *_selections;
-    NSMutableArray *localPhotos;
-    
-    AccountDataWrapper *account;
-    
-    NSUserDefaults *defaults;
-    
-    BOOL needParse;
+  NSMutableArray *_selections;
+  NSMutableArray *localPhotos;
+  
+  AccountDataWrapper *account;
+  
+  NSUserDefaults *defaults;
+  
+  BOOL needParse;
 }
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *syncButton;
