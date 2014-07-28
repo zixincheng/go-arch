@@ -230,6 +230,7 @@
             [newPhoto setValue:photo.thumbURL forKey:@"thumbURL"];
             [newPhoto setValue:photo.deviceId forKey:@"deviceId"];
             [newPhoto setValue:photo.onServer forKey:@"onServer"];
+            [newPhoto setValue:photo.dateCreated forKeyPath:@"dateCreated"];
             
             if (photo.remoteID != nil) {
                 [newPhoto setValue:photo.remoteID forKey:@"remoteId"];
@@ -275,6 +276,8 @@
             NSString *imageURL = [p valueForKey:@"imageURL"];
             NSString *thumbURL = [p valueForKey:@"thumbURL"];
             
+            photo.dateCreated = (NSDate *) [p valueForKey:@"dateCreated"];
+            
             photo.imageURL = imageURL;
             photo.thumbURL = thumbURL;
             
@@ -313,6 +316,8 @@
             
             NSString *imageURL = [p valueForKey:@"imageURL"];
             NSString *thumbURL = [p valueForKey:@"thumbURL"];
+            
+            photo.dateCreated = (NSDate *) [p valueForKey:@"dateCreated"];
             
             photo.imageURL = imageURL;
             photo.thumbURL = thumbURL;
