@@ -9,6 +9,7 @@
 
 #define DEVICENAME @"deviceName"
 #define ALBUMS @"albums"
+#define DATE @"date"
 
 #pragma mark -
 #pragma mark Initialization
@@ -59,7 +60,7 @@
   [self loadAllowedAlbums];
   
   // load the images from iphone photo library
-  [self loadLocalImages];
+  [self loadLocalImages: NO];
   
   // register for alassetlibrarynotifications
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetChanged:) name:ALAssetsLibraryChangedNotification object:self.assetLibrary];
@@ -129,11 +130,13 @@
   //    self.navigationController.navigationBar.translucent = NO;
   //    [self.navigationController setNavigationBarHidden:YES animated:YES];
   
+  // this gets set when we add a new album
+  // we want to parse through all of the new photos
   if (needParse) {
     needParse = NO;
     
     NSLog(@"will parse through library to find new photos");
-    [self loadLocalImages];
+    [self loadLocalImages: YES];
   }
 }
 
@@ -142,6 +145,7 @@
   [super viewWillDisappear:animated];
   //    [self.navigationController setNavigationBarHidden:NO animated:YES];
   
+  NSLog(@"saved defaults");
   [defaults synchronize];
 }
 
@@ -371,11 +375,11 @@
   // if the dictionary is nil
   // load all local photos
   if (info == nil) {
-    [self loadLocalImages];
+    [self loadLocalImages:NO];
     return;
   }
   
-  [self loadLocalImages];
+  [self loadLocalImages:NO];
   
   // I HAVE NOTICED THAT THE NOTIFICAITON THAT SAYS WHAT HAS BEEN UPDATED IS VERY VERY INCONSISTENT
   // INSTEAD OF USING THAT, WHEN THIS NOTIFICATION IS CALLED, ILL JUST MANUALLY LOOK FOR NEW PHOTOS
@@ -399,18 +403,17 @@
 - (void) addAsset: (ALAsset *) asset {
   NSURL *url = asset.defaultRepresentation.url;
   
+  // create photo object
   CSPhoto *photo =[[CSPhoto alloc] init];
   photo.imageURL = url.absoluteString;
   photo.deviceId = account.cid;
   photo.onServer = @"0";
   
+  // add data to photo
   NSDate *date = [asset valueForProperty:ALAssetPropertyDate];
-  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-  [dateFormatter setLocale:[NSLocale currentLocale]];
-  [dateFormatter setDateFormat:@"dd-mm-yyyy hh:mm:ss ZZZ"];
-  
   photo.dateCreated = date;
   
+  // add data to photo obj
   NSString *name = asset.defaultRepresentation.filename;
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
   NSString *documentsPath = [paths objectAtIndex:0];
@@ -418,16 +421,25 @@
   
   photo.thumbURL = filePath;
   
+  // add photo to db
   [self.dataWrapper addPhoto:photo asset:asset];
 }
 
 // load all the local photos from allowed albums to core data
-- (void) loadLocalImages {
+- (void) loadLocalImages: (BOOL) parseAll {
   
   // Run in the background as it takes a while to get all assets from the library
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
     NSMutableArray *assetURLDictionaries = [[NSMutableArray alloc] init];
+  
+    // the latest date that is stored in the user defaults
+    NSDate *latestStored = [defaults objectForKey:DATE];
+    
+    // the actual latest date from the assets
+    // this may be newer than the one stored in the defaults
+    // and on first run, this is the only thing that will be change
+    __block NSDate *latestAsset;
     
     // Process assets
     void (^assetEnumerator)(ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
@@ -435,10 +447,47 @@
         if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
           [assetURLDictionaries addObject:[result valueForProperty:ALAssetPropertyURLs]];
           NSURL *url = result.defaultRepresentation.url;
-          
           NSDate *date = [result valueForProperty:ALAssetPropertyDate];
-          NSLog(@"%@", date);
+        
+          // var to hold date comparison result
+          NSComparisonResult result;
           
+          if (latestAsset != nil) {
+            result = [latestAsset compare:date];
+            
+            // the current asset date is newer
+            if (result == NSOrderedAscending) {
+              latestAsset = date;
+              // store the latest date in defaults
+              [defaults setObject:latestAsset forKey:DATE];
+              [defaults synchronize];
+            }
+          }else {
+            latestAsset = date;
+            // store the latest date in defaults
+            [defaults setObject:latestAsset forKey:DATE];
+            [defaults synchronize];
+          }
+          
+          // if you want to stop parsing after we know there are
+          // no older ones
+          if (!parseAll) {
+            // if the latest stored date is there
+            if (latestStored != nil) {
+              result = [latestStored compare:date];
+              
+              // if current asset date is older than store date,
+              // than stop enumerator
+              if (result == NSOrderedDescending || result == NSOrderedSame) {
+                *stop = YES;
+                return;
+              }
+            }
+          }
+
+//          [defaults setValue:date forKey:[NSString stringWithFormat:@"%@-%@", DATE, ]]
+          
+          // async call to load the asset from asset library
           [_assetLibrary assetForURL:url
                          resultBlock:^(ALAsset *asset) {
                            if (asset) {
@@ -460,7 +509,6 @@
         
         // only get pictures from the allowed albums
         if ([self urlIsAllowed:groupUrl]) {
-          NSLog(@"found photo from album %@", groupName);
           [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetEnumerator];
           [assetGroups addObject:group];
         }
