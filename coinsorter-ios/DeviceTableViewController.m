@@ -35,7 +35,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  // init variables
+  // init vars
   self.dataWrapper = [[CoreDataWrapper alloc] init];
   self.coinsorter = [[Coinsorter alloc] init];
   defaults = [NSUserDefaults standardUserDefaults];
