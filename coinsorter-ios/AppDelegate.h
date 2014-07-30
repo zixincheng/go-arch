@@ -15,4 +15,6 @@
 
 @property (strong) AccountDataWrapper *account;
 
+@property (nonatomic, copy) void(^backgroundTransferCompletionHandler)();
+
 @end

@@ -13,11 +13,14 @@
 #import "CoreDataWrapper.h"
 #import "AppDelegate.h"
 #import "SSKeychain.h"
+#import "UploadPhotosTask.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <ImageIO/ImageIO.h>
 
 @interface Coinsorter : NSObject <NSURLSessionDelegate> {
   AccountDataWrapper *account;
+  UIBackgroundTaskIdentifier bgTask;
+  UploadPhotosTask *uploadTask;
 }
 
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback;

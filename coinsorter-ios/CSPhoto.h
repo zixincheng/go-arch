@@ -22,4 +22,8 @@
 @property (nonatomic, strong) NSDate *dateCreated;
 @property (nonatomic, strong) NSDate *dateUploaded;
 
+// the background upload task id.
+// if this is greater than -1, it means the photo is currently being uploaded
+@property (nonatomic) unsigned long taskIdentifier;
+
 @end

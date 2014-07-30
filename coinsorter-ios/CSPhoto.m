@@ -10,4 +10,12 @@
 
 @implementation CSPhoto
 
+- (id) init {
+  self = [super init];
+  
+  self.taskIdentifier = -1;
+  
+  return self;
+}
+
 @end
