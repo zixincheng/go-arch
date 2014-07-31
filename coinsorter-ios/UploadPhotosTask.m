@@ -170,9 +170,9 @@ enum {
           completionHandler();
           
           // Show a local notification when all downloads are over.
-          UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-          localNotification.alertBody = @"Finished Uploading Local Photos";
-          [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+//          UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+//          localNotification.alertBody = @"Finished Uploading Local Photos";
+//          [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
         }];
       }
     }
