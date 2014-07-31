@@ -11,14 +11,14 @@
 			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Auto Sync</string>
-			<key>Key</key>
-			<string>autoSync</string>
 			<key>DefaultValue</key>
 			<false/>
+			<key>Key</key>
+			<string>autoSync</string>
+			<key>Title</key>
+			<string>Auto Sync</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 		<dict>
 			<key>IASKViewControllerStoryBoardFile</key>
@@ -39,6 +39,10 @@
 		<dict>
 			<key>Key</key>
 			<string>deviceName</string>
+			<key>AutocapitalizationType</key>
+			<string>Words</string>
+			<key>AutocorrectionType</key>
+			<string>No</string>
 			<key>Title</key>
 			<string>Device Name</string>
 			<key>Type</key>

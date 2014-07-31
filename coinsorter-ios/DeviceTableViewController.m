@@ -38,9 +38,8 @@
   // init vars
   self.dataWrapper = [[CoreDataWrapper alloc] init];
   self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
+  localLibrary = [[LocalLibrary alloc] init];
   defaults = [NSUserDefaults standardUserDefaults];
-  self.allowedAlbums = [[NSMutableArray alloc] init];
-  self.assetLibrary = [[ALAssetsLibrary alloc] init];
   self.devices = [[NSMutableArray alloc] init];
   UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
   needParse = NO;
@@ -56,16 +55,21 @@
   // call methods to start controller
   
   // load the allowed albums from defaults
-  [self loadAllowedAlbums];
+  [localLibrary loadAllowedAlbums];
   
   // load the images from iphone photo library
-  [self loadLocalImages: NO];
+  [localLibrary loadLocalImages: NO];
   
-  // register for alassetlibrarynotifications
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetChanged:) name:ALAssetsLibraryChangedNotification object:self.assetLibrary];
+  // register for asset change notifications
+  [localLibrary registerForNotifications];
   
+  // observe values in the user defaults
   [defaults addObserver:self forKeyPath:DEVICENAME options:NSKeyValueObservingOptionNew context:NULL];
   [defaults addObserver:self forKeyPath:ALBUMS options:NSKeyValueObservingOptionNew context:NULL];
+  
+  // start locations change updates
+  // uses significat-change location service, which will update
+  // me every 500m change, uses wifi and saves a lot of battery
   
   // get devices, photos, and upload
   [self syncAllFromApi];
@@ -74,9 +78,8 @@
 // called when this controller leaves memory
 // we need to stop observing asset library and defaults
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
-  //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultsSettingsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
-  
+  [localLibrary unRegisterForNotifications];
+   
   [defaults removeObserver:self forKeyPath:DEVICENAME];
   [defaults removeObserver:self forKeyPath:ALBUMS];
 }
@@ -103,17 +106,8 @@
     }
     [self asyncUpdateView];
   }else if ([keyPath isEqualToString:ALBUMS]) {
-    [self loadAllowedAlbums];
+    [localLibrary loadAllowedAlbums];
     needParse = YES;
-  }
-}
-
-// get the allowed albums from user defaults and load into array
-- (void) loadAllowedAlbums {
-  [self.allowedAlbums removeAllObjects];
-  NSMutableArray *arr = [defaults mutableArrayValueForKey:ALBUMS];
-  for (NSString *url in arr) {
-    [self.allowedAlbums addObject:url];
   }
 }
 
@@ -135,7 +129,7 @@
     needParse = NO;
     
     NSLog(@"will parse through library to find new photos");
-    [self loadLocalImages: YES];
+    [localLibrary loadLocalImages: YES];
   }
 }
 
@@ -206,11 +200,11 @@
   
   // then get all devices
   [self.coinsorter getDevices: ^(NSMutableArray *devices) {
-    self.devices = devices;
-    [self asyncUpdateView];
-    for (CSDevice *d in self.devices) {
+    for (CSDevice *d in devices) {
       [self.dataWrapper addUpdateDevice:d];
     }
+      self.devices = [self.dataWrapper getAllDevices];
+      [self asyncUpdateView];
   }];
 }
 
@@ -352,178 +346,6 @@
   // If we subscribe to this method we must dismiss the view controller ourselves
   NSLog(@"Did finish modal presentation");
   [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - Load Local Images
-
-// checks if the given url is one the user wants photos from
-// returns YES if it is
-- (BOOL) urlIsAllowed: (NSString *) url {
-  for (NSString *u in self.allowedAlbums) {
-    if ([u isEqualToString:[url description]]) {
-      return YES;
-    }
-  }
-  return NO;
-}
-
-// called when an asset in the photo library changes
-- (void) assetChanged: (NSNotification *) notification {
-  NSDictionary *info = [notification userInfo];
-  
-  // if the dictionary is nil
-  // load all local photos
-  if (info == nil) {
-    [self loadLocalImages:NO];
-    return;
-  }
-  
-  [self loadLocalImages:NO];
-  
-  // I HAVE NOTICED THAT THE NOTIFICAITON THAT SAYS WHAT HAS BEEN UPDATED IS VERY VERY INCONSISTENT
-  // INSTEAD OF USING THAT, WHEN THIS NOTIFICATION IS CALLED, ILL JUST MANUALLY LOOK FOR NEW PHOTOS
-  
-  //    NSSet *updatedAssets = [info objectForKey:ALAssetLibraryUpdatedAssetsKey];
-  //    NSSet *updatedAssetsGroup = [info objectForKey:ALAssetLibraryUpdatedAssetGroupsKey];
-  //    if (updatedAssetsGroup != nil) {
-  //        for (NSURL *group in updatedAssetsGroup) {
-  //            NSString *urlString = [group absoluteString];
-  //            NSLog(@"URL STRING - %@", urlString);
-  //            if ([self urlIsAllowed:urlString]) {
-  //                for (NSURL *a in updatedAssets) {
-  //                    NSLog(@"UPDATED - %@", a);
-  //                }
-  //            }
-  //        }
-  //    }
-}
-
-// add asset to core data
-- (void) addAsset: (ALAsset *) asset {
-  NSURL *url = asset.defaultRepresentation.url;
-  
-  // create photo object
-  CSPhoto *photo =[[CSPhoto alloc] init];
-  photo.imageURL = url.absoluteString;
-  photo.deviceId = account.cid;
-  photo.onServer = @"0";
-  
-  // add data to photo
-  NSDate *date = [asset valueForProperty:ALAssetPropertyDate];
-  photo.dateCreated = date;
-  
-  // add data to photo obj
-  NSString *name = asset.defaultRepresentation.filename;
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  NSString *documentsPath = [paths objectAtIndex:0];
-  NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb-%@", name]];
-  
-  photo.thumbURL = filePath;
-  
-  // add photo to db
-  [self.dataWrapper addPhoto:photo asset:asset];
-}
-
-// load all the local photos from allowed albums to core data
-- (void) loadLocalImages: (BOOL) parseAll {
-  
-  // Run in the background as it takes a while to get all assets from the library
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
-    NSMutableArray *assetURLDictionaries = [[NSMutableArray alloc] init];
-  
-    // the latest date that is stored in the user defaults
-    NSDate *latestStored = [defaults objectForKey:DATE];
-    
-    // the actual latest date from the assets
-    // this may be newer than the one stored in the defaults
-    // and on first run, this is the only thing that will be change
-    __block NSDate *latestAsset;
-    
-    // Process assets
-    void (^assetEnumerator)(ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-      if (result != nil) {
-        if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-          [assetURLDictionaries addObject:[result valueForProperty:ALAssetPropertyURLs]];
-          NSURL *url = result.defaultRepresentation.url;
-          NSDate *date = [result valueForProperty:ALAssetPropertyDate];
-        
-          // var to hold date comparison result
-          NSComparisonResult result;
-          
-          if (latestAsset != nil) {
-            result = [latestAsset compare:date];
-            
-            // the current asset date is newer
-            if (result == NSOrderedAscending) {
-              latestAsset = date;
-              // store the latest date in defaults
-              [defaults setObject:latestAsset forKey:DATE];
-              [defaults synchronize];
-            }
-          }else {
-            latestAsset = date;
-            // store the latest date in defaults
-            [defaults setObject:latestAsset forKey:DATE];
-            [defaults synchronize];
-          }
-          
-          // if you want to stop parsing after we know there are
-          // no older ones
-          if (!parseAll) {
-            // if the latest stored date is there
-            if (latestStored != nil) {
-              result = [latestStored compare:date];
-              
-              // if current asset date is older than store date,
-              // than stop enumerator
-              if (result == NSOrderedDescending || result == NSOrderedSame) {
-                *stop = YES;
-                return;
-              }
-            }
-          }
-
-//          [defaults setValue:date forKey:[NSString stringWithFormat:@"%@-%@", DATE, ]]
-          
-          // async call to load the asset from asset library
-          [_assetLibrary assetForURL:url
-                         resultBlock:^(ALAsset *asset) {
-                           if (asset) {
-                             [self addAsset:asset];
-                           }
-                         }
-                        failureBlock:^(NSError *error){
-                          NSLog(@"operation was not successfull!");
-                        }];
-        }
-      }
-    };
-    
-    // Process groups
-    void (^ assetGroupEnumerator) (ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) {
-      if (group != nil) {
-        NSString *groupName = [group valueForProperty:ALAssetsGroupPropertyName];
-        NSString *groupUrl = [group valueForProperty:ALAssetsGroupPropertyURL];
-        
-        // only get pictures from the allowed albums
-        if ([self urlIsAllowed:groupUrl]) {
-          [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetEnumerator];
-          [assetGroups addObject:group];
-        }
-      }
-    };
-    
-    // Process!
-    [self.assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
-                                     usingBlock:assetGroupEnumerator
-                                   failureBlock:^(NSError *error) {
-                                     NSLog(@"There is an error");
-                                   }];
-    //        localPhotos = locals;
-    NSLog(@"finished loading local photos");
-  });
-  
 }
 
 @end

@@ -41,9 +41,7 @@ enum {
   // setup background session config
   NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfiguration:[NSString stringWithFormat:@"com.go.upload.%@", uniqueString]];
   [config setSessionSendsLaunchEvents:YES];
-  [config setHTTPMaximumConnectionsPerHost:5];
   [config setDiscretionary:NO];
-  [config setRequestCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
   
   // create the sessnon with backaground config
   NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];

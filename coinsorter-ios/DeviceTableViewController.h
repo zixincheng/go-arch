@@ -14,14 +14,15 @@
 #import "CSDevice.h"
 #import "Coinsorter.h"
 #import "CoreDataWrapper.h"
+#import "LocalLibrary.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface DeviceTableViewController : UITableViewController <MWPhotoBrowserDelegate, UITableViewDataSource> {
+@interface DeviceTableViewController : UITableViewController <MWPhotoBrowserDelegate, UITableViewDataSource, CLLocationManagerDelegate> {
   NSMutableArray *_selections;
-  NSMutableArray *localPhotos;
   
+  LocalLibrary *localLibrary;
   AccountDataWrapper *account;
-  
   NSUserDefaults *defaults;
   
   BOOL needParse;
@@ -32,8 +33,6 @@
 
 @property (nonatomic, strong) NSMutableArray *devices;
 @property (nonatomic, strong) NSMutableArray *photos;
-@property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
-@property (nonatomic, strong) NSMutableArray *allowedAlbums;
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;

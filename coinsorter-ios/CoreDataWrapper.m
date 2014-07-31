@@ -16,7 +16,7 @@
 - (void) addUpdateDevice:(CSDevice *)device {
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
   
-  [context performBlock: ^{
+  [context performBlockAndWait: ^{
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     
     NSEntityDescription *entityDesc = [NSEntityDescription entityForName:DEVICE inManagedObjectContext:context];
@@ -81,6 +81,34 @@
   return device;
 }
 
+- (NSMutableArray *) getAllDevices {
+  NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+  __block NSMutableArray *arr = [[NSMutableArray alloc] init];
+  
+  [context performBlockAndWait: ^{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:DEVICE];
+    
+    NSArray*dvs = [context executeFetchRequest:request error:nil];
+    
+    if (dvs == nil) {
+      NSLog(@"error with core data request");
+      abort();
+    }
+    
+    // add all of the photo objects to the local photo list
+    for (int i = 0; i < [dvs count]; i++) {
+      NSManagedObject *d = dvs[i];
+      CSDevice *device = [[CSDevice alloc] init];
+      device.deviceName = [d valueForKey:@"deviceName"];
+      device.remoteId = [d valueForKey:@"remoteId"];
+
+      [arr addObject:device];
+    }
+  }];
+  NSLog(@"returning array of size %d", arr.count);
+  
+  return arr;
+}
 
 - (void) addUpdatePhoto:(CSPhoto *)photo {
   
