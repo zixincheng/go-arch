@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "CSPhoto.h"
+#import "CoreDataWrapper.h"
 #import "AppDelegate.h"
 
 @interface UploadPhotosTask : NSObject <NSURLSessionTaskDelegate> {
@@ -17,8 +18,12 @@
   NSConditionLock* readLock;
 }
 
-@property (nonatomic) NSMutableArray *uploadingPhotos;
+- (id) initWithWrapper: (CoreDataWrapper *) wrap;
 
 - (void) uploadPhotoArray: (NSMutableArray *) photos;
+
+@property (nonatomic) NSMutableArray *uploadingPhotos;
+// need reference to a data wrapper so we can change photo state when we download, upload, etc.
+@property CoreDataWrapper *dataWrapper;
 
 @end

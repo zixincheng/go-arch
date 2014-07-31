@@ -81,38 +81,6 @@
   return device;
 }
 
-//    dispatch_async(dbQueue, ^ {
-//        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-//        NSManagedObjectContext *context = [appDelegate managedObjectContext];
-//        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-//
-//        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(remoteId = %@)", cid];
-//        [request setPredicate:pred];
-//
-//        NSEntityDescription *entityDesc = [NSEntityDescription entityForName:DEVICE inManagedObjectContext:context];
-//        [request setEntity:entityDesc];
-//
-//        NSError *err;
-//        NSArray *result = [context executeFetchRequest:request error:&err];
-//
-//        if (result == nil) {
-//            NSLog(@"error with core data");
-//            abort();
-//        }
-//
-//        if (result.count > 0) {
-//            NSManagedObject *obj = result[0];
-//
-//            CSDevice *device = [[CSDevice alloc] init];
-//            device.remoteId = cid;
-//            device.deviceName = [obj valueForKey:@"deviceName"];
-//
-//            callback(device);
-//        }else {
-//            callback(nil);
-//        }
-//
-//    });
 
 - (void) addUpdatePhoto:(CSPhoto *)photo {
   
@@ -152,47 +120,6 @@
   }];
 }
 
-//    dispatch_async(dbQueue, ^ {
-//
-//        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-//        NSManagedObjectContext *context = [appDelegate managedObjectContext];
-//
-//        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-//
-//        NSEntityDescription *entityDesc = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:context];
-//        [request setEntity:entityDesc];
-//
-//        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(imageURL = %@)", photo.imageURL];
-//        [request setPredicate:pred];
-//
-//        NSError *err;
-//        NSArray *result = [context executeFetchRequest:request error:&err];
-//
-//        NSAssert(![NSThread isMainThread], @"MAIN THREAD WHEN USING DB!!!");
-//
-//        if (result == nil) {
-//            NSLog(@"error with core data request");
-//            abort();
-//        }
-//
-//        NSManagedObjectContext *photoObj;
-//        if (result.count == 0) {
-//            photoObj = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
-//        }else {
-//            photoObj = result[0];
-//        }
-//
-//        [photoObj setValue:photo.imageURL forKey:@"imageURL"];
-//        [photoObj setValue:photo.thumbURL forKey:@"thumbURL"];
-//        [photoObj setValue:photo.deviceId forKey:@"deviceId"];
-//        [photoObj setValue:photo.onServer forKey:@"onServer"];
-//
-//        if (photo.remoteID != nil) {
-//            [photoObj setValue:photo.remoteID forKey:@"remoteId"];
-//        }
-//        [appDelegate saveContext];
-//    });
-
 - (void) addPhoto:(CSPhoto *)photo asset:(ALAsset *) asset {
   
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
@@ -223,8 +150,6 @@
         
         NSLog(@"will save thumbnail to %@", photo.thumbURL);
       }
-      
-      NSLog(@"SAVING PHOTO WITH DEVICE ID %@", photo.deviceId);
       
       [newPhoto setValue:photo.imageURL forKey:@"imageURL"];
       [newPhoto setValue:photo.thumbURL forKey:@"thumbURL"];

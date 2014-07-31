@@ -10,12 +10,12 @@
 
 @implementation UploadPhotosTask
 
-- (id) init {
+- (id) initWithWrapper:(CoreDataWrapper *)wrap {
   self = [super init];
   
   self.uploadingPhotos = [[NSMutableArray alloc] init];
-  
   assetLibrary = [[ALAssetsLibrary alloc] init];
+  self.dataWrapper = wrap;
   
   return self;
 }
@@ -41,8 +41,8 @@ enum {
   // setup background session config
   NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfiguration:[NSString stringWithFormat:@"com.go.upload.%@", uniqueString]];
   [config setSessionSendsLaunchEvents:YES];
-  [config setHTTPMaximumConnectionsPerHost:1];
-  [config setTimeoutIntervalForRequest:30];
+  [config setHTTPMaximumConnectionsPerHost:5];
+  [config setDiscretionary:NO];
   [config setRequestCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
   
   // create the sessnon with backaground config
@@ -88,7 +88,10 @@ enum {
           AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
           NSString *urlString = [NSString stringWithFormat:@"%@%@%@", @"https://", appDelegate.account.ip, @"/photos"];
           NSURL *url = [NSURL URLWithString:urlString];
-          NSDictionary *headers = @{@"token" : appDelegate.account.token};
+
+          NSArray *objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"image/jpeg", nil];
+          NSArray *keys = [NSArray arrayWithObjects:@"token", @"filename", @"image-type", nil];
+          NSDictionary *headers = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
           
           NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
           [request setURL:url];
@@ -150,26 +153,28 @@ enum {
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
   
   [session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
-    NSLog(@"there are %d upload tasks", uploadTasks.count);
+    NSLog(@"there are %lu upload tasks", (unsigned long)uploadTasks.count);
     
-    NSLog(@"Background Session Finished All Events");
-    
-    if (appDelegate.backgroundTransferCompletionHandler != nil) {
-      // Copy locally the completion handler.
-      void(^completionHandler)() = appDelegate.backgroundTransferCompletionHandler;
+    if (uploadTasks.count == 0) {
+      NSLog(@"Background Session Finished All Events");
       
-      // Make nil the backgroundTransferCompletionHandler.
-      appDelegate.backgroundTransferCompletionHandler = nil;
-      
-      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        // Call the completion handler to tell the system that there are no other background transfers.
-        completionHandler();
+      if (appDelegate.backgroundTransferCompletionHandler != nil) {
+        // Copy locally the completion handler.
+        void(^completionHandler)() = appDelegate.backgroundTransferCompletionHandler;
         
-        // Show a local notification when all downloads are over.
-        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-        localNotification.alertBody = @"Finished Uploading Local Photos";
-        [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
-      }];
+        // Make nil the backgroundTransferCompletionHandler.
+        appDelegate.backgroundTransferCompletionHandler = nil;
+        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+          // Call the completion handler to tell the system that there are no other background transfers.
+          completionHandler();
+          
+          // Show a local notification when all downloads are over.
+          UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+          localNotification.alertBody = @"Finished Uploading Local Photos";
+          [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+        }];
+      }
     }
   }];
 }
@@ -189,6 +194,9 @@ enum {
 //  NSLog(@"PHOTO COUNT %d", self.uploadingPhotos.count);
   if (p != nil) {
     NSLog(@"Finsished uploading %@", p.imageURL);
+    
+    [p onServerSet:YES];
+    [self.dataWrapper addUpdatePhoto:p];
     
     @synchronized (self.uploadingPhotos) {
       p.taskIdentifier = -1;

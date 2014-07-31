@@ -37,7 +37,7 @@
   
   // init vars
   self.dataWrapper = [[CoreDataWrapper alloc] init];
-  self.coinsorter = [[Coinsorter alloc] init];
+  self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
   defaults = [NSUserDefaults standardUserDefaults];
   self.allowedAlbums = [[NSMutableArray alloc] init];
   self.assetLibrary = [[ALAssetsLibrary alloc] init];
@@ -46,7 +46,6 @@
   needParse = NO;
   
   // setup objects
-  self.coinsorter.dataWrapper = self.dataWrapper;
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
   account = appDelegate.account;
   self.localDevice = [self.dataWrapper getDevice:account.cid];

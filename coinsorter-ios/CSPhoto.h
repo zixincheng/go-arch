@@ -26,4 +26,6 @@
 // if this is greater than -1, it means the photo is currently being uploaded
 @property (nonatomic) unsigned long taskIdentifier;
 
+- (void) onServerSet: (BOOL)on;
+
 @end

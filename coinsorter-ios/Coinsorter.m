@@ -15,11 +15,16 @@
 
 @implementation Coinsorter
 
-- (id) init {
+
+-(id) initWithWrapper:(CoreDataWrapper *)wrap {
+  self = [super init];
+  
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
   account = appDelegate.account;
   
-  uploadTask = [[UploadPhotosTask alloc] init];
+  self.dataWrapper = wrap;
+  
+  uploadTask = [[UploadPhotosTask alloc] initWithWrapper:self.dataWrapper];
   
   return self;
 }

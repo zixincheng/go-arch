@@ -23,6 +23,8 @@
   UploadPhotosTask *uploadTask;
 }
 
+- (id) initWithWrapper: (CoreDataWrapper *) wrap;
+
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback;
 - (void) getToken: (NSString *) ip pass: (NSString *) pass callback: (void (^) (NSDictionary *authData)) callback;
 - (void) getPhotos: (NSString *) lastId callback: (void (^) (NSMutableArray *devices)) callback;

@@ -18,4 +18,12 @@
   return self;
 }
 
+- (void) onServerSet:(BOOL)on {
+  if (on) {
+    self.onServer = @"1";
+  }else {
+    self.onServer = @"0";
+  }
+}
+
 @end
