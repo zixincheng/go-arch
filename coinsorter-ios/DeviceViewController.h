@@ -18,7 +18,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface DeviceTableViewController : UIViewController <MWPhotoBrowserDelegate, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate> {
+@interface DeviceViewController : UIViewController <MWPhotoBrowserDelegate, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate> {
   NSMutableArray *_selections;
   
   LocalLibrary *localLibrary;

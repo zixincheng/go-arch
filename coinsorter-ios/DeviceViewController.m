@@ -1,9 +1,9 @@
 
-#import "DeviceTableViewController.h"
+#import "DeviceViewController.h"
 #import "MWCommon.h"
 
 
-@implementation DeviceTableViewController
+@implementation DeviceViewController
 
 #pragma mark - NSUserDefaults Constants
 
@@ -14,15 +14,6 @@
 #pragma mark -
 #pragma mark Initialization
 
-//- (id)initWithStyle:(UITableViewStyle)style {
-//  if ((self = [super initWithStyle:style])) {
-//    if (self) {
-//      // custome config (doesn't work)
-//    }
-//    
-//  }
-//  return self;
-//}
 
 - (void)segmentChange {
   [self.tableView reloadData];
@@ -283,7 +274,7 @@
   // Show
   [self.navigationController pushViewController:browser animated:YES];
   // Release
-	
+
 	// Deselect
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
