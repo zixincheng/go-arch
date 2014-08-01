@@ -14,15 +14,15 @@
 #pragma mark -
 #pragma mark Initialization
 
-- (id)initWithStyle:(UITableViewStyle)style {
-  if ((self = [super initWithStyle:style])) {
-    if (self) {
-      // custome config (doesn't work)
-    }
-    
-  }
-  return self;
-}
+//- (id)initWithStyle:(UITableViewStyle)style {
+//  if ((self = [super initWithStyle:style])) {
+//    if (self) {
+//      // custome config (doesn't work)
+//    }
+//    
+//  }
+//  return self;
+//}
 
 - (void)segmentChange {
   [self.tableView reloadData];
@@ -49,7 +49,7 @@
   account = appDelegate.account;
   self.localDevice = [self.dataWrapper getDevice:account.cid];
   refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
-  [refresh addTarget:self action:@selector(syncAllFromApi) forControlEvents:UIControlEventValueChanged];
+  [refresh addTarget:self.tableView action:@selector(syncAllFromApi) forControlEvents:UIControlEventValueChanged];
   self.refreshControl = refresh;
   
   // call methods to start controller
@@ -66,10 +66,6 @@
   // observe values in the user defaults
   [defaults addObserver:self forKeyPath:DEVICENAME options:NSKeyValueObservingOptionNew context:NULL];
   [defaults addObserver:self forKeyPath:ALBUMS options:NSKeyValueObservingOptionNew context:NULL];
-  
-  // start locations change updates
-  // uses significat-change location service, which will update
-  // me every 500m change, uses wifi and saves a lot of battery
   
   // get devices, photos, and upload
   [self syncAllFromApi];
@@ -163,7 +159,6 @@
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     [self getDevicesFromApi];
     [self getPhotosFromApi];
-    [self uploadPhotosToApi];
   });
   
   // stop the refreshing animation

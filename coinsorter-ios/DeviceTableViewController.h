@@ -18,7 +18,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface DeviceTableViewController : UITableViewController <MWPhotoBrowserDelegate, UITableViewDataSource, CLLocationManagerDelegate> {
+@interface DeviceTableViewController : UIViewController <MWPhotoBrowserDelegate, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate> {
   NSMutableArray *_selections;
   
   LocalLibrary *localLibrary;
@@ -30,6 +30,8 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *syncButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) UIRefreshControl *refreshControl;
 
 @property (nonatomic, strong) NSMutableArray *devices;
 @property (nonatomic, strong) NSMutableArray *photos;
