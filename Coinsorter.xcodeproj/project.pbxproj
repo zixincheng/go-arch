@@ -17,12 +17,15 @@
 		202E358D19805DBA00C60F51 /* settings-25.png in Resources */ = {isa = PBXBuildFile; fileRef = 202E358C19805DBA00C60F51 /* settings-25.png */; };
 		202E358F1981C5A500C60F51 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 202E358E1981C5A500C60F51 /* ImageIO.framework */; };
 		2052CF2E19736E8F008B4ACF /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF2C19736E8F008B4ACF /* Model.xcdatamodeld */; };
-		2052CF3119737139008B4ACF /* DeviceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF3019737139008B4ACF /* DeviceTableViewController.m */; };
+		2052CF3119737139008B4ACF /* DeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF3019737139008B4ACF /* DeviceViewController.m */; };
 		2052CF371973B405008B4ACF /* CSPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF361973B405008B4ACF /* CSPhoto.m */; };
 		20805CFE1975E75A00CE4B00 /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = 20805CFD1975E75A00CE4B00 /* Server.m */; };
+		20885E0D198AF12E00E1C5A8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20885E0C198AF12E00E1C5A8 /* CoreLocation.framework */; };
+		20885E10198AF34800E1C5A8 /* LocalLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 20885E0F198AF34800E1C5A8 /* LocalLibrary.m */; };
 		208D2A6219765534004D6493 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A6119765534004D6493 /* ConnectViewController.m */; };
 		208D2A651976E94E004D6493 /* AccountDataWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A641976E94E004D6493 /* AccountDataWrapper.m */; };
 		208D2A6E1977026C004D6493 /* firstLoadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A6D1977026C004D6493 /* firstLoadViewController.m */; };
+		2093B24119896B44002E1DB6 /* UploadPhotosTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093B24019896B44002E1DB6 /* UploadPhotosTask.m */; };
 		20A2268719748D1B00F70374 /* Coinsorter.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A2268619748D1B00F70374 /* Coinsorter.m */; };
 		20B43B361970992D00D996A5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B351970992D00D996A5 /* Foundation.framework */; };
 		20B43B381970992D00D996A5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B371970992D00D996A5 /* CoreGraphics.framework */; };
@@ -69,18 +72,23 @@
 		202E358C19805DBA00C60F51 /* settings-25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-25.png"; sourceTree = "<group>"; };
 		202E358E1981C5A500C60F51 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		2052CF2D19736E8F008B4ACF /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		2052CF2F19737139008B4ACF /* DeviceTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTableViewController.h; sourceTree = "<group>"; };
-		2052CF3019737139008B4ACF /* DeviceTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewController.m; sourceTree = "<group>"; };
+		2052CF2F19737139008B4ACF /* DeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceViewController.h; sourceTree = "<group>"; };
+		2052CF3019737139008B4ACF /* DeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceViewController.m; sourceTree = "<group>"; };
 		2052CF351973B405008B4ACF /* CSPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSPhoto.h; sourceTree = "<group>"; };
 		2052CF361973B405008B4ACF /* CSPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSPhoto.m; sourceTree = "<group>"; };
 		20805CFC1975E75A00CE4B00 /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
 		20805CFD1975E75A00CE4B00 /* Server.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Server.m; sourceTree = "<group>"; };
+		20885E0C198AF12E00E1C5A8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		20885E0E198AF34800E1C5A8 /* LocalLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalLibrary.h; sourceTree = "<group>"; };
+		20885E0F198AF34800E1C5A8 /* LocalLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalLibrary.m; sourceTree = "<group>"; };
 		208D2A6019765534004D6493 /* ConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectViewController.h; sourceTree = "<group>"; };
 		208D2A6119765534004D6493 /* ConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectViewController.m; sourceTree = "<group>"; };
 		208D2A631976E94E004D6493 /* AccountDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountDataWrapper.h; sourceTree = "<group>"; };
 		208D2A641976E94E004D6493 /* AccountDataWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountDataWrapper.m; sourceTree = "<group>"; };
 		208D2A6C1977026C004D6493 /* firstLoadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = firstLoadViewController.h; sourceTree = "<group>"; };
 		208D2A6D1977026C004D6493 /* firstLoadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = firstLoadViewController.m; sourceTree = "<group>"; };
+		2093B23F19896B44002E1DB6 /* UploadPhotosTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadPhotosTask.h; sourceTree = "<group>"; };
+		2093B24019896B44002E1DB6 /* UploadPhotosTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadPhotosTask.m; sourceTree = "<group>"; };
 		20A2268519748D1B00F70374 /* Coinsorter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coinsorter.h; sourceTree = "<group>"; };
 		20A2268619748D1B00F70374 /* Coinsorter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coinsorter.m; sourceTree = "<group>"; };
 		20B43B321970992D00D996A5 /* Coinsorter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coinsorter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20885E0D198AF12E00E1C5A8 /* CoreLocation.framework in Frameworks */,
 				202E358F1981C5A500C60F51 /* ImageIO.framework in Frameworks */,
 				20B43B381970992D00D996A5 /* CoreGraphics.framework in Frameworks */,
 				20B43B3C1970992D00D996A5 /* CoreData.framework in Frameworks */,
@@ -156,6 +165,7 @@
 		20B43B341970992D00D996A5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				20885E0C198AF12E00E1C5A8 /* CoreLocation.framework */,
 				202E358E1981C5A500C60F51 /* ImageIO.framework */,
 				20B43B351970992D00D996A5 /* Foundation.framework */,
 				20B43B371970992D00D996A5 /* CoreGraphics.framework */,
@@ -190,13 +200,17 @@
 				200170711975DFC300426EB9 /* HandshakeTableViewController.m */,
 				20805CFC1975E75A00CE4B00 /* Server.h */,
 				20805CFD1975E75A00CE4B00 /* Server.m */,
-				2052CF2F19737139008B4ACF /* DeviceTableViewController.h */,
-				2052CF3019737139008B4ACF /* DeviceTableViewController.m */,
+				2052CF2F19737139008B4ACF /* DeviceViewController.h */,
+				2052CF3019737139008B4ACF /* DeviceViewController.m */,
 				208D2A631976E94E004D6493 /* AccountDataWrapper.h */,
+				20885E0E198AF34800E1C5A8 /* LocalLibrary.h */,
+				20885E0F198AF34800E1C5A8 /* LocalLibrary.m */,
 				208D2A641976E94E004D6493 /* AccountDataWrapper.m */,
 				2001706D1975BB0300426EB9 /* CoreDataWrapper.h */,
 				2001706E1975BB0300426EB9 /* CoreDataWrapper.m */,
 				20A2268519748D1B00F70374 /* Coinsorter.h */,
+				2093B23F19896B44002E1DB6 /* UploadPhotosTask.h */,
+				2093B24019896B44002E1DB6 /* UploadPhotosTask.m */,
 				20A2268619748D1B00F70374 /* Coinsorter.m */,
 				2001706A1975A87200426EB9 /* CSDevice.h */,
 				2001706B1975A87200426EB9 /* CSDevice.m */,
@@ -284,8 +298,16 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = ACDSystems;
+				ORGANIZATIONNAME = acdGO;
 				TargetAttributes = {
+					20B43B311970992D00D996A5 = {
+						DevelopmentTeam = BJECZ3G6DL;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 					20B43B511970992D00D996A5 = {
 						TestTargetID = 20B43B311970992D00D996A5;
 					};
@@ -372,6 +394,7 @@
 			files = (
 				208D2A651976E94E004D6493 /* AccountDataWrapper.m in Sources */,
 				2001706F1975BB0300426EB9 /* CoreDataWrapper.m in Sources */,
+				20885E10198AF34800E1C5A8 /* LocalLibrary.m in Sources */,
 				20B43B481970992D00D996A5 /* AppDelegate.m in Sources */,
 				200170721975DFC300426EB9 /* HandshakeTableViewController.m in Sources */,
 				20A2268719748D1B00F70374 /* Coinsorter.m in Sources */,
@@ -381,7 +404,8 @@
 				202E358B1980347B00C60F51 /* CoreDataStore.m in Sources */,
 				20005DDD19832C5800818FB6 /* GroupTableViewController.m in Sources */,
 				208D2A6E1977026C004D6493 /* firstLoadViewController.m in Sources */,
-				2052CF3119737139008B4ACF /* DeviceTableViewController.m in Sources */,
+				2052CF3119737139008B4ACF /* DeviceViewController.m in Sources */,
+				2093B24119896B44002E1DB6 /* UploadPhotosTask.m in Sources */,
 				208D2A6219765534004D6493 /* ConnectViewController.m in Sources */,
 				20005DDA1983258A00818FB6 /* SettingsViewController.m in Sources */,
 				2052CF371973B405008B4ACF /* CSPhoto.m in Sources */,
@@ -505,6 +529,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "coinsorter-ios/Coinsorter-Prefix.pch";
 				INFOPLIST_FILE = "coinsorter-ios/Coinsorter-Info.plist";
@@ -519,6 +544,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "coinsorter-ios/Coinsorter-Prefix.pch";
 				INFOPLIST_FILE = "coinsorter-ios/Coinsorter-Info.plist";

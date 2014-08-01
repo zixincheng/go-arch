@@ -7,7 +7,7 @@
 //
 
 #import "HandshakeTableViewController.h"
-#import "DeviceTableViewController.h"
+#import "DeviceViewController.h"
 
 @interface HandshakeTableViewController ()
 
