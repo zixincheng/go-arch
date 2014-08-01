@@ -39,9 +39,12 @@
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
   account = appDelegate.account;
   self.localDevice = [self.dataWrapper getDevice:account.cid];
-  refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
-  [refresh addTarget:self.tableView action:@selector(syncAllFromApi) forControlEvents:UIControlEventValueChanged];
+  refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Fetch Photos"];
+  [refresh addTarget:self action:@selector(syncAllFromApi) forControlEvents:UIControlEventValueChanged];
   self.refreshControl = refresh;
+  
+  // add the refresh control to the table view
+  [self.tableView addSubview:self.refreshControl];
   
   // call methods to start controller
   
