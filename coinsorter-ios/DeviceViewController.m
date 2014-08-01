@@ -43,6 +43,9 @@
   [refresh addTarget:self action:@selector(syncAllFromApi) forControlEvents:UIControlEventValueChanged];
   self.refreshControl = refresh;
   
+  // get count of unuploaded photos
+  self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
+  
   // add the refresh control to the table view
   [self.tableView addSubview:self.refreshControl];
   
@@ -100,6 +103,13 @@
     needParse = YES;
   }
 }
+
+- (IBAction)buttonPressed:(id)sender {
+  if (sender == self.btnUpload) {
+    [self uploadPhotosToApi];
+  }
+}
+
 
 // stops the refreshing animation
 - (void)stopRefresh {
@@ -162,10 +172,33 @@
 // get the photos that need to be uploaded from core data
 // and upload them to server
 - (void) uploadPhotosToApi {
+  
   NSMutableArray *photos = [self.dataWrapper getPhotosToUpload];
+  __block int currentUploaded = 0;
   if (photos.count > 0) {
+    // hide upload button tool bar and show progress on
+    [self.toolUpload setHidden:YES];
+    [self.toolProgress setHidden:NO];
+    [self.progressUpload setProgress:0.0 animated:YES];
+    
     NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
-    [self.coinsorter uploadPhotos:photos];
+    [self.coinsorter uploadPhotos:photos upCallback:^() {
+      currentUploaded += 1;
+      
+      NSLog(@"%d / %lu", currentUploaded, (unsigned long)photos.count);
+      
+      // update progress bar on main thread
+      dispatch_async(dispatch_get_main_queue(), ^{
+        float progress = (float) currentUploaded / (float) photos.count;
+        
+        [self.progressUpload setProgress:progress animated:YES];
+      
+        if (progress == 1.0) {
+          [self.toolProgress setHidden:YES];
+          [self.toolUpload setHidden:NO];
+        }
+      });
+    }];
   }else {
     NSLog(@"there are no photos to upload");
   }

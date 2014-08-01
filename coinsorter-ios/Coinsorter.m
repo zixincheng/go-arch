@@ -227,7 +227,9 @@
   [dataTask resume];
 }
 
-- (void) uploadPhotos:(NSMutableArray *)photos {
+// upload photos from array
+// the callback is what we want to do after each photo is uploaded
+- (void) uploadPhotos:(NSMutableArray *)photos upCallback:(void (^)())upCallback {
   
   // start the recursive calls
 //  [self uploadOnePhoto:photos index:0];
@@ -236,60 +238,10 @@
   // hand off the upload to another class
   // we do this because it has its custom upload delegates
   // that can't screw with download ones
-  [uploadTask uploadPhotoArray:photos];
+  [uploadTask uploadPhotoArray:photos upCallback:upCallback];
 }
 
-//- (void) uploadTaskPhoto: (NSMutableArray *) photos {
-//  
-//  UploadTaskDelegate *uploadDel = [[UploadTaskDelegate alloc] init];
-//  uploadDel.dataWrapper = self.dataWrapper;
-//  
-//  NSURLSessionConfiguration *config =
-//  [NSURLSessionConfiguration backgroundSessionConfiguration: @"com.go.upload"];
-//
-//  NSURLSession *uploadSession = [NSURLSession sessionWithConfiguration:config delegate:uploadDel delegateQueue:nil];
-//  
-//    for (CSPhoto *p in photos) {
-//      
-//      ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
-//        ALAssetRepresentation *rep = [asset defaultRepresentation];
-//        CGImageRef iref = [rep fullResolutionImage];
-//        
-//        // if the asset exists
-//        if (iref) {
-//          UIImage *image = [UIImage imageWithCGImage:iref];
-//          NSData *imageData = UIImageJPEGRepresentation(image, 100);
-//           
-//          // This generates a guranteed unique string
-//          NSString *uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
-//          
-//          NSString *fileName = [NSString stringWithFormat:@"%@_%@", uniqueString, @"image.jpg"];
-//          NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
-//          
-//          [imageData writeToURL:fileURL options:NSDataWritingAtomic error:nil];
-//        
-//          NSMutableURLRequest *request = [self getHTTPPostRequest:@"/photos"];
-//          
-//          NSURLSessionUploadTask *upload = [uploadSession uploadTaskWithRequest:request fromFile:fileURL];
-//        
-//          [upload resume];
-//        }
-//      };
-//      
-//      ALAssetsLibraryAccessFailureBlock failureBlock = ^(NSError *err) {
-//        NSLog(@"can't get image - %@", [err localizedDescription]);
-//      };
-//      
-//      NSURL *asseturl = [NSURL URLWithString:p.imageURL];
-//      ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
-//      [assetslibrary assetForURL:asseturl
-//                     resultBlock:resultBlock
-//                    failureBlock:failureBlock];
-//      
-//      break;
-//    }
-//}
-
+// This the old way of uploading photos and thumbnails using data task
 - (void) uploadOnePhoto: (NSMutableArray *) photos index: (int) index {
   CSPhoto *p = [photos objectAtIndex:index];
   

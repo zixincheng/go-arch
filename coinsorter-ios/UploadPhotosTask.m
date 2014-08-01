@@ -20,20 +20,9 @@
   return self;
 }
 
-- (void) uploadPhotoArray:(NSMutableArray *)photos {
-  
-  //recursive upload
-  [self uploadPhoto:photos index:0];
-}
-
-// NSConditionLock values
-enum {
-  WDASSETURL_PENDINGREADS = 1,
-  WDASSETURL_ALLFINISHED = 0
-};
-
-
-- (void) uploadPhoto:(NSMutableArray *)photos index: (int) index {
+- (void) uploadPhotoArray:(NSMutableArray *)photos upCallback: (void (^) ()) upCallback {
+  // set the upload callback
+  self.upCallback = upCallback;
   
   // This generates a guranteed unique string
   NSString *uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -86,7 +75,7 @@ enum {
           AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
           NSString *urlString = [NSString stringWithFormat:@"%@%@%@", @"https://", appDelegate.account.ip, @"/photos"];
           NSURL *url = [NSURL URLWithString:urlString];
-
+          
           NSArray *objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"image/jpeg", nil];
           NSArray *keys = [NSArray arrayWithObjects:@"token", @"filename", @"image-type", nil];
           NSDictionary *headers = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -102,7 +91,7 @@ enum {
           @synchronized (self.uploadingPhotos) {
             [self.uploadingPhotos addObject:p];
           }
-        
+          
           [uploadTask resume];
           NSLog(@"making post request to %@", urlString);
           
@@ -136,6 +125,12 @@ enum {
     background_task = UIBackgroundTaskInvalid; //Invalidate the background_task
   });
 }
+
+// NSConditionLock values
+enum {
+  WDASSETURL_PENDINGREADS = 1,
+  WDASSETURL_ALLFINISHED = 0
+};
 
 - (CSPhoto *) getPhotoWithTaskIdentifier: (unsigned long) taskId {
   for (CSPhoto *p in self.uploadingPhotos) {
@@ -179,7 +174,7 @@ enum {
 
 - (void) URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
   
-//  NSLog(@"%lld / %lld bytes", totalBytesSent, totalBytesExpectedToSend);
+  //  NSLog(@"%lld / %lld bytes", totalBytesSent, totalBytesExpectedToSend);
 }
 
 - (void) URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
@@ -189,7 +184,7 @@ enum {
   }
   
   CSPhoto *p = [self getPhotoWithTaskIdentifier:task.taskIdentifier];
-//  NSLog(@"PHOTO COUNT %d", self.uploadingPhotos.count);
+  //  NSLog(@"PHOTO COUNT %d", self.uploadingPhotos.count);
   if (p != nil) {
     NSLog(@"Finsished uploading %@", p.imageURL);
     
@@ -199,6 +194,10 @@ enum {
     @synchronized (self.uploadingPhotos) {
       p.taskIdentifier = -1;
       [self.uploadingPhotos removeObject:p];
+      
+      if (self.upCallback != nil) {
+        self.upCallback();
+      }
     }
   }
 }

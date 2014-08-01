@@ -79,8 +79,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="hYI-Sh-scl">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="hYI-Sh-scl">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="523"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -107,8 +107,37 @@
                                     <outlet property="delegate" destination="07j-du-bzQ" id="ETl-Y2-oEU"/>
                                 </connections>
                             </tableView>
+                            <toolbar opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mRQ-sp-0yf">
+                                <rect key="frame" x="0.0" y="523" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Upload" width="304" id="8Kp-5G-sYI">
+                                        <connections>
+                                            <action selector="buttonPressed:" destination="07j-du-bzQ" id="M6b-od-qhf"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <toolbar hidden="YES" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iVW-ar-aWt">
+                                <rect key="frame" x="0.0" y="523" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem style="plain" id="QII-ig-ZzD">
+                                        <progressView key="customView" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="1" id="0w3-3z-2xa">
+                                            <rect key="frame" x="16" y="21" width="290" height="3"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </progressView>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hYI-Sh-scl" firstAttribute="top" secondItem="PGd-32-v6f" secondAttribute="top" id="6mt-hZ-mO8"/>
+                            <constraint firstItem="hYI-Sh-scl" firstAttribute="leading" secondItem="PGd-32-v6f" secondAttribute="leading" id="ZkJ-wA-j5h"/>
+                            <constraint firstItem="HRK-XH-sbx" firstAttribute="top" secondItem="hYI-Sh-scl" secondAttribute="bottom" constant="1" id="pNa-ep-E5n"/>
+                            <constraint firstAttribute="trailing" secondItem="hYI-Sh-scl" secondAttribute="trailing" id="v26-LT-c5K"/>
+                        </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Devices" id="PTp-Pu-d89">
@@ -120,7 +149,11 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="btnUpload" destination="8Kp-5G-sYI" id="VgZ-nX-Wwp"/>
+                        <outlet property="progressUpload" destination="0w3-3z-2xa" id="I2a-US-ETH"/>
                         <outlet property="tableView" destination="hYI-Sh-scl" id="JXq-tL-IV1"/>
+                        <outlet property="toolProgress" destination="iVW-ar-aWt" id="3ra-JC-gJZ"/>
+                        <outlet property="toolUpload" destination="mRQ-sp-0yf" id="sRV-Dn-bqz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IKX-IY-KKX" userLabel="First Responder" sceneMemberID="firstResponder"/>

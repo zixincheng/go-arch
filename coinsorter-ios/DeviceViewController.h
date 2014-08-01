@@ -28,8 +28,16 @@
   BOOL needParse;
 }
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *syncButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
+
+// progress toolbar
+@property (weak, nonatomic) IBOutlet UIToolbar *toolProgress;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressUpload;
+
+
+// upload toolbar
+@property (weak, nonatomic) IBOutlet UIToolbar *toolUpload;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *btnUpload;
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) UIRefreshControl *refreshControl;
 
@@ -40,5 +48,7 @@
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 
 @property (nonatomic, strong) CSDevice *localDevice;
+
+@property int unUploadedPhotos;
 
 @end
