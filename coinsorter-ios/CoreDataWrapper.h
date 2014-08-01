@@ -15,8 +15,8 @@
 
 @interface CoreDataWrapper : NSObject
 
-- (void) addPhoto: (CSPhoto *) photo asset: (ALAsset *) asset;
-- (void) addPhoto: (CSPhoto *) photo;
+- (BOOL) addPhoto: (CSPhoto *) photo asset: (ALAsset *) asset;
+- (BOOL) addPhoto: (CSPhoto *) photo;
 - (void) addDevice: (CSDevice *) device;
 - (void) addUpdatePhoto: (CSPhoto *) photo;
 - (void) addUpdateDevice: (CSDevice *) device;
@@ -24,6 +24,7 @@
 - (NSMutableArray *) getAllDevices;
 - (NSMutableArray *) getPhotos: (NSString *) deviceId;
 - (NSMutableArray *) getPhotosToUpload;
+- (int) getCountUnUploaded;
 - (CSDevice *) getDevice: (NSString *) cid;
 - (NSString *) getLatestId;
 

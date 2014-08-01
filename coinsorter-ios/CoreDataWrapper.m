@@ -148,11 +148,13 @@
   }];
 }
 
-- (void) addPhoto:(CSPhoto *)photo asset:(ALAsset *) asset {
+- (BOOL) addPhoto:(CSPhoto *)photo asset:(ALAsset *) asset {
   
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
   
-  [context performBlock:^{
+  __block BOOL added = NO;
+  
+  [context performBlockAndWait:^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"(imageURL = %@)", photo.imageURL];
     [request setPredicate:pred];
@@ -193,14 +195,16 @@
       [context save:nil];
       
       NSLog(@"added new photo to core data");
+      added = YES;
     }else {
       NSLog(@"photo already in core data");
     }
   }];
+  return added;
 }
 
-- (void) addPhoto:(CSPhoto *)photo {
-  [self addPhoto:photo asset:nil];
+- (BOOL) addPhoto:(CSPhoto *)photo {
+   return [self addPhoto:photo asset:nil];
 }
 
 - (NSMutableArray *)getPhotos: (NSString *) deviceId {
@@ -283,6 +287,30 @@
   }];
   
   return arr;
+}
+
+- (int) getCountUnUploaded {
+  NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+  
+  __block int unUploaded = 0;
+  
+  [context performBlockAndWait: ^{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(onServer = %@)", @"0"];
+    [request setPredicate:pred];
+    
+    NSArray*phs = [context executeFetchRequest:request error:nil];
+    
+    if (phs == nil) {
+      NSLog(@"error with core data request");
+      abort();
+    }
+    
+    // get count of unuploaded photos
+    unUploaded = phs.count;
+  }];
+  
+  return unUploaded;
 }
 
 - (NSString *) getLatestId {

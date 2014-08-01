@@ -15,12 +15,19 @@
 @interface LocalLibrary : NSObject {
   AccountDataWrapper *account;
   ALAssetsLibrary *assetLibrary;
+  
+  // lock to make asset library loading syncrounous
+  NSConditionLock* readLock;
 }
 
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) NSMutableArray *allowedAlbums;
 
+// callback to call when photo gets added to core data
+@property (nonatomic, copy) void(^addCallback)();
+
 - (void) loadLocalImages: (BOOL) parseAll;
+- (void) loadLocalImages: (BOOL) parseAll addCallback: (void (^) ()) addCallback;
 - (void) loadAllowedAlbums;
 - (void) registerForNotifications;
 - (void) unRegisterForNotifications;

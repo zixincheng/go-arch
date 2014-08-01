@@ -88,7 +88,17 @@
   photo.thumbURL = filePath;
   
   // add photo to db
-  [self.dataWrapper addPhoto:photo asset:asset];
+  BOOL added = [self.dataWrapper addPhoto:photo asset:asset];
+  if (added) {
+    if (self.addCallback != nil) {
+      self.addCallback();
+    }
+  }
+}
+
+- (void) loadLocalImages:(BOOL)parseAll addCallback:(void (^)())addCallback {
+  self.addCallback = addCallback;
+  [self loadLocalImages:parseAll];
 }
 
 // load all the local photos from allowed albums to core data

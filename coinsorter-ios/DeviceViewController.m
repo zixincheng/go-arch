@@ -45,6 +45,7 @@
   
   // get count of unuploaded photos
   self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
+  [self updateUploadCountUI];
   
   // add the refresh control to the table view
   [self.tableView addSubview:self.refreshControl];
@@ -55,7 +56,10 @@
   [localLibrary loadAllowedAlbums];
   
   // load the images from iphone photo library
-  [localLibrary loadLocalImages: NO];
+  [localLibrary loadLocalImages: NO addCallback:^{
+    self.unUploadedPhotos++;
+    [self updateUploadCountUI];
+  }];
   
   // register for asset change notifications
   [localLibrary registerForNotifications];
@@ -110,7 +114,6 @@
   }
 }
 
-
 // stops the refreshing animation
 - (void)stopRefresh {
   [self.refreshControl endRefreshing];
@@ -129,7 +132,10 @@
     needParse = NO;
     
     NSLog(@"will parse through library to find new photos");
-    [localLibrary loadLocalImages: YES];
+    // load the images from iphone photo library
+    [self loadLocalPhotos:YES];
+  }else {
+    [self loadLocalPhotos:NO];
   }
 }
 
@@ -152,6 +158,35 @@
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
   return UIStatusBarAnimationNone;
+}
+
+- (void) updateUploadCountUI {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    if (self.unUploadedPhotos == 0) {
+      NSString *title = @"Nothing to Upload";
+      UIColor * color = [UIColor colorWithRed:33/255.0f green:200/255.0f blue:55/255.0f alpha:1.0f];
+      [self.btnUpload setTintColor:color];
+      [self.btnUpload setTitle:title];
+      [self.btnUpload setEnabled:NO];
+    }else {
+      NSString *title = [NSString stringWithFormat:@"Upload %d Photos", self.unUploadedPhotos];
+      [self.btnUpload setTintColor:nil];
+      [self.btnUpload setTitle:title];
+      [self.btnUpload setEnabled:YES];
+    }
+  });
+}
+
+- (void) loadLocalPhotos: (BOOL) parseAll {
+  [localLibrary loadLocalImages: parseAll addCallback:^{
+    self.unUploadedPhotos++;
+    [self updateUploadCountUI];
+  }];
+}
+
+- (void) removeLocalPhoto {
+  self.unUploadedPhotos--;
+  [self updateUploadCountUI];
 }
 
 #pragma mark -
@@ -184,6 +219,8 @@
     NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
     [self.coinsorter uploadPhotos:photos upCallback:^() {
       currentUploaded += 1;
+      
+      [self removeLocalPhoto];
       
       NSLog(@"%d / %lu", currentUploaded, (unsigned long)photos.count);
       
