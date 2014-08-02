@@ -25,14 +25,14 @@
   AccountDataWrapper *account;
   NSUserDefaults *defaults;
   
+  // do we need to fully parse local library
+  // happens after albums select
   BOOL needParse;
 }
 
 
 // progress toolbar
-@property (weak, nonatomic) IBOutlet UIToolbar *toolProgress;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressUpload;
-
 
 // upload toolbar
 @property (weak, nonatomic) IBOutlet UIToolbar *toolUpload;
@@ -50,5 +50,6 @@
 @property (nonatomic, strong) CSDevice *localDevice;
 
 @property int unUploadedPhotos;
+@property BOOL currentlyUploading;
 
 @end

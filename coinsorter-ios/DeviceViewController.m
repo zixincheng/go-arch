@@ -34,6 +34,7 @@
   self.devices = [[NSMutableArray alloc] init];
   UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
   needParse = NO;
+  self.currentlyUploading = NO;
   
   // setup objects
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -46,6 +47,9 @@
   // get count of unuploaded photos
   self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
   [self updateUploadCountUI];
+  
+  // set the progress bar to 100% for cool effect later
+  [self.progressUpload setProgress:100.0f];
   
   // add the refresh control to the table view
   [self.tableView addSubview:self.refreshControl];
@@ -63,7 +67,6 @@
   
   // register for asset change notifications
   [localLibrary registerForNotifications];
-  
   // observe values in the user defaults
   [defaults addObserver:self forKeyPath:DEVICENAME options:NSKeyValueObservingOptionNew context:NULL];
   [defaults addObserver:self forKeyPath:ALBUMS options:NSKeyValueObservingOptionNew context:NULL];
@@ -76,7 +79,7 @@
 // we need to stop observing asset library and defaults
 - (void) dealloc {
   [localLibrary unRegisterForNotifications];
-   
+  
   [defaults removeObserver:self forKeyPath:DEVICENAME];
   [defaults removeObserver:self forKeyPath:ALBUMS];
 }
@@ -162,17 +165,18 @@
 
 - (void) updateUploadCountUI {
   dispatch_async(dispatch_get_main_queue(), ^{
+    NSString *title;
     if (self.unUploadedPhotos == 0) {
-      NSString *title = @"Nothing to Upload";
-      UIColor * color = [UIColor colorWithRed:33/255.0f green:200/255.0f blue:55/255.0f alpha:1.0f];
-      [self.btnUpload setTintColor:color];
-      [self.btnUpload setTitle:title];
-      [self.btnUpload setEnabled:NO];
+      title = @"Nothing to Upload";
     }else {
-      NSString *title = [NSString stringWithFormat:@"Upload %d Photos", self.unUploadedPhotos];
-      [self.btnUpload setTintColor:nil];
-      [self.btnUpload setTitle:title];
-      [self.btnUpload setEnabled:YES];
+      title = [NSString stringWithFormat:@"Upload %d Photos", self.unUploadedPhotos];
+    }
+    [self.btnUpload setTitle:title];
+    
+    if (self.unUploadedPhotos == 0 || self.currentlyUploading) {
+      [self.btnUpload setEnabled: NO];
+    }else {
+      [self.btnUpload setEnabled: YES];
     }
   });
 }
@@ -207,13 +211,12 @@
 // get the photos that need to be uploaded from core data
 // and upload them to server
 - (void) uploadPhotosToApi {
-  
   NSMutableArray *photos = [self.dataWrapper getPhotosToUpload];
   __block int currentUploaded = 0;
   if (photos.count > 0) {
+    self.currentlyUploading = YES;
     // hide upload button tool bar and show progress on
-    [self.toolUpload setHidden:YES];
-    [self.toolProgress setHidden:NO];
+    [self.btnUpload setEnabled:NO];
     [self.progressUpload setProgress:0.0 animated:YES];
     
     NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
@@ -231,8 +234,9 @@
         [self.progressUpload setProgress:progress animated:YES];
       
         if (progress == 1.0) {
-          [self.toolProgress setHidden:YES];
-          [self.toolUpload setHidden:NO];
+          [self.btnUpload setEnabled:YES];
+          self.currentlyUploading = NO;
+          [self updateUploadCountUI];
         }
       });
     }];
