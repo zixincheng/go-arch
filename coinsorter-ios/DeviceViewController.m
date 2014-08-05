@@ -143,7 +143,9 @@
 
 // stops the refreshing animation
 - (void)stopRefresh {
-  [self.refreshControl endRefreshing];
+  if (self.refreshControl != nil) {
+    [self.refreshControl endRefreshing];
+  }
 }
 
 // called by notification when app enters foreground
@@ -395,43 +397,52 @@
   BOOL enableGrid = YES;
   BOOL startOnGrid = YES;
   
-  // get photos from in background
+  // show a loading hud
+  MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+  hud.labelText = @"Loading Photos";
+  
+  // get photos in background
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
     self.photos = [self.dataWrapper getPhotos:d.remoteId];
-  });
-  
-	// Create browser
-	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-  
-  // mwphotobrowser options
-  browser.displayActionButton = displayActionButton;
-  browser.displayNavArrows = displayNavArrows;
-  browser.displaySelectionButtons = displaySelectionButtons;
-  browser.alwaysShowControls = displaySelectionButtons;
-  browser.zoomPhotosToFill = YES;
+    
+    // after photos are loaded, make browser on main ui thread
+    dispatch_async(dispatch_get_main_queue(), ^{
+     [MBProgressHUD hideHUDForView:self.view animated:YES];
+      
+      // Create browser
+      MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+      
+      // mwphotobrowser options
+      browser.displayActionButton = displayActionButton;
+      browser.displayNavArrows = displayNavArrows;
+      browser.displaySelectionButtons = displaySelectionButtons;
+      browser.alwaysShowControls = displaySelectionButtons;
+      browser.zoomPhotosToFill = YES;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-  browser.wantsFullScreenLayout = YES;
+      browser.wantsFullScreenLayout = YES;
 #endif
-  browser.enableGrid = enableGrid;
-  browser.startOnGrid = startOnGrid;
-  browser.enableSwipeToDismiss = YES;
-  [browser setCurrentPhotoIndex:0];
-  
-  // Reset selections
-  if (displaySelectionButtons) {
-    _selections = [NSMutableArray new];
-    for (int i = 0; i < self.photos.count; i++) {
-      [_selections addObject:[NSNumber numberWithBool:NO]];
-    }
-  }
-  
-  // Show
-  [self.navigationController pushViewController:browser animated:YES];
-  // Release
-
-	// Deselect
-	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+      browser.enableGrid = enableGrid;
+      browser.startOnGrid = startOnGrid;
+      browser.enableSwipeToDismiss = YES;
+      [browser setCurrentPhotoIndex:0];
+      
+      // Reset selections
+      if (displaySelectionButtons) {
+        _selections = [NSMutableArray new];
+        for (int i = 0; i < self.photos.count; i++) {
+          [_selections addObject:[NSNumber numberWithBool:NO]];
+        }
+      }
+      
+      // Show
+      [self.navigationController pushViewController:browser animated:YES];
+      // Release
+      
+      // Deselect
+      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    });
+  });
 }
 
 #pragma mark - MWPhotoBrowserDelegate

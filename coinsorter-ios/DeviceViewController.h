@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MWPhotoBrowser.h"
+#import "MBProgressHUD.h"
 #import "AppDelegate.h"
 #import "AccountDataWrapper.h"
 #import "CSPhoto.h"
