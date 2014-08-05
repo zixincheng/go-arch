@@ -1,18 +1,18 @@
 //
-//  coinsorter_iosTests.m
-//  coinsorter-iosTests
+//  Go_AngelTests.m
+//  Go AngelTests
 //
-//  Created by Jake Runzer on 7/11/14.
-//  Copyright (c) 2014 ___FULLUSERNAME___. All rights reserved.
+//  Created by Jake Runzer on 8/5/14.
+//  Copyright (c) 2014 acdGO Software Ltd. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface coinsorter_iosTests : XCTestCase
+@interface Go_AngelTests : XCTestCase
 
 @end
 
-@implementation coinsorter_iosTests
+@implementation Go_AngelTests
 
 - (void)setUp
 {

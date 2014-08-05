@@ -4,17 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Coinsorter.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>10</integer>
-		</dict>
 		<key>Go Angel.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>11</integer>
-		</dict>
-		<key>coinsorter-ios.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -22,12 +12,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>20B43B311970992D00D996A5</key>
+		<key>205397111991924B00B1D9AD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>20B43B511970992D00D996A5</key>
+		<key>205397311991924B00B1D9AD</key>
 		<dict>
 			<key>primary</key>
 			<true/>

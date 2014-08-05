@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "20B43B311970992D00D996A5"
+               BlueprintIdentifier = "205397111991924B00B1D9AD"
                BuildableName = "Go Angel.app"
                BlueprintName = "Go Angel"
                ReferencedContainer = "container:Go Angel.xcodeproj">
@@ -28,11 +28,21 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "205397311991924B00B1D9AD"
+               BuildableName = "Go AngelTests.xctest"
+               BlueprintName = "Go AngelTests"
+               ReferencedContainer = "container:Go Angel.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "20B43B311970992D00D996A5"
+            BlueprintIdentifier = "205397111991924B00B1D9AD"
             BuildableName = "Go Angel.app"
             BlueprintName = "Go Angel"
             ReferencedContainer = "container:Go Angel.xcodeproj">
@@ -51,7 +61,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "20B43B311970992D00D996A5"
+            BlueprintIdentifier = "205397111991924B00B1D9AD"
             BuildableName = "Go Angel.app"
             BlueprintName = "Go Angel"
             ReferencedContainer = "container:Go Angel.xcodeproj">
@@ -69,7 +79,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "20B43B311970992D00D996A5"
+            BlueprintIdentifier = "205397111991924B00B1D9AD"
             BuildableName = "Go Angel.app"
             BlueprintName = "Go Angel"
             ReferencedContainer = "container:Go Angel.xcodeproj">

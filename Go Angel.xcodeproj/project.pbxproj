@@ -7,251 +7,246 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		20005DD7198321AA00818FB6 /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 20005DD6198321AA00818FB6 /* InAppSettings.bundle */; };
-		20005DDA1983258A00818FB6 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20005DD91983258A00818FB6 /* SettingsViewController.m */; };
-		20005DDD19832C5800818FB6 /* GroupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20005DDC19832C5800818FB6 /* GroupTableViewController.m */; };
-		2001706C1975A87200426EB9 /* CSDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 2001706B1975A87200426EB9 /* CSDevice.m */; };
-		2001706F1975BB0300426EB9 /* CoreDataWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2001706E1975BB0300426EB9 /* CoreDataWrapper.m */; };
-		200170721975DFC300426EB9 /* HandshakeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 200170711975DFC300426EB9 /* HandshakeTableViewController.m */; };
-		202E358B1980347B00C60F51 /* CoreDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 202E358A1980347B00C60F51 /* CoreDataStore.m */; };
-		202E358D19805DBA00C60F51 /* settings-25.png in Resources */ = {isa = PBXBuildFile; fileRef = 202E358C19805DBA00C60F51 /* settings-25.png */; };
-		202E358F1981C5A500C60F51 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 202E358E1981C5A500C60F51 /* ImageIO.framework */; };
-		2052CF2E19736E8F008B4ACF /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF2C19736E8F008B4ACF /* Model.xcdatamodeld */; };
-		2052CF3119737139008B4ACF /* DeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF3019737139008B4ACF /* DeviceViewController.m */; };
-		2052CF371973B405008B4ACF /* CSPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2052CF361973B405008B4ACF /* CSPhoto.m */; };
-		20805CFE1975E75A00CE4B00 /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = 20805CFD1975E75A00CE4B00 /* Server.m */; };
-		20885E0D198AF12E00E1C5A8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20885E0C198AF12E00E1C5A8 /* CoreLocation.framework */; };
-		20885E10198AF34800E1C5A8 /* LocalLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 20885E0F198AF34800E1C5A8 /* LocalLibrary.m */; };
-		208D2A6219765534004D6493 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A6119765534004D6493 /* ConnectViewController.m */; };
-		208D2A651976E94E004D6493 /* AccountDataWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A641976E94E004D6493 /* AccountDataWrapper.m */; };
-		208D2A6E1977026C004D6493 /* firstLoadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 208D2A6D1977026C004D6493 /* firstLoadViewController.m */; };
-		2093B24119896B44002E1DB6 /* UploadPhotosTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093B24019896B44002E1DB6 /* UploadPhotosTask.m */; };
-		20A2268719748D1B00F70374 /* Coinsorter.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A2268619748D1B00F70374 /* Coinsorter.m */; };
-		20B43B361970992D00D996A5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B351970992D00D996A5 /* Foundation.framework */; };
-		20B43B381970992D00D996A5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B371970992D00D996A5 /* CoreGraphics.framework */; };
-		20B43B3A1970992D00D996A5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B391970992D00D996A5 /* UIKit.framework */; };
-		20B43B3C1970992D00D996A5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B3B1970992D00D996A5 /* CoreData.framework */; };
-		20B43B421970992D00D996A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 20B43B401970992D00D996A5 /* InfoPlist.strings */; };
-		20B43B441970992D00D996A5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B43B431970992D00D996A5 /* main.m */; };
-		20B43B481970992D00D996A5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B43B471970992D00D996A5 /* AppDelegate.m */; };
-		20B43B4D1970992D00D996A5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20B43B4C1970992D00D996A5 /* Images.xcassets */; };
-		20B43B541970992D00D996A5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B531970992D00D996A5 /* XCTest.framework */; };
-		20B43B551970992D00D996A5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B351970992D00D996A5 /* Foundation.framework */; };
-		20B43B561970992D00D996A5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B391970992D00D996A5 /* UIKit.framework */; };
-		20B43B571970992D00D996A5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20B43B3B1970992D00D996A5 /* CoreData.framework */; };
-		20B43B5F1970992D00D996A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 20B43B5D1970992D00D996A5 /* InfoPlist.strings */; };
-		20B43B611970992D00D996A5 /* coinsorter_iosTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B43B601970992D00D996A5 /* coinsorter_iosTests.m */; };
-		20B43B6B1970995B00D996A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20B43B6A1970995B00D996A5 /* Main.storyboard */; };
-		20C4E49619915094001E03FB /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C4E49519915094001E03FB /* Reachability.m */; };
-		446DFC7030614FC68256D750 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20FCBE8A23424E15A19A0B14 /* libPods.a */; };
+		205397161991924B00B1D9AD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205397151991924B00B1D9AD /* Foundation.framework */; };
+		205397181991924B00B1D9AD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205397171991924B00B1D9AD /* CoreGraphics.framework */; };
+		2053971A1991924B00B1D9AD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205397191991924B00B1D9AD /* UIKit.framework */; };
+		2053971C1991924B00B1D9AD /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2053971B1991924B00B1D9AD /* CoreData.framework */; };
+		205397221991924B00B1D9AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 205397201991924B00B1D9AD /* InfoPlist.strings */; };
+		2053972B1991924B00B1D9AD /* Go_Angel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 205397291991924B00B1D9AD /* Go_Angel.xcdatamodeld */; };
+		205397341991924B00B1D9AD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205397331991924B00B1D9AD /* XCTest.framework */; };
+		205397351991924B00B1D9AD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205397151991924B00B1D9AD /* Foundation.framework */; };
+		205397361991924B00B1D9AD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205397191991924B00B1D9AD /* UIKit.framework */; };
+		205397371991924B00B1D9AD /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2053971B1991924B00B1D9AD /* CoreData.framework */; };
+		2053973F1991924B00B1D9AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2053973D1991924B00B1D9AD /* InfoPlist.strings */; };
+		205397411991924B00B1D9AD /* Go_AngelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 205397401991924B00B1D9AD /* Go_AngelTests.m */; };
+		2053974C199192FE00B1D9AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2053974B199192FE00B1D9AD /* AppDelegate.m */; };
+		2061D1C6199193B5001C7E08 /* AccountDataWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1C5199193B5001C7E08 /* AccountDataWrapper.m */; };
+		2061D1D7199193CE001C7E08 /* Coinsorter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1CA199193CE001C7E08 /* Coinsorter.m */; };
+		2061D1D8199193CE001C7E08 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1CC199193CE001C7E08 /* ConnectViewController.m */; };
+		2061D1D9199193CE001C7E08 /* CoreDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1CE199193CE001C7E08 /* CoreDataStore.m */; };
+		2061D1DA199193CE001C7E08 /* CoreDataWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1D0199193CE001C7E08 /* CoreDataWrapper.m */; };
+		2061D1DB199193CE001C7E08 /* CSDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1D2199193CE001C7E08 /* CSDevice.m */; };
+		2061D1DC199193CE001C7E08 /* CSPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1D4199193CE001C7E08 /* CSPhoto.m */; };
+		2061D1DD199193CE001C7E08 /* DeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1D6199193CE001C7E08 /* DeviceViewController.m */; };
+		2061D1E4199193DB001C7E08 /* firstLoadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1DF199193DB001C7E08 /* firstLoadViewController.m */; };
+		2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1E1199193DB001C7E08 /* GroupTableViewController.m */; };
+		2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1E3199193DB001C7E08 /* HandshakeTableViewController.m */; };
+		2061D1E819919428001C7E08 /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2061D1E719919428001C7E08 /* InAppSettings.bundle */; };
+		2061D1EC19919430001C7E08 /* LocalLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1EA19919430001C7E08 /* LocalLibrary.m */; };
+		2061D1ED19919430001C7E08 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2061D1EB19919430001C7E08 /* Main.storyboard */; };
+		2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1EE19919436001C7E08 /* Model.xcdatamodeld */; };
+		2061D1FA19919440001C7E08 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1F219919440001C7E08 /* Reachability.m */; };
+		2061D1FB19919440001C7E08 /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1F419919440001C7E08 /* Server.m */; };
+		2061D1FC19919440001C7E08 /* settings-25.png in Resources */ = {isa = PBXBuildFile; fileRef = 2061D1F519919440001C7E08 /* settings-25.png */; };
+		2061D1FD19919440001C7E08 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1F719919440001C7E08 /* SettingsViewController.m */; };
+		2061D1FE19919440001C7E08 /* UploadPhotosTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1F919919440001C7E08 /* UploadPhotosTask.m */; };
+		2061D2001991945F001C7E08 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1FF1991945F001C7E08 /* main.m */; };
+		2061D2021991947D001C7E08 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2061D2011991947D001C7E08 /* Images.xcassets */; };
+		B8BD5E6D1AEE4BC883DE0FB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C120E32068A1416CA965B081 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		20B43B581970992D00D996A5 /* PBXContainerItemProxy */ = {
+		205397381991924B00B1D9AD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 20B43B2A1970992D00D996A5 /* Project object */;
+			containerPortal = 2053970A1991924B00B1D9AD /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 20B43B311970992D00D996A5;
-			remoteInfo = "coinsorter-ios";
+			remoteGlobalIDString = 205397111991924B00B1D9AD;
+			remoteInfo = "Go Angel";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		20005DD6198321AA00818FB6 /* InAppSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InAppSettings.bundle; sourceTree = "<group>"; };
-		20005DD91983258A00818FB6 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
-		20005DDB19832C5800818FB6 /* GroupTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupTableViewController.h; sourceTree = "<group>"; };
-		20005DDC19832C5800818FB6 /* GroupTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupTableViewController.m; sourceTree = "<group>"; };
-		2001706A1975A87200426EB9 /* CSDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSDevice.h; sourceTree = "<group>"; };
-		2001706B1975A87200426EB9 /* CSDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDevice.m; sourceTree = "<group>"; };
-		2001706D1975BB0300426EB9 /* CoreDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataWrapper.h; sourceTree = "<group>"; };
-		2001706E1975BB0300426EB9 /* CoreDataWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataWrapper.m; sourceTree = "<group>"; };
-		200170701975DFC300426EB9 /* HandshakeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandshakeTableViewController.h; sourceTree = "<group>"; };
-		200170711975DFC300426EB9 /* HandshakeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HandshakeTableViewController.m; sourceTree = "<group>"; };
-		202B169F1986BE090061FA76 /* SettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		202E35891980347B00C60F51 /* CoreDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataStore.h; sourceTree = "<group>"; };
-		202E358A1980347B00C60F51 /* CoreDataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataStore.m; sourceTree = "<group>"; };
-		202E358C19805DBA00C60F51 /* settings-25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-25.png"; sourceTree = "<group>"; };
-		202E358E1981C5A500C60F51 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		2052CF2D19736E8F008B4ACF /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		2052CF2F19737139008B4ACF /* DeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceViewController.h; sourceTree = "<group>"; };
-		2052CF3019737139008B4ACF /* DeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceViewController.m; sourceTree = "<group>"; };
-		2052CF351973B405008B4ACF /* CSPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSPhoto.h; sourceTree = "<group>"; };
-		2052CF361973B405008B4ACF /* CSPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSPhoto.m; sourceTree = "<group>"; };
-		20805CFC1975E75A00CE4B00 /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
-		20805CFD1975E75A00CE4B00 /* Server.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Server.m; sourceTree = "<group>"; };
-		20885E0C198AF12E00E1C5A8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		20885E0E198AF34800E1C5A8 /* LocalLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalLibrary.h; sourceTree = "<group>"; };
-		20885E0F198AF34800E1C5A8 /* LocalLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalLibrary.m; sourceTree = "<group>"; };
-		208D2A6019765534004D6493 /* ConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectViewController.h; sourceTree = "<group>"; };
-		208D2A6119765534004D6493 /* ConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectViewController.m; sourceTree = "<group>"; };
-		208D2A631976E94E004D6493 /* AccountDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountDataWrapper.h; sourceTree = "<group>"; };
-		208D2A641976E94E004D6493 /* AccountDataWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountDataWrapper.m; sourceTree = "<group>"; };
-		208D2A6C1977026C004D6493 /* firstLoadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = firstLoadViewController.h; sourceTree = "<group>"; };
-		208D2A6D1977026C004D6493 /* firstLoadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = firstLoadViewController.m; sourceTree = "<group>"; };
-		2093B23F19896B44002E1DB6 /* UploadPhotosTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadPhotosTask.h; sourceTree = "<group>"; };
-		2093B24019896B44002E1DB6 /* UploadPhotosTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadPhotosTask.m; sourceTree = "<group>"; };
-		20A2268519748D1B00F70374 /* Coinsorter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coinsorter.h; sourceTree = "<group>"; };
-		20A2268619748D1B00F70374 /* Coinsorter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coinsorter.m; sourceTree = "<group>"; };
-		20B43B321970992D00D996A5 /* Go Angel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Go Angel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		20B43B351970992D00D996A5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		20B43B371970992D00D996A5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		20B43B391970992D00D996A5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		20B43B3B1970992D00D996A5 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		20B43B3F1970992D00D996A5 /* Go Angel-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Go Angel-Info.plist"; sourceTree = "<group>"; };
-		20B43B411970992D00D996A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		20B43B431970992D00D996A5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		20B43B451970992D00D996A5 /* Go Angel-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Go Angel-Prefix.pch"; sourceTree = "<group>"; };
-		20B43B461970992D00D996A5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		20B43B471970992D00D996A5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		20B43B4C1970992D00D996A5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		20B43B521970992D00D996A5 /* Go AngelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Go AngelTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		20B43B531970992D00D996A5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		20B43B5C1970992D00D996A5 /* Go AngelTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Go AngelTests-Info.plist"; sourceTree = "<group>"; };
-		20B43B5E1970992D00D996A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		20B43B601970992D00D996A5 /* coinsorter_iosTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coinsorter_iosTests.m; sourceTree = "<group>"; };
-		20B43B6A1970995B00D996A5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		20C4E49419915094001E03FB /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		20C4E49519915094001E03FB /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		20FCBE8A23424E15A19A0B14 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		90F80D7C1EF2452CBADD0A39 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		205397121991924B00B1D9AD /* Go Angel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Go Angel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		205397151991924B00B1D9AD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		205397171991924B00B1D9AD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		205397191991924B00B1D9AD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2053971B1991924B00B1D9AD /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		2053971F1991924B00B1D9AD /* Go Angel-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Go Angel-Info.plist"; sourceTree = "<group>"; };
+		205397211991924B00B1D9AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		205397251991924B00B1D9AD /* Go Angel-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Go Angel-Prefix.pch"; sourceTree = "<group>"; };
+		2053972A1991924B00B1D9AD /* Go_Angel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Go_Angel.xcdatamodel; sourceTree = "<group>"; };
+		205397321991924B00B1D9AD /* Go AngelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Go AngelTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		205397331991924B00B1D9AD /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		2053973C1991924B00B1D9AD /* Go AngelTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Go AngelTests-Info.plist"; sourceTree = "<group>"; };
+		2053973E1991924B00B1D9AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		205397401991924B00B1D9AD /* Go_AngelTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Go_AngelTests.m; sourceTree = "<group>"; };
+		2053974A199192FE00B1D9AD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		2053974B199192FE00B1D9AD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		2061D1C4199193B5001C7E08 /* AccountDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountDataWrapper.h; sourceTree = "<group>"; };
+		2061D1C5199193B5001C7E08 /* AccountDataWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountDataWrapper.m; sourceTree = "<group>"; };
+		2061D1C9199193CE001C7E08 /* Coinsorter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coinsorter.h; sourceTree = "<group>"; };
+		2061D1CA199193CE001C7E08 /* Coinsorter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coinsorter.m; sourceTree = "<group>"; };
+		2061D1CB199193CE001C7E08 /* ConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectViewController.h; sourceTree = "<group>"; };
+		2061D1CC199193CE001C7E08 /* ConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectViewController.m; sourceTree = "<group>"; };
+		2061D1CD199193CE001C7E08 /* CoreDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataStore.h; sourceTree = "<group>"; };
+		2061D1CE199193CE001C7E08 /* CoreDataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataStore.m; sourceTree = "<group>"; };
+		2061D1CF199193CE001C7E08 /* CoreDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataWrapper.h; sourceTree = "<group>"; };
+		2061D1D0199193CE001C7E08 /* CoreDataWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataWrapper.m; sourceTree = "<group>"; };
+		2061D1D1199193CE001C7E08 /* CSDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSDevice.h; sourceTree = "<group>"; };
+		2061D1D2199193CE001C7E08 /* CSDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSDevice.m; sourceTree = "<group>"; };
+		2061D1D3199193CE001C7E08 /* CSPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSPhoto.h; sourceTree = "<group>"; };
+		2061D1D4199193CE001C7E08 /* CSPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSPhoto.m; sourceTree = "<group>"; };
+		2061D1D5199193CE001C7E08 /* DeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceViewController.h; sourceTree = "<group>"; };
+		2061D1D6199193CE001C7E08 /* DeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceViewController.m; sourceTree = "<group>"; };
+		2061D1DE199193DB001C7E08 /* firstLoadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = firstLoadViewController.h; sourceTree = "<group>"; };
+		2061D1DF199193DB001C7E08 /* firstLoadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = firstLoadViewController.m; sourceTree = "<group>"; };
+		2061D1E0199193DB001C7E08 /* GroupTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupTableViewController.h; sourceTree = "<group>"; };
+		2061D1E1199193DB001C7E08 /* GroupTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupTableViewController.m; sourceTree = "<group>"; };
+		2061D1E2199193DB001C7E08 /* HandshakeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandshakeTableViewController.h; sourceTree = "<group>"; };
+		2061D1E3199193DB001C7E08 /* HandshakeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HandshakeTableViewController.m; sourceTree = "<group>"; };
+		2061D1E719919428001C7E08 /* InAppSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InAppSettings.bundle; sourceTree = "<group>"; };
+		2061D1E919919430001C7E08 /* LocalLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalLibrary.h; sourceTree = "<group>"; };
+		2061D1EA19919430001C7E08 /* LocalLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalLibrary.m; sourceTree = "<group>"; };
+		2061D1EB19919430001C7E08 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		2061D1EF19919436001C7E08 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		2061D1F119919440001C7E08 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		2061D1F219919440001C7E08 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		2061D1F319919440001C7E08 /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
+		2061D1F419919440001C7E08 /* Server.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Server.m; sourceTree = "<group>"; };
+		2061D1F519919440001C7E08 /* settings-25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-25.png"; sourceTree = "<group>"; };
+		2061D1F619919440001C7E08 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		2061D1F719919440001C7E08 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		2061D1F819919440001C7E08 /* UploadPhotosTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadPhotosTask.h; sourceTree = "<group>"; };
+		2061D1F919919440001C7E08 /* UploadPhotosTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadPhotosTask.m; sourceTree = "<group>"; };
+		2061D1FF1991945F001C7E08 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2061D2011991947D001C7E08 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		C120E32068A1416CA965B081 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		20B43B2F1970992D00D996A5 /* Frameworks */ = {
+		2053970F1991924B00B1D9AD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20885E0D198AF12E00E1C5A8 /* CoreLocation.framework in Frameworks */,
-				202E358F1981C5A500C60F51 /* ImageIO.framework in Frameworks */,
-				20B43B381970992D00D996A5 /* CoreGraphics.framework in Frameworks */,
-				20B43B3C1970992D00D996A5 /* CoreData.framework in Frameworks */,
-				20B43B3A1970992D00D996A5 /* UIKit.framework in Frameworks */,
-				20B43B361970992D00D996A5 /* Foundation.framework in Frameworks */,
-				446DFC7030614FC68256D750 /* libPods.a in Frameworks */,
+				205397181991924B00B1D9AD /* CoreGraphics.framework in Frameworks */,
+				2053971C1991924B00B1D9AD /* CoreData.framework in Frameworks */,
+				2053971A1991924B00B1D9AD /* UIKit.framework in Frameworks */,
+				205397161991924B00B1D9AD /* Foundation.framework in Frameworks */,
+				B8BD5E6D1AEE4BC883DE0FB5 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		20B43B4F1970992D00D996A5 /* Frameworks */ = {
+		2053972F1991924B00B1D9AD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20B43B541970992D00D996A5 /* XCTest.framework in Frameworks */,
-				20B43B571970992D00D996A5 /* CoreData.framework in Frameworks */,
-				20B43B561970992D00D996A5 /* UIKit.framework in Frameworks */,
-				20B43B551970992D00D996A5 /* Foundation.framework in Frameworks */,
+				205397341991924B00B1D9AD /* XCTest.framework in Frameworks */,
+				205397371991924B00B1D9AD /* CoreData.framework in Frameworks */,
+				205397361991924B00B1D9AD /* UIKit.framework in Frameworks */,
+				205397351991924B00B1D9AD /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		20B43B291970992D00D996A5 = {
+		205397091991924B00B1D9AD = {
 			isa = PBXGroup;
 			children = (
-				20B43B3D1970992D00D996A5 /* coinsorter-ios */,
-				20B43B5A1970992D00D996A5 /* coinsorter-iosTests */,
-				20B43B341970992D00D996A5 /* Frameworks */,
-				20B43B331970992D00D996A5 /* Products */,
-				90F80D7C1EF2452CBADD0A39 /* Pods.xcconfig */,
+				2053971D1991924B00B1D9AD /* Go Angel */,
+				2053973A1991924B00B1D9AD /* Go AngelTests */,
+				205397141991924B00B1D9AD /* Frameworks */,
+				205397131991924B00B1D9AD /* Products */,
+				6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
-		20B43B331970992D00D996A5 /* Products */ = {
+		205397131991924B00B1D9AD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				20B43B321970992D00D996A5 /* Go Angel.app */,
-				20B43B521970992D00D996A5 /* Go AngelTests.xctest */,
+				205397121991924B00B1D9AD /* Go Angel.app */,
+				205397321991924B00B1D9AD /* Go AngelTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		20B43B341970992D00D996A5 /* Frameworks */ = {
+		205397141991924B00B1D9AD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				20885E0C198AF12E00E1C5A8 /* CoreLocation.framework */,
-				202E358E1981C5A500C60F51 /* ImageIO.framework */,
-				20B43B351970992D00D996A5 /* Foundation.framework */,
-				20B43B371970992D00D996A5 /* CoreGraphics.framework */,
-				20B43B391970992D00D996A5 /* UIKit.framework */,
-				20B43B3B1970992D00D996A5 /* CoreData.framework */,
-				20B43B531970992D00D996A5 /* XCTest.framework */,
-				20FCBE8A23424E15A19A0B14 /* libPods.a */,
+				205397151991924B00B1D9AD /* Foundation.framework */,
+				205397171991924B00B1D9AD /* CoreGraphics.framework */,
+				205397191991924B00B1D9AD /* UIKit.framework */,
+				2053971B1991924B00B1D9AD /* CoreData.framework */,
+				205397331991924B00B1D9AD /* XCTest.framework */,
+				C120E32068A1416CA965B081 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		20B43B3D1970992D00D996A5 /* coinsorter-ios */ = {
+		2053971D1991924B00B1D9AD /* Go Angel */ = {
 			isa = PBXGroup;
 			children = (
-				20B43B461970992D00D996A5 /* AppDelegate.h */,
-				2052CF2C19736E8F008B4ACF /* Model.xcdatamodeld */,
-				20B43B471970992D00D996A5 /* AppDelegate.m */,
-				20C4E49419915094001E03FB /* Reachability.h */,
-				20C4E49519915094001E03FB /* Reachability.m */,
-				20B43B4C1970992D00D996A5 /* Images.xcassets */,
-				20B43B6A1970995B00D996A5 /* Main.storyboard */,
-				20005DD6198321AA00818FB6 /* InAppSettings.bundle */,
-				208D2A6019765534004D6493 /* ConnectViewController.h */,
-				208D2A6119765534004D6493 /* ConnectViewController.m */,
-				208D2A6C1977026C004D6493 /* firstLoadViewController.h */,
-				20005DDB19832C5800818FB6 /* GroupTableViewController.h */,
-				20005DDC19832C5800818FB6 /* GroupTableViewController.m */,
-				202B169F1986BE090061FA76 /* SettingsViewController.h */,
-				20005DD91983258A00818FB6 /* SettingsViewController.m */,
-				208D2A6D1977026C004D6493 /* firstLoadViewController.m */,
-				200170701975DFC300426EB9 /* HandshakeTableViewController.h */,
-				202E35891980347B00C60F51 /* CoreDataStore.h */,
-				202E358A1980347B00C60F51 /* CoreDataStore.m */,
-				200170711975DFC300426EB9 /* HandshakeTableViewController.m */,
-				20805CFC1975E75A00CE4B00 /* Server.h */,
-				20805CFD1975E75A00CE4B00 /* Server.m */,
-				2052CF2F19737139008B4ACF /* DeviceViewController.h */,
-				2052CF3019737139008B4ACF /* DeviceViewController.m */,
-				208D2A631976E94E004D6493 /* AccountDataWrapper.h */,
-				20885E0E198AF34800E1C5A8 /* LocalLibrary.h */,
-				20885E0F198AF34800E1C5A8 /* LocalLibrary.m */,
-				208D2A641976E94E004D6493 /* AccountDataWrapper.m */,
-				2001706D1975BB0300426EB9 /* CoreDataWrapper.h */,
-				2001706E1975BB0300426EB9 /* CoreDataWrapper.m */,
-				20A2268519748D1B00F70374 /* Coinsorter.h */,
-				2093B23F19896B44002E1DB6 /* UploadPhotosTask.h */,
-				2093B24019896B44002E1DB6 /* UploadPhotosTask.m */,
-				20A2268619748D1B00F70374 /* Coinsorter.m */,
-				2001706A1975A87200426EB9 /* CSDevice.h */,
-				2001706B1975A87200426EB9 /* CSDevice.m */,
-				2052CF351973B405008B4ACF /* CSPhoto.h */,
-				2052CF361973B405008B4ACF /* CSPhoto.m */,
-				20B43B3E1970992D00D996A5 /* Supporting Files */,
+				2061D1C9199193CE001C7E08 /* Coinsorter.h */,
+				2061D1CA199193CE001C7E08 /* Coinsorter.m */,
+				2061D1CB199193CE001C7E08 /* ConnectViewController.h */,
+				2061D1CC199193CE001C7E08 /* ConnectViewController.m */,
+				2061D1CD199193CE001C7E08 /* CoreDataStore.h */,
+				2061D1DE199193DB001C7E08 /* firstLoadViewController.h */,
+				2061D1DF199193DB001C7E08 /* firstLoadViewController.m */,
+				2061D1E719919428001C7E08 /* InAppSettings.bundle */,
+				2061D1E0199193DB001C7E08 /* GroupTableViewController.h */,
+				2061D1E1199193DB001C7E08 /* GroupTableViewController.m */,
+				2061D1E2199193DB001C7E08 /* HandshakeTableViewController.h */,
+				2061D1E3199193DB001C7E08 /* HandshakeTableViewController.m */,
+				2061D1EE19919436001C7E08 /* Model.xcdatamodeld */,
+				2061D1E919919430001C7E08 /* LocalLibrary.h */,
+				2061D1EA19919430001C7E08 /* LocalLibrary.m */,
+				2061D1F119919440001C7E08 /* Reachability.h */,
+				2061D1F219919440001C7E08 /* Reachability.m */,
+				2061D1F319919440001C7E08 /* Server.h */,
+				2061D1F419919440001C7E08 /* Server.m */,
+				2061D1F619919440001C7E08 /* SettingsViewController.h */,
+				2061D1F719919440001C7E08 /* SettingsViewController.m */,
+				2061D1F819919440001C7E08 /* UploadPhotosTask.h */,
+				2061D1F919919440001C7E08 /* UploadPhotosTask.m */,
+				2061D1EB19919430001C7E08 /* Main.storyboard */,
+				2061D1CE199193CE001C7E08 /* CoreDataStore.m */,
+				2061D1CF199193CE001C7E08 /* CoreDataWrapper.h */,
+				2061D1D0199193CE001C7E08 /* CoreDataWrapper.m */,
+				2061D1D1199193CE001C7E08 /* CSDevice.h */,
+				2061D1D2199193CE001C7E08 /* CSDevice.m */,
+				2061D1D3199193CE001C7E08 /* CSPhoto.h */,
+				2061D1D4199193CE001C7E08 /* CSPhoto.m */,
+				2061D1D5199193CE001C7E08 /* DeviceViewController.h */,
+				2061D1D6199193CE001C7E08 /* DeviceViewController.m */,
+				2061D1C4199193B5001C7E08 /* AccountDataWrapper.h */,
+				2061D1C5199193B5001C7E08 /* AccountDataWrapper.m */,
+				2053974A199192FE00B1D9AD /* AppDelegate.h */,
+				2061D2011991947D001C7E08 /* Images.xcassets */,
+				2053974B199192FE00B1D9AD /* AppDelegate.m */,
+				205397291991924B00B1D9AD /* Go_Angel.xcdatamodeld */,
+				2053971E1991924B00B1D9AD /* Supporting Files */,
 			);
-			path = "coinsorter-ios";
+			path = "Go Angel";
 			sourceTree = "<group>";
 		};
-		20B43B3E1970992D00D996A5 /* Supporting Files */ = {
+		2053971E1991924B00B1D9AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				202E358C19805DBA00C60F51 /* settings-25.png */,
-				20B43B3F1970992D00D996A5 /* Go Angel-Info.plist */,
-				20B43B401970992D00D996A5 /* InfoPlist.strings */,
-				20B43B431970992D00D996A5 /* main.m */,
-				20B43B451970992D00D996A5 /* Go Angel-Prefix.pch */,
+				2061D1F519919440001C7E08 /* settings-25.png */,
+				2061D1FF1991945F001C7E08 /* main.m */,
+				2053971F1991924B00B1D9AD /* Go Angel-Info.plist */,
+				205397201991924B00B1D9AD /* InfoPlist.strings */,
+				205397251991924B00B1D9AD /* Go Angel-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		20B43B5A1970992D00D996A5 /* coinsorter-iosTests */ = {
+		2053973A1991924B00B1D9AD /* Go AngelTests */ = {
 			isa = PBXGroup;
 			children = (
-				20B43B601970992D00D996A5 /* coinsorter_iosTests.m */,
-				20B43B5B1970992D00D996A5 /* Supporting Files */,
+				205397401991924B00B1D9AD /* Go_AngelTests.m */,
+				2053973B1991924B00B1D9AD /* Supporting Files */,
 			);
-			path = "coinsorter-iosTests";
+			path = "Go AngelTests";
 			sourceTree = "<group>";
 		};
-		20B43B5B1970992D00D996A5 /* Supporting Files */ = {
+		2053973B1991924B00B1D9AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				20B43B5C1970992D00D996A5 /* Go AngelTests-Info.plist */,
-				20B43B5D1970992D00D996A5 /* InfoPlist.strings */,
+				2053973C1991924B00B1D9AD /* Go AngelTests-Info.plist */,
+				2053973D1991924B00B1D9AD /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -259,108 +254,107 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		20B43B311970992D00D996A5 /* Go Angel */ = {
+		205397111991924B00B1D9AD /* Go Angel */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 20B43B641970992D00D996A5 /* Build configuration list for PBXNativeTarget "Go Angel" */;
+			buildConfigurationList = 205397441991924B00B1D9AD /* Build configuration list for PBXNativeTarget "Go Angel" */;
 			buildPhases = (
-				1E20E2E5BA5D4F73B754BEC8 /* Check Pods Manifest.lock */,
-				20B43B2E1970992D00D996A5 /* Sources */,
-				20B43B2F1970992D00D996A5 /* Frameworks */,
-				20B43B301970992D00D996A5 /* Resources */,
-				03CC3E0EEB7645E08C0E573D /* Copy Pods Resources */,
+				EFB1EA80315C456DAA03ADF4 /* Check Pods Manifest.lock */,
+				2053970E1991924B00B1D9AD /* Sources */,
+				2053970F1991924B00B1D9AD /* Frameworks */,
+				205397101991924B00B1D9AD /* Resources */,
+				D791AAC7692D41F8826B0212 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "Go Angel";
-			productName = "coinsorter-ios";
-			productReference = 20B43B321970992D00D996A5 /* Go Angel.app */;
+			productName = "Go Angel";
+			productReference = 205397121991924B00B1D9AD /* Go Angel.app */;
 			productType = "com.apple.product-type.application";
 		};
-		20B43B511970992D00D996A5 /* Go AngelTests */ = {
+		205397311991924B00B1D9AD /* Go AngelTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 20B43B671970992D00D996A5 /* Build configuration list for PBXNativeTarget "Go AngelTests" */;
+			buildConfigurationList = 205397471991924B00B1D9AD /* Build configuration list for PBXNativeTarget "Go AngelTests" */;
 			buildPhases = (
-				20B43B4E1970992D00D996A5 /* Sources */,
-				20B43B4F1970992D00D996A5 /* Frameworks */,
-				20B43B501970992D00D996A5 /* Resources */,
+				2053972E1991924B00B1D9AD /* Sources */,
+				2053972F1991924B00B1D9AD /* Frameworks */,
+				205397301991924B00B1D9AD /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				20B43B591970992D00D996A5 /* PBXTargetDependency */,
+				205397391991924B00B1D9AD /* PBXTargetDependency */,
 			);
 			name = "Go AngelTests";
-			productName = "coinsorter-iosTests";
-			productReference = 20B43B521970992D00D996A5 /* Go AngelTests.xctest */;
+			productName = "Go AngelTests";
+			productReference = 205397321991924B00B1D9AD /* Go AngelTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		20B43B2A1970992D00D996A5 /* Project object */ = {
+		2053970A1991924B00B1D9AD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = acdGO;
+				ORGANIZATIONNAME = "acdGO Software Ltd.";
 				TargetAttributes = {
-					20B43B311970992D00D996A5 = {
-						DevelopmentTeam = BJECZ3G6DL;
+					205397111991924B00B1D9AD = {
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
 						};
 					};
-					20B43B511970992D00D996A5 = {
-						TestTargetID = 20B43B311970992D00D996A5;
+					205397311991924B00B1D9AD = {
+						TestTargetID = 205397111991924B00B1D9AD;
 					};
 				};
 			};
-			buildConfigurationList = 20B43B2D1970992D00D996A5 /* Build configuration list for PBXProject "Go Angel" */;
+			buildConfigurationList = 2053970D1991924B00B1D9AD /* Build configuration list for PBXProject "Go Angel" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 20B43B291970992D00D996A5;
-			productRefGroup = 20B43B331970992D00D996A5 /* Products */;
+			mainGroup = 205397091991924B00B1D9AD;
+			productRefGroup = 205397131991924B00B1D9AD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				20B43B311970992D00D996A5 /* Go Angel */,
-				20B43B511970992D00D996A5 /* Go AngelTests */,
+				205397111991924B00B1D9AD /* Go Angel */,
+				205397311991924B00B1D9AD /* Go AngelTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		20B43B301970992D00D996A5 /* Resources */ = {
+		205397101991924B00B1D9AD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20B43B6B1970995B00D996A5 /* Main.storyboard in Resources */,
-				20B43B421970992D00D996A5 /* InfoPlist.strings in Resources */,
-				202E358D19805DBA00C60F51 /* settings-25.png in Resources */,
-				20005DD7198321AA00818FB6 /* InAppSettings.bundle in Resources */,
-				20B43B4D1970992D00D996A5 /* Images.xcassets in Resources */,
+				2061D1E819919428001C7E08 /* InAppSettings.bundle in Resources */,
+				2061D2021991947D001C7E08 /* Images.xcassets in Resources */,
+				205397221991924B00B1D9AD /* InfoPlist.strings in Resources */,
+				2061D1FC19919440001C7E08 /* settings-25.png in Resources */,
+				2061D1ED19919430001C7E08 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		20B43B501970992D00D996A5 /* Resources */ = {
+		205397301991924B00B1D9AD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20B43B5F1970992D00D996A5 /* InfoPlist.strings in Resources */,
+				2053973F1991924B00B1D9AD /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		03CC3E0EEB7645E08C0E573D /* Copy Pods Resources */ = {
+		D791AAC7692D41F8826B0212 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -375,7 +369,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		1E20E2E5BA5D4F73B754BEC8 /* Check Pods Manifest.lock */ = {
+		EFB1EA80315C456DAA03ADF4 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -393,63 +387,64 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		20B43B2E1970992D00D996A5 /* Sources */ = {
+		2053970E1991924B00B1D9AD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				208D2A651976E94E004D6493 /* AccountDataWrapper.m in Sources */,
-				2001706F1975BB0300426EB9 /* CoreDataWrapper.m in Sources */,
-				20885E10198AF34800E1C5A8 /* LocalLibrary.m in Sources */,
-				20B43B481970992D00D996A5 /* AppDelegate.m in Sources */,
-				200170721975DFC300426EB9 /* HandshakeTableViewController.m in Sources */,
-				20A2268719748D1B00F70374 /* Coinsorter.m in Sources */,
-				20805CFE1975E75A00CE4B00 /* Server.m in Sources */,
-				20B43B441970992D00D996A5 /* main.m in Sources */,
-				2001706C1975A87200426EB9 /* CSDevice.m in Sources */,
-				202E358B1980347B00C60F51 /* CoreDataStore.m in Sources */,
-				20C4E49619915094001E03FB /* Reachability.m in Sources */,
-				20005DDD19832C5800818FB6 /* GroupTableViewController.m in Sources */,
-				208D2A6E1977026C004D6493 /* firstLoadViewController.m in Sources */,
-				2052CF3119737139008B4ACF /* DeviceViewController.m in Sources */,
-				2093B24119896B44002E1DB6 /* UploadPhotosTask.m in Sources */,
-				208D2A6219765534004D6493 /* ConnectViewController.m in Sources */,
-				20005DDA1983258A00818FB6 /* SettingsViewController.m in Sources */,
-				2052CF371973B405008B4ACF /* CSPhoto.m in Sources */,
-				2052CF2E19736E8F008B4ACF /* Model.xcdatamodeld in Sources */,
+				2061D1DA199193CE001C7E08 /* CoreDataWrapper.m in Sources */,
+				2061D1FE19919440001C7E08 /* UploadPhotosTask.m in Sources */,
+				2061D1D9199193CE001C7E08 /* CoreDataStore.m in Sources */,
+				2061D1D8199193CE001C7E08 /* ConnectViewController.m in Sources */,
+				2053972B1991924B00B1D9AD /* Go_Angel.xcdatamodeld in Sources */,
+				2061D1EC19919430001C7E08 /* LocalLibrary.m in Sources */,
+				2053974C199192FE00B1D9AD /* AppDelegate.m in Sources */,
+				2061D1D7199193CE001C7E08 /* Coinsorter.m in Sources */,
+				2061D1E4199193DB001C7E08 /* firstLoadViewController.m in Sources */,
+				2061D1DB199193CE001C7E08 /* CSDevice.m in Sources */,
+				2061D2001991945F001C7E08 /* main.m in Sources */,
+				2061D1DD199193CE001C7E08 /* DeviceViewController.m in Sources */,
+				2061D1FD19919440001C7E08 /* SettingsViewController.m in Sources */,
+				2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */,
+				2061D1DC199193CE001C7E08 /* CSPhoto.m in Sources */,
+				2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */,
+				2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */,
+				2061D1C6199193B5001C7E08 /* AccountDataWrapper.m in Sources */,
+				2061D1FB19919440001C7E08 /* Server.m in Sources */,
+				2061D1FA19919440001C7E08 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		20B43B4E1970992D00D996A5 /* Sources */ = {
+		2053972E1991924B00B1D9AD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20B43B611970992D00D996A5 /* coinsorter_iosTests.m in Sources */,
+				205397411991924B00B1D9AD /* Go_AngelTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		20B43B591970992D00D996A5 /* PBXTargetDependency */ = {
+		205397391991924B00B1D9AD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 20B43B311970992D00D996A5 /* Go Angel */;
-			targetProxy = 20B43B581970992D00D996A5 /* PBXContainerItemProxy */;
+			target = 205397111991924B00B1D9AD /* Go Angel */;
+			targetProxy = 205397381991924B00B1D9AD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		20B43B401970992D00D996A5 /* InfoPlist.strings */ = {
+		205397201991924B00B1D9AD /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				20B43B411970992D00D996A5 /* en */,
+				205397211991924B00B1D9AD /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		20B43B5D1970992D00D996A5 /* InfoPlist.strings */ = {
+		2053973D1991924B00B1D9AD /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				20B43B5E1970992D00D996A5 /* en */,
+				2053973E1991924B00B1D9AD /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -457,7 +452,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		20B43B621970992D00D996A5 /* Debug */ = {
+		205397421991924B00B1D9AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -496,7 +491,7 @@
 			};
 			name = Debug;
 		};
-		20B43B631970992D00D996A5 /* Release */ = {
+		205397431991924B00B1D9AD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -529,71 +524,69 @@
 			};
 			name = Release;
 		};
-		20B43B651970992D00D996A5 /* Debug */ = {
+		205397451991924B00B1D9AD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 90F80D7C1EF2452CBADD0A39 /* Pods.xcconfig */;
+			baseConfigurationReference = 6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "coinsorter-ios/Go Angel-Prefix.pch";
-				INFOPLIST_FILE = "coinsorter-ios/Go Angel-Info.plist";
-				PRODUCT_NAME = "Go Angel";
+				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
+				INFOPLIST_FILE = "Go Angel/Go Angel-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
-		20B43B661970992D00D996A5 /* Release */ = {
+		205397461991924B00B1D9AD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 90F80D7C1EF2452CBADD0A39 /* Pods.xcconfig */;
+			baseConfigurationReference = 6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "coinsorter-ios/Go Angel-Prefix.pch";
-				INFOPLIST_FILE = "coinsorter-ios/Go Angel-Info.plist";
-				PRODUCT_NAME = "Go Angel";
+				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
+				INFOPLIST_FILE = "Go Angel/Go Angel-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
-		20B43B681970992D00D996A5 /* Debug */ = {
+		205397481991924B00B1D9AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/coinsorter-ios.app/coinsorter-ios";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Go Angel.app/Go Angel";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "coinsorter-ios/coinsorter-ios-Prefix.pch";
+				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "coinsorter-iosTests/Go AngelTests-Info.plist";
-				PRODUCT_NAME = "Go AngelTests";
+				INFOPLIST_FILE = "Go AngelTests/Go AngelTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
-		20B43B691970992D00D996A5 /* Release */ = {
+		205397491991924B00B1D9AD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/coinsorter-ios.app/coinsorter-ios";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Go Angel.app/Go Angel";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "coinsorter-ios/coinsorter-ios-Prefix.pch";
-				INFOPLIST_FILE = "coinsorter-iosTests/Go AngelTests-Info.plist";
-				PRODUCT_NAME = "Go AngelTests";
+				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
+				INFOPLIST_FILE = "Go AngelTests/Go AngelTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -602,29 +595,29 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		20B43B2D1970992D00D996A5 /* Build configuration list for PBXProject "Go Angel" */ = {
+		2053970D1991924B00B1D9AD /* Build configuration list for PBXProject "Go Angel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				20B43B621970992D00D996A5 /* Debug */,
-				20B43B631970992D00D996A5 /* Release */,
+				205397421991924B00B1D9AD /* Debug */,
+				205397431991924B00B1D9AD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		20B43B641970992D00D996A5 /* Build configuration list for PBXNativeTarget "Go Angel" */ = {
+		205397441991924B00B1D9AD /* Build configuration list for PBXNativeTarget "Go Angel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				20B43B651970992D00D996A5 /* Debug */,
-				20B43B661970992D00D996A5 /* Release */,
+				205397451991924B00B1D9AD /* Debug */,
+				205397461991924B00B1D9AD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		20B43B671970992D00D996A5 /* Build configuration list for PBXNativeTarget "Go AngelTests" */ = {
+		205397471991924B00B1D9AD /* Build configuration list for PBXNativeTarget "Go AngelTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				20B43B681970992D00D996A5 /* Debug */,
-				20B43B691970992D00D996A5 /* Release */,
+				205397481991924B00B1D9AD /* Debug */,
+				205397491991924B00B1D9AD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -632,17 +625,27 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		2052CF2C19736E8F008B4ACF /* Model.xcdatamodeld */ = {
+		205397291991924B00B1D9AD /* Go_Angel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				2052CF2D19736E8F008B4ACF /* Model.xcdatamodel */,
+				2053972A1991924B00B1D9AD /* Go_Angel.xcdatamodel */,
 			);
-			currentVersion = 2052CF2D19736E8F008B4ACF /* Model.xcdatamodel */;
+			currentVersion = 2053972A1991924B00B1D9AD /* Go_Angel.xcdatamodel */;
+			path = Go_Angel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		2061D1EE19919436001C7E08 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2061D1EF19919436001C7E08 /* Model.xcdatamodel */,
+			);
+			currentVersion = 2061D1EF19919436001C7E08 /* Model.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
 /* End XCVersionGroup section */
 	};
-	rootObject = 20B43B2A1970992D00D996A5 /* Project object */;
+	rootObject = 2053970A1991924B00B1D9AD /* Project object */;
 }
