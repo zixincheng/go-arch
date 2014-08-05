@@ -127,6 +127,7 @@
   
   ConnectViewController *connectController = (ConnectViewController *)segue.destinationViewController;
   connectController.ip = s.ip;
+  connectController.sid = s.serverId;
 }
 
 - (void) sendUDPMessage {

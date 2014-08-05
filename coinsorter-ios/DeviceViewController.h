@@ -17,6 +17,7 @@
 #import "LocalLibrary.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <CoreLocation/CoreLocation.h>
+#import "Reachability.h"
 
 @interface DeviceViewController : UIViewController <MWPhotoBrowserDelegate, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate> {
   NSMutableArray *_selections;
@@ -49,7 +50,11 @@
 
 @property (nonatomic, strong) CSDevice *localDevice;
 
-@property int unUploadedPhotos;
-@property BOOL currentlyUploading;
+@property (nonatomic )int unUploadedPhotos;
+@property (nonatomic) BOOL currentlyUploading;
+
+@property (nonatomic, retain) Reachability *reach;
+@property (nonatomic, assign) BOOL canConnect;
+@property (nonatomic) NSInteger networkStatus;
 
 @end

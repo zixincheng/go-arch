@@ -46,7 +46,6 @@
   
   // get count of unuploaded photos
   self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
-  [self updateUploadCountUI];
   
   // set the progress bar to 100% for cool effect later
   [self.progressUpload setProgress:100.0f];
@@ -54,16 +53,10 @@
   // add the refresh control to the table view
   [self.tableView addSubview:self.refreshControl];
   
+  // get devices we already have in db to setup list
+  self.devices = [self.dataWrapper getAllDevices];
+  
   // call methods to start controller
-  
-  // load the allowed albums from defaults
-  [localLibrary loadAllowedAlbums];
-  
-  // load the images from iphone photo library
-  [localLibrary loadLocalImages: NO addCallback:^{
-    self.unUploadedPhotos++;
-    [self updateUploadCountUI];
-  }];
   
   // register for asset change notifications
   [localLibrary registerForNotifications];
@@ -71,8 +64,32 @@
   [defaults addObserver:self forKeyPath:DEVICENAME options:NSKeyValueObservingOptionNew context:NULL];
   [defaults addObserver:self forKeyPath:ALBUMS options:NSKeyValueObservingOptionNew context:NULL];
   
-  // get devices, photos, and upload
-  [self syncAllFromApi];
+  
+  // Start networking
+  
+  // setup network notification
+  [self setupNet];
+  
+  // only ping if we are connected through wifi
+  if (self.networkStatus == ReachableViaWiFi) {
+    // ping the server to see if we are connected to bb
+    [self.coinsorter pingServer:^(BOOL connected) {
+      self.canConnect = connected;
+      
+      [self updateUploadCountUI];
+      
+      if (self.canConnect) {
+        // get all devices and photos from server
+        // only call this when we know we are connected
+        [self syncAllFromApi];
+      }
+    }];
+  }else {
+    self.canConnect = NO;
+  }
+  
+  // update ui status bar
+  [self updateUploadCountUI];
 }
 
 // called when this controller leaves memory
@@ -166,14 +183,26 @@
 - (void) updateUploadCountUI {
   dispatch_async(dispatch_get_main_queue(), ^{
     NSString *title;
-    if (self.unUploadedPhotos == 0) {
+    
+    if (!self.canConnect) {
+      title = @"Cannot Connect";
+    }else if (self.unUploadedPhotos == 0) {
       title = @"Nothing to Upload";
+    }else if (self.currentlyUploading) {
+      title = [NSString stringWithFormat:@"Uploading %d Photos", self.unUploadedPhotos];
     }else {
       title = [NSString stringWithFormat:@"Upload %d Photos", self.unUploadedPhotos];
     }
     [self.btnUpload setTitle:title];
     
-    if (self.unUploadedPhotos == 0 || self.currentlyUploading) {
+    if (self.canConnect) {
+      [self.progressUpload setTintColor:nil];
+    }else {
+      UIColor * color = [UIColor colorWithRed:212/255.0f green:1/255.0f blue:0/255.0f alpha:1.0f];
+      [self.progressUpload setTintColor:color];
+    }
+    
+    if (self.unUploadedPhotos == 0 || self.currentlyUploading || !self.canConnect) {
       [self.btnUpload setEnabled: NO];
     }else {
       [self.btnUpload setEnabled: YES];
@@ -198,12 +227,15 @@
 
 // get devices, photos, and upload from server
 - (void) syncAllFromApi {
-  // perform all db and api calls in backgroud
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    [self getDevicesFromApi];
-    [self getPhotosFromApi];
-  });
-  
+  if (self.canConnect) {
+    // perform all db and api calls in backgroud
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+      [self getDevicesFromApi];
+      [self getPhotosFromApi];
+    });
+  }else {
+    NSLog(@"cannot connect to server, no making api calls");
+  }
   // stop the refreshing animation
   [self stopRefresh];
 }
@@ -218,6 +250,8 @@
     // hide upload button tool bar and show progress on
     [self.btnUpload setEnabled:NO];
     [self.progressUpload setProgress:0.0 animated:YES];
+    
+    [self updateUploadCountUI];
     
     NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
     [self.coinsorter uploadPhotos:photos upCallback:^() {
@@ -409,6 +443,56 @@
   // If we subscribe to this method we must dismiss the view controller ourselves
   NSLog(@"Did finish modal presentation");
   [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+# pragma mark - Network
+// get the initial network status
+- (void) setupNet {
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+  
+  self.reach = [Reachability reachabilityForInternetConnection];
+  [self.reach startNotifier];
+  
+  NetworkStatus remoteHostStatus = [self.reach currentReachabilityStatus];
+  self.networkStatus = remoteHostStatus;
+  
+  if (remoteHostStatus == NotReachable) {
+    NSLog(@"not reachable");
+  }else if (remoteHostStatus == ReachableViaWiFi) {
+    NSLog(@"wifi");
+  }else if (remoteHostStatus == ReachableViaWWAN) {
+    NSLog(@"wwan");
+  }
+}
+
+// called whenever network changes
+- (void) checkNetworkStatus: (NSNotification *) notification {
+  NSLog(@"network changed");
+  
+  NetworkStatus remoteHostStatus = [self.reach currentReachabilityStatus];
+  self.networkStatus = remoteHostStatus;
+  
+  if (remoteHostStatus == NotReachable) {
+    NSLog(@"not reachable");
+    
+    self.canConnect = NO;
+    [self updateUploadCountUI];
+  }else if (remoteHostStatus == ReachableViaWiFi) {
+    // if we are connected to wifi
+    // and we have a blackbox ip we have connected to before
+    if (account.ip != nil) {
+      [self.coinsorter pingServer:^(BOOL connected) {
+        self.canConnect = connected;
+        
+        [self updateUploadCountUI];
+      }];
+    }
+  }else if (remoteHostStatus == ReachableViaWWAN) {
+    NSLog(@"wwan");
+    
+    self.canConnect = NO;
+    [self updateUploadCountUI];
+  }
 }
 
 @end
