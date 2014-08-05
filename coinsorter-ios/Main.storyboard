@@ -26,7 +26,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cxW-3N-PMe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11" y="658"/>
+            <point key="canvasLocation" x="105" y="638"/>
         </scene>
         <!--Group Table View Controller - Album Selector-->
         <scene sceneID="BZZ-gi-f7r">
@@ -65,7 +65,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kHo-J7-hXt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1069" y="900"/>
+            <point key="canvasLocation" x="561" y="638"/>
         </scene>
         <!--Device View Controller - Devices-->
         <scene sceneID="69u-OC-JmX">
@@ -160,7 +160,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IKX-IY-KKX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-527" y="1195"/>
+            <point key="canvasLocation" x="-627" y="1135"/>
         </scene>
         <!--Handshake Table View Controller - Find a Blackbox-->
         <scene sceneID="vSK-8H-hWj">
@@ -333,7 +333,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fby-a5-qRq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1053" y="1195"/>
+            <point key="canvasLocation" x="-1153" y="1135"/>
         </scene>
     </scenes>
     <resources>
