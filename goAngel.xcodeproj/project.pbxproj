@@ -42,6 +42,7 @@
 		20B43B5F1970992D00D996A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 20B43B5D1970992D00D996A5 /* InfoPlist.strings */; };
 		20B43B611970992D00D996A5 /* coinsorter_iosTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B43B601970992D00D996A5 /* coinsorter_iosTests.m */; };
 		20B43B6B1970995B00D996A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20B43B6A1970995B00D996A5 /* Main.storyboard */; };
+		20C4E49619915094001E03FB /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C4E49519915094001E03FB /* Reachability.m */; };
 		446DFC7030614FC68256D750 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20FCBE8A23424E15A19A0B14 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -91,24 +92,26 @@
 		2093B24019896B44002E1DB6 /* UploadPhotosTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadPhotosTask.m; sourceTree = "<group>"; };
 		20A2268519748D1B00F70374 /* Coinsorter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coinsorter.h; sourceTree = "<group>"; };
 		20A2268619748D1B00F70374 /* Coinsorter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coinsorter.m; sourceTree = "<group>"; };
-		20B43B321970992D00D996A5 /* Coinsorter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coinsorter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20B43B321970992D00D996A5 /* goAngel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = goAngel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20B43B351970992D00D996A5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		20B43B371970992D00D996A5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		20B43B391970992D00D996A5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		20B43B3B1970992D00D996A5 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		20B43B3F1970992D00D996A5 /* Coinsorter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Coinsorter-Info.plist"; sourceTree = "<group>"; };
+		20B43B3F1970992D00D996A5 /* goAngel-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "goAngel-Info.plist"; sourceTree = "<group>"; };
 		20B43B411970992D00D996A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		20B43B431970992D00D996A5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		20B43B451970992D00D996A5 /* Coinsorter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Coinsorter-Prefix.pch"; sourceTree = "<group>"; };
+		20B43B451970992D00D996A5 /* goAngel-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "goAngel-Prefix.pch"; sourceTree = "<group>"; };
 		20B43B461970992D00D996A5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		20B43B471970992D00D996A5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		20B43B4C1970992D00D996A5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		20B43B521970992D00D996A5 /* CoinsorterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoinsorterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		20B43B521970992D00D996A5 /* goAngelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = goAngelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		20B43B531970992D00D996A5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		20B43B5C1970992D00D996A5 /* CoinsorterTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoinsorterTests-Info.plist"; sourceTree = "<group>"; };
+		20B43B5C1970992D00D996A5 /* goAngelTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "goAngelTests-Info.plist"; sourceTree = "<group>"; };
 		20B43B5E1970992D00D996A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		20B43B601970992D00D996A5 /* coinsorter_iosTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coinsorter_iosTests.m; sourceTree = "<group>"; };
 		20B43B6A1970995B00D996A5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		20C4E49419915094001E03FB /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		20C4E49519915094001E03FB /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		20FCBE8A23424E15A19A0B14 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		90F80D7C1EF2452CBADD0A39 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -156,8 +159,8 @@
 		20B43B331970992D00D996A5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				20B43B321970992D00D996A5 /* Coinsorter.app */,
-				20B43B521970992D00D996A5 /* CoinsorterTests.xctest */,
+				20B43B321970992D00D996A5 /* goAngel.app */,
+				20B43B521970992D00D996A5 /* goAngelTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -183,6 +186,8 @@
 				20B43B461970992D00D996A5 /* AppDelegate.h */,
 				2052CF2C19736E8F008B4ACF /* Model.xcdatamodeld */,
 				20B43B471970992D00D996A5 /* AppDelegate.m */,
+				20C4E49419915094001E03FB /* Reachability.h */,
+				20C4E49519915094001E03FB /* Reachability.m */,
 				20B43B4C1970992D00D996A5 /* Images.xcassets */,
 				20B43B6A1970995B00D996A5 /* Main.storyboard */,
 				20005DD6198321AA00818FB6 /* InAppSettings.bundle */,
@@ -225,10 +230,10 @@
 			isa = PBXGroup;
 			children = (
 				202E358C19805DBA00C60F51 /* settings-25.png */,
-				20B43B3F1970992D00D996A5 /* Coinsorter-Info.plist */,
+				20B43B3F1970992D00D996A5 /* goAngel-Info.plist */,
 				20B43B401970992D00D996A5 /* InfoPlist.strings */,
 				20B43B431970992D00D996A5 /* main.m */,
-				20B43B451970992D00D996A5 /* Coinsorter-Prefix.pch */,
+				20B43B451970992D00D996A5 /* goAngel-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -245,7 +250,7 @@
 		20B43B5B1970992D00D996A5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				20B43B5C1970992D00D996A5 /* CoinsorterTests-Info.plist */,
+				20B43B5C1970992D00D996A5 /* goAngelTests-Info.plist */,
 				20B43B5D1970992D00D996A5 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -254,9 +259,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		20B43B311970992D00D996A5 /* Coinsorter */ = {
+		20B43B311970992D00D996A5 /* goAngel */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 20B43B641970992D00D996A5 /* Build configuration list for PBXNativeTarget "Coinsorter" */;
+			buildConfigurationList = 20B43B641970992D00D996A5 /* Build configuration list for PBXNativeTarget "goAngel" */;
 			buildPhases = (
 				1E20E2E5BA5D4F73B754BEC8 /* Check Pods Manifest.lock */,
 				20B43B2E1970992D00D996A5 /* Sources */,
@@ -268,14 +273,14 @@
 			);
 			dependencies = (
 			);
-			name = Coinsorter;
+			name = goAngel;
 			productName = "coinsorter-ios";
-			productReference = 20B43B321970992D00D996A5 /* Coinsorter.app */;
+			productReference = 20B43B321970992D00D996A5 /* goAngel.app */;
 			productType = "com.apple.product-type.application";
 		};
-		20B43B511970992D00D996A5 /* CoinsorterTests */ = {
+		20B43B511970992D00D996A5 /* goAngelTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 20B43B671970992D00D996A5 /* Build configuration list for PBXNativeTarget "CoinsorterTests" */;
+			buildConfigurationList = 20B43B671970992D00D996A5 /* Build configuration list for PBXNativeTarget "goAngelTests" */;
 			buildPhases = (
 				20B43B4E1970992D00D996A5 /* Sources */,
 				20B43B4F1970992D00D996A5 /* Frameworks */,
@@ -286,9 +291,9 @@
 			dependencies = (
 				20B43B591970992D00D996A5 /* PBXTargetDependency */,
 			);
-			name = CoinsorterTests;
+			name = goAngelTests;
 			productName = "coinsorter-iosTests";
-			productReference = 20B43B521970992D00D996A5 /* CoinsorterTests.xctest */;
+			productReference = 20B43B521970992D00D996A5 /* goAngelTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -313,7 +318,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 20B43B2D1970992D00D996A5 /* Build configuration list for PBXProject "Coinsorter" */;
+			buildConfigurationList = 20B43B2D1970992D00D996A5 /* Build configuration list for PBXProject "goAngel" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -325,8 +330,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				20B43B311970992D00D996A5 /* Coinsorter */,
-				20B43B511970992D00D996A5 /* CoinsorterTests */,
+				20B43B311970992D00D996A5 /* goAngel */,
+				20B43B511970992D00D996A5 /* goAngelTests */,
 			);
 		};
 /* End PBXProject section */
@@ -402,6 +407,7 @@
 				20B43B441970992D00D996A5 /* main.m in Sources */,
 				2001706C1975A87200426EB9 /* CSDevice.m in Sources */,
 				202E358B1980347B00C60F51 /* CoreDataStore.m in Sources */,
+				20C4E49619915094001E03FB /* Reachability.m in Sources */,
 				20005DDD19832C5800818FB6 /* GroupTableViewController.m in Sources */,
 				208D2A6E1977026C004D6493 /* firstLoadViewController.m in Sources */,
 				2052CF3119737139008B4ACF /* DeviceViewController.m in Sources */,
@@ -426,7 +432,7 @@
 /* Begin PBXTargetDependency section */
 		20B43B591970992D00D996A5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 20B43B311970992D00D996A5 /* Coinsorter */;
+			target = 20B43B311970992D00D996A5 /* goAngel */;
 			targetProxy = 20B43B581970992D00D996A5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -531,9 +537,9 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "coinsorter-ios/Coinsorter-Prefix.pch";
-				INFOPLIST_FILE = "coinsorter-ios/Coinsorter-Info.plist";
-				PRODUCT_NAME = Coinsorter;
+				GCC_PREFIX_HEADER = "coinsorter-ios/goAngel-Prefix.pch";
+				INFOPLIST_FILE = "coinsorter-ios/goAngel-Info.plist";
+				PRODUCT_NAME = goAngel;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -546,9 +552,9 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "coinsorter-ios/Coinsorter-Prefix.pch";
-				INFOPLIST_FILE = "coinsorter-ios/Coinsorter-Info.plist";
-				PRODUCT_NAME = Coinsorter;
+				GCC_PREFIX_HEADER = "coinsorter-ios/goAngel-Prefix.pch";
+				INFOPLIST_FILE = "coinsorter-ios/goAngel-Info.plist";
+				PRODUCT_NAME = goAngel;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -568,8 +574,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "coinsorter-iosTests/CoinsorterTests-Info.plist";
-				PRODUCT_NAME = CoinsorterTests;
+				INFOPLIST_FILE = "coinsorter-iosTests/goAngelTests-Info.plist";
+				PRODUCT_NAME = goAngelTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -586,8 +592,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "coinsorter-ios/coinsorter-ios-Prefix.pch";
-				INFOPLIST_FILE = "coinsorter-iosTests/CoinsorterTests-Info.plist";
-				PRODUCT_NAME = CoinsorterTests;
+				INFOPLIST_FILE = "coinsorter-iosTests/goAngelTests-Info.plist";
+				PRODUCT_NAME = goAngelTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -596,7 +602,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		20B43B2D1970992D00D996A5 /* Build configuration list for PBXProject "Coinsorter" */ = {
+		20B43B2D1970992D00D996A5 /* Build configuration list for PBXProject "goAngel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				20B43B621970992D00D996A5 /* Debug */,
@@ -605,7 +611,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		20B43B641970992D00D996A5 /* Build configuration list for PBXNativeTarget "Coinsorter" */ = {
+		20B43B641970992D00D996A5 /* Build configuration list for PBXNativeTarget "goAngel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				20B43B651970992D00D996A5 /* Debug */,
@@ -614,7 +620,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		20B43B671970992D00D996A5 /* Build configuration list for PBXNativeTarget "CoinsorterTests" */ = {
+		20B43B671970992D00D996A5 /* Build configuration list for PBXNativeTarget "goAngelTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				20B43B681970992D00D996A5 /* Debug */,
