@@ -30,6 +30,7 @@
 - (void) getPhotos: (NSString *) lastId callback: (void (^) (NSMutableArray *devices)) callback;
 - (void) uploadPhotos: (NSMutableArray *) photos upCallback: (void (^) ()) upCallback;
 - (void) updateDevice;
+- (void) pingServer: (void (^) (BOOL connected)) connectCallback;
 
 // need reference to a data wrapper so we can change photo state when we download, upload, etc.
 @property CoreDataWrapper *dataWrapper;

@@ -61,6 +61,35 @@
   return request;
 }
 
+- (void) pingServer:(void (^) (BOOL connected))connectCallback {
+  NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
+
+  NSMutableURLRequest *request = [self getHTTPGetRequest:@"/getSID"];
+  [request setTimeoutInterval:5]; // timout to 5 seconds
+  
+  NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    if (error == nil) {
+      NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+      
+      NSString *sid = [jsonData objectForKey:@"SID"];
+      
+      if (sid != nil && [sid isEqualToString:account.sid]) {
+        // we are connected
+        connectCallback(YES);
+      }else {
+        // no server id or it does not equal the server
+        // we have connected to before
+        connectCallback(NO);
+      }
+    }else {
+      connectCallback(NO);
+    }
+  }];
+  
+  [dataTask resume];
+}
+
 // update the device information on server
 - (void) updateDevice {
   NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
