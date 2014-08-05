@@ -64,8 +64,12 @@
   [defaults addObserver:self forKeyPath:DEVICENAME options:NSKeyValueObservingOptionNew context:NULL];
   [defaults addObserver:self forKeyPath:ALBUMS options:NSKeyValueObservingOptionNew context:NULL];
   
+  // notification so we know when app comes into foreground
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
   
   // Start networking
+  
+  self.prevBSSID = [self currentWifiBSSID];
   
   // setup network notification
   [self setupNet];
@@ -99,6 +103,9 @@
   
   [defaults removeObserver:self forKeyPath:DEVICENAME];
   [defaults removeObserver:self forKeyPath:ALBUMS];
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 // called when a nsuserdefault value change
@@ -137,6 +144,40 @@
 // stops the refreshing animation
 - (void)stopRefresh {
   [self.refreshControl endRefreshing];
+}
+
+// called by notification when app enters foreground
+- (void)applicationWillEnterForeground:(NSNotification *)notification {
+  // get the bssid and compare with prev one
+  // if it has changed, then do ping
+  NSString *bssid = [self currentWifiBSSID];
+  
+  // this means we do not hava wifi bssid
+  // probably on 3g
+  if (bssid == nil) {
+    return;
+  }
+  
+  if (self.prevBSSID == nil) {
+    self.prevBSSID = bssid;
+  }else {
+    if (![self.prevBSSID isEqualToString:bssid]) {
+      NSLog(@"network bssid changed");
+      
+      self.prevBSSID = bssid;
+      [self.coinsorter pingServer:^(BOOL connected) {
+        self.canConnect = connected;
+        
+        [self updateUploadCountUI];
+        
+        if (self.canConnect) {
+          // get all devices and photos from server
+          // only call this when we know we are connected
+          [self syncAllFromApi];
+        }
+      }];
+    }
+  }
 }
 
 // called when the controllers view will become forground
@@ -227,15 +268,16 @@
 
 // get devices, photos, and upload from server
 - (void) syncAllFromApi {
+  
+  // if we can connect to server than make api calls
   if (self.canConnect) {
     // perform all db and api calls in backgroud
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
       [self getDevicesFromApi];
       [self getPhotosFromApi];
     });
-  }else {
-    NSLog(@"cannot connect to server, no making api calls");
   }
+  
   // stop the refreshing animation
   [self stopRefresh];
 }
@@ -353,9 +395,11 @@
   BOOL enableGrid = YES;
   BOOL startOnGrid = YES;
   
-  // synchrously get photos from core data
-  CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
-  self.photos = [self.dataWrapper getPhotos:d.remoteId];
+  // get photos from in background
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
+    self.photos = [self.dataWrapper getPhotos:d.remoteId];
+  });
   
 	// Create browser
 	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
@@ -493,6 +537,20 @@
     self.canConnect = NO;
     [self updateUploadCountUI];
   }
+}
+
+// get the current wifi bssid (network id)
+- (NSString *)currentWifiBSSID {
+  // Does not work on the simulator.
+  NSString *bssid = nil;
+  NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
+  for (NSString *ifnam in ifs) {
+    NSDictionary *info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
+    if (info[@"BSSID"]) {
+      bssid = info[@"BSSID"];
+    }
+  }
+  return bssid;
 }
 
 @end

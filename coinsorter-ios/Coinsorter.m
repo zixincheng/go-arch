@@ -77,12 +77,15 @@
       if (sid != nil && [sid isEqualToString:account.sid]) {
         // we are connected
         connectCallback(YES);
+        NSLog(@"ping successful");
       }else {
         // no server id or it does not equal the server
         // we have connected to before
         connectCallback(NO);
+        NSLog(@"ping failed");
       }
     }else {
+      NSLog(@"ping failed");
       connectCallback(NO);
     }
   }];
@@ -108,8 +111,9 @@
   NSURLSessionDataTask *postDataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
     NSError *jsonError;
     NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-    
-    
+  
+    // TODO: check to see if device update worked
+    // by reading json response
   }];
   
   [postDataTask resume];

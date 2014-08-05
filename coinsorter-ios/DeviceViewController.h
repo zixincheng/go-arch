@@ -17,6 +17,7 @@
 #import "LocalLibrary.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <CoreLocation/CoreLocation.h>
+#import <SystemConfiguration/CaptiveNetwork.h>
 #import "Reachability.h"
 
 @interface DeviceViewController : UIViewController <MWPhotoBrowserDelegate, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate> {
@@ -55,6 +56,7 @@
 
 @property (nonatomic, retain) Reachability *reach;
 @property (nonatomic, assign) BOOL canConnect;
+@property (nonatomic) NSString *prevBSSID;
 @property (nonatomic) NSInteger networkStatus;
 
 @end
