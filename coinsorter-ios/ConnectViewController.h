@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblIp;
 @property (weak, nonatomic) IBOutlet UILabel *lblError;
 @property (nonatomic, strong) NSString *ip;
+@property (nonatomic, strong) NSString *sid;
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
 

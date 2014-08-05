@@ -32,11 +32,12 @@
   self.ip = [temp objectForKey:@"ip"];
   self.cid = [temp objectForKey:@"cid"];
   self.token = [temp objectForKey:@"token"];
+  self.sid = [temp objectForKey:@"sid"];
 }
 
 - (void) saveSettings {
-  NSArray *values = [NSArray arrayWithObjects:self.ip, self.cid, self.token, nil];
-  NSArray *keys   = [NSArray arrayWithObjects:@"ip", @"cid", @"token", nil];
+  NSArray *values = [NSArray arrayWithObjects:self.ip, self.cid, self.token, self.sid, nil];
+  NSArray *keys   = [NSArray arrayWithObjects:@"ip", @"cid", @"token", @"sid", nil];
   
   NSString *error;
   NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];

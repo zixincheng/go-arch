@@ -10,9 +10,10 @@
 
 @interface AccountDataWrapper : NSObject
 
-@property (strong) NSString *ip;
-@property (strong) NSString *token;
-@property (strong) NSString *cid;
+@property (nonatomic, strong) NSString *ip;
+@property (nonatomic, strong) NSString *token;
+@property (nonatomic, strong) NSString *cid;
+@property (nonatomic, strong) NSString *sid;
 
 - (void) saveSettings;
 - (void) readSettings;
