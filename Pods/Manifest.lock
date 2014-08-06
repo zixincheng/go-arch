@@ -2,7 +2,6 @@ PODS:
   - CocoaAsyncSocket (7.3.5)
   - DACircularProgress (2.2.0)
   - InAppSettingsKit (2.1)
-  - IQKeyboardManager (3.0.6)
   - MBProgressHUD (0.8)
   - MWPhotoBrowser (1.4.0):
     - DACircularProgress
@@ -18,7 +17,6 @@ PODS:
 DEPENDENCIES:
   - CocoaAsyncSocket
   - InAppSettingsKit
-  - IQKeyboardManager
   - MWPhotoBrowser
   - SSKeychain
 
@@ -26,7 +24,6 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 45bdbbc1c0a5ed0640ff4c42af325ba43a2f099a
   DACircularProgress: 3b41941891a56dc6aa17971f5322a9a38a6f446e
   InAppSettingsKit: 853cdc9fcc76b87a4694f8d2b930e116463b5a29
-  IQKeyboardManager: 3381092a6728e3565a6ad5051c44386be36bd990
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   MWPhotoBrowser: 4efcdb9da34751f97992128a5356f3929d1af537
   PSTCollectionView: a63299550ad566b579479d07cb5e2bf61148686b

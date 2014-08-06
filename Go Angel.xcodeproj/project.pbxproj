@@ -41,6 +41,7 @@
 		2061D1FE19919440001C7E08 /* UploadPhotosTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1F919919440001C7E08 /* UploadPhotosTask.m */; };
 		2061D2001991945F001C7E08 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1FF1991945F001C7E08 /* main.m */; };
 		2061D2021991947D001C7E08 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2061D2011991947D001C7E08 /* Images.xcassets */; };
+		20F74D161992B56B00E0546D /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 20F74D151992B56B00E0546D /* Constants.m */; };
 		B8BD5E6D1AEE4BC883DE0FB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C120E32068A1416CA965B081 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -108,6 +109,8 @@
 		2061D1F919919440001C7E08 /* UploadPhotosTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadPhotosTask.m; sourceTree = "<group>"; };
 		2061D1FF1991945F001C7E08 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2061D2011991947D001C7E08 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		20F74D141992B56B00E0546D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		20F74D151992B56B00E0546D /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C120E32068A1416CA965B081 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -193,6 +196,8 @@
 				2061D1D4199193CE001C7E08 /* CSPhoto.m */,
 				2061D1D5199193CE001C7E08 /* DeviceViewController.h */,
 				2061D1D6199193CE001C7E08 /* DeviceViewController.m */,
+				20F74D141992B56B00E0546D /* Constants.h */,
+				20F74D151992B56B00E0546D /* Constants.m */,
 				2061D1DE199193DB001C7E08 /* firstLoadViewController.h */,
 				2061D1DF199193DB001C7E08 /* firstLoadViewController.m */,
 				2061D1E0199193DB001C7E08 /* GroupTableViewController.h */,
@@ -404,6 +409,7 @@
 				2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */,
 				2061D1DC199193CE001C7E08 /* CSPhoto.m in Sources */,
 				2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */,
+				20F74D161992B56B00E0546D /* Constants.m in Sources */,
 				2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */,
 				2061D1C6199193B5001C7E08 /* AccountDataWrapper.m in Sources */,
 				2061D1FB19919440001C7E08 /* Server.m in Sources */,

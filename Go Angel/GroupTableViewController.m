@@ -121,7 +121,7 @@
   for (NSDictionary *d in self.allAlbums) {
     NSString *selString = [d valueForKey: SELECTED];
     if ([selString isEqualToString:@"YES"]) {
-      NSString *url = [d valueForKey:URL];
+      NSString *url = [d valueForKey:URL_KEY];
       [arr addObject:[url description]];
     }
   }
@@ -141,7 +141,7 @@
       
       NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
       [d setValue:groupName forKey:NAME];
-      [d setValue:groupUrl forKey:URL];
+      [d setValue:groupUrl forKey:URL_KEY];
       if ([self isURLSelected:groupUrl]) {
         [d setValue:@"YES" forKey:SELECTED];
       }else {

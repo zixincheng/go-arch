@@ -4,7 +4,6 @@
 //
 // acdGO data backup and recovery
 // © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
-//
 
 #import "CoreDataStore.h"
 
@@ -125,7 +124,6 @@
     NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     abort();
   }
-  
   return _persistentStoreCoordinator;
 }
 

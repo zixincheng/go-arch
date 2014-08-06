@@ -10,7 +10,6 @@
 #import "Coinsorter.h"
 #import "AppDelegate.h"
 #import "CoreDataWrapper.h"
-#import "IQKeyboardManager.h"
 
 @interface ConnectViewController : UIViewController <UITextFieldDelegate>
 

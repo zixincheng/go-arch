@@ -29,8 +29,8 @@
   // Do any additional setup after loading the view.
   
   // use iqkeyboardmanager to manager scrolling of text fields
-  [[IQKeyboardManager sharedManager] setEnable:YES];
-  [[IQKeyboardManager sharedManager] setShouldResignOnTouchOutside:YES];
+//  [[IQKeyboardManager sharedManager] setEnable:YES];
+//  [[IQKeyboardManager sharedManager] setShouldResignOnTouchOutside:YES];
   
   [self.passTextField addTarget:self
                          action:@selector(connectPressed:)
