@@ -113,13 +113,13 @@
                                     <constraint firstAttribute="height" constant="45" id="VjO-vl-mGh"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="9A7-pn-oUs"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Qff-uA-Jgr"/>
                                     <barButtonItem title="Upload" width="66" id="8Kp-5G-sYI">
                                         <connections>
                                             <action selector="buttonPressed:" destination="07j-du-bzQ" id="M6b-od-qhf"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ThE-UI-YZ0"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="JTR-0x-Iux"/>
                                 </items>
                             </toolbar>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pQH-gI-mJs">
@@ -253,52 +253,77 @@
             <objects>
                 <viewController id="iIk-Pr-CaD" customClass="ConnectViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Koa-lD-ufg"/>
-                        <viewControllerLayoutGuide type="bottom" id="2pD-Td-scZ"/>
+                        <viewControllerLayoutGuide type="top" id="Rsm-Mg-nDV"/>
+                        <viewControllerLayoutGuide type="bottom" id="Wpv-Q8-JrL"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="lgb-NA-MUx">
+                    <view key="view" contentMode="scaleToFill" id="bY0-Iw-fuy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dyE-jG-uZA">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Server IP" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQ2-tm-DhQ">
-                                        <rect key="frame" x="15" y="180" width="280" height="41"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="egw-bH-unc">
-                                        <rect key="frame" x="15" y="269" width="280" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="join" secureTextEntry="YES"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="iIk-Pr-CaD" id="pJF-Gi-kUd"/>
-                                        </connections>
-                                    </textField>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dP-eR-9tQ">
-                                        <rect key="frame" x="20" y="247" width="280" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <attributedString key="attributedText">
-                                            <fragment content="error">
-                                                <attributes>
-                                                    <color key="NSColor" red="1" green="0.0" blue="0.035351606611023989" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <font key="NSFont" size="17" name="HelveticaNeue"/>
-                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                                </attributes>
-                                            </fragment>
-                                        </attributedString>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </scrollView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Server IP" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQ2-tm-DhQ">
+                                <rect key="frame" x="20" y="123" width="280" height="41"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="41" id="bND-aF-SS6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="egw-bH-unc">
+                                <rect key="frame" x="20" y="233" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="join" secureTextEntry="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="iIk-Pr-CaD" id="pJF-Gi-kUd"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dP-eR-9tQ">
+                                <rect key="frame" x="20" y="204" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="error">
+                                        <attributes>
+                                            <color key="NSColor" red="1" green="0.0" blue="0.035351606611023989" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="17" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zFd-6x-gve">
+                                <rect key="frame" x="101" y="386" width="119" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="119" id="Udg-7D-Kgv"/>
+                                    <constraint firstAttribute="height" constant="48" id="ViH-vq-8Dv"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <state key="normal" title="Connect">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="connectPressed:" destination="iIk-Pr-CaD" eventType="touchUpInside" id="mzn-M1-CFa"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="UQ2-tm-DhQ" firstAttribute="top" secondItem="Rsm-Mg-nDV" secondAttribute="bottom" constant="59" id="0Vg-CD-8S3"/>
+                            <constraint firstItem="UQ2-tm-DhQ" firstAttribute="trailing" secondItem="egw-bH-unc" secondAttribute="trailing" id="4V3-Mv-xgi"/>
+                            <constraint firstItem="UQ2-tm-DhQ" firstAttribute="leading" secondItem="egw-bH-unc" secondAttribute="leading" id="96o-51-SM1"/>
+                            <constraint firstItem="UQ2-tm-DhQ" firstAttribute="leading" secondItem="bY0-Iw-fuy" secondAttribute="leading" constant="20" symbolic="YES" id="CUR-qK-xoJ"/>
+                            <constraint firstItem="3dP-eR-9tQ" firstAttribute="trailing" secondItem="egw-bH-unc" secondAttribute="trailing" id="DMg-XW-sVe"/>
+                            <constraint firstItem="3dP-eR-9tQ" firstAttribute="leading" secondItem="egw-bH-unc" secondAttribute="leading" id="VWK-lu-HWm"/>
+                            <constraint firstItem="zFd-6x-gve" firstAttribute="top" secondItem="egw-bH-unc" secondAttribute="bottom" constant="123" id="bTG-AE-Ant"/>
+                            <constraint firstItem="zFd-6x-gve" firstAttribute="centerX" secondItem="egw-bH-unc" secondAttribute="centerX" id="dEL-LW-yvT"/>
+                            <constraint firstItem="3dP-eR-9tQ" firstAttribute="top" secondItem="UQ2-tm-DhQ" secondAttribute="bottom" constant="40" id="gHV-2V-GjL"/>
+                            <constraint firstAttribute="trailing" secondItem="UQ2-tm-DhQ" secondAttribute="trailing" constant="20" symbolic="YES" id="lGi-Bp-c5a"/>
+                            <constraint firstItem="egw-bH-unc" firstAttribute="top" secondItem="UQ2-tm-DhQ" secondAttribute="bottom" constant="69" id="qdG-y8-Lad"/>
+                            <constraint firstItem="egw-bH-unc" firstAttribute="top" secondItem="3dP-eR-9tQ" secondAttribute="bottom" constant="8" symbolic="YES" id="sCT-Z2-pTy"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Connect" id="HXc-Ks-TKU"/>
                     <connections>
