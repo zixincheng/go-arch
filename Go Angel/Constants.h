@@ -26,6 +26,18 @@
 #define PHOTO @"Photo"
 #define DEVICE @"Device"
 
+// photo entity attributes
+#define DATE_CREATED @"dateCreated"
+#define DEVICE_ID @"deviceId"
+#define IMAGE_URL @"imageURL"
+#define REMOTE_ID @"remoteId"
+#define REMOTE_PATH @"remotePath"
+#define THUMB_URL @"thumbURL"
+#define ON_SERVER @"onServer"
+
+// device entitiy attributes
+// same as above ones
+
 @interface Constants : NSObject
 
 @end

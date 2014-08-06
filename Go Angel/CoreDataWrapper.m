@@ -19,7 +19,7 @@
     NSEntityDescription *entityDesc = [NSEntityDescription entityForName:DEVICE inManagedObjectContext:context];
     [request setEntity:entityDesc];
     
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(remoteId = %@)", device.remoteId];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", REMOTE_ID, device.remoteId];
     [request setPredicate:pred];
     
     NSError *err;
@@ -42,7 +42,7 @@
       NSLog(@"updated device - %@", device.deviceName);
     }
     
-    [photoObj setValue:device.deviceName forKey:@"deviceName"];
+    [photoObj setValue:device.deviceName forKey:DEVICE_NAME];
     [photoObj setValue:device.remoteId forKey:@"remoteId"];
     
     [context save:nil];
@@ -56,7 +56,7 @@
   
   [context performBlockAndWait: ^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:DEVICE];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(remoteId = %@)", cid];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", REMOTE_ID, cid];
     [request setPredicate:pred];
     
     NSError *error;
@@ -71,7 +71,7 @@
       NSManagedObject *obj = result[0];
       
       device.remoteId = cid;
-      device.deviceName = [obj valueForKey:@"deviceName"];
+      device.deviceName = [obj valueForKey:DEVICE_NAME];
     }
   }];
   
@@ -96,8 +96,8 @@
     for (int i = 0; i < [dvs count]; i++) {
       NSManagedObject *d = dvs[i];
       CSDevice *device = [[CSDevice alloc] init];
-      device.deviceName = [d valueForKey:@"deviceName"];
-      device.remoteId = [d valueForKey:@"remoteId"];
+      device.deviceName = [d valueForKey:DEVICE_NAME];
+      device.remoteId = [d valueForKey:REMOTE_ID];
 
       [arr addObject:device];
     }
@@ -114,7 +114,7 @@
   [context performBlock: ^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
     
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(imageURL = %@)", photo.imageURL];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", IMAGE_URL, photo.imageURL];
     [request setPredicate:pred];
     
     NSError *err;
@@ -132,13 +132,13 @@
       photoObj = result[0];
     }
     
-    [photoObj setValue:photo.imageURL forKey:@"imageURL"];
-    [photoObj setValue:photo.thumbURL forKey:@"thumbURL"];
-    [photoObj setValue:photo.deviceId forKey:@"deviceId"];
-    [photoObj setValue:photo.onServer forKey:@"onServer"];
+    [photoObj setValue:photo.imageURL forKey:IMAGE_URL];
+    [photoObj setValue:photo.thumbURL forKey:THUMB_URL];
+    [photoObj setValue:photo.deviceId forKey:DEVICE_ID];
+    [photoObj setValue:photo.onServer forKey:ON_SERVER];
     
     if (photo.remoteID != nil) {
-      [photoObj setValue:photo.remoteID forKey:@"remoteId"];
+      [photoObj setValue:photo.remoteID forKey:REMOTE_ID];
     }
     
     [context save:nil];
@@ -153,7 +153,7 @@
   
   [context performBlockAndWait:^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(imageURL = %@)", photo.imageURL];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", IMAGE_URL, photo.imageURL];
     [request setPredicate:pred];
     
     NSArray *results = [context executeFetchRequest:request error:nil];
@@ -178,14 +178,14 @@
         NSLog(@"will save thumbnail to %@", photo.thumbURL);
       }
       
-      [newPhoto setValue:photo.imageURL forKey:@"imageURL"];
-      [newPhoto setValue:photo.thumbURL forKey:@"thumbURL"];
-      [newPhoto setValue:photo.deviceId forKey:@"deviceId"];
-      [newPhoto setValue:photo.onServer forKey:@"onServer"];
-      [newPhoto setValue:photo.dateCreated forKeyPath:@"dateCreated"];
+      [newPhoto setValue:photo.imageURL forKey:IMAGE_URL];
+      [newPhoto setValue:photo.thumbURL forKey:THUMB_URL];
+      [newPhoto setValue:photo.deviceId forKey:DEVICE_ID];
+      [newPhoto setValue:photo.onServer forKey:ON_SERVER];
+      [newPhoto setValue:photo.dateCreated forKeyPath:DATE_CREATED];
       
       if (photo.remoteID != nil) {
-        [newPhoto setValue:photo.remoteID forKey:@"remoteId"];
+        [newPhoto setValue:photo.remoteID forKey:REMOTE_ID];
       }
       
       
@@ -210,8 +210,15 @@
   
   [context performBlockAndWait: ^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(deviceId = %@)", deviceId];
+    
+    // set query
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", DEVICE_ID, deviceId];
     [request setPredicate:pred];
+    
+    // set sort
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:NO];
+    NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
+    [request setSortDescriptors: descriptors];
     
     NSArray*phs = [context executeFetchRequest:request error:nil];
     
@@ -224,13 +231,13 @@
     for (int i =0; i < [phs count]; i++) {
       NSManagedObject *p = phs[i];
       CSPhoto *photo = [[CSPhoto alloc] init];
-      photo.deviceId = [p valueForKey:@"deviceId"];
-      photo.onServer = [p valueForKey:@"onServer"];
+      photo.deviceId = [p valueForKey:DEVICE_ID];
+      photo.onServer = [p valueForKey:ON_SERVER];
       
-      NSString *imageURL = [p valueForKey:@"imageURL"];
-      NSString *thumbURL = [p valueForKey:@"thumbURL"];
+      NSString *imageURL = [p valueForKey:IMAGE_URL];
+      NSString *thumbURL = [p valueForKey:THUMB_URL];
       
-      photo.dateCreated = (NSDate *) [p valueForKey:@"dateCreated"];
+      photo.dateCreated = (NSDate *) [p valueForKey:DATE_CREATED];
       
       photo.imageURL = imageURL;
       photo.thumbURL = thumbURL;
@@ -251,7 +258,7 @@
   
   [context performBlockAndWait: ^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(onServer = %@)", @"0"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", ON_SERVER, @"0"];
     [request setPredicate:pred];
     
     NSArray*phs = [context executeFetchRequest:request error:nil];
@@ -265,13 +272,13 @@
     for (int i =0; i < [phs count]; i++) {
       NSManagedObject *p = phs[i];
       CSPhoto *photo = [[CSPhoto alloc] init];
-      photo.deviceId = [p valueForKey:@"deviceId"];
-      photo.onServer = [p valueForKey:@"onServer"];
+      photo.deviceId = [p valueForKey:DEVICE_ID];
+      photo.onServer = [p valueForKey:ON_SERVER];
       
-      NSString *imageURL = [p valueForKey:@"imageURL"];
-      NSString *thumbURL = [p valueForKey:@"thumbURL"];
+      NSString *imageURL = [p valueForKey:IMAGE_URL];
+      NSString *thumbURL = [p valueForKey:THUMB_URL];
       
-      photo.dateCreated = (NSDate *) [p valueForKey:@"dateCreated"];
+      photo.dateCreated = (NSDate *) [p valueForKey:DATE_CREATED];
       
       photo.imageURL = imageURL;
       photo.thumbURL = thumbURL;
@@ -293,7 +300,7 @@
   
   [context performBlockAndWait: ^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(onServer = %@)", @"0"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", ON_SERVER, @"0"];
     [request setPredicate:pred];
     
     NSArray*phs = [context executeFetchRequest:request error:nil];
@@ -316,9 +323,9 @@
   
   [context performBlockAndWait: ^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(onServer = %@)", @"1"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", ON_SERVER, @"1"];
     [request setPredicate:pred];
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"remoteId" ascending:NO];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:REMOTE_ID ascending:NO];
     NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
     [request setSortDescriptors: descriptors];
     
@@ -333,7 +340,12 @@
     if (result.count > 0) {
       NSManagedObject *obj = result[0];
       
-      latestId = [obj valueForKey:@"remoteId"];
+      latestId = [obj valueForKey:REMOTE_ID];
+      
+      // make sure latest id is not 0
+      if ([[latestId description] isEqualToString:@"0"]) {
+        latestId = @"-1";
+      }
     }
   }];
   
