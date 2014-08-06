@@ -11,16 +11,6 @@
 			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
-			<key>DefaultValue</key>
-			<false/>
-			<key>Key</key>
-			<string>autoSync</string>
-			<key>Title</key>
-			<string>Auto Sync</string>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-		</dict>
-		<dict>
 			<key>IASKViewControllerStoryBoardFile</key>
 			<string>Main</string>
 			<key>IASKViewControllerStoryBoardId</key>
