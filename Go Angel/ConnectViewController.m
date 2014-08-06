@@ -28,9 +28,15 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   
+  // use iqkeyboardmanager to manager scrolling of text fields
+  [[IQKeyboardManager sharedManager] setEnable:YES];
+  [[IQKeyboardManager sharedManager] setShouldResignOnTouchOutside:YES];
+  
   [self.passTextField addTarget:self
                          action:@selector(connectPressed:)
                forControlEvents:UIControlEventEditingDidEndOnExit];
+  
+  self.passTextField.inputAccessoryView = [[UIView alloc] init];
   
   self.coinsorter = [[Coinsorter alloc] init];
   
@@ -39,38 +45,21 @@
 }
 
 - (void) viewDidAppear:(BOOL)animated {
-//   [self.passTextField becomeFirstResponder];
+  
+  // make the keyboard come up on when page is navigated to
+  [self.passTextField becomeFirstResponder];
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+  
+  // remove observer
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
 }
 
 - (void)didReceiveMemoryWarning
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-  [self animateTextField: textField up: YES];
-}
-
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-  [self animateTextField: textField up: NO];
-}
-
-- (void) animateTextField: (UITextField*) textField up: (BOOL) up
-{
-  const int movementDistance = 80; // tweak as needed
-  const float movementDuration = 0.3f; // tweak as needed
-  
-  int movement = (up ? -movementDistance : movementDistance);
-  
-  [UIView beginAnimations: @"anim" context: nil];
-  [UIView setAnimationBeginsFromCurrentState: YES];
-  [UIView setAnimationDuration: movementDuration];
-  self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-  [UIView commitAnimations];
 }
 
 - (IBAction)connectPressed:(id)sender {
