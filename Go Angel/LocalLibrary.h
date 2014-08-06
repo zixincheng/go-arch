@@ -1,9 +1,9 @@
 //
 //  LocalPhotos.h
-//  Coinsorter
+//  Go Angel
 //
-//  Created by Jake Runzer on 7/31/14.
-//  Copyright (c) 2014 acdGO. All rights reserved.
+// acdGO data backup and recovery
+// © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
 //
 
 #import <Foundation/Foundation.h>

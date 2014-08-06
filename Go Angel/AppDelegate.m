@@ -1,9 +1,9 @@
 //
 //  AppDelegate.m
-//  coinsorter-ios
+//  Go Angel
 //
-//  Created by Jake Runzer on 7/11/14.
-//  Copyright (c) 2014 ___FULLUSERNAME___. All rights reserved.
+// acdGO data backup and recovery
+// © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
 //
 
 #import "AppDelegate.h"

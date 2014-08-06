@@ -1,9 +1,9 @@
 //
 //  ConnectViewController.m
-//  coinsorter-ios
+//  Go Angel
 //
-//  Created by Jake Runzer on 7/15/14.
-//  Copyright (c) 2014 Jake Runzer. All rights reserved.
+// acdGO data backup and recovery
+// © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
 //
 
 #import "ConnectViewController.h"
@@ -34,13 +34,12 @@
   
   self.coinsorter = [[Coinsorter alloc] init];
   
-  UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resignOnTap:)];
-  [singleTap setNumberOfTapsRequired:1];
-  [singleTap setNumberOfTouchesRequired:1];
-  [self.view addGestureRecognizer:singleTap];
-  
   self.lblIp.text = self.ip;
   self.lblError.text = @"";
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+//   [self.passTextField becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,8 +48,29 @@
   // Dispose of any resources that can be recreated.
 }
 
-- (void)resignOnTap:(id)sender {
-  [self.passTextField endEditing:YES];
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+  [self animateTextField: textField up: YES];
+}
+
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+  [self animateTextField: textField up: NO];
+}
+
+- (void) animateTextField: (UITextField*) textField up: (BOOL) up
+{
+  const int movementDistance = 80; // tweak as needed
+  const float movementDuration = 0.3f; // tweak as needed
+  
+  int movement = (up ? -movementDistance : movementDistance);
+  
+  [UIView beginAnimations: @"anim" context: nil];
+  [UIView setAnimationBeginsFromCurrentState: YES];
+  [UIView setAnimationDuration: movementDuration];
+  self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+  [UIView commitAnimations];
 }
 
 - (IBAction)connectPressed:(id)sender {

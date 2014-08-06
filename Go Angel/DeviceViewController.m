@@ -1,3 +1,11 @@
+//
+// DeviceViewController.m
+//  Go Angel
+//
+// acdGO data backup and recovery
+// © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
+
+
 
 #import "DeviceViewController.h"
 #import "MWCommon.h"
@@ -397,6 +405,32 @@
   BOOL enableGrid = YES;
   BOOL startOnGrid = YES;
   
+  // Create browser
+  MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+  
+  // mwphotobrowser options
+  browser.displayActionButton = displayActionButton;
+  browser.displayNavArrows = displayNavArrows;
+  browser.displaySelectionButtons = displaySelectionButtons;
+  browser.alwaysShowControls = displaySelectionButtons;
+  browser.zoomPhotosToFill = YES;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
+  browser.wantsFullScreenLayout = YES;
+#endif
+  browser.enableGrid = enableGrid;
+  browser.startOnGrid = startOnGrid;
+  browser.enableSwipeToDismiss = YES;
+  [browser setCurrentPhotoIndex:0];
+  
+  // Reset selections
+  if (displaySelectionButtons) {
+    _selections = [NSMutableArray new];
+    for (int i = 0; i < self.photos.count; i++) {
+      [_selections addObject:[NSNumber numberWithBool:NO]];
+    }
+  }
+
+  
   // show a loading hud
   MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
   hud.labelText = @"Loading Photos";
@@ -410,39 +444,14 @@
     dispatch_async(dispatch_get_main_queue(), ^{
      [MBProgressHUD hideHUDForView:self.view animated:YES];
       
-      // Create browser
-      MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-      
-      // mwphotobrowser options
-      browser.displayActionButton = displayActionButton;
-      browser.displayNavArrows = displayNavArrows;
-      browser.displaySelectionButtons = displaySelectionButtons;
-      browser.alwaysShowControls = displaySelectionButtons;
-      browser.zoomPhotosToFill = YES;
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-      browser.wantsFullScreenLayout = YES;
-#endif
-      browser.enableGrid = enableGrid;
-      browser.startOnGrid = startOnGrid;
-      browser.enableSwipeToDismiss = YES;
-      [browser setCurrentPhotoIndex:0];
-      
-      // Reset selections
-      if (displaySelectionButtons) {
-        _selections = [NSMutableArray new];
-        for (int i = 0; i < self.photos.count; i++) {
-          [_selections addObject:[NSNumber numberWithBool:NO]];
-        }
-      }
-      
       // Show
       [self.navigationController pushViewController:browser animated:YES];
       // Release
-      
-      // Deselect
-      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     });
   });
+  
+  // Deselect
+  [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - MWPhotoBrowserDelegate

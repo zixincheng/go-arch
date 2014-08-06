@@ -1,9 +1,9 @@
 
 //  coreDataWrapper.m
-//  coinsorter-ios
+//  Go Angel
 //
-//  Created by Jake Runzer on 7/15/14.
-//  Copyright (c) 2014 Jake Runzer. All rights reserved.
+// acdGO data backup and recovery
+// © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
 //
 
 #import "CoreDataWrapper.h"

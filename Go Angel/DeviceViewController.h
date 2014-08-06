@@ -1,9 +1,9 @@
 //
-//  Menu.h
-//  MWPhotoBrowser
+//  DeviceViewController.h
+//  Go Angel
 //
-//  Created by Michael Waterfall on 21/10/2010.
-//  Copyright 2010 d3i. All rights reserved.
+// acdGO data backup and recovery
+// © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
 //
 
 #import <UIKit/UIKit.h>

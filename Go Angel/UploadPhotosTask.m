@@ -1,9 +1,9 @@
 //
 //  UploadPhotosTask.m
-//  Coinsorter
+//  Go Angel
 //
-//  Created by Jake Runzer on 7/30/14.
-//  Copyright (c) 2014 ACDSystems. All rights reserved.
+// acdGO data backup and recovery
+// © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
 //
 
 #import "UploadPhotosTask.h"
