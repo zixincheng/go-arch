@@ -10,7 +10,6 @@
 #import "DeviceViewController.h"
 #import "MWCommon.h"
 
-
 @implementation DeviceViewController
 
 #pragma mark - NSUserDefaults Constants
@@ -151,7 +150,7 @@
 
 // stops the refreshing animation
 - (void)stopRefresh {
-  if (self.refreshControl != nil) {
+  if (self.refreshControl != nil && [self.refreshControl isRefreshing]) {
     [self.refreshControl endRefreshing];
   }
 }
@@ -429,7 +428,6 @@
       [_selections addObject:[NSNumber numberWithBool:NO]];
     }
   }
-
   
   // show a loading hud
   MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];

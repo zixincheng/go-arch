@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
-//#import "AppDelegate.h"
 #import "CoreDataStore.h"
 #import "CSDevice.h"
 #import "CSPhoto.h"

@@ -8,9 +8,6 @@
 
 #import "LocalLibrary.h"
 
-#define ALBUMS @"albums"
-#define DATE @"date"
-
 @implementation LocalLibrary
 
 - (id) init {

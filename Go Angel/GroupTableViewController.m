@@ -8,11 +8,6 @@
 
 #import "GroupTableViewController.h"
 
-#define SELECTED @"selected"
-#define NAME     @"name"
-#define ALBUMS   @"albums"
-#define URL      @"url"
-
 @interface GroupTableViewController ()
 
 @end

@@ -8,9 +8,6 @@
 
 #import "CoreDataWrapper.h"
 
-#define PHOTO @"Photo"
-#define DEVICE @"Device"
-
 @implementation CoreDataWrapper
 
 - (void) addUpdateDevice:(CSDevice *)device {

@@ -8,8 +8,6 @@
 
 #import "AccountDataWrapper.h"
 
-#define SETTINGS @"Account"
-
 @implementation AccountDataWrapper
 
 - (void) readSettings {

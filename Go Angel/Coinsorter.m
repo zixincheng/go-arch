@@ -11,8 +11,6 @@
 #define FRONT_URL @"https://"
 #define UUID_ACCOUNT @"UID_ACCOUNT"
 
-#define DEVICE_NAME @"deviceName"
-
 @implementation Coinsorter
 
 
