@@ -20,6 +20,8 @@
   self.allowedAlbums = [[NSMutableArray alloc] init];
   assetLibrary = [[ALAssetsLibrary alloc] init];
   
+  [self loadAllowedAlbums];
+  
   return self;
 }
 
@@ -177,7 +179,7 @@
       if (group != nil) {
         NSString *groupName = [group valueForProperty:ALAssetsGroupPropertyName];
         NSString *groupUrl = [group valueForProperty:ALAssetsGroupPropertyURL];
-        
+
         // only get pictures from the allowed albums
         if ([self urlIsAllowed:groupUrl]) {
           [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetEnumerator];
