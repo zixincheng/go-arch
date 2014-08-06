@@ -10,6 +10,7 @@
 
 #define FRONT_URL @"https://"
 #define UUID_ACCOUNT @"UID_ACCOUNT"
+#define PING_TIMEOUT 3
 
 @implementation Coinsorter
 
@@ -64,7 +65,7 @@
   NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
 
   NSMutableURLRequest *request = [self getHTTPGetRequest:@"/getSID"];
-  [request setTimeoutInterval:5]; // timout to 5 seconds
+  [request setTimeoutInterval:PING_TIMEOUT]; // set ping timeout
   
   NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
     if (error == nil) {
