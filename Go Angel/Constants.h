@@ -20,7 +20,7 @@
 #define SELECTED @"selected"
 #define NAME     @"name"
 #define ALBUMS   @"albums"
-#define URL      @"url"
+#define URL_KEY      @"url"
 
 // core data entites
 #define PHOTO @"Photo"
