@@ -64,7 +64,17 @@
         
         // if the asset exists
         if (iref) {
-          UIImage *image = [UIImage imageWithCGImage:iref];
+          // Retrieve the image orientation from the ALAsset
+          UIImageOrientation orientation = UIImageOrientationUp;
+          NSNumber* orientationValue = [asset valueForProperty:ALAssetPropertyOrientation];
+          if (orientationValue != nil) {
+            orientation = [orientationValue intValue];
+          }
+          
+          CGFloat scale  = 1;
+          
+          // correct the image orientation when we upload it
+          UIImage *image = [UIImage imageWithCGImage:iref scale:scale orientation:orientation];
           NSData *imageData = UIImageJPEGRepresentation(image, 100);
           
           NSString *fileName = [NSString stringWithFormat:@"%@_%@", uniqueString, @"image.jpg"];
