@@ -173,6 +173,9 @@
     if (![self.prevBSSID isEqualToString:bssid]) {
       NSLog(@"network bssid changed");
       
+      self.canConnect = NO;
+      [self updateUploadCountUI];
+      
       self.prevBSSID = bssid;
       [self.coinsorter pingServer:^(BOOL connected) {
         self.canConnect = connected;
