@@ -20,8 +20,10 @@
 }
 
 - (id) initWithWrapper: (CoreDataWrapper *) wrap;
-
 - (void) uploadPhotoArray: (NSMutableArray *) photos upCallback: (void (^) ()) upCallback;
+
+// url session
+@property (nonatomic, strong) NSURLSession *session;
 
 // callback to call after each photo gets uploaded
 @property (nonatomic, copy) void(^upCallback)();

@@ -17,6 +17,14 @@
   assetLibrary = [[ALAssetsLibrary alloc] init];
   self.dataWrapper = wrap;
   
+  // setup background session config
+  NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfiguration:[NSString stringWithFormat:@"com.go.upload"]];
+  [config setSessionSendsLaunchEvents:YES];
+  [config setDiscretionary:NO];
+  
+  // create the sessnon with backaground config
+  self.session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
+  
   return self;
 }
 
@@ -26,14 +34,6 @@
   
   // This generates a guranteed unique string
   NSString *uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
-  
-  // setup background session config
-  NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfiguration:[NSString stringWithFormat:@"com.go.upload.%@", uniqueString]];
-  [config setSessionSendsLaunchEvents:YES];
-  [config setDiscretionary:NO];
-  
-  // create the sessnon with backaground config
-  NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
   
   __block UIBackgroundTaskIdentifier background_task; //Create a task object
   
@@ -85,7 +85,7 @@
           [request setHTTPMethod:@"POST"];
           [request setAllHTTPHeaderFields:headers];
           
-          NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request fromFile:fileURL];
+          NSURLSessionUploadTask *uploadTask = [self.session uploadTaskWithRequest:request fromFile:fileURL];
           p.taskIdentifier = uploadTask.taskIdentifier;
           
           @synchronized (self.uploadingPhotos) {
