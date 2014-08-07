@@ -53,6 +53,9 @@
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     //Perform your tasks that your application requires
     
+    // prevent app from going to sleep when uploading
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    
     for (CSPhoto *p in photos) {
       // sets up a condition lock with "pending reads"
       readLock = [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
@@ -160,6 +163,9 @@ enum {
     
     if (uploadTasks.count == 0) {
       NSLog(@"Background Session Finished All Events");
+      
+      // allow app to sleep again
+      [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
       
       if (appDelegate.backgroundTransferCompletionHandler != nil) {
         // Copy locally the completion handler.

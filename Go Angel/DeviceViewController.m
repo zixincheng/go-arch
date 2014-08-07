@@ -321,10 +321,14 @@
         
         [self.progressUpload setProgress:progress animated:YES];
       
+        // the upload is complete
         if (progress == 1.0) {
           [self.btnUpload setEnabled:YES];
           self.currentlyUploading = NO;
           [self updateUploadCountUI];
+          
+          // allow app to sleep again
+          [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
         }
       });
     }];
