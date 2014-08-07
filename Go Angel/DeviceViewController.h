@@ -22,7 +22,7 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "Reachability.h"
 
-@interface DeviceViewController : UIViewController <MWPhotoBrowserDelegate, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate> {
+@interface DeviceViewController : UIViewController <MWPhotoBrowserDelegate, UITableViewDataSource, UITableViewDelegate> {
   NSMutableArray *_selections;
   
   LocalLibrary *localLibrary;

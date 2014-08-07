@@ -263,6 +263,9 @@
   });
 }
 
+// get photos from local library
+// if parse all is true, parse through entire dir
+// if false, stop parsing when find photo older than date saved
 - (void) loadLocalPhotos: (BOOL) parseAll {
   [localLibrary loadLocalImages: parseAll addCallback:^{
     self.unUploadedPhotos++;

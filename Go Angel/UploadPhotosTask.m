@@ -89,6 +89,9 @@
           NSString *urlString = [NSString stringWithFormat:@"%@%@%@", @"https://", appDelegate.account.ip, @"/photos"];
           NSURL *url = [NSURL URLWithString:urlString];
           
+          
+          // TODO: Get these values from photo
+          // eg. filename = actual filename (not unique string)
           NSArray *objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"image/jpeg", nil];
           NSArray *keys = [NSArray arrayWithObjects:@"token", @"filename", @"image-type", nil];
           NSDictionary *headers = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
