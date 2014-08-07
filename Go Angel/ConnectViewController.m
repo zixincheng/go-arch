@@ -72,6 +72,7 @@
   }
 }
 
+// make api call with password to register device
 - (void) authDevice: (NSString *) pass {
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
   AccountDataWrapper *account = appDelegate.account;

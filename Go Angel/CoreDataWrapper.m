@@ -1,5 +1,5 @@
 
-//  coreDataWrapper.m
+//  CoreDataWrapper.m
 //  Go Angel
 //
 // acdGO data backup and recovery
