@@ -167,10 +167,13 @@
       NSManagedObjectContext *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
       
       if (asset != nil) {
+        
+        // TODO : Check file type and save as that
+        
         // we save the thumbnail to app documents folder
         // now we can easily use later without asset library
         UIImage *thumb = [UIImage imageWithCGImage:asset.thumbnail];
-        NSData *data = UIImagePNGRepresentation(thumb);
+        NSData *data = UIImageJPEGRepresentation(thumb, 80);
         [data writeToFile:photo.thumbURL atomically:YES];
         
         photo.thumbURL = [[NSURL fileURLWithPath:photo.thumbURL] absoluteString];;
@@ -188,7 +191,7 @@
         [newPhoto setValue:photo.remoteID forKey:REMOTE_ID];
       }
       
-      
+      // save context to updated other threads
       [context save:nil];
       
       NSLog(@"added new photo to core data");
