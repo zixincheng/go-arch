@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MWPhotoBrowser.h"
 #import "SDImageCache.h"
 #import "MBProgressHUD.h"
 #import "AppDelegate.h"
@@ -16,13 +15,14 @@
 #import "CSDevice.h"
 #import "Coinsorter.h"
 #import "CoreDataWrapper.h"
+#import "GridViewController.h"
 #import "LocalLibrary.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <CoreLocation/CoreLocation.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "Reachability.h"
 
-@interface DeviceViewController : UIViewController <MWPhotoBrowserDelegate, UITableViewDataSource, UITableViewDelegate> {
+@interface DeviceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
   NSMutableArray *_selections;
   
   LocalLibrary *localLibrary;
@@ -47,6 +47,7 @@
 
 @property (nonatomic, strong) NSMutableArray *devices;
 @property (nonatomic, strong) NSMutableArray *photos;
+@property (nonatomic, strong) CSDevice *selectedDevice;
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;

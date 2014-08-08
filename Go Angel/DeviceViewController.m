@@ -407,114 +407,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   
-	// Browser
-  BOOL displayActionButton = YES;
-  BOOL displaySelectionButtons = NO;
-  BOOL displayNavArrows = YES;
-  BOOL enableGrid = YES;
-  BOOL startOnGrid = YES;
+  CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
+  self.selectedDevice = d;
   
-  // Create browser
-  MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-  
-  // mwphotobrowser options
-  browser.displayActionButton = displayActionButton;
-  browser.displayNavArrows = displayNavArrows;
-  browser.displaySelectionButtons = displaySelectionButtons;
-  browser.alwaysShowControls = displaySelectionButtons;
-  browser.zoomPhotosToFill = YES;
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-  browser.wantsFullScreenLayout = YES;
-#endif
-  browser.enableGrid = enableGrid;
-  browser.startOnGrid = startOnGrid;
-  browser.enableSwipeToDismiss = YES;
-  [browser setCurrentPhotoIndex:0];
-  
-  // Reset selections
-  if (displaySelectionButtons) {
-    _selections = [NSMutableArray new];
-    for (int i = 0; i < self.photos.count; i++) {
-      [_selections addObject:[NSNumber numberWithBool:NO]];
-    }
-  }
-  
-  // show a loading hud
-  MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-  hud.labelText = @"Loading Photos";
-  
-  // get photos in background
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    CSDevice *d = [self.devices objectAtIndex:[indexPath row]];
-    self.photos = [self.dataWrapper getPhotos:d.remoteId];
-    
-    // after photos are loaded, make browser on main ui thread
-    dispatch_async(dispatch_get_main_queue(), ^{
-     [MBProgressHUD hideHUDForView:self.view animated:YES];
-      
-      // Show
-      [self.navigationController pushViewController:browser animated:YES];
-      // Release
-    });
-  });
+  [self performSegueWithIdentifier:@"gridSegue" sender:self];
   
   // Deselect
   [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - MWPhotoBrowserDelegate
-
-- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
-  return _photos.count;
-}
-
-- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
-  if (index < _photos.count) {
-    CSPhoto *p = [_photos objectAtIndex:index];
-    return p.photoObject;
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+  if([segue.identifier isEqualToString:@"gridSegue"]) {
+    GridViewController *gridController = (GridViewController *)segue.destinationViewController;
+    gridController.device = self.selectedDevice;
+    gridController.dataWrapper = self.dataWrapper;
   }
-  return nil;
-}
-
-- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
-  if (index < _photos.count) {
-    CSPhoto *p = [_photos objectAtIndex:index];
-    return p.thumbObject;
-  }
-  return nil;
-}
-
-//- (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index {
-//    MWPhoto *photo = [self.photos objectAtIndex:index];
-//    MWCaptionView *captionView = [[MWCaptionView alloc] initWithPhoto:photo];
-//    return [captionView autorelease];
-//}
-
-//- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser actionButtonPressedForPhotoAtIndex:(NSUInteger)index {
-//    NSLog(@"ACTION!");
-//}
-
-- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
-  NSLog(@"Did start viewing photo at index %lu", (unsigned long)index);
-}
-
-- (BOOL)photoBrowser:(MWPhotoBrowser *)photoBrowser isPhotoSelectedAtIndex:(NSUInteger)index {
-  return [[_selections objectAtIndex:index] boolValue];
-}
-
-//- (NSString *)photoBrowser:(MWPhotoBrowser *)photoBrowser titleForPhotoAtIndex:(NSUInteger)index {
-//    return [NSString stringWithFormat:@"Photo %lu", (unsigned long)index+1];
-//}
-
-- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index selectedChanged:(BOOL)selected {
-  [_selections replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:selected]];
-  NSLog(@"Photo at index %lu selected %@", (unsigned long)index, selected ? @"YES" : @"NO");
-}
-
-- (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser {
-  // If we subscribe to this method we must dismiss the view controller ourselves
-  NSLog(@"Did finish modal presentation");
-  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 # pragma mark - Network

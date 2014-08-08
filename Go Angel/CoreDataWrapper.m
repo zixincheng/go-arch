@@ -145,7 +145,7 @@
   }];
 }
 
-- (BOOL) addPhoto:(CSPhoto *)photo asset:(ALAsset *) asset {
+- (BOOL) addPhoto:(CSPhoto *)photo {
   
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
   
@@ -166,20 +166,20 @@
     if (results.count == 0) {
       NSManagedObjectContext *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
       
-      if (asset != nil) {
-        
-        // TODO : Check file type and save as that
-        
-        // we save the thumbnail to app documents folder
-        // now we can easily use later without asset library
-        UIImage *thumb = [UIImage imageWithCGImage:asset.thumbnail];
-        NSData *data = UIImageJPEGRepresentation(thumb, 80);
-        [data writeToFile:photo.thumbURL atomically:YES];
-        
-        photo.thumbURL = [[NSURL fileURLWithPath:photo.thumbURL] absoluteString];;
-        
-        NSLog(@"will save thumbnail to %@", photo.thumbURL);
-      }
+//      if (asset != nil) {
+//        
+//        // TODO : Check file type and save as that
+//        
+//        // we save the thumbnail to app documents folder
+//        // now we can easily use later without asset library
+//        UIImage *thumb = [UIImage imageWithCGImage:asset.thumbnail];
+//        NSData *data = UIImageJPEGRepresentation(thumb, 80);
+//        [data writeToFile:photo.thumbURL atomically:YES];
+//        
+//        photo.thumbURL = [[NSURL fileURLWithPath:photo.thumbURL] absoluteString];;
+//        
+//        NSLog(@"will save thumbnail to %@", photo.thumbURL);
+//      }
       
       [newPhoto setValue:photo.imageURL forKey:IMAGE_URL];
       [newPhoto setValue:photo.thumbURL forKey:THUMB_URL];
@@ -201,10 +201,6 @@
     }
   }];
   return added;
-}
-
-- (BOOL) addPhoto:(CSPhoto *)photo {
-   return [self addPhoto:photo asset:nil];
 }
 
 - (NSMutableArray *)getPhotos: (NSString *) deviceId {

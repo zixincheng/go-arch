@@ -87,7 +87,7 @@
   photo.thumbURL = filePath;
   
   // add photo to db
-  BOOL added = [self.dataWrapper addPhoto:photo asset:asset];
+  BOOL added = [self.dataWrapper addPhoto:photo];
   if (added) {
     if (self.addCallback != nil) {
       self.addCallback();

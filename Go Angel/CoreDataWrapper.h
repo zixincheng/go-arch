@@ -14,7 +14,6 @@
 
 @interface CoreDataWrapper : NSObject
 
-- (BOOL) addPhoto: (CSPhoto *) photo asset: (ALAsset *) asset;
 - (BOOL) addPhoto: (CSPhoto *) photo;
 - (void) addDevice: (CSDevice *) device;
 - (void) addUpdatePhoto: (CSPhoto *) photo;
