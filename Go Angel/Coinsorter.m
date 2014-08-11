@@ -92,6 +92,32 @@
   [dataTask resume];
 }
 
+- (void) getSid:(NSString *)ip infoCallback:(void (^)(NSData *))infoCallback {
+  NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
+  
+  NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, ip, @"/getSID"];
+  NSURL *url = [NSURL URLWithString:urlString];
+  
+  NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+  [request setURL:url];
+  [request setHTTPMethod:@"GET"];
+  
+  NSLog(@"making get request to %@", urlString);
+
+  [request setTimeoutInterval:PING_TIMEOUT]; // set ping timeout
+  
+  NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    if (error == nil) {
+      infoCallback(data);
+    }else {
+      infoCallback(nil);
+    }
+  }];
+  
+  [dataTask resume];
+}
+
 // update the device information on server
 - (void) updateDevice {
   NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];

@@ -10,7 +10,8 @@
 
 @interface Server : NSObject
 
-@property (strong) NSString *ip;
-@property (strong) NSString *serverId;
+@property (nonatomic, strong) NSString *ip;
+@property (nonatomic, strong) NSString *serverId;
+@property (nonatomic, strong) NSString *hostname;
 
 @end

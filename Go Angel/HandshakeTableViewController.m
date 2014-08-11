@@ -34,6 +34,8 @@
   // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
   
+  self.coinsorter = [[Coinsorter alloc] init];
+  
   self.servers = [[NSMutableArray alloc] init];
   
   self.sendUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
@@ -77,7 +79,7 @@
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"serverPrototypeCell" forIndexPath:indexPath];
   
   Server *s = self.servers[[indexPath row]];
-  cell.textLabel.text = s.ip;
+  cell.textLabel.text = s.hostname;
   
   return cell;
 }
@@ -172,20 +174,28 @@
   [GCDAsyncUdpSocket getHost:&host port:&port fromAddress:address];
   
   if (msg)  {
-    if (msg)  {
-      NSLog(@"found server - %@", host);
-      
-      Server *s = [[Server alloc] init];
-      s.ip = [NSString stringWithFormat:@"%@", host];
-      s.serverId = msg;
-      
-      dispatch_async(dispatch_get_main_queue(), ^{
-        @synchronized (self.servers) {
-          [self.servers addObject:s];
-          [self.tableView reloadData];
-        }
-      });
-    }
+    NSLog(@"found server - %@", host);
+    
+    // found the server, now need to make api call to get server info
+    [self.coinsorter getSid:host infoCallback:^(NSData *data) {
+      if (data) {
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSString *sid = [jsonData objectForKey:@"SID"];
+        NSString *hostname = [jsonData objectForKey:@"HOSTNAME"];
+        
+        Server *s = [[Server alloc] init];
+        s.ip = host;
+        s.hostname = hostname;
+        s.serverId = sid;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+          @synchronized (self.servers) {
+            [self.servers addObject:s];
+            [self.tableView reloadData];
+          }
+        });
+      }
+    }];
   }
 }
 
