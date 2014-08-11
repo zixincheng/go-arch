@@ -28,6 +28,8 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   
+  [self.navigationBar setTitle:[NSString stringWithFormat:@"%d / %d", self.selected + 1, self.photos.count]];
+  
   self.selectedPhoto = self.photos[self.selected];
   [self.mediaLoader loadFullImage:self.selectedPhoto completionHandler:^(UIImage *image) {
     
@@ -41,6 +43,10 @@
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+  return self.imageView;
 }
 
 /*

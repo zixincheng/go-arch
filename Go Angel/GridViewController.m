@@ -111,10 +111,14 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
   if([segue.identifier isEqualToString:SINGLE_PHOTO_SEGUE]) {
-    SinglePhotoViewController *singleController = (SinglePhotoViewController *)segue.destinationViewController;
-    singleController.selected = selected;
-    singleController.mediaLoader = self.mediaLoader;
-    singleController.photos = self.photos;
+    PhotoSwipeViewController *swipeController = (PhotoSwipeViewController *) segue.destinationViewController;
+    swipeController.selected = selected;
+    swipeController.mediaLoader = self.mediaLoader;
+    swipeController.photos = self.photos;
+//    SinglePhotoViewController *singleController = (SinglePhotoViewController *)segue.destinationViewController;
+//    singleController.selected = selected;
+//    singleController.mediaLoader = self.mediaLoader;
+//    singleController.photos = self.photos;
   }
 }
 

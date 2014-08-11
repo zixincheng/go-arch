@@ -10,9 +10,10 @@
 #import "MediaLoader.h"
 #import "CSPhoto.h"
 
-@interface SinglePhotoViewController : UIViewController
+@interface SinglePhotoViewController : UIViewController <UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
 
 @property int selected;
 @property (nonatomic, strong) CSPhoto *selectedPhoto;

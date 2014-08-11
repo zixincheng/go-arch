@@ -13,7 +13,7 @@
 #import "GridCell.h"
 #import "MediaLoader.h"
 #import "PhotoSectionHeaderView.h"
-#import "SinglePhotoViewController.h"
+#import "PhotoSwipeViewController.h"
 
 @interface GridViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate> {
   int selected;
