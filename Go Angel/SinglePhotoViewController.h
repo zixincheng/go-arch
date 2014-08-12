@@ -7,17 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MediaLoader.h"
+#import "AppDelegate.h"
 #import "CSPhoto.h"
 
 @interface SinglePhotoViewController : UIViewController <UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
 
 @property int selected;
 @property (nonatomic, strong) CSPhoto *selectedPhoto;
 @property (nonatomic, strong) NSMutableArray *photos;
-@property (nonatomic, strong) MediaLoader *mediaLoader;
+@property (nonatomic, strong) UINavigationItem *navBar;
 
 @end

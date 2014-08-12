@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "AccountDataWrapper.h"
+#import "MediaLoader.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong) AccountDataWrapper *account;
+@property (strong, nonatomic) AccountDataWrapper *account;
+
+// media loader and image cache
+@property (nonatomic, strong) MediaLoader *mediaLoader;
 
 @property (nonatomic, copy) void(^backgroundTransferCompletionHandler)();
 

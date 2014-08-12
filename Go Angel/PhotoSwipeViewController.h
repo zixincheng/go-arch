@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 #import "CSDevice.h"
 #import "CSPhoto.h"
-#import "MediaLoader.h"
 #import "SinglePhotoViewController.h"
 #import "GridCell.h"
 
@@ -22,6 +22,5 @@
 @property int selected;
 @property (nonatomic, strong) CSPhoto *selectedPhoto;
 @property (nonatomic, strong) NSMutableArray *photos;
-@property (nonatomic, strong) MediaLoader *mediaLoader;
 
 @end

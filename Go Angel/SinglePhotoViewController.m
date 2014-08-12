@@ -28,15 +28,17 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   
-  [self.navigationBar setTitle:[NSString stringWithFormat:@"%d / %d", self.selected + 1, self.photos.count]];
-  
-  self.selectedPhoto = self.photos[self.selected];
-  [self.mediaLoader loadFullImage:self.selectedPhoto completionHandler:^(UIImage *image) {
+  AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+  [appDelegate.mediaLoader loadFullImage:self.selectedPhoto completionHandler:^(UIImage *image) {
     
     dispatch_async(dispatch_get_main_queue(), ^{
       [self.imageView setImage:image];
     });
   }];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+  [self.navBar setTitle:[NSString stringWithFormat:@"%d / %d", self.selected + 1, self.photos.count]];
 }
 
 - (void)didReceiveMemoryWarning

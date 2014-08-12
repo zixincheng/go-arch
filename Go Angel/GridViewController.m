@@ -36,8 +36,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
   
-  self.mediaLoader = [[MediaLoader alloc] init];
-  
   [self.navigationBar setTitle:self.device.deviceName];
   
   self.photos = [self.dataWrapper getPhotos:self.device.remoteId];
@@ -93,9 +91,8 @@
   
   CSPhoto *photo = [self.photos objectAtIndex:[indexPath row]];
   
-  [self.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
-    NSLog(@"loaded image into view");
-    
+  AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+  [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
     dispatch_async(dispatch_get_main_queue(), ^{
       [imageView setImage:image];
     });
@@ -113,7 +110,6 @@
   if([segue.identifier isEqualToString:SINGLE_PHOTO_SEGUE]) {
     PhotoSwipeViewController *swipeController = (PhotoSwipeViewController *) segue.destinationViewController;
     swipeController.selected = selected;
-    swipeController.mediaLoader = self.mediaLoader;
     swipeController.photos = self.photos;
 //    SinglePhotoViewController *singleController = (SinglePhotoViewController *)segue.destinationViewController;
 //    singleController.selected = selected;

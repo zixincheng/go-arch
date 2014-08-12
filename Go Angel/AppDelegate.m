@@ -16,6 +16,9 @@
   [self.account readSettings];
   NSLog(@"reading settings");
   
+  // initialize the image cache
+  self.mediaLoader = [[MediaLoader alloc] init];
+  
   // here we check if the device name has been set before
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   NSString *deviceName = [defaults valueForKey:@"deviceName"];

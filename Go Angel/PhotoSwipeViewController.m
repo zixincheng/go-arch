@@ -89,8 +89,8 @@
   SinglePhotoViewController *singlePage = [self.storyboard instantiateViewControllerWithIdentifier:@"singlePhotoView"];
   singlePage.selected = index;
   singlePage.photos = self.photos;
+  singlePage.navBar = self.navigationItem;
   singlePage.selectedPhoto = [self.photos objectAtIndex:index];
-  singlePage.mediaLoader = self.mediaLoader;
   
   return singlePage;
 }
@@ -111,15 +111,24 @@
   
   CSPhoto *photo = [self.photos objectAtIndex:[indexPath row]];
   
-  [self.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
-    NSLog(@"loaded image into view");
-    
+  AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+  [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
     dispatch_async(dispatch_get_main_queue(), ^{
       [imageView setImage:image];
     });
   }];
   
   return cell;
+}
+
+- (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+//  NSLog(@"selected!!!");
+}
+
+- (void) collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+  NSLog(@"highlighted!!!!");
+  UICollectionViewCell* cell = [collectionView cellForItemAtIndexPath:indexPath];
+  cell.contentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:1 alpha:0.5];
 }
 
 /*

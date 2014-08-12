@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 #import "CSPhoto.h"
 #import "CSDevice.h"
 #import "CoreDataWrapper.h"
 #import "GridCell.h"
-#import "MediaLoader.h"
 #import "PhotoSectionHeaderView.h"
 #import "PhotoSwipeViewController.h"
 
@@ -25,7 +25,5 @@
 @property (nonatomic, strong) NSMutableArray *photos;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSDevice *device;
-
-@property (nonatomic, strong) MediaLoader *mediaLoader;
 
 @end

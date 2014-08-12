@@ -12,6 +12,8 @@
 
 @interface MediaLoader : NSObject
 
+@property (strong, nonatomic) NSCache *imageCache;
+
 - (void) loadThumbnail: (CSPhoto *) photo completionHandler: (void (^) (UIImage *image)) completionHandler;
 - (void) loadFullImage: (CSPhoto *) photo completionHandler: (void (^) (UIImage *image)) completionHandler;
 

@@ -13,6 +13,14 @@
 
 @implementation MediaLoader
 
+- (id) init {
+  self = [super init];
+  
+  self.imageCache = [[NSCache alloc] init];
+  
+  return self;
+}
+
 - (UIImage *) getErrorPhoto {
   return nil;
 }
@@ -37,7 +45,7 @@
     NSURL *url = [NSURL URLWithString:photo.imageURL];
     int type = [self getTypePhoto:url];
     
-    NSLog(@"loading %@", [url absoluteString]);
+//    NSLog(@"loading %@", [url absoluteString]);
     
     if (type == IMAGE_LOCAL) {
       // load the photo with asset library
@@ -56,10 +64,10 @@
                         }
                         CGFloat scale  = 1;
                         
-                        CGImageRef iref = [rep fullResolutionImage];
+                        CGImageRef iref = [rep fullScreenImage];
                         if (iref) {
                           // correct the image orientation when we upload it
-                          UIImage *image = [UIImage imageWithCGImage:iref scale:scale orientation:orientation];
+                          UIImage *image = [UIImage imageWithCGImage:iref];
                           completionHandler(image);
                         }
                       }
@@ -72,15 +80,29 @@
       }
       
     }else if (type == IMAGE_REMOTE) {
-      // load the photo directly from path
-      @try {
-        UIImage *image = [UIImage imageWithContentsOfFile:url.path];
-        if (image) {
-          completionHandler(image);
+      // try to get image from cache first
+      
+      UIImage *image;
+      NSData *data = [_imageCache objectForKey:url.path];
+      
+      if (data != nil) {
+        image = [UIImage imageWithData:data];
+        completionHandler(image);
+      }else {
+        // load the photo directly from path
+        @try {
+          image = [UIImage imageWithContentsOfFile:url.path];
+          if (image) {
+            // cache the image for future use
+            NSData *data = UIImageJPEGRepresentation(image, 1.0);
+            [_imageCache setObject:data forKey:url.path];
+            
+            completionHandler(image);
+          }
+        } @catch (NSException *exception) {
+          NSLog(@"Error loading photo from path: %@", url.path);
+          completionHandler([self getErrorPhoto]);
         }
-      } @catch (NSException *exception) {
-        NSLog(@"Error loading photo from path: %@", url.path);
-        completionHandler([self getErrorPhoto]);
       }
     }else {
       completionHandler([self getErrorPhoto]);
@@ -96,7 +118,7 @@
     NSURL *url = [NSURL URLWithString:photo.imageURL];
     int type = [self getTypePhoto:url];
     
-    NSLog(@"loading %@", [url absoluteString]);
+//    NSLog(@"loading %@", [url absoluteString]);
     
     if (type == IMAGE_LOCAL) {
       // load the photo with asset library
@@ -120,16 +142,32 @@
       }
       
     }else if (type == IMAGE_REMOTE) {
-      // load the photo directly from path
-      @try {
-        url = [NSURL URLWithString:photo.thumbURL];
-        UIImage *image = [UIImage imageWithContentsOfFile:url.path];
-        if (image) {
-          completionHandler(image);
+      
+      // check if image data is in cache
+      UIImage *image;
+      NSData *data = [_imageCache objectForKey:url.path];
+      
+      if (data != nil) {
+        image = [UIImage imageWithData:data];
+        completionHandler(image);
+      }else {
+        
+        // load the photo directly from path
+        @try {
+          url = [NSURL URLWithString:photo.thumbURL];
+          UIImage *image = [UIImage imageWithContentsOfFile:url.path];
+          if (image) {
+            
+            // save image to cache
+            NSData *data = UIImageJPEGRepresentation(image, 1.0); // 0.7 is JPG quality
+            [_imageCache setObject:data forKey:url.path];
+            
+            completionHandler(image);
+          }
+        } @catch (NSException *exception) {
+          NSLog(@"Error loading photo from path: %@", photo.thumbURL);
+          completionHandler([self getErrorPhoto]);
         }
-      } @catch (NSException *exception) {
-        NSLog(@"Error loading photo from path: %@", photo.thumbURL);
-        completionHandler([self getErrorPhoto]);
       }
     }else {
       completionHandler([self getErrorPhoto]);
