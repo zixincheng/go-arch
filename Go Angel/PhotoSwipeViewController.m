@@ -39,7 +39,6 @@
   // Change the size of page view controller
   self.pageViewController.view.frame = self.containerView.frame;
 
-  
   [self addChildViewController:_pageViewController];
   [self.containerView addSubview:_pageViewController.view];
   [self.pageViewController didMoveToParentViewController:self];
@@ -50,6 +49,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+# pragma mark - PageViewController Methods
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
@@ -92,6 +93,33 @@
   singlePage.mediaLoader = self.mediaLoader;
   
   return singlePage;
+}
+
+# pragma mark - CollectionViewController Methods
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView*)collectionView {
+  return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section {
+  return self.photos.count;
+}
+
+- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+  GridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"gridCell" forIndexPath:indexPath];
+  UIImageView *imageView = (UIImageView *) [cell viewWithTag:11];
+  
+  CSPhoto *photo = [self.photos objectAtIndex:[indexPath row]];
+  
+  [self.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
+    NSLog(@"loaded image into view");
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [imageView setImage:image];
+    });
+  }];
+  
+  return cell;
 }
 
 /*

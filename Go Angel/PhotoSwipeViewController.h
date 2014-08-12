@@ -11,8 +11,9 @@
 #import "CSPhoto.h"
 #import "MediaLoader.h"
 #import "SinglePhotoViewController.h"
+#import "GridCell.h"
 
-@interface PhotoSwipeViewController : UIViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+@interface PhotoSwipeViewController : UIViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, strong) UIPageViewController *pageViewController;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
