@@ -8,7 +8,6 @@
 
 
 #import "DeviceViewController.h"
-#import "MWCommon.h"
 
 @implementation DeviceViewController
 
@@ -32,6 +31,10 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  
+  // nav bar
+  // make light nav bar
+  self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
   
   // init vars
   self.dataWrapper = [[CoreDataWrapper alloc] init];
@@ -203,8 +206,7 @@
   // we want to parse through all of the new photos
   if (needParse) {
     needParse = NO;
-    
-    NSLog(@"will parse through library to find new photos");
+  
     // load the images from iphone photo library
     [self loadLocalPhotos:YES];
   }else {

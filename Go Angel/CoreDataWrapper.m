@@ -241,9 +241,6 @@
       photo.imageURL = imageURL;
       photo.thumbURL = thumbURL;
       
-      photo.photoObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.imageURL]];
-      photo.thumbObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.thumbURL]];
-      
       [arr addObject:photo];
     }
   }];
@@ -281,9 +278,6 @@
       
       photo.imageURL = imageURL;
       photo.thumbURL = thumbURL;
-      
-      photo.photoObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.imageURL]];
-      photo.thumbObject = [MWPhoto photoWithURL:[NSURL URLWithString:photo.thumbURL]];
       
       [arr addObject:photo];
     }

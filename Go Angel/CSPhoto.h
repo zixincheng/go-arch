@@ -7,13 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MWPhoto.h"
 #import "CSDevice.h"
 
 @interface CSPhoto : NSObject
 
-@property (nonatomic, strong) MWPhoto *photoObject;
-@property (nonatomic, strong) MWPhoto *thumbObject;
 @property (nonatomic, strong) NSString *deviceId;
 @property (nonatomic, strong) NSString *imageURL;
 @property (nonatomic, strong) NSString *thumbURL;
