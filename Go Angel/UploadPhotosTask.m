@@ -49,7 +49,8 @@
     EXIFDictionary = [NSMutableDictionary dictionary];
   }
   
-  if(!GPSDictionary) {
+  BOOL gpsMeta = [[NSUserDefaults standardUserDefaults] boolForKey:@"gpsMeta"];
+  if(!GPSDictionary || !gpsMeta) {
     GPSDictionary = [NSMutableDictionary dictionary];
   }
   
@@ -81,8 +82,6 @@
   NSMutableData *dest_data = [NSMutableData data];
   
   CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
-  
-  //CGImageDestinationRef hello;
   
   CGImageDestinationAddImageFromSource(destination,source,0, (__bridge CFDictionaryRef) metadataAsMutable);
   
@@ -151,6 +150,7 @@
           
           // add the metadata to image before we upload
           NSData *imageData = [self getPhotoWithMetaData:image asset:asset];
+//          NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
           
           NSString *fileName = [NSString stringWithFormat:@"%@_%@", uniqueString, @"image.jpg"];
           NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
