@@ -28,6 +28,7 @@
 
 // photo entity attributes
 #define DATE_CREATED @"dateCreated"
+#define DATE_UPLOADED @"dateUploaded"
 #define DEVICE_ID @"deviceId"
 #define IMAGE_URL @"imageURL"
 #define REMOTE_ID @"remoteId"

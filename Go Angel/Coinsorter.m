@@ -248,13 +248,17 @@
         
         // TODO : Parse the string so it acutally works
         
-        //                NSString *dateString = [latest objectForKey:@"created_date"];
-        //                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //                [dateFormatter setLocale:[NSLocale currentLocale]];
-        //                [dateFormatter setDateFormat:@"yyyy-MM-ddTHH:mm:ssZ"];
-        //                NSDate *date = [dateFormatter dateFromString:dateString];
-        //
-        //                NSLog(@"dateString - %@ date - %@", dateString, date);
+        NSString *dateString = [latest objectForKey:@"created_date"];
+        
+        // remove the milliseconds from date and append back the Z
+        // This is only way I found to parse the string
+        dateString = [dateString substringToIndex:19];
+        dateString = [dateString stringByAppendingString:@"Z"];
+        NSDateFormatter *dataFormatter = [[NSDateFormatter alloc] init];
+        [dataFormatter setLocale:[NSLocale currentLocale]];
+        [dataFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        NSDate *date = [dataFormatter dateFromString:dateString];
+        photo.dateCreated = date;
         
         photo.deviceId = deviceId;
         photo.remoteID = photoId;

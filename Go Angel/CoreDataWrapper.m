@@ -107,6 +107,21 @@
   return arr;
 }
 
+- (NSManagedObject *) setObjectValues: (CSPhoto *) photo object: (NSManagedObject *) object {
+  [object setValue:photo.imageURL forKey:IMAGE_URL];
+  [object setValue:photo.thumbURL forKey:THUMB_URL];
+  [object setValue:photo.deviceId forKey:DEVICE_ID];
+  [object setValue:photo.onServer forKey:ON_SERVER];
+  [object setValue:photo.dateCreated forKeyPath:DATE_CREATED];
+  [object setValue:photo.dateUploaded forKey:DATE_UPLOADED];
+  
+  if (photo.remoteID != nil) {
+    [object setValue:photo.remoteID forKey:REMOTE_ID];
+  }
+  
+  return object;
+}
+
 - (void) addUpdatePhoto:(CSPhoto *)photo {
   
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
@@ -125,21 +140,14 @@
       abort();
     }
     
-    NSManagedObjectContext *photoObj;
+    NSManagedObject *photoObj;
     if (result.count == 0) {
       photoObj = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
     }else {
       photoObj = result[0];
     }
     
-    [photoObj setValue:photo.imageURL forKey:IMAGE_URL];
-    [photoObj setValue:photo.thumbURL forKey:THUMB_URL];
-    [photoObj setValue:photo.deviceId forKey:DEVICE_ID];
-    [photoObj setValue:photo.onServer forKey:ON_SERVER];
-    
-    if (photo.remoteID != nil) {
-      [photoObj setValue:photo.remoteID forKey:REMOTE_ID];
-    }
+    photoObj = [self setObjectValues:photo object:photoObj];
     
     [context save:nil];
   }];
@@ -164,32 +172,9 @@
     }
     
     if (results.count == 0) {
-      NSManagedObjectContext *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
+      NSManagedObject *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
       
-//      if (asset != nil) {
-//        
-//        // TODO : Check file type and save as that
-//        
-//        // we save the thumbnail to app documents folder
-//        // now we can easily use later without asset library
-//        UIImage *thumb = [UIImage imageWithCGImage:asset.thumbnail];
-//        NSData *data = UIImageJPEGRepresentation(thumb, 80);
-//        [data writeToFile:photo.thumbURL atomically:YES];
-//        
-//        photo.thumbURL = [[NSURL fileURLWithPath:photo.thumbURL] absoluteString];;
-//        
-//        NSLog(@"will save thumbnail to %@", photo.thumbURL);
-//      }
-      
-      [newPhoto setValue:photo.imageURL forKey:IMAGE_URL];
-      [newPhoto setValue:photo.thumbURL forKey:THUMB_URL];
-      [newPhoto setValue:photo.deviceId forKey:DEVICE_ID];
-      [newPhoto setValue:photo.onServer forKey:ON_SERVER];
-      [newPhoto setValue:photo.dateCreated forKeyPath:DATE_CREATED];
-      
-      if (photo.remoteID != nil) {
-        [newPhoto setValue:photo.remoteID forKey:REMOTE_ID];
-      }
+      newPhoto = [self setObjectValues:photo object:newPhoto];
       
       // save context to updated other threads
       [context save:nil];
@@ -201,6 +186,18 @@
     }
   }];
   return added;
+}
+
+- (CSPhoto *) getPhotoFromObject: (NSManagedObject *) object {
+  CSPhoto *p     = [[CSPhoto alloc] init];
+  p.deviceId     = [object valueForKey:DEVICE_ID];
+  p.onServer     = [object valueForKey:ON_SERVER];
+  p.imageURL     = [object valueForKey:IMAGE_URL];
+  p.thumbURL     = [object valueForKey:THUMB_URL];
+  p.dateUploaded = [object valueForKey:DATE_UPLOADED];
+  p.dateCreated  = [object valueForKey:DATE_CREATED];
+  
+  return p;
 }
 
 - (NSMutableArray *)getPhotos: (NSString *) deviceId {
@@ -229,19 +226,7 @@
     // add all of the photo objects to the local photo list
     for (int i =0; i < [phs count]; i++) {
       NSManagedObject *p = phs[i];
-      CSPhoto *photo = [[CSPhoto alloc] init];
-      photo.deviceId = [p valueForKey:DEVICE_ID];
-      photo.onServer = [p valueForKey:ON_SERVER];
-      
-      NSString *imageURL = [p valueForKey:IMAGE_URL];
-      NSString *thumbURL = [p valueForKey:THUMB_URL];
-      
-      photo.dateCreated = (NSDate *) [p valueForKey:DATE_CREATED];
-      
-      photo.imageURL = imageURL;
-      photo.thumbURL = thumbURL;
-      
-      [arr addObject:photo];
+      [arr addObject:[self getPhotoFromObject:p]];
     }
   }];
   
@@ -267,19 +252,7 @@
     // add all of the photo objects to the local photo list
     for (int i =0; i < [phs count]; i++) {
       NSManagedObject *p = phs[i];
-      CSPhoto *photo = [[CSPhoto alloc] init];
-      photo.deviceId = [p valueForKey:DEVICE_ID];
-      photo.onServer = [p valueForKey:ON_SERVER];
-      
-      NSString *imageURL = [p valueForKey:IMAGE_URL];
-      NSString *thumbURL = [p valueForKey:THUMB_URL];
-      
-      photo.dateCreated = (NSDate *) [p valueForKey:DATE_CREATED];
-      
-      photo.imageURL = imageURL;
-      photo.thumbURL = thumbURL;
-      
-      [arr addObject:photo];
+      [arr addObject:[self getPhotoFromObject:p]];
     }
   }];
   

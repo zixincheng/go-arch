@@ -6,6 +6,7 @@
     </entity>
     <entity name="Photo" syncable="YES">
         <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateUploaded" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="deviceId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="onServer" optional="YES" attributeType="String" syncable="YES"/>
@@ -15,6 +16,6 @@
     </entity>
     <elements>
         <element name="Device" positionX="-63" positionY="-18" width="128" height="73"/>
-        <element name="Photo" positionX="-288" positionY="-10" width="128" height="150"/>
+        <element name="Photo" positionX="-288" positionY="-10" width="128" height="165"/>
     </elements>
 </model>

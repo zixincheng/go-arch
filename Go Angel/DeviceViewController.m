@@ -5,8 +5,6 @@
 // acdGO data backup and recovery
 // © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
 
-
-
 #import "DeviceViewController.h"
 
 @implementation DeviceViewController
@@ -24,7 +22,6 @@
 - (void)segmentChange {
   [self.tableView reloadData];
 }
-
 
 #pragma mark -
 #pragma mark View
