@@ -342,7 +342,7 @@
 // make api call to get all new photos from server
 - (void) getPhotosFromApi {
   NSString *latestId = [self.dataWrapper getLatestId];
-  [self.coinsorter getPhotos:latestId callback: ^(NSMutableArray *photos) {
+  [self.coinsorter getPhotos:latestId.intValue callback: ^(NSMutableArray *photos) {
     for (CSPhoto *p in photos) {
       [self.dataWrapper addPhoto:p];
     }

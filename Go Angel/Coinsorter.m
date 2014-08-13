@@ -204,13 +204,13 @@
   return mapData;
 }
 
-- (void) getPhotos:(NSString *)lastId callback: (void (^) (NSMutableArray *photos)) callback {
+- (void) getPhotos:(int) lastId callback: (void (^) (NSMutableArray *photos)) callback {
   
   NSOperationQueue *background = [[NSOperationQueue alloc] init];
   
   NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
   NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
-  NSMutableURLRequest *request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/photos/afterId?photo_id=%@&devNot=%@", lastId, @"1"]];
+  NSMutableURLRequest *request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/photos/afterId?photo_id=%d&devNot=%@&limit=%d", lastId, @"1", DOWNLOAD_LIMIT]];
   
   // download the photos
   NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -282,7 +282,15 @@
         [photos addObject:photo];
       }
       
+      // call callback with photos we downloaded
       callback(photos);
+      
+      // recursivly download the next set of photos until we get no more back
+      if (photoArr.count > 0) {
+        NSLog(@"will download next set of photos");
+        int nextLatest = lastId + DOWNLOAD_LIMIT;
+        [self getPhotos:nextLatest callback:callback];
+      }
     }
   }];
   

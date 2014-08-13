@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+// api
+#define DOWNLOAD_LIMIT 25
+
 // plist file for server info
 #define SETTINGS @"Account"
 

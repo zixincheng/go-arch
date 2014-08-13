@@ -26,7 +26,7 @@
 
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback;
 - (void) getToken: (NSString *) ip pass: (NSString *) pass callback: (void (^) (NSDictionary *authData)) callback;
-- (void) getPhotos: (NSString *) lastId callback: (void (^) (NSMutableArray *devices)) callback;
+- (void) getPhotos: (int) lastId callback: (void (^) (NSMutableArray *devices)) callback;
 - (void) uploadPhotos: (NSMutableArray *) photos upCallback: (void (^) ()) upCallback;
 - (void) updateDevice;
 - (void) pingServer: (void (^) (BOOL connected)) connectCallback;
