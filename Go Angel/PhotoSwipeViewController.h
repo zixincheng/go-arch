@@ -13,7 +13,11 @@
 #import "SinglePhotoViewController.h"
 #import "GridCell.h"
 
-@interface PhotoSwipeViewController : UIViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface PhotoSwipeViewController : UIViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate> {
+  
+  // bottom collection view selected cell index
+  int bottom_selected;
+}
 
 @property (nonatomic, strong) UIPageViewController *pageViewController;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
