@@ -28,6 +28,76 @@
   return self;
 }
 
+-(NSData *)getPhotoWithMetaData:(UIImage *)image asset:(ALAsset *)asset {
+  
+  NSData *jpeg = [NSData dataWithData:UIImageJPEGRepresentation(image, 1.0)];
+  
+  CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)jpeg, NULL);
+  
+  NSDictionary *metadata = [[asset defaultRepresentation] metadata];
+  
+  NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
+  
+  NSMutableDictionary *EXIFDictionary = [metadataAsMutable objectForKey:(NSString *)kCGImagePropertyExifDictionary];
+  NSMutableDictionary *GPSDictionary = [metadataAsMutable objectForKey:(NSString *)kCGImagePropertyGPSDictionary];
+  NSMutableDictionary *TIFFDictionary = [metadataAsMutable objectForKey:(NSString *)kCGImagePropertyTIFFDictionary];
+  NSMutableDictionary *RAWDictionary = [metadataAsMutable objectForKey:(NSString *)kCGImagePropertyRawDictionary];
+  NSMutableDictionary *JPEGDictionary = [metadataAsMutable objectForKey:(NSString *)kCGImagePropertyJFIFDictionary];
+  NSMutableDictionary *GIFDictionary = [metadataAsMutable objectForKey:(NSString *)kCGImagePropertyGIFDictionary];
+  
+  if(!EXIFDictionary) {
+    EXIFDictionary = [NSMutableDictionary dictionary];
+  }
+  
+  if(!GPSDictionary) {
+    GPSDictionary = [NSMutableDictionary dictionary];
+  }
+  
+  if (!TIFFDictionary) {
+    TIFFDictionary = [NSMutableDictionary dictionary];
+  }
+  
+  if (!RAWDictionary) {
+    RAWDictionary = [NSMutableDictionary dictionary];
+  }
+  
+  if (!JPEGDictionary) {
+    JPEGDictionary = [NSMutableDictionary dictionary];
+  }
+  
+  if (!GIFDictionary) {
+    GIFDictionary = [NSMutableDictionary dictionary];
+  }
+  
+  [metadataAsMutable setObject:EXIFDictionary forKey:(NSString *)kCGImagePropertyExifDictionary];
+  [metadataAsMutable setObject:GPSDictionary forKey:(NSString *)kCGImagePropertyGPSDictionary];
+  [metadataAsMutable setObject:TIFFDictionary forKey:(NSString *)kCGImagePropertyTIFFDictionary];
+  [metadataAsMutable setObject:RAWDictionary forKey:(NSString *)kCGImagePropertyRawDictionary];
+  [metadataAsMutable setObject:JPEGDictionary forKey:(NSString *)kCGImagePropertyJFIFDictionary];
+  [metadataAsMutable setObject:GIFDictionary forKey:(NSString *)kCGImagePropertyGIFDictionary];
+  
+  CFStringRef UTI = CGImageSourceGetType(source);
+  
+  NSMutableData *dest_data = [NSMutableData data];
+  
+  CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
+  
+  //CGImageDestinationRef hello;
+  
+  CGImageDestinationAddImageFromSource(destination,source,0, (__bridge CFDictionaryRef) metadataAsMutable);
+  
+  BOOL success = NO;
+  success = CGImageDestinationFinalize(destination);
+  
+  if(!success) {
+  }
+  
+  CFRelease(destination);
+  CFRelease(source);
+  
+  return dest_data;
+}
+
 - (void) uploadPhotoArray:(NSMutableArray *)photos upCallback: (void (^) ()) upCallback {
   // set the upload callback
   self.upCallback = upCallback;
@@ -78,7 +148,9 @@
           
           // correct the image orientation when we upload it
           UIImage *image = [UIImage imageWithCGImage:iref scale:scale orientation:orientation];
-          NSData *imageData = UIImageJPEGRepresentation(image, 100);
+          
+          // add the metadata to image before we upload
+          NSData *imageData = [self getPhotoWithMetaData:image asset:asset];
           
           NSString *fileName = [NSString stringWithFormat:@"%@_%@", uniqueString, @"image.jpg"];
           NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];

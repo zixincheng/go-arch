@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <ImageIO/ImageIO.h>
 #import "CSPhoto.h"
 #import "CoreDataWrapper.h"
 #import "AppDelegate.h"
@@ -21,6 +22,7 @@
 
 - (id) initWithWrapper: (CoreDataWrapper *) wrap;
 - (void) uploadPhotoArray: (NSMutableArray *) photos upCallback: (void (^) ()) upCallback;
+- (NSData *) getPhotoWithMetaData: (UIImage *) image asset: (ALAsset *) asset;
 
 // url session
 @property (nonatomic, strong) NSURLSession *session;
