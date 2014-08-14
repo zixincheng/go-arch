@@ -234,6 +234,8 @@
       
       NSLog(@"Downloaded %lu photos", (unsigned long)photoArr.count);
       
+      NSString *latestRemote = @"-1";
+      
       // parse the json
       for (NSDictionary *p in photoArr) {
         NSString *photoId = [p objectForKey:@"_id"];
@@ -263,6 +265,8 @@
         photo.deviceId = deviceId;
         photo.remoteID = photoId;
         
+        latestRemote = photoId;
+        
         photo.onServer = @"1";
         
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -288,7 +292,7 @@
       // recursivly download the next set of photos until we get no more back
       if (photoArr.count > 0) {
         NSLog(@"will download next set of photos");
-        int nextLatest = lastId + DOWNLOAD_LIMIT;
+        int nextLatest = [latestRemote intValue] + 1;
         [self getPhotos:nextLatest callback:callback];
       }
     }
