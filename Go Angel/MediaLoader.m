@@ -62,12 +62,12 @@
                         if (orientationValue != nil) {
                           orientation = [orientationValue intValue];
                         }
-                        CGFloat scale  = 1;
+                        CGFloat scale = 1;
                         
                         CGImageRef iref = [rep fullScreenImage];
                         if (iref) {
                           // correct the image orientation when we upload it
-                          UIImage *image = [UIImage imageWithCGImage:iref];
+                          UIImage *image = [UIImage imageWithCGImage:iref scale:scale orientation:orientation];
                           completionHandler(image);
                         }
                       }
@@ -126,7 +126,7 @@
       @try {
         ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
         [assetLibrary assetForURL:url
-                      resultBlock:^(ALAsset *asset) {
+                      resultBlock:^(ALAsset *asset) {                        
                         CGImageRef iref = [asset thumbnail];
                         if (iref) {
                           UIImage *image = [UIImage imageWithCGImage:iref];
