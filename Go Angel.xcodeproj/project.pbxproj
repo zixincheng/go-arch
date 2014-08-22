@@ -574,6 +574,7 @@
 				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
 				INFOPLIST_FILE = "Go Angel/Go Angel-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "df858840-c15d-4cbc-a9a1-04902267c48d";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -589,6 +590,7 @@
 				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
 				INFOPLIST_FILE = "Go Angel/Go Angel-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "df858840-c15d-4cbc-a9a1-04902267c48d";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
