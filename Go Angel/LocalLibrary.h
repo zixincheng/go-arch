@@ -12,6 +12,11 @@
 #import "CoreDataWrapper.h"
 #import "AccountDataWrapper.h"
 
+
+// class that manages getting photos from the ios photo library
+// it registers for notifications for when the albums changes and
+// can parse the entire photo directory, or just get the latest ones
+
 @interface LocalLibrary : NSObject {
   AccountDataWrapper *account;
   ALAssetsLibrary *assetLibrary;

@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+
+// server object class
+
 @interface Server : NSObject
 
 @property (nonatomic, strong) NSString *ip;

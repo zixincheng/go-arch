@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+// custom reusable view for the grid view header
+
 @interface PhotoSectionHeaderView : UICollectionReusableView
 
 @property (weak, nonatomic) IBOutlet UILabel *lblHeader;

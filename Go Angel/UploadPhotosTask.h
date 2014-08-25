@@ -13,6 +13,11 @@
 #import "CoreDataWrapper.h"
 #import "AppDelegate.h"
 
+
+// custom class to just handle the photo upload
+// used by the coinsorter class
+// needed to be split up because we need custom delegate methods
+
 @interface UploadPhotosTask : NSObject <NSURLSessionTaskDelegate> {
   ALAssetsLibrary *assetLibrary;
   

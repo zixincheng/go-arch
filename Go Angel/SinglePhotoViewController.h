@@ -10,6 +10,13 @@
 #import "AppDelegate.h"
 #import "CSPhoto.h"
 
+
+// controller to display the fullscreen photo
+// used by the PhotoSwipeViewController
+// this should manage the photo zooming
+
+// TODO: Add photo zooming
+
 @interface SinglePhotoViewController : UIViewController <UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;

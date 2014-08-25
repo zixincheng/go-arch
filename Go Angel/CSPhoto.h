@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "CSDevice.h"
 
+// simple photo object class
+
 @interface CSPhoto : NSObject
 
 @property (nonatomic, strong) NSString *deviceId;

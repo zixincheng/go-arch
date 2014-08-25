@@ -10,6 +10,12 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "CSPhoto.h"
 
+
+// class to load images into a uiimage view
+// it should handle all caching and locations for you
+
+// TODO: FIX CACHING
+
 @interface MediaLoader : NSObject
 
 @property (strong, nonatomic) NSCache *imageCache;

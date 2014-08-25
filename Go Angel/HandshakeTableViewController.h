@@ -12,6 +12,10 @@
 #import "ConnectViewController.h"
 #import "Coinsorter.h"
 
+
+// this controller shows a list of all avaiable server to connect to
+// and an option to manually enter server ip
+
 @interface HandshakeTableViewController : UITableViewController <GCDAsyncUdpSocketDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *servers;

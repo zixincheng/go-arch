@@ -6,6 +6,11 @@
 // © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
 //
 
+// this class is globally imported
+// any constants that are used in more than 1 file
+// should go here
+// eg. xml keys for user settings
+
 #import <Foundation/Foundation.h>
 
 // api
@@ -23,7 +28,7 @@
 #define SELECTED @"selected"
 #define NAME     @"name"
 #define ALBUMS   @"albums"
-#define URL_KEY      @"url"
+#define URL_KEY  @"url"
 
 // core data entites
 #define PHOTO @"Photo"

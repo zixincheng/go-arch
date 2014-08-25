@@ -15,6 +15,11 @@
 #import "PhotoSectionHeaderView.h"
 #import "PhotoSwipeViewController.h"
 
+
+// the grid view for a devices photos
+// displayed when a user taps on a device from the device controller
+// uses uicollection view
+
 @interface GridViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate> {
   int selected;
 }

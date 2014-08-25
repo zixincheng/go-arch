@@ -159,7 +159,7 @@
           if (image) {
             
             // save image to cache
-            NSData *data = UIImageJPEGRepresentation(image, 1.0); // 0.7 is JPG quality
+            NSData *data = UIImageJPEGRepresentation(image, 1.0);
             [_imageCache setObject:data forKey:url.path];
             
             completionHandler(image);

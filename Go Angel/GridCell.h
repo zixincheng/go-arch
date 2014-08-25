@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+// custom grid cell for collection view
+
 @interface GridCell : UICollectionViewCell
 
 @end

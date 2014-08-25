@@ -20,6 +20,12 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "Reachability.h"
 
+
+// the controller that displays a list of devices that are on the server
+// this is the 'main page' of the app
+// its where all the network calls are made from (upload and download)
+// the app functionality starts here
+
 @interface DeviceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
   NSMutableArray *_selections;
   

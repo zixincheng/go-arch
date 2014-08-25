@@ -37,10 +37,6 @@
 
 - (void)settingsViewController:(IASKAppSettingsViewController*)sender buttonTappedForKey:(NSString*)key
 {
-  if ([key isEqualToString:@"myButton1"])
-  {
-    // Do some actions...
-  }
 }
 
 /*

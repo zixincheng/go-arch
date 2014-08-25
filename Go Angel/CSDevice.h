@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+// simple device object class
+
 @interface CSDevice : NSObject
 
 @property (strong) NSString *remoteId;

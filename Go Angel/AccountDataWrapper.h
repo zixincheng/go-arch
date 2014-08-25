@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+// simple class which manages the account plist file
+// the file contains information about the current server we are connected to
+// a lot simpler then storing this info in the database, especially cause its
+// only a few string values
+
 @interface AccountDataWrapper : NSObject
 
 @property (nonatomic, strong) NSString *ip;

@@ -13,6 +13,9 @@
 #import "SinglePhotoViewController.h"
 #import "GridCell.h"
 
+
+// controller for swiping between fullscreen images
+
 @interface PhotoSwipeViewController : UIViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate> {
   
   // bottom collection view selected cell index

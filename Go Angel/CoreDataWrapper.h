@@ -12,6 +12,10 @@
 #import "CSDevice.h"
 #import "CSPhoto.h"
 
+// the wrapper to manage inserting our objects into the db
+// simple abstraction where we send our objects, and
+// this class reads them, and puts into db appropriatly
+
 @interface CoreDataWrapper : NSObject
 
 - (BOOL) addPhoto: (CSPhoto *) photo;

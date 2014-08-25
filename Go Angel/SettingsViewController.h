@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "IASKAppSettingsViewController.h"
 
+
+// settings view controller
+// not much here because the InAppSettingsBundle does most of the work
+
 @interface SettingsViewController : IASKAppSettingsViewController
 
 @end
