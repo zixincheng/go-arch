@@ -44,6 +44,9 @@
 #define THUMB_URL @"thumbURL"
 #define ON_SERVER @"onServer"
 
+// camera
+#define SAVE_PHOTO_ALBUM @"Go Angel"
+
 // device entitiy attributes
 // same as above ones
 

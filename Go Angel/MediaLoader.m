@@ -67,7 +67,7 @@
                         CGImageRef iref = [rep fullScreenImage];
                         if (iref) {
                           // correct the image orientation when we upload it
-                          UIImage *image = [UIImage imageWithCGImage:iref scale:scale orientation:orientation];
+                          UIImage *image = [UIImage imageWithCGImage:iref];
                           completionHandler(image);
                         }
                       }
@@ -128,6 +128,8 @@
         [assetLibrary assetForURL:url
                       resultBlock:^(ALAsset *asset) {                        
                         CGImageRef iref = [asset thumbnail];
+                        
+                        // TODO: check if the image exists (the user could of deleted it from photo library)
                         if (iref) {
                           UIImage *image = [UIImage imageWithCGImage:iref];
                           completionHandler(image);

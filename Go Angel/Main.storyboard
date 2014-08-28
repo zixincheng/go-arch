@@ -201,7 +201,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mPt-T4-aga" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1171" y="1882"/>
+            <point key="canvasLocation" x="1235" y="480"/>
         </scene>
         <!--Photo Swipe View Controller-->
         <scene sceneID="f4h-ss-7dn">
@@ -240,7 +240,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WeD-J9-d14">
+                                                <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WeD-J9-d14">
                                                     <rect key="frame" x="0.0" y="0.0" width="58" height="50"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
@@ -274,7 +274,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D5V-kh-SUD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="709" y="1468"/>
+            <point key="canvasLocation" x="561" y="1300"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="AHS-qK-Kgf">
@@ -286,7 +286,7 @@
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x3U-7p-uDl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1181" y="1118"/>
+            <point key="canvasLocation" x="827" y="480"/>
         </scene>
         <!--Device View Controller - Devices-->
         <scene sceneID="69u-OC-JmX">
@@ -365,6 +365,11 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Devices" id="PTp-Pu-d89">
+                        <barButtonItem key="leftBarButtonItem" systemItem="camera" id="D3O-TL-Pk6">
+                            <connections>
+                                <action selector="buttonPressed:" destination="07j-du-bzQ" id="UQE-X3-SY2"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="settings-25.png" id="06V-IR-tdU">
                             <connections>
                                 <segue destination="jxE-0u-sk9" kind="push" id="uCu-AJ-hPk"/>
@@ -373,6 +378,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="btnCamera" destination="D3O-TL-Pk6" id="S3q-5D-RWt"/>
                         <outlet property="btnUpload" destination="8Kp-5G-sYI" id="VgZ-nX-Wwp"/>
                         <outlet property="progressUpload" destination="pQH-gI-mJs" id="s06-Uy-3gm"/>
                         <outlet property="tableView" destination="hYI-Sh-scl" id="JXq-tL-IV1"/>
@@ -596,6 +602,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IKH-DA-yqw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1376" y="1300"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="mS2-O3-wui">
@@ -614,6 +621,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PKm-ME-6DU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="961" y="1325"/>
         </scene>
     </scenes>
     <resources>

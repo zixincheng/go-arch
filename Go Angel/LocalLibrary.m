@@ -95,6 +95,16 @@
   }
 }
 
+- (void)thisImage:(UIImage *)image hasBeenSavedInPhotoAlbumWithError:(NSError *)error usingContextInfo:(void*)ctxInfo {
+  if (error) {
+    // Do anything needed to handle the error or display it to the user
+  } else {
+    // .... do anything you want here to handle
+    // .... when the image has been saved in the photo album
+    [self loadLocalImages:NO];
+  }
+}
+
 - (void) loadLocalImages:(BOOL)parseAll addCallback:(void (^)())addCallback {
   self.addCallback = addCallback;
   [self loadLocalImages:parseAll];
@@ -196,6 +206,71 @@
     //        localPhotos = locals;
     NSLog(@"finished loading local photos");
   });
+}
+
+- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata {
+  __weak ALAssetsLibrary *lib = assetLibrary;
+  __weak LocalLibrary *se = self;
+  
+  [assetLibrary addAssetsGroupAlbumWithName:SAVE_PHOTO_ALBUM resultBlock:^(ALAssetsGroup *group) {
+    
+    ///checks if group previously created
+    if(group == nil){
+      
+      //enumerate albums
+      [lib enumerateGroupsWithTypes:ALAssetsGroupAlbum
+                         usingBlock:^(ALAssetsGroup *g, BOOL *stop)
+       {
+         //if the album is equal to our album
+         if ([[g valueForProperty:ALAssetsGroupPropertyName] isEqualToString:SAVE_PHOTO_ALBUM]) {
+           
+           //save image
+           [lib writeImageDataToSavedPhotosAlbum:UIImageJPEGRepresentation(image, 100) metadata:metadata
+                                 completionBlock:^(NSURL *assetURL, NSError *error) {
+                                   
+                                   //then get the image asseturl
+                                   [lib assetForURL:assetURL
+                                        resultBlock:^(ALAsset *asset) {
+                                          //put it into our album
+                                          [g addAsset:asset];
+                                          
+                                          [se loadLocalImages:NO];
+                                          
+                                        } failureBlock:^(NSError *error) {
+                                          NSLog(@"%@", error);
+                                        }];
+                                 }];
+           
+         }
+       }failureBlock:^(NSError *error){
+         
+       }];
+      
+    }else{
+      // save image directly to library
+      [lib writeImageDataToSavedPhotosAlbum:UIImageJPEGRepresentation(image, 100) metadata:metadata
+                            completionBlock:^(NSURL *assetURL, NSError *error) {
+                              
+                              [lib assetForURL:assetURL
+                                   resultBlock:^(ALAsset *asset) {
+                                     
+                                     [group addAsset:asset];
+                                     
+                                     [se loadLocalImages:NO];
+                                   } failureBlock:^(NSError *error) {
+                                     
+                                   }];
+                            }];
+    }
+    
+  } failureBlock:^(NSError *error) {
+    NSLog(@"%@", error);
+  }];
+  
+//  UIImageWriteToSavedPhotosAlbum(image,
+//                                 self, // send the message to 'self' when calling the callback
+//                                 @selector(thisImage:hasBeenSavedInPhotoAlbumWithError:usingContextInfo:), // the selector to tell the method to call on completion
+//                                 NULL); // you generally won't need a contextInfo here
 }
 
 @end

@@ -26,7 +26,7 @@
 // its where all the network calls are made from (upload and download)
 // the app functionality starts here
 
-@interface DeviceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
+@interface DeviceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
   NSMutableArray *_selections;
   
   LocalLibrary *localLibrary;
@@ -45,6 +45,7 @@
 // upload toolbar
 @property (weak, nonatomic) IBOutlet UIToolbar *toolUpload;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnUpload;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *btnCamera;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) UIRefreshControl *refreshControl;

@@ -34,6 +34,7 @@
 - (void) loadLocalImages: (BOOL) parseAll;
 - (void) loadLocalImages: (BOOL) parseAll addCallback: (void (^) ()) addCallback;
 - (void) loadAllowedAlbums;
+- (void) saveImage: (UIImage *) image metadata: (NSDictionary *) metadata;
 - (void) registerForNotifications;
 - (void) unRegisterForNotifications;
 

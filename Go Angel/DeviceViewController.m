@@ -11,10 +11,6 @@
 
 #pragma mark - NSUserDefaults Constants
 
-#define DEVICENAME @"deviceName"
-#define ALBUMS @"albums"
-#define DATE @"date"
-
 #pragma mark -
 #pragma mark Initialization
 
@@ -65,10 +61,15 @@
   
   // call methods to start controller
   
+  // check if the camera button should be shown (only if the device has a camera)
+  if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    [self.navigationItem setLeftBarButtonItem:nil animated:YES];
+  }
+  
   // register for asset change notifications
-  [localLibrary registerForNotifications];
+//  [localLibrary registerForNotifications];
   // observe values in the user defaults
-  [defaults addObserver:self forKeyPath:DEVICENAME options:NSKeyValueObservingOptionNew context:NULL];
+  [defaults addObserver:self forKeyPath:DEVICE_NAME options:NSKeyValueObservingOptionNew context:NULL];
   [defaults addObserver:self forKeyPath:ALBUMS options:NSKeyValueObservingOptionNew context:NULL];
   
   // notification so we know when app comes into foreground
@@ -108,7 +109,7 @@
 - (void) dealloc {
   [localLibrary unRegisterForNotifications];
   
-  [defaults removeObserver:self forKeyPath:DEVICENAME];
+  [defaults removeObserver:self forKeyPath:DEVICE_NAME];
   [defaults removeObserver:self forKeyPath:ALBUMS];
   
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
@@ -118,9 +119,9 @@
 // called when a nsuserdefault value change
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
   
-  if ([keyPath isEqualToString:DEVICENAME]) {
+  if ([keyPath isEqualToString:DEVICE_NAME]) {
     // device name change
-    NSString *deviceName = [defaults valueForKey:DEVICENAME];
+    NSString *deviceName = [defaults valueForKey:DEVICE_NAME];
     
     for (CSDevice *d in self.devices) {
       if ([d.remoteId isEqualToString:self.localDevice.remoteId]) {
@@ -145,6 +146,12 @@
 - (IBAction)buttonPressed:(id)sender {
   if (sender == self.btnUpload) {
     [self uploadPhotosToApi];
+  }else if (sender == self.btnCamera) {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    
+    [self presentViewController:picker animated:YES completion:nil];
   }
 }
 
@@ -423,7 +430,26 @@
   }
 }
 
+
+# pragma mark - Camera
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+  
+  [picker dismissViewControllerAnimated:YES completion:^{
+    // picker disappeared
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    NSDictionary *metadata = info[UIImagePickerControllerMediaMetadata];
+    
+    [localLibrary saveImage:image metadata:metadata];
+  }];
+}
+
+- (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+  [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
 # pragma mark - Network
+
 // get the initial network status
 - (void) setupNet {
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
