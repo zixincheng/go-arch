@@ -59,6 +59,41 @@
 			remoteGlobalIDString = 205397111991924B00B1D9AD;
 			remoteInfo = "Go Angel";
 		};
+		A67AD59F19D2294D0055C3A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1ADE1A56382C4750BEA6BFA5;
+			remoteInfo = Pods;
+		};
+		A67AD5A119D2294D0055C3A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 45B80F0B3B334125BC7D325C;
+			remoteInfo = "Pods-CocoaAsyncSocket";
+		};
+		A67AD5A319D2294D0055C3A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DE483D1A0E0B4CB283F07BD0;
+			remoteInfo = "Pods-InAppSettingsKit";
+		};
+		A67AD5A519D2294D0055C3A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DF12DE1912ED4E109FE6A516;
+			remoteInfo = "Pods-SSKeychain";
+		};
+		A67AD5A719D2295E0055C3A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 845ADB5417FA4845A0302AFD;
+			remoteInfo = Pods;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -130,6 +165,7 @@
 		20F74D141992B56B00E0546D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		20F74D151992B56B00E0546D /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		C120E32068A1416CA965B081 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -163,6 +199,7 @@
 		205397091991924B00B1D9AD = {
 			isa = PBXGroup;
 			children = (
+				A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */,
 				2053971D1991924B00B1D9AD /* Go Angel */,
 				2053973A1991924B00B1D9AD /* Go AngelTests */,
 				205397141991924B00B1D9AD /* Frameworks */,
@@ -283,6 +320,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A67AD59919D2294D0055C3A7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A67AD5A019D2294D0055C3A7 /* libPods.a */,
+				A67AD5A219D2294D0055C3A7 /* libPods-CocoaAsyncSocket.a */,
+				A67AD5A419D2294D0055C3A7 /* libPods-InAppSettingsKit.a */,
+				A67AD5A619D2294D0055C3A7 /* libPods-SSKeychain.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -299,6 +347,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A67AD5A819D2295E0055C3A7 /* PBXTargetDependency */,
 			);
 			name = "Go Angel";
 			productName = "Go Angel";
@@ -355,6 +404,12 @@
 			mainGroup = 205397091991924B00B1D9AD;
 			productRefGroup = 205397131991924B00B1D9AD /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = A67AD59919D2294D0055C3A7 /* Products */;
+					ProjectRef = A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				205397111991924B00B1D9AD /* Go Angel */,
@@ -362,6 +417,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		A67AD5A019D2294D0055C3A7 /* libPods.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libPods.a;
+			remoteRef = A67AD59F19D2294D0055C3A7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A67AD5A219D2294D0055C3A7 /* libPods-CocoaAsyncSocket.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libPods-CocoaAsyncSocket.a";
+			remoteRef = A67AD5A119D2294D0055C3A7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A67AD5A419D2294D0055C3A7 /* libPods-InAppSettingsKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libPods-InAppSettingsKit.a";
+			remoteRef = A67AD5A319D2294D0055C3A7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A67AD5A619D2294D0055C3A7 /* libPods-SSKeychain.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libPods-SSKeychain.a";
+			remoteRef = A67AD5A519D2294D0055C3A7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		205397101991924B00B1D9AD /* Resources */ = {
@@ -468,6 +554,11 @@
 			isa = PBXTargetDependency;
 			target = 205397111991924B00B1D9AD /* Go Angel */;
 			targetProxy = 205397381991924B00B1D9AD /* PBXContainerItemProxy */;
+		};
+		A67AD5A819D2295E0055C3A7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Pods;
+			targetProxy = A67AD5A719D2295E0055C3A7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
