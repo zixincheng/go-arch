@@ -7,7 +7,7 @@
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "YES"
+            buildForTesting = "NO"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
@@ -17,20 +17,6 @@
                BlueprintIdentifier = "205397111991924B00B1D9AD"
                BuildableName = "Go Angel.app"
                BlueprintName = "Go Angel"
-               ReferencedContainer = "container:Go Angel.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "205397311991924B00B1D9AD"
-               BuildableName = "Go AngelTests.xctest"
-               BlueprintName = "Go AngelTests"
                ReferencedContainer = "container:Go Angel.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -55,18 +41,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
-      <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "205397311991924B00B1D9AD"
-               BuildableName = "Go AngelTests.xctest"
-               BlueprintName = "Go AngelTests"
-               ReferencedContainer = "container:Go Angel.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-      </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
