@@ -18,7 +18,16 @@
   self.dataWrapper = wrap;
   
   // setup background session config
-  NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfiguration:[NSString stringWithFormat:@"com.go.upload"]];
+    NSURLSessionConfiguration *config;
+    NSString *currentVer = [[UIDevice currentDevice] systemVersion];
+    NSString *reqVer = @"8.0";
+    if([currentVer compare:reqVer options:NSNumericSearch] != NSOrderedAscending) {
+    config = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:[NSString stringWithFormat:@"com.go.upload"]];
+    } else {
+        config = [NSURLSessionConfiguration backgroundSessionConfiguration:[NSString stringWithFormat:@"com.go.upload"]];
+    }
+    
+    
   [config setSessionSendsLaunchEvents:YES];
   [config setDiscretionary:NO];
   
