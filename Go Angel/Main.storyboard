@@ -379,7 +379,7 @@
             </objects>
             <point key="canvasLocation" x="-627" y="1135"/>
         </scene>
-        <!--Find a Blackbox-->
+        <!--Connect to a Server-->
         <scene sceneID="vSK-8H-hWj">
             <objects>
                 <tableViewController id="vaL-eJ-OMA" customClass="HandshakeTableViewController" sceneMemberID="viewController">
@@ -414,7 +414,7 @@
                             <outlet property="delegate" destination="vaL-eJ-OMA" id="r4v-tx-VdZ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Find a Blackbox" id="USK-f8-Zml">
+                    <navigationItem key="navigationItem" title="Connect to a Server" id="USK-f8-Zml">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="PFD-Dl-gg1">
                             <connections>
                                 <action selector="buttonPressed:" destination="vaL-eJ-OMA" id="W5y-xo-MT5"/>
@@ -508,8 +508,8 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zFd-6x-gve">
-                                <rect key="frame" x="101" y="386" width="119" height="48"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zFd-6x-gve">
+                                <rect key="frame" x="101" y="298" width="119" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="119" id="Udg-7D-Kgv"/>
                                     <constraint firstAttribute="height" constant="48" id="ViH-vq-8Dv"/>
