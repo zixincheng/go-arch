@@ -91,7 +91,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 845ADB5417FA4845A0302AFD;
+			remoteGlobalIDString = 159E595BE60C42A8AEE41452;
 			remoteInfo = Pods;
 		};
 /* End PBXContainerItemProxy section */
@@ -660,14 +660,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: ACD Systems International Inc. (BJECZ3G6DL)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: ACD Systems International Inc. (BJECZ3G6DL)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
 				INFOPLIST_FILE = "Go Angel/Go Angel-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "acabc5e5-3091-4582-a662-110fea7adf21";
+				PROVISIONING_PROFILE = "d51aa9a7-f284-487c-abd4-94e3610b8d8d";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -678,14 +678,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: ACD Systems International Inc. (BJECZ3G6DL)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: ACD Systems International Inc. (BJECZ3G6DL)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
 				INFOPLIST_FILE = "Go Angel/Go Angel-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "acabc5e5-3091-4582-a662-110fea7adf21";
+				PROVISIONING_PROFILE = "d51aa9a7-f284-487c-abd4-94e3610b8d8d";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -58,7 +58,7 @@
     EXIFDictionary = [NSMutableDictionary dictionary];
   }
   
-  BOOL gpsMeta = [[NSUserDefaults standardUserDefaults] boolForKey:@"gpsMeta"];
+  BOOL gpsMeta = [[NSUserDefaults standardUserDefaults] boolForKey:GPS_META];
   if(!GPSDictionary || !gpsMeta) {
     GPSDictionary = [NSMutableDictionary dictionary];
   }

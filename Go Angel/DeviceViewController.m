@@ -56,8 +56,8 @@
   // add the refresh control to the table view
   [self.tableView addSubview:self.refreshControl];
   
-  // get devices we already have in db to setup list
-  self.devices = [self.dataWrapper getAllDevices];
+  // load the devices array
+  [self loadDevices];
   
   // call methods to start controller
   
@@ -71,6 +71,7 @@
   // observe values in the user defaults
   [defaults addObserver:self forKeyPath:DEVICE_NAME options:NSKeyValueObservingOptionNew context:NULL];
   [defaults addObserver:self forKeyPath:ALBUMS options:NSKeyValueObservingOptionNew context:NULL];
+  [defaults addObserver:self forKeyPath:DOWN_REMOTE options:NSKeyValueObservingOptionNew context:NULL];
   
   // notification so we know when app comes into foreground
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
@@ -111,9 +112,33 @@
   
   [defaults removeObserver:self forKeyPath:DEVICE_NAME];
   [defaults removeObserver:self forKeyPath:ALBUMS];
+//  [defaults removeObserver:self forKeyPath:DOWN_REMOTE];
   
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+}
+
+// load devices
+// sets up the devices array used to populate the view table
+- (void)loadDevices {
+  
+  [self.devices removeAllObjects];
+  BOOL downRemote = [defaults boolForKey:DOWN_REMOTE];
+  
+  // get devices we already have in db to setup list
+  // only get all the devices if we want to see them all
+  // otherwise use just local device
+  if (!downRemote) {
+    [self.devices addObject:self.localDevice];
+    NSLog(@"Adding only local device to devices list");
+  }else {
+    self.devices = [self.dataWrapper getAllDevices];
+    NSLog(@"Adding all devices to devices list");
+  }
+  
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.tableView reloadData];
+  });
 }
 
 // called when a nsuserdefault value change
@@ -140,6 +165,13 @@
   }else if ([keyPath isEqualToString:ALBUMS]) {
     [localLibrary loadAllowedAlbums];
     needParse = YES;
+  }else if ([keyPath isEqualToString:DOWN_REMOTE]) {
+    BOOL downRemote = [defaults boolForKey:DOWN_REMOTE];
+    if (downRemote) {
+      [self syncAllFromApi];
+    }
+    
+    [self loadDevices];
   }
 }
 
@@ -290,8 +322,10 @@
 // get devices, photos, and upload from server
 - (void) syncAllFromApi {
   
+  BOOL downRemote = [defaults boolForKey:DOWN_REMOTE];
+  
   // if we can connect to server than make api calls
-  if (self.canConnect) {
+  if (self.canConnect && downRemote) {
     // perform all db and api calls in backgroud
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
       [self getDevicesFromApi];

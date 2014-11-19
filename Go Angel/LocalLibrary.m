@@ -243,7 +243,7 @@
            
          }
        }failureBlock:^(NSError *error){
-         
+         NSLog(@"There was an error saving image to disk");
        }];
       
     }else{

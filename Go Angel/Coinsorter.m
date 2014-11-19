@@ -163,6 +163,11 @@
         NSString *deviceName = [d objectForKey:@"device_name"];
         NSString *remoteId = [d objectForKey:@"_id"];
         
+        // harded coded way to remove browser device from devices
+        if ([deviceName isEqualToString:@"Browser"]) {
+          continue;
+        }
+        
         CSDevice *newDev = [[CSDevice alloc] init];
         newDev.deviceName = deviceName;
         newDev.remoteId = remoteId;

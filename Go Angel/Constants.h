@@ -25,10 +25,12 @@
 #define DATE @"date"
 
 // user defaults keys for groups
-#define SELECTED @"selected"
-#define NAME     @"name"
-#define ALBUMS   @"albums"
-#define URL_KEY  @"url"
+#define SELECTED    @"selected"
+#define NAME        @"name"
+#define ALBUMS      @"albums"
+#define URL_KEY     @"url"
+#define GPS_META    @"gpsMeta"
+#define DOWN_REMOTE @"downRemote"
 
 // core data entites
 #define PHOTO @"Photo"
