@@ -22,6 +22,8 @@
 @property (nonatomic, strong) GCDAsyncUdpSocket *sendUdpSocket;
 @property (nonatomic, strong) GCDAsyncUdpSocket *recieveUdpSocket;
 @property (nonatomic, strong) Coinsorter *coinsorter;
+@property (nonatomic, strong) NSTimer *udpTimer;
+
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addServerButton;
 

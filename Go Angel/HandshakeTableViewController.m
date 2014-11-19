@@ -24,6 +24,23 @@
   return self;
 }
 
+- (void) viewDidDisappear:(BOOL)animated
+{
+    NSLog(@"viewDidDisappear");
+    [self.udpTimer invalidate];
+    self.udpTimer = nil;
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    NSLog(@"viewDidAppear");
+    // Setup a timer to refresh every 10 seconds
+    self.udpTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(periodicallySendUDP) userInfo:nil repeats:YES];
+
+    [self sendUDPMessage];
+}
+
+
 - (void)viewDidLoad
 {
   [super viewDidLoad];
@@ -35,7 +52,6 @@
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
   
   self.coinsorter = [[Coinsorter alloc] init];
-  
   self.servers = [[NSMutableArray alloc] init];
   
   self.sendUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
@@ -47,9 +63,15 @@
   [refresh addTarget:self action:@selector(sendUDPMessage) forControlEvents:UIControlEventValueChanged];
   
   self.refreshControl = refresh;
-  
+    
+  // Setup the receiver and immediately send a UPD broadcast
   [self setupReciveUDPMessage];
-  [self sendUDPMessage];
+}
+
+-(void)periodicallySendUDP{
+    NSLog(@"periodicallySendUDP Called.");
+    
+    [self sendUDPMessage];
 }
 
 - (void)didReceiveMemoryWarning
@@ -135,8 +157,6 @@
 - (void) sendUDPMessage {
   NSData *data = [[NSString stringWithFormat:@"hello server - no connect"] dataUsingEncoding:NSUTF8StringEncoding];
   
-  [self.servers removeAllObjects];
-  
   dispatch_async(dispatch_get_main_queue(), ^{
     [self.tableView reloadData];
   });
@@ -190,8 +210,15 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
           @synchronized (self.servers) {
-            [self.servers addObject:s];
-            [self.tableView reloadData];
+              
+            // Before adding it, lets attempt to find it in the list first.
+            NSArray *array = [self.servers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"serverId == %@", sid]];
+            
+            if (array == nil || [array count] == 0) {
+                // If nothing exists at all
+                [self.servers addObject:s];
+                [self.tableView reloadData];
+            }
           }
         });
       }

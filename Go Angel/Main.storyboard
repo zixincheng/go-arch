@@ -466,7 +466,7 @@
             </objects>
             <point key="canvasLocation" x="-1153" y="-361"/>
         </scene>
-        <!--Connect-->
+        <!--Manual Connection-->
         <scene sceneID="CLa-wX-1EV">
             <objects>
                 <viewController id="iIk-Pr-CaD" customClass="ConnectViewController" sceneMemberID="viewController">
@@ -539,7 +539,7 @@
                             <constraint firstItem="egw-bH-unc" firstAttribute="top" secondItem="3dP-eR-9tQ" secondAttribute="bottom" constant="8" symbolic="YES" id="sCT-Z2-pTy"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Connect" id="HXc-Ks-TKU"/>
+                    <navigationItem key="navigationItem" title="Manual Connection" id="HXc-Ks-TKU"/>
                     <connections>
                         <outlet property="lblError" destination="3dP-eR-9tQ" id="jZz-Qp-2gr"/>
                         <outlet property="lblIp" destination="UQ2-tm-DhQ" id="98U-ff-2Om"/>
