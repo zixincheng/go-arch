@@ -20,7 +20,6 @@
 #import "IASKSettingsStoreUserDefaults.h"
 #import "IASKPSSliderSpecifierViewCell.h"
 #import "IASKPSTextFieldSpecifierViewCell.h"
-#import "IASKPSTitleValueSpecifierViewCell.h"
 #import "IASKSwitch.h"
 #import "IASKSlider.h"
 #import "IASKSpecifier.h"
@@ -67,6 +66,9 @@ CGRect IASKCGRectSwap(CGRect rect);
 - (IASKSettingsReader*)settingsReader {
 	if (!_settingsReader) {
 		_settingsReader = [[IASKSettingsReader alloc] initWithFile:self.file];
+		if (self.neverShowPrivacySettings) {
+			_settingsReader.showPrivacySettings = NO;
+		}
 	}
 	return _settingsReader;
 }
@@ -143,14 +145,6 @@ CGRect IASKCGRectSwap(CGRect rect);
     [self.tableView addGestureRecognizer:tapGesture];
 }
 
-- (void)viewDidUnload {
-  [super viewDidUnload];
-
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-	self.view = nil;
-}
-
 - (void)viewWillAppear:(BOOL)animated {
 	// if there's something selected, the value might have changed
 	// so reload that row
@@ -173,10 +167,9 @@ CGRect IASKCGRectSwap(CGRect rect);
 	}
 	
 	if ([self.settingsStore isKindOfClass:[IASKSettingsStoreUserDefaults class]]) {
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(userDefaultsDidChange)
-													 name:NSUserDefaultsDidChangeNotification
-												   object:[NSUserDefaults standardUserDefaults]];
+		NSNotificationCenter *dc = NSNotificationCenter.defaultCenter;
+		[dc addObserver:self selector:@selector(userDefaultsDidChange) name:NSUserDefaultsDidChangeNotification object:[NSUserDefaults standardUserDefaults]];
+		[dc addObserver:self selector:@selector(didChangeSettingViaIASK:) name:kIASKAppSettingChanged object:self];
 		[self userDefaultsDidChange]; // force update in case of changes while we were hidden
 	}
 	[super viewWillAppear:animated];
@@ -193,28 +186,29 @@ CGRect IASKCGRectSwap(CGRect rect);
 	[dc addObserver:self selector:@selector(synchronizeSettings) name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication]];
 	[dc addObserver:self selector:@selector(reload) name:UIApplicationWillEnterForegroundNotification object:[UIApplication sharedApplication]];
 	[dc addObserver:self selector:@selector(synchronizeSettings) name:UIApplicationWillTerminateNotification object:[UIApplication sharedApplication]];
+
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+
+	// hide the keyboard
+    [self.currentFirstResponder resignFirstResponder];
+	
 	[super viewWillDisappear:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
 	NSNotificationCenter *dc = [NSNotificationCenter defaultCenter];
 	[dc removeObserver:self name:NSUserDefaultsDidChangeNotification object:[NSUserDefaults standardUserDefaults]];
+	[dc removeObserver:self name:kIASKAppSettingChanged object:self];
 	[dc removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication]];
 	[dc removeObserver:self name:UIApplicationWillEnterForegroundNotification object:[UIApplication sharedApplication]];
 	[dc removeObserver:self name:UIApplicationWillTerminateNotification object:[UIApplication sharedApplication]];
 
-    // hide the keyboard
-    [self.currentFirstResponder resignFirstResponder];
-	
 	[super viewDidDisappear:animated];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return YES;
 }
 
 - (void)setHiddenKeys:(NSSet *)theHiddenKeys {
@@ -228,8 +222,6 @@ CGRect IASKCGRectSwap(CGRect rect);
         _hiddenKeys = theHiddenKeys;
         
         if (animated) {			
-            [self.tableView beginUpdates];
-            
             NSMutableSet *showKeys = [NSMutableSet setWithSet:oldHiddenKeys];
             [showKeys minusSet:theHiddenKeys];
             
@@ -254,7 +246,7 @@ CGRect IASKCGRectSwap(CGRect rect);
                         rowsInSection++;
                     }
                 }
-                if (rowsInSection >= [self.settingsReader numberOfRowsForSection:section]) {
+                if (rowsInSection && rowsInSection >= [self.settingsReader numberOfRowsForSection:section]) {
                     [hideSections addIndex:section];
                 }
             }
@@ -281,23 +273,34 @@ CGRect IASKCGRectSwap(CGRect rect);
                         rowsInSection++;
                     }
                 }
-                if (rowsInSection >= [self.settingsReader numberOfRowsForSection:section]) {
+                if (rowsInSection && rowsInSection >= [self.settingsReader numberOfRowsForSection:section]) {
                     [showSections addIndex:section];
                 }
-            }
-            
-            UITableViewRowAnimation animation = animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone;
-            [self.tableView deleteSections:hideSections withRowAnimation:animation];
-            [self.tableView deleteRowsAtIndexPaths:hideIndexPaths withRowAnimation:animation];
-            [self.tableView insertSections:showSections withRowAnimation:animation];
-            [self.tableView insertRowsAtIndexPaths:showIndexPaths withRowAnimation:animation];
-            [self.tableView endUpdates];
-        } else {
-            self.settingsReader.hiddenKeys = theHiddenKeys;
-            if (!_reloadDisabled) [self.tableView reloadData];
-        }
-    }
-    UIViewController *childViewController = _currentChildViewController;
+			}
+			
+			if (hideSections.count || hideIndexPaths.count || showSections.count || showIndexPaths.count) {
+				[self.tableView beginUpdates];
+				UITableViewRowAnimation animation = animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone;
+				if (hideSections.count) {
+					[self.tableView deleteSections:hideSections withRowAnimation:animation];
+				}
+				if (hideIndexPaths) {
+					[self.tableView deleteRowsAtIndexPaths:hideIndexPaths withRowAnimation:animation];
+				}
+				if (showSections.count) {
+					[self.tableView insertSections:showSections withRowAnimation:animation];
+				}
+				if (showIndexPaths) {
+					[self.tableView insertRowsAtIndexPaths:showIndexPaths withRowAnimation:animation];
+				}
+				[self.tableView endUpdates];
+			}
+		} else {
+			self.settingsReader.hiddenKeys = theHiddenKeys;
+			if (!_reloadDisabled) [self.tableView reloadData];
+		}
+	}
+	UIViewController *childViewController = _currentChildViewController;
     if([childViewController respondsToSelector:@selector(setHiddenKeys:animated:)]) {
         [(id)childViewController setHiddenKeys:theHiddenKeys animated:animated];
     }
@@ -376,7 +379,16 @@ CGRect IASKCGRectSwap(CGRect rect);
 			return 0;
 		}
 	}
-	return tableView.rowHeight;
+	IASK_IF_IOS7_OR_GREATER
+	(
+	 NSDictionary *rowHeights = @{UIContentSizeCategoryExtraSmall: @(44),
+								  UIContentSizeCategorySmall: @(44),
+								  UIContentSizeCategoryMedium: @(44),
+								  UIContentSizeCategoryLarge: @(44),
+								  UIContentSizeCategoryExtraLarge: @(47)};
+	 return (CGFloat)[rowHeights[UIApplication.sharedApplication.preferredContentSizeCategory] doubleValue] ? : 51;
+	);
+	return 44;
 }
 
 - (NSString *)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
@@ -403,25 +415,7 @@ CGRect IASKCGRectSwap(CGRect rect);
 		}
 		
 	}
-	NSString *title = [self tableView:tableView titleForHeaderInSection:section];
-	if ([title length] > 0) {
-		CGSize size = CGSizeZero;
-		IASK_IF_PRE_IOS7
-		(
-		 size = [title sizeWithFont:[UIFont boldSystemFontOfSize:[UIFont labelFontSize]]
-                  constrainedToSize:CGSizeMake(tableView.frame.size.width - 2*kIASKHorizontalPaddingGroupTitles, INFINITY)
-					  lineBreakMode:NSLineBreakByWordWrapping];
-		 );
-		IASK_IF_IOS7_OR_GREATER
-		(
-		 size = [title boundingRectWithSize:CGSizeMake(tableView.frame.size.width - 2*kIASKHorizontalPaddingGroupTitles, INFINITY)
-									options:NSStringDrawingUsesLineFragmentOrigin
-								 attributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:[UIFont labelFontSize]]}
-									context:nil].size;
-		);
-		return roundf(size.height+kIASKVerticalPaddingGroupTitles);
-	}
-	return 0;
+	return UITableViewAutomaticDimension;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
@@ -445,13 +439,13 @@ CGRect IASKCGRectSwap(CGRect rect);
 - (UITableViewCell*)newCellForIdentifier:(NSString*)identifier {
 	UITableViewCell *cell = nil;
 	if ([identifier isEqualToString:kIASKPSToggleSwitchSpecifier]) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kIASKPSToggleSwitchSpecifier];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kIASKPSToggleSwitchSpecifier];
 		cell.accessoryView = [[IASKSwitch alloc] initWithFrame:CGRectMake(0, 0, 79, 27)];
 		[((IASKSwitch*)cell.accessoryView) addTarget:self action:@selector(toggledValue:) forControlEvents:UIControlEventValueChanged];
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	}
 	else if ([identifier isEqualToString:kIASKPSMultiValueSpecifier] || [identifier isEqualToString:kIASKPSTitleValueSpecifier]) {
-		cell = [[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
 		cell.accessoryType = [identifier isEqualToString:kIASKPSMultiValueSpecifier] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 	}
 	else if ([identifier isEqualToString:kIASKPSTextFieldSpecifier]) {
@@ -461,13 +455,17 @@ CGRect IASKCGRectSwap(CGRect rect);
 	else if ([identifier isEqualToString:kIASKPSSliderSpecifier]) {
         cell = [[IASKPSSliderSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kIASKPSSliderSpecifier];
 	} else if ([identifier isEqualToString:kIASKPSChildPaneSpecifier]) {
-		cell = [[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else if ([identifier isEqualToString:kIASKMailComposeSpecifier]) {
-		cell = [[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
 		[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 	} else {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+
+		if ([identifier isEqualToString:kIASKOpenURLSpecifier]) {
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		}
 	}
 	IASK_IF_PRE_IOS6(cell.textLabel.minimumFontSize = kIASKMinimumFontSize;
 					 cell.detailTextLabel.minimumFontSize = kIASKMinimumFontSize;);
@@ -491,7 +489,8 @@ CGRect IASKCGRectSwap(CGRect rect);
 	
 	if ([specifier.type isEqualToString:kIASKPSToggleSwitchSpecifier]) {
 		cell.textLabel.text = specifier.title;
-		
+		cell.detailTextLabel.text = specifier.subtitle;
+
 		id currentValue = [self.settingsStore objectForKey:specifier.key];
 		BOOL toggleState;
 		if (currentValue) {
@@ -569,12 +568,16 @@ CGRect IASKCGRectSwap(CGRect rect);
 	}
 	else if ([specifier.type isEqualToString:kIASKPSChildPaneSpecifier]) {
 		cell.textLabel.text = specifier.title;
+		cell.detailTextLabel.text = specifier.subtitle;
 	} else if ([specifier.type isEqualToString:kIASKOpenURLSpecifier] || [specifier.type isEqualToString:kIASKMailComposeSpecifier]) {
 		cell.textLabel.text = specifier.title;
-		cell.detailTextLabel.text = [specifier.defaultValue description];
+		cell.detailTextLabel.text = specifier.subtitle ? : [specifier.defaultValue description];
 	} else if ([specifier.type isEqualToString:kIASKButtonSpecifier]) {
 		NSString *value = [self.settingsStore objectForKey:specifier.key];
 		cell.textLabel.text = [value isKindOfClass:[NSString class]] ? [self.settingsReader titleForStringId:value] : specifier.title;
+		if (specifier.textAlignment != NSTextAlignmentLeft) {
+			cell.textLabel.textColor = tableView.tintColor;
+		}
 		cell.accessoryType = (specifier.textAlignment == NSTextAlignmentLeft) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 	} else {
 		cell.textLabel.text = specifier.title;
@@ -619,6 +622,7 @@ CGRect IASKCGRectSwap(CGRect rect);
         [targetViewController setCurrentSpecifier:specifier];
         targetViewController.settingsReader = self.settingsReader;
         targetViewController.settingsStore = self.settingsStore;
+		IASK_IF_IOS7_OR_GREATER(targetViewController.view.tintColor = self.view.tintColor;)
         _currentChildViewController = targetViewController;
         [[self navigationController] pushViewController:targetViewController animated:YES];
         
@@ -632,6 +636,7 @@ CGRect IASKCGRectSwap(CGRect rect);
             storyBoardFileFromSpecifier = storyBoardFileFromSpecifier && storyBoardFileFromSpecifier.length > 0 ? storyBoardFileFromSpecifier : @"MainStoryboard";
 			UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:storyBoardFileFromSpecifier bundle:nil];
 			UIViewController * vc = [storyBoard instantiateViewControllerWithIdentifier:[specifier viewControllerStoryBoardID]];
+			IASK_IF_IOS7_OR_GREATER(vc.view.tintColor = self.view.tintColor;)
             [self.navigationController pushViewController:vc animated:YES];
 			return;
 		}
@@ -653,6 +658,7 @@ CGRect IASKCGRectSwap(CGRect rect);
             if ([vc respondsToSelector:@selector(setSettingsStore:)]) {
                 [vc performSelector:@selector(setSettingsStore:) withObject:self.settingsStore];
             }
+			IASK_IF_IOS7_OR_GREATER(vc.view.tintColor = self.view.tintColor;)
             [self.navigationController pushViewController:vc animated:YES];
             return;
         }
@@ -672,11 +678,11 @@ CGRect IASKCGRectSwap(CGRect rect);
         targetViewController.file = specifier.file;
         targetViewController.hiddenKeys = self.hiddenKeys;
         targetViewController.title = specifier.title;
+		IASK_IF_IOS7_OR_GREATER(targetViewController.view.tintColor = self.view.tintColor;)
         _currentChildViewController = targetViewController;
         
         _reloadDisabled = NO;
-        [self.tableView reloadData];
-        
+		
         [[self navigationController] pushViewController:targetViewController animated:YES];
         
     } else if ([[specifier type] isEqualToString:kIASKOpenURLSpecifier]) {
@@ -825,28 +831,34 @@ CGRect IASKCGRectSwap(CGRect rect);
 
 static NSDictionary *oldUserDefaults = nil;
 - (void)userDefaultsDidChange {
-	NSDictionary *currentDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
-	NSMutableArray *indexPathsToUpdate = [NSMutableArray array];
-	for (NSString *key in currentDict.allKeys) {
-		if (![[oldUserDefaults valueForKey:key] isEqual:[currentDict valueForKey:key]]) {
-			NSIndexPath *path = [self.settingsReader indexPathForKey:key];
-			if (path && ![[self.settingsReader specifierForKey:key].type isEqualToString:kIASKCustomViewSpecifier]) {
-				[indexPathsToUpdate addObject:path];
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		NSDictionary *currentDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
+		NSMutableArray *indexPathsToUpdate = [NSMutableArray array];
+		for (NSString *key in currentDict.allKeys) {
+			if (oldUserDefaults && ![[oldUserDefaults valueForKey:key] isEqual:[currentDict valueForKey:key]]) {
+				NSIndexPath *path = [self.settingsReader indexPathForKey:key];
+				if (path && ![[self.settingsReader specifierForKey:key].type isEqualToString:kIASKCustomViewSpecifier]) {
+					[indexPathsToUpdate addObject:path];
+				}
 			}
 		}
-	}
-	oldUserDefaults = currentDict;
-	
-	for (UITableViewCell *cell in self.tableView.visibleCells) {
-		if ([cell isKindOfClass:[IASKPSTextFieldSpecifierViewCell class]] && [((IASKPSTextFieldSpecifierViewCell*)cell).textField isFirstResponder]) {
-			[indexPathsToUpdate removeObject:[self.tableView indexPathForCell:cell]];
+		oldUserDefaults = currentDict;
+		
+		for (UITableViewCell *cell in self.tableView.visibleCells) {
+			if ([cell isKindOfClass:[IASKPSTextFieldSpecifierViewCell class]] && [((IASKPSTextFieldSpecifierViewCell*)cell).textField isFirstResponder]) {
+				[indexPathsToUpdate removeObject:[self.tableView indexPathForCell:cell]];
+			}
 		}
-	}
-	if (indexPathsToUpdate.count) {
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-			[self.tableView reloadRowsAtIndexPaths:indexPathsToUpdate withRowAnimation:UITableViewRowAnimationNone];
-		});
-	}
+		if (indexPathsToUpdate.count) {
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+				[self.tableView reloadRowsAtIndexPaths:indexPathsToUpdate withRowAnimation:UITableViewRowAnimationNone];
+			});
+		}
+	});
+}
+
+- (void)didChangeSettingViaIASK:(NSNotification*)notification {
+	[oldUserDefaults setValue:[self.settingsStore objectForKey:notification.object] forKey:notification.object];
 }
 
 - (void)reload {

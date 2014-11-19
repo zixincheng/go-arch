@@ -1,6 +1,6 @@
 PODS:
   - CocoaAsyncSocket (7.3.5)
-  - InAppSettingsKit (2.1)
+  - InAppSettingsKit (2.2.2)
   - SSKeychain (1.2.2)
 
 DEPENDENCIES:
@@ -10,7 +10,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: 45bdbbc1c0a5ed0640ff4c42af325ba43a2f099a
-  InAppSettingsKit: 853cdc9fcc76b87a4694f8d2b930e116463b5a29
+  InAppSettingsKit: cd8ffa4266fb5c4778af8bda8aa9bf08b6733fd4
   SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
 
 COCOAPODS: 0.33.1

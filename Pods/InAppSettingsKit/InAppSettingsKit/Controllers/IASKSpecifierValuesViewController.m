@@ -92,22 +92,11 @@
 	[super viewDidDisappear:animated];
 }
 
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return YES;
-}
-
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
 	
 	// Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-	self.tableView = nil;
 }
 
 #pragma mark -
@@ -123,12 +112,12 @@
 
 - (void)selectCell:(UITableViewCell *)cell {
 	[cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-	[[cell textLabel] setTextColor:kIASKgrayBlueColor];
+	IASK_IF_PRE_IOS7([[cell textLabel] setTextColor:kIASKgrayBlueColor];);
 }
 
 - (void)deselectCell:(UITableViewCell *)cell {
 	[cell setAccessoryType:UITableViewCellAccessoryNone];
-	[[cell textLabel] setTextColor:[UIColor darkTextColor]];
+	IASK_IF_PRE_IOS7([[cell textLabel] setTextColor:[UIColor darkTextColor]];);
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {

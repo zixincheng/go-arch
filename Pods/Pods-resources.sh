@@ -41,6 +41,21 @@ install_resource()
       ;;
   esac
 }
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/Base.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/de.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/el.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/en.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/es.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/fr.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/it.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/ja.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/nl.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/pt-PT.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/pt.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/ru.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/sv.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/th.lproj"
+install_resource "InAppSettingsKit/InAppSettingsKit/Resources/tr.lproj"
 
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 if [[ "${ACTION}" == "install" ]]; then
