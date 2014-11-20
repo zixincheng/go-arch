@@ -5,16 +5,20 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
-			<key>Title</key>
-			<string>Settings</string>
 			<key>Type</key>
-			<string>PSGroupSpecifier</string>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>Storage</string>
+			<key>IASKViewControllerStoryBoardFile</key>
+			<string>Main</string>
+			<key>IASKViewControllerStoryBoardId</key>
+			<string>StorageView</string>
 		</dict>
 		<dict>
 			<key>IASKViewControllerStoryBoardFile</key>
 			<string>Main</string>
 			<key>IASKViewControllerStoryBoardId</key>
-			<string>albumView</string>
+			<string>StorageView</string>
 			<key>Title</key>
 			<string>Albums</string>
 			<key>Type</key>

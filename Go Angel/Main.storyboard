@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dEA-XW-XWb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dEA-XW-XWb">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
@@ -21,11 +21,39 @@
                     <navigationItem key="navigationItem" title="Settings" id="zEE-Nq-gLX"/>
                     <connections>
                         <segue destination="mZG-Td-1gf" kind="push" id="vmh-V9-vXj"/>
+                        <segue destination="2hR-2V-was" kind="push" id="Ab6-ju-3XT"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cxW-3N-PMe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-107" y="506"/>
+        </scene>
+        <!--Storage Selector-->
+        <scene sceneID="by1-R0-GGr">
+            <objects>
+                <tableViewController storyboardIdentifier="StorageView" id="2hR-2V-was" customClass="StorageViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="RYb-N7-HLg">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="1Xz-gK-BIh">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Xz-gK-BIh" id="2RV-Ys-dAm">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="2hR-2V-was" id="d7p-p7-1ch"/>
+                            <outlet property="delegate" destination="2hR-2V-was" id="PDq-NE-trW"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Storage Selector" id="Dzz-n3-n6R"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YtD-7G-Q9f" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="358" y="-25"/>
         </scene>
         <!--Album Selector-->
         <scene sceneID="BZZ-gi-f7r">
@@ -64,7 +92,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kHo-J7-hXt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="349" y="506"/>
+            <point key="canvasLocation" x="358" y="730"/>
         </scene>
         <!--Photos-->
         <scene sceneID="3Y6-WB-kLA">
@@ -361,7 +389,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="settings-25.png" id="06V-IR-tdU">
                             <connections>
-                                <segue destination="jxE-0u-sk9" kind="push" id="uCu-AJ-hPk"/>
+                                <segue destination="jxE-0u-sk9" kind="push" identifier="pushNotification" id="uCu-AJ-hPk"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

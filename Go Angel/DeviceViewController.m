@@ -28,6 +28,8 @@
   // nav bar
   // make light nav bar
   self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived) name:@"pushNotification" object:nil];
   
   // init vars
   self.dataWrapper = [[CoreDataWrapper alloc] init];
@@ -545,6 +547,11 @@
     }
   }
   return bssid;
+}
+
+-(void)pushNotificationReceived{
+    NSLog(@"recieved notification");
+    [self performSegueWithIdentifier:@"pushNotification" sender:self];
 }
 
 @end

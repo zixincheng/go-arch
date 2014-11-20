@@ -183,6 +183,42 @@
   [dataTask resume];
 }
 
+- (void) getStorages: (void (^) (NSMutableArray *storages)) callback {
+    NSLog(@"hello");
+    NSOperationQueue *background = [[NSOperationQueue alloc] init];
+    
+    
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
+    NSMutableURLRequest *request = [self getHTTPGetRequest:@"/storage"];
+    
+    //    ^(NSData *data, NSURLResponse *response, NSError *error)
+    NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error == nil) {
+            NSError *jsonError;
+            NSDictionary *respon = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            NSArray *storageArr = [respon objectForKey:@"stores"];
+            NSMutableArray *storages = [[NSMutableArray alloc] init];
+            NSLog(@"%@",storageArr);
+            for (NSDictionary *d in storageArr) {
+                NSString *storageLabel = [d objectForKey:@"label"];
+                NSString *uuid = [d objectForKey:@"uuid"];
+                
+                CSStorage *newSto = [[CSStorage alloc] init];
+                newSto.storageLabel = storageLabel;
+                newSto.uuid = uuid;
+                
+                [storages addObject:newSto];
+            }
+            
+            NSLog(@"sent %lu storages to callback", (unsigned long)storages.count);
+            callback(storages);
+        }
+    }];
+    
+    [dataTask resume];
+}
+
 -(NSData *)dataFromBase64EncodedString:(NSString *)string{
   if (string.length > 0) {
     
@@ -202,9 +238,11 @@
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   
   NSString *deviceName = [defaults objectForKey:DEVICE_NAME];
-  
+    
+  NSString *apnId = [defaults objectForKey:@"apnId"];
+    
   //    NSDictionary *mapData = @{@"Device_Name": name, @"Manufacturer": manufacturer, @"Firmware": firmware_version};
-  NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: deviceName, @"Device_Name", manufacturer, @"Manufacturer", firmware_version, @"Firmware", nil];
+  NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: deviceName, @"Device_Name", manufacturer, @"Manufacturer", firmware_version, @"Firmware",apnId, @"apnId",nil];
   
   return mapData;
 }
