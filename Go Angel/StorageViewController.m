@@ -7,6 +7,8 @@
 //
 
 #import "StorageViewController.h"
+#import "TSPopoverController.h"
+#import "TSActionSheet.h"
 
 @interface StorageViewController ()
 
@@ -16,11 +18,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.contentMode = UIViewContentModeScaleAspectFill;
     self.dataWrapper = [[CoreDataWrapper alloc] init];
     self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
     self.storages = [[NSMutableArray alloc] init];
+    self.labelArray = [[NSMutableArray alloc] init];
+    self.buttonArray = [[NSMutableArray alloc] init];
+    // dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     [self getStoragesFromApi];
-      NSLog(@"init");
+
+   //  });
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -34,86 +41,70 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 - (void) getStoragesFromApi {
     // first update this device on server
     NSLog(@"hello");
     // then get all devices
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     [self.coinsorter getStorages: ^(NSMutableArray *storages) {
         for (CSStorage *d in storages) {
             [self.storages addObject:d];
-            NSLog(@"%@",self.storages);
+            NSLog(@"%lu",(unsigned long)self.storages.count);
         }
+         [self getStorageLabel];
     }];
+        });
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    NSLog(@"%lu",(unsigned long)self.storages.count); 
-    return self.storages.count;
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void) getStorageLabel {
+    NSLog(@"create label");
+    NSLog(@"%lu",(unsigned long)self.storages.count);
+      dispatch_async(dispatch_get_main_queue(), ^{
+          int y =80;
+          for (int count=0; count<self.storages.count; count++) {
+              UILabel *myLabel =[[UILabel alloc]initWithFrame:CGRectMake(20, y, 200, 40)];
+              CSStorage *d = [self.storages objectAtIndex:count];
+              [myLabel setText:[NSString stringWithFormat:@" Label: %@ , \n UUID: %@ ",d.storageLabel, d.uuid]];
+              NSLog(@"create label %d, postion, %d", count, y);
+             
+              [myLabel setNumberOfLines:2];
+              [myLabel sizeToFit];
+              [myLabel setBackgroundColor:[UIColor grayColor]];
+              [[self view] addSubview:myLabel];
+              [self.labelArray addObject:myLabel];
+              
+              UIButton *myButton =[UIButton buttonWithType:UIButtonTypeRoundedRect];
+              [myButton addTarget:self action:@selector(storageAction:forEvent:) forControlEvents:UIControlEventTouchUpInside];
+               myButton.frame = CGRectMake(180, y, 20, 40);
+              [myButton setTitle:@" Select an Action " forState:UIControlStateNormal];
+              [myButton sizeToFit];
+              [myButton setBackgroundColor:[UIColor redColor]];
+              [self.view addSubview:myButton];
+              [self.buttonArray addObject:myButton];
+              myButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+              
+              y = y+60;
+          }
+      });
+     NSLog(@"%lu Storage sent back",(unsigned long)self.labelArray.count);
     
-    static NSString *CellIdentifier = @"StoragePrototypeCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-    }
+}
+
+-(void) storageAction:(id)sender forEvent:(UIEvent*)event {
+    NSLog(@"action");
+    TSActionSheet *actionSheet = [[TSActionSheet alloc] initWithTitle:@"action sheet"];
+    [actionSheet destructiveButtonWithTitle:@"hoge" block:nil];
+    [actionSheet addButtonWithTitle:@"hoge1" block:^{
+        NSLog(@"pushed hoge1 button");
+    }];
+    [actionSheet addButtonWithTitle:@"moge2" block:^{
+        NSLog(@"pushed hoge2 button");
+    }];
+    [actionSheet cancelButtonWithTitle:@"Cancel" block:nil];
+    actionSheet.cornerRadius = 5;
     
-    // Configure
-    CSStorage *d = self.storages[[indexPath row]];
-    cell.textLabel.text = d.storageLabel;
-    // Configure the cell...
-    
-    return cell;
+    [actionSheet showWithTouch:event];
 }
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 /*
 #pragma mark - Navigation
 

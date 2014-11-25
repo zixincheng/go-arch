@@ -10,9 +10,11 @@
 #import "Coinsorter.h"
 #import "CoreDataWrapper.h"
 
-@interface StorageViewController : UITableViewController
+@interface StorageViewController : UIViewController
 
 @property (nonatomic, strong) NSMutableArray *storages;
+@property (nonatomic, retain) NSMutableArray *labelArray;
+@property (nonatomic, retain) NSMutableArray *buttonArray;
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 

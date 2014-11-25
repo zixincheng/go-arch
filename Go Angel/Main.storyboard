@@ -21,7 +21,7 @@
                     <navigationItem key="navigationItem" title="Settings" id="zEE-Nq-gLX"/>
                     <connections>
                         <segue destination="mZG-Td-1gf" kind="push" id="vmh-V9-vXj"/>
-                        <segue destination="2hR-2V-was" kind="push" id="Ab6-ju-3XT"/>
+                        <segue destination="daX-2h-ygy" kind="push" id="djH-gM-J8z"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cxW-3N-PMe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -29,31 +29,23 @@
             <point key="canvasLocation" x="-107" y="506"/>
         </scene>
         <!--Storage Selector-->
-        <scene sceneID="by1-R0-GGr">
+        <scene sceneID="ZOf-q9-8bH">
             <objects>
-                <tableViewController storyboardIdentifier="StorageView" id="2hR-2V-was" customClass="StorageViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="RYb-N7-HLg">
+                <viewController storyboardIdentifier="StorageView" id="daX-2h-ygy" customClass="StorageViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XGM-zz-fys"/>
+                        <viewControllerLayoutGuide type="bottom" id="l7m-LV-TKX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Vg1-Zb-Ii7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="1Xz-gK-BIh">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Xz-gK-BIh" id="2RV-Ys-dAm">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="2hR-2V-was" id="d7p-p7-1ch"/>
-                            <outlet property="delegate" destination="2hR-2V-was" id="PDq-NE-trW"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Storage Selector" id="Dzz-n3-n6R"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YtD-7G-Q9f" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Storage Selector" id="ims-n7-D9t"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kUt-lV-beM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="358" y="-25"/>
+            <point key="canvasLocation" x="349" y="-99"/>
         </scene>
         <!--Album Selector-->
         <scene sceneID="BZZ-gi-f7r">
@@ -92,7 +84,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kHo-J7-hXt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="358" y="730"/>
+            <point key="canvasLocation" x="358" y="622"/>
         </scene>
         <!--Photos-->
         <scene sceneID="3Y6-WB-kLA">

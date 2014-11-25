@@ -18,7 +18,7 @@
 			<key>IASKViewControllerStoryBoardFile</key>
 			<string>Main</string>
 			<key>IASKViewControllerStoryBoardId</key>
-			<string>StorageView</string>
+			<string>albumView</string>
 			<key>Title</key>
 			<string>Albums</string>
 			<key>Type</key>

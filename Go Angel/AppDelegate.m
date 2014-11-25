@@ -42,7 +42,7 @@
     
     NSString *deviceTokenString = [NSString stringWithFormat:@"%@",deviceToken];
     [[NSUserDefaults standardUserDefaults] setObject:deviceTokenString forKey:@"apnId"];
-    NSLog(@"device toker : %@",deviceTokenString);
+    NSLog(@"device token : %@",deviceTokenString);
 }
 
 -(void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
