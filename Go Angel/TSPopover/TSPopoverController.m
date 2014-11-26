@@ -103,7 +103,6 @@
     UIWindow *appWindow = [[UIApplication sharedApplication] keyWindow];
     CGPoint senderLocationInWindowPoint = [appWindow.rootViewController.presentedViewController.view convertPoint:applicationFramePoint fromView:senderView];
     CGRect senderFrame = [[[senderEvent.allTouches anyObject] view] frame];
-    NSLog(@"x %f,y %f ",senderLocationInWindowPoint.x,senderLocationInWindowPoint.y);
     senderFrame.origin.x = senderLocationInWindowPoint.x;
     senderFrame.origin.y = senderLocationInWindowPoint.y;
     CGPoint senderPoint = [self senderPointFromSenderRect:senderFrame];
@@ -192,7 +191,7 @@
 
     //[appWindow.rootViewController.view addSubview:self.view];
 
-        if (appWindow.rootViewController.presentedViewController != nil) {
+    if (appWindow.rootViewController.presentedViewController != nil) {
                 [appWindow.rootViewController.presentedViewController.view addSubview:self.view];
             }
         else {

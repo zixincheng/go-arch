@@ -118,6 +118,32 @@
   [dataTask resume];
 }
 
+
+-(void) updateStorage: (NSString*) queryAction stoUUID:(NSString *) uuid infoCallback: (void (^) (NSDictionary *)) infoCallback{
+
+    NSString *query = [NSString stringWithFormat:@"?action=%@&uuid=%@",queryAction,uuid];
+    
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
+    NSMutableURLRequest *request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/storage/%@", query]];
+    
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSURLSessionDataTask *postDataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSError *jsonError;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        NSLog(@"%@",jsonData);
+        if (error == nil) {
+            infoCallback(jsonData);
+        }else {
+            infoCallback(nil);
+        }
+    }];
+    
+    [postDataTask resume];
+    
+}
 // update the device information on server
 - (void) updateDevice {
   NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];

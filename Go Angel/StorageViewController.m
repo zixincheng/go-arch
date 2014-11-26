@@ -74,6 +74,7 @@
               [self.labelArray addObject:myLabel];
               
               UIButton *myButton =[UIButton buttonWithType:UIButtonTypeRoundedRect];
+              myButton.tag = count;
               [myButton addTarget:self action:@selector(storageAction:forEvent:) forControlEvents:UIControlEventTouchUpInside];
                myButton.frame = CGRectMake(180, y, 20, 40);
               [myButton setTitle:@" Select an Action " forState:UIControlStateNormal];
@@ -92,13 +93,209 @@
 
 -(void) storageAction:(id)sender forEvent:(UIEvent*)event {
     NSLog(@"action");
+    UIButton *clicked = (UIButton *) sender;
+    CSStorage *d = [self.storages objectAtIndex:clicked.tag];
     TSActionSheet *actionSheet = [[TSActionSheet alloc] initWithTitle:@"action sheet"];
-    [actionSheet destructiveButtonWithTitle:@"hoge" block:nil];
-    [actionSheet addButtonWithTitle:@"hoge1" block:^{
-        NSLog(@"pushed hoge1 button");
+    [actionSheet destructiveButtonWithTitle:@"Format" block:^{
+        NSLog(@"Formatting Storage %ld",(long)clicked.tag);
+        [self.coinsorter updateStorage:@"format" stoUUID:d.uuid infoCallback:^(NSDictionary *Data){
+            if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
+                dispatch_async(dispatch_get_main_queue(), ^ {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Format Successful!"
+                                                                      message:[Data objectForKey:@"message"]
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"OK"
+                                                            otherButtonTitles:nil];
+                    
+                    [message show];
+                });
+
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^ {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:[Data objectForKey:@"stat"]
+                                                                      message:[Data objectForKey:@"message"]
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"OK"
+                                                            otherButtonTitles:nil];
+                    [message show];
+                });
+
+            }
+        }];
     }];
-    [actionSheet addButtonWithTitle:@"moge2" block:^{
-        NSLog(@"pushed hoge2 button");
+
+    [actionSheet destructiveButtonWithTitle:@"Ignore" block:^{
+        NSLog(@"Ignoring Storage");
+        [self.coinsorter updateStorage:@"ignore" stoUUID:d.uuid infoCallback:^(NSDictionary *Data){
+            if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
+                dispatch_async(dispatch_get_main_queue(), ^ {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Ignore Successful!"
+                                                                      message:[Data objectForKey:@"message"]
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"OK"
+                                                            otherButtonTitles:nil];
+                    
+                    [message show];
+                });
+                
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^ {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:[Data objectForKey:@"stat"]
+                                                                      message:[Data objectForKey:@"message"]
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"OK"
+                                                            otherButtonTitles:nil];
+                    [message show];
+                });
+                
+            }
+            
+        }];
+
+    }];
+    
+    [actionSheet destructiveButtonWithTitle:@"Forget" block:^{
+        NSLog(@"Forgeting Storage");
+        [self.coinsorter updateStorage:@"forget" stoUUID:d.uuid infoCallback:^(NSDictionary *Data){
+            if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
+            dispatch_async(dispatch_get_main_queue(), ^ {
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Forget Successful!"
+                                                                  message:[Data objectForKey:@"message"]
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
+                
+                [message show];
+                });
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^ {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:[Data objectForKey:@"stat"]
+                                                                      message:[Data objectForKey:@"message"]
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"OK"
+                                                            otherButtonTitles:nil];
+                    [message show];
+                });
+                
+            }
+        }];
+
+    }];
+    [actionSheet destructiveButtonWithTitle:@"Unmount" block:^{
+        NSLog(@"Unmounting Storage");
+        [self.coinsorter updateStorage:@"unmont" stoUUID:d.uuid infoCallback:^(NSDictionary *Data){
+            if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
+            dispatch_async(dispatch_get_main_queue(), ^ {
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Unmount Successful!"
+                                                                  message:[Data objectForKey:@"message"]
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
+                
+                [message show];
+                });
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^ {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:[Data objectForKey:@"stat"]
+                                                                      message:[Data objectForKey:@"message"]
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"OK"
+                                                            otherButtonTitles:nil];
+                    [message show];
+                });
+                
+            }
+            
+        }];
+
+    }];
+    [actionSheet addButtonWithTitle:@"Add" block:^{
+        NSLog(@"Adding Storage");
+        [self.coinsorter updateStorage:@"add" stoUUID:d.uuid infoCallback:^(NSDictionary *Data){
+            if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
+            dispatch_async(dispatch_get_main_queue(), ^ {
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Add Successful!"
+                                                                  message:[Data objectForKey:@"message"]
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
+                
+                [message show];
+                });
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^ {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:[Data objectForKey:@"stat"]
+                                                                      message:[Data objectForKey:@"message"]
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"OK"
+                                                            otherButtonTitles:nil];
+                    [message show];
+                });
+                
+            }
+        }];
+
+    }];
+    [actionSheet addButtonWithTitle:@"Copy" block:^{
+        NSLog(@"Copying Storage");
+        [self.coinsorter updateStorage:@"copy" stoUUID:d.uuid infoCallback:^(NSDictionary *Data){
+            if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
+            dispatch_async(dispatch_get_main_queue(), ^ {
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Copy Successful!"
+                                                                  message:[Data objectForKey:@"message"]
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
+                
+                [message show];
+                });
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^ {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:[Data objectForKey:@"stat"]
+                                                                      message:[Data objectForKey:@"message"]
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"OK"
+                                                            otherButtonTitles:nil];
+                    [message show];
+                });
+                
+            }
+        }];
+
+    }];
+    [actionSheet addButtonWithTitle:@"Mount" block:^{
+        NSLog(@"Mounting Storage");
+        [self.coinsorter updateStorage:@"mount" stoUUID:d.uuid infoCallback:^(NSDictionary *Data){
+            if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
+            dispatch_async(dispatch_get_main_queue(), ^ {
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Mount Successful!"
+                                                                  message:[Data objectForKey:@"message"]
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
+                
+                [message show];
+                });
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^ {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:[Data objectForKey:@"stat"]
+                                                                      message:[Data objectForKey:@"message"]
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"OK"
+                                                            otherButtonTitles:nil];
+                    [message show];
+                });
+                
+            }
+        }];
+
     }];
     [actionSheet cancelButtonWithTitle:@"Cancel" block:nil];
     actionSheet.cornerRadius = 5;
