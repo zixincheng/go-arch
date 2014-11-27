@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface StorageTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *StorageName;
+@property (weak, nonatomic) IBOutlet UILabel *StorageStat;
 
 @end

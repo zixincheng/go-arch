@@ -9,13 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "Coinsorter.h"
 #import "CoreDataWrapper.h"
+#import "StorageDetailViewController.h"
 
-@interface StorageViewController : UIViewController
+
+@interface StorageViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray *storages;
 @property (nonatomic, retain) NSMutableArray *labelArray;
 @property (nonatomic, retain) NSMutableArray *buttonArray;
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
+@property (weak, nonatomic) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) CSStorage *selectedStorage;
+
+
 
 @end
