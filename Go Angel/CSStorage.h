@@ -12,5 +12,6 @@
 
 @property (strong) NSString *uuid;
 @property (strong) NSString *storageLabel;
+@property (strong) NSString *pluged_in;
 
 @end

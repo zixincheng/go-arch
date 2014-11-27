@@ -58,8 +58,10 @@ static NSString *MyIdentifier = @"StorageCell";
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     [self.coinsorter getStorages: ^(NSMutableArray *storages) {
         for (CSStorage *s in storages) {
-            [self.storages addObject:s];
-            NSLog(@"%lu",(unsigned long)self.storages.count);
+            if ([s.pluged_in boolValue]==YES ) {
+                [self.storages addObject:s];
+                NSLog(@"%lu",(unsigned long)self.storages.count);
+            }
         }
     dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
@@ -101,9 +103,9 @@ static NSString *MyIdentifier = @"StorageCell";
     
     // Configure
     CSStorage *s = self.storages[[indexPath row]];
-
     cell.StorageName.text = s.storageLabel;
     cell.StorageStat.text = s.uuid;
+    
     // Here we use the provided setImageWithURL: method to load the web image
     // Ensure you use a placeholder image otherwise cells will be initialized with no image
     return cell;

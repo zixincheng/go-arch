@@ -229,10 +229,12 @@
             for (NSDictionary *d in storageArr) {
                 NSString *storageLabel = [d objectForKey:@"label"];
                 NSString *uuid = [d objectForKey:@"uuid"];
+                NSString *plugged_in = [d objectForKey:@"plugged_in"];
                 
                 CSStorage *newSto = [[CSStorage alloc] init];
                 newSto.storageLabel = storageLabel;
                 newSto.uuid = uuid;
+                newSto.pluged_in = plugged_in;
                 
                 [storages addObject:newSto];
             }
