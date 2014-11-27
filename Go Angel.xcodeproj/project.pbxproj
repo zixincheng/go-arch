@@ -42,13 +42,10 @@
 		20931B8E19957EEE00F57FB0 /* PhotoSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20931B8D19957EEE00F57FB0 /* PhotoSectionHeaderView.m */; };
 		20DD6A44199441C900D76DC3 /* GridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DD6A43199441C900D76DC3 /* GridViewController.m */; };
 		20F74D161992B56B00E0546D /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 20F74D151992B56B00E0546D /* Constants.m */; };
+		9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */; };
+		9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */; };
 		9BEA5B561A1EB26100CC14FF /* CSStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B531A1EB26100CC14FF /* CSStorage.m */; };
 		9BEA5B571A1EB26100CC14FF /* StorageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B551A1EB26100CC14FF /* StorageViewController.m */; };
-		9BEA5B681A24047900CC14FF /* TSActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B5E1A24047900CC14FF /* TSActionSheet.m */; };
-		9BEA5B691A24047900CC14FF /* TSPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B601A24047900CC14FF /* TSPopoverController.m */; };
-		9BEA5B6A1A24047900CC14FF /* TSPopoverPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B621A24047900CC14FF /* TSPopoverPopoverView.m */; };
-		9BEA5B6B1A24047900CC14FF /* TSPopoverTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B651A24047900CC14FF /* TSPopoverTouchView.m */; };
-		9BEA5B6C1A24047900CC14FF /* UIBarButtonItem+WEPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B671A24047900CC14FF /* UIBarButtonItem+WEPopover.m */; };
 		B8BD5E6D1AEE4BC883DE0FB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C120E32068A1416CA965B081 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -158,21 +155,14 @@
 		20F74D141992B56B00E0546D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		20F74D151992B56B00E0546D /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		9BB0F2091A26A52A00DF40E3 /* StorageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageDetailViewController.h; sourceTree = "<group>"; };
+		9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageDetailViewController.m; sourceTree = "<group>"; };
+		9BB0F20C1A27A91900DF40E3 /* StorageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageTableViewCell.h; sourceTree = "<group>"; };
+		9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageTableViewCell.m; sourceTree = "<group>"; };
 		9BEA5B521A1EB26100CC14FF /* CSStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSStorage.h; sourceTree = "<group>"; };
 		9BEA5B531A1EB26100CC14FF /* CSStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSStorage.m; sourceTree = "<group>"; };
 		9BEA5B541A1EB26100CC14FF /* StorageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageViewController.h; sourceTree = "<group>"; };
 		9BEA5B551A1EB26100CC14FF /* StorageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageViewController.m; sourceTree = "<group>"; };
-		9BEA5B5D1A24047900CC14FF /* TSActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TSActionSheet.h; path = TSPopover/TSActionSheet.h; sourceTree = "<group>"; };
-		9BEA5B5E1A24047900CC14FF /* TSActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TSActionSheet.m; path = TSPopover/TSActionSheet.m; sourceTree = "<group>"; };
-		9BEA5B5F1A24047900CC14FF /* TSPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TSPopoverController.h; path = TSPopover/TSPopoverController.h; sourceTree = "<group>"; };
-		9BEA5B601A24047900CC14FF /* TSPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TSPopoverController.m; path = TSPopover/TSPopoverController.m; sourceTree = "<group>"; };
-		9BEA5B611A24047900CC14FF /* TSPopoverPopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TSPopoverPopoverView.h; path = TSPopover/TSPopoverPopoverView.h; sourceTree = "<group>"; };
-		9BEA5B621A24047900CC14FF /* TSPopoverPopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TSPopoverPopoverView.m; path = TSPopover/TSPopoverPopoverView.m; sourceTree = "<group>"; };
-		9BEA5B631A24047900CC14FF /* TSPopoverTouchesDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TSPopoverTouchesDelegate.h; path = TSPopover/TSPopoverTouchesDelegate.h; sourceTree = "<group>"; };
-		9BEA5B641A24047900CC14FF /* TSPopoverTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TSPopoverTouchView.h; path = TSPopover/TSPopoverTouchView.h; sourceTree = "<group>"; };
-		9BEA5B651A24047900CC14FF /* TSPopoverTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TSPopoverTouchView.m; path = TSPopover/TSPopoverTouchView.m; sourceTree = "<group>"; };
-		9BEA5B661A24047900CC14FF /* UIBarButtonItem+WEPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIBarButtonItem+WEPopover.h"; path = "TSPopover/UIBarButtonItem+WEPopover.h"; sourceTree = "<group>"; };
-		9BEA5B671A24047900CC14FF /* UIBarButtonItem+WEPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIBarButtonItem+WEPopover.m"; path = "TSPopover/UIBarButtonItem+WEPopover.m"; sourceTree = "<group>"; };
 		A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		C120E32068A1416CA965B081 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -229,7 +219,10 @@
 		2053971D1991924B00B1D9AD /* Go Angel */ = {
 			isa = PBXGroup;
 			children = (
-				9BEA5B6D1A24048F00CC14FF /* TSPopover */,
+				9BB0F2091A26A52A00DF40E3 /* StorageDetailViewController.h */,
+				9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */,
+				9BB0F20C1A27A91900DF40E3 /* StorageTableViewCell.h */,
+				9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */,
 				9BEA5B521A1EB26100CC14FF /* CSStorage.h */,
 				9BEA5B531A1EB26100CC14FF /* CSStorage.m */,
 				9BEA5B541A1EB26100CC14FF /* StorageViewController.h */,
@@ -319,24 +312,6 @@
 				2053973D1991924B00B1D9AD /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		9BEA5B6D1A24048F00CC14FF /* TSPopover */ = {
-			isa = PBXGroup;
-			children = (
-				9BEA5B5D1A24047900CC14FF /* TSActionSheet.h */,
-				9BEA5B5E1A24047900CC14FF /* TSActionSheet.m */,
-				9BEA5B5F1A24047900CC14FF /* TSPopoverController.h */,
-				9BEA5B601A24047900CC14FF /* TSPopoverController.m */,
-				9BEA5B611A24047900CC14FF /* TSPopoverPopoverView.h */,
-				9BEA5B621A24047900CC14FF /* TSPopoverPopoverView.m */,
-				9BEA5B631A24047900CC14FF /* TSPopoverTouchesDelegate.h */,
-				9BEA5B641A24047900CC14FF /* TSPopoverTouchView.h */,
-				9BEA5B651A24047900CC14FF /* TSPopoverTouchView.m */,
-				9BEA5B661A24047900CC14FF /* UIBarButtonItem+WEPopover.h */,
-				9BEA5B671A24047900CC14FF /* UIBarButtonItem+WEPopover.m */,
-			);
-			name = TSPopover;
 			sourceTree = "<group>";
 		};
 		A67AD59919D2294D0055C3A7 /* Products */ = {
@@ -505,11 +480,11 @@
 				2061D1D9199193CE001C7E08 /* CoreDataStore.m in Sources */,
 				20931B8519954B8900F57FB0 /* GridCell.m in Sources */,
 				2061D1D8199193CE001C7E08 /* ConnectViewController.m in Sources */,
-				9BEA5B6A1A24047900CC14FF /* TSPopoverPopoverView.m in Sources */,
+				9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */,
 				2061D1EC19919430001C7E08 /* LocalLibrary.m in Sources */,
-				9BEA5B681A24047900CC14FF /* TSActionSheet.m in Sources */,
 				2053974C199192FE00B1D9AD /* AppDelegate.m in Sources */,
 				2061D1D7199193CE001C7E08 /* Coinsorter.m in Sources */,
+				9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */,
 				2061D1E4199193DB001C7E08 /* firstLoadViewController.m in Sources */,
 				2061D1DB199193CE001C7E08 /* CSDevice.m in Sources */,
 				2061D2001991945F001C7E08 /* main.m in Sources */,
@@ -524,14 +499,11 @@
 				2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */,
 				20F74D161992B56B00E0546D /* Constants.m in Sources */,
 				2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */,
-				9BEA5B691A24047900CC14FF /* TSPopoverController.m in Sources */,
 				208169691995828500EEC65C /* SinglePhotoViewController.m in Sources */,
 				2061D1C6199193B5001C7E08 /* AccountDataWrapper.m in Sources */,
 				2061D1FB19919440001C7E08 /* Server.m in Sources */,
 				9BEA5B561A1EB26100CC14FF /* CSStorage.m in Sources */,
 				2061D1FA19919440001C7E08 /* Reachability.m in Sources */,
-				9BEA5B6B1A24047900CC14FF /* TSPopoverTouchView.m in Sources */,
-				9BEA5B6C1A24047900CC14FF /* UIBarButtonItem+WEPopover.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
