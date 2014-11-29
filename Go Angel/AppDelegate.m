@@ -26,6 +26,9 @@
     [defaults setObject:[[UIDevice currentDevice] name] forKey:@"deviceName"];
   }
   
+  self.defaultAlbum = [[createDefaultAlbum alloc] init];
+  [self.defaultAlbum setDefaultAlbum];
+
   return YES;
 }
 

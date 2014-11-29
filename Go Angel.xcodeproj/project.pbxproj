@@ -12,12 +12,6 @@
 		2053971A1991924B00B1D9AD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205397191991924B00B1D9AD /* UIKit.framework */; };
 		2053971C1991924B00B1D9AD /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2053971B1991924B00B1D9AD /* CoreData.framework */; };
 		205397221991924B00B1D9AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 205397201991924B00B1D9AD /* InfoPlist.strings */; };
-		205397341991924B00B1D9AD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205397331991924B00B1D9AD /* XCTest.framework */; };
-		205397351991924B00B1D9AD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205397151991924B00B1D9AD /* Foundation.framework */; };
-		205397361991924B00B1D9AD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205397191991924B00B1D9AD /* UIKit.framework */; };
-		205397371991924B00B1D9AD /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2053971B1991924B00B1D9AD /* CoreData.framework */; };
-		2053973F1991924B00B1D9AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2053973D1991924B00B1D9AD /* InfoPlist.strings */; };
-		205397411991924B00B1D9AD /* Go_AngelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 205397401991924B00B1D9AD /* Go_AngelTests.m */; };
 		2053974C199192FE00B1D9AD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2053974B199192FE00B1D9AD /* AppDelegate.m */; };
 		2061D1C6199193B5001C7E08 /* AccountDataWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1C5199193B5001C7E08 /* AccountDataWrapper.m */; };
 		2061D1D7199193CE001C7E08 /* Coinsorter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1CA199193CE001C7E08 /* Coinsorter.m */; };
@@ -49,16 +43,10 @@
 		20DD6A44199441C900D76DC3 /* GridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DD6A43199441C900D76DC3 /* GridViewController.m */; };
 		20F74D161992B56B00E0546D /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 20F74D151992B56B00E0546D /* Constants.m */; };
 		B8BD5E6D1AEE4BC883DE0FB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C120E32068A1416CA965B081 /* libPods.a */; };
+		D5296F251A27B1D80069555B /* createDefaultAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = D5296F241A27B1D80069555B /* createDefaultAlbum.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		205397381991924B00B1D9AD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2053970A1991924B00B1D9AD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 205397111991924B00B1D9AD;
-			remoteInfo = "Go Angel";
-		};
 		A67AD59F19D2294D0055C3A7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */;
@@ -105,7 +93,6 @@
 		2053971F1991924B00B1D9AD /* Go Angel-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Go Angel-Info.plist"; sourceTree = "<group>"; };
 		205397211991924B00B1D9AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		205397251991924B00B1D9AD /* Go Angel-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Go Angel-Prefix.pch"; sourceTree = "<group>"; };
-		205397321991924B00B1D9AD /* Go AngelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Go AngelTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		205397331991924B00B1D9AD /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		2053973C1991924B00B1D9AD /* Go AngelTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Go AngelTests-Info.plist"; sourceTree = "<group>"; };
 		2053973E1991924B00B1D9AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -167,6 +154,8 @@
 		6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		C120E32068A1416CA965B081 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5296F231A27B1D80069555B /* createDefaultAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = createDefaultAlbum.h; sourceTree = "<group>"; };
+		D5296F241A27B1D80069555B /* createDefaultAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = createDefaultAlbum.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,17 +168,6 @@
 				2053971A1991924B00B1D9AD /* UIKit.framework in Frameworks */,
 				205397161991924B00B1D9AD /* Foundation.framework in Frameworks */,
 				B8BD5E6D1AEE4BC883DE0FB5 /* libPods.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2053972F1991924B00B1D9AD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				205397341991924B00B1D9AD /* XCTest.framework in Frameworks */,
-				205397371991924B00B1D9AD /* CoreData.framework in Frameworks */,
-				205397361991924B00B1D9AD /* UIKit.framework in Frameworks */,
-				205397351991924B00B1D9AD /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,7 +190,6 @@
 			isa = PBXGroup;
 			children = (
 				205397121991924B00B1D9AD /* Go Angel.app */,
-				205397321991924B00B1D9AD /* Go AngelTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -235,6 +212,8 @@
 			children = (
 				2061D1C4199193B5001C7E08 /* AccountDataWrapper.h */,
 				2061D1C5199193B5001C7E08 /* AccountDataWrapper.m */,
+				D5296F231A27B1D80069555B /* createDefaultAlbum.h */,
+				D5296F241A27B1D80069555B /* createDefaultAlbum.m */,
 				2053974A199192FE00B1D9AD /* AppDelegate.h */,
 				2053974B199192FE00B1D9AD /* AppDelegate.m */,
 				2061D1C9199193CE001C7E08 /* Coinsorter.h */,
@@ -258,11 +237,11 @@
 				20931B8319954B8900F57FB0 /* GridCell.h */,
 				20931B8419954B8900F57FB0 /* GridCell.m */,
 				20DD6A42199441C900D76DC3 /* GridViewController.h */,
+				2061D1E3199193DB001C7E08 /* HandshakeTableViewController.m */,
 				20DD6A43199441C900D76DC3 /* GridViewController.m */,
 				2061D1E0199193DB001C7E08 /* GroupTableViewController.h */,
 				2061D1E1199193DB001C7E08 /* GroupTableViewController.m */,
 				2061D1E2199193DB001C7E08 /* HandshakeTableViewController.h */,
-				2061D1E3199193DB001C7E08 /* HandshakeTableViewController.m */,
 				2061D2011991947D001C7E08 /* Images.xcassets */,
 				2061D1E719919428001C7E08 /* InAppSettings.bundle */,
 				2061D1E919919430001C7E08 /* LocalLibrary.h */,
@@ -354,24 +333,6 @@
 			productReference = 205397121991924B00B1D9AD /* Go Angel.app */;
 			productType = "com.apple.product-type.application";
 		};
-		205397311991924B00B1D9AD /* Go AngelTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 205397471991924B00B1D9AD /* Build configuration list for PBXNativeTarget "Go AngelTests" */;
-			buildPhases = (
-				2053972E1991924B00B1D9AD /* Sources */,
-				2053972F1991924B00B1D9AD /* Frameworks */,
-				205397301991924B00B1D9AD /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				205397391991924B00B1D9AD /* PBXTargetDependency */,
-			);
-			name = "Go AngelTests";
-			productName = "Go AngelTests";
-			productReference = 205397321991924B00B1D9AD /* Go AngelTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -388,9 +349,6 @@
 								enabled = 1;
 							};
 						};
-					};
-					205397311991924B00B1D9AD = {
-						TestTargetID = 205397111991924B00B1D9AD;
 					};
 				};
 			};
@@ -413,7 +371,6 @@
 			projectRoot = "";
 			targets = (
 				205397111991924B00B1D9AD /* Go Angel */,
-				205397311991924B00B1D9AD /* Go AngelTests */,
 			);
 		};
 /* End PBXProject section */
@@ -459,14 +416,6 @@
 				205397221991924B00B1D9AD /* InfoPlist.strings in Resources */,
 				2061D1FC19919440001C7E08 /* settings-25.png in Resources */,
 				2061D1ED19919430001C7E08 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		205397301991924B00B1D9AD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2053973F1991924B00B1D9AD /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,6 +476,7 @@
 				20931B8E19957EEE00F57FB0 /* PhotoSectionHeaderView.m in Sources */,
 				2061D1FD19919440001C7E08 /* SettingsViewController.m in Sources */,
 				2081697519959CC900EEC65C /* PhotoSwipeViewController.m in Sources */,
+				D5296F251A27B1D80069555B /* createDefaultAlbum.m in Sources */,
 				2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */,
 				2061D1DC199193CE001C7E08 /* CSPhoto.m in Sources */,
 				2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */,
@@ -539,22 +489,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2053972E1991924B00B1D9AD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				205397411991924B00B1D9AD /* Go_AngelTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		205397391991924B00B1D9AD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 205397111991924B00B1D9AD /* Go Angel */;
-			targetProxy = 205397381991924B00B1D9AD /* PBXContainerItemProxy */;
-		};
 		A67AD5A819D2295E0055C3A7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Pods;
@@ -660,14 +597,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
 				INFOPLIST_FILE = "Go Angel/Go Angel-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d51aa9a7-f284-487c-abd4-94e3610b8d8d";
+				PROVISIONING_PROFILE = "c2ffa348-bcbe-4963-8b6c-035d9dc3b4fc";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -678,55 +615,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
 				INFOPLIST_FILE = "Go Angel/Go Angel-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d51aa9a7-f284-487c-abd4-94e3610b8d8d";
+				PROVISIONING_PROFILE = "c2ffa348-bcbe-4963-8b6c-035d9dc3b4fc";
 				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		205397481991924B00B1D9AD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Go Angel.app/Go Angel";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "Go AngelTests/Go AngelTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		205397491991924B00B1D9AD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Go Angel.app/Go Angel";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
-				INFOPLIST_FILE = "Go AngelTests/Go AngelTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -747,15 +644,6 @@
 			buildConfigurations = (
 				205397451991924B00B1D9AD /* Debug */,
 				205397461991924B00B1D9AD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		205397471991924B00B1D9AD /* Build configuration list for PBXNativeTarget "Go AngelTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				205397481991924B00B1D9AD /* Debug */,
-				205397491991924B00B1D9AD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

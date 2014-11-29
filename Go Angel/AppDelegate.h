@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AccountDataWrapper.h"
 #import "MediaLoader.h"
+#import "createDefaultAlbum.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -20,5 +21,7 @@
 @property (nonatomic, strong) MediaLoader *mediaLoader;
 
 @property (nonatomic, copy) void(^backgroundTransferCompletionHandler)();
+
+@property (nonatomic, strong) createDefaultAlbum *defaultAlbum;
 
 @end
