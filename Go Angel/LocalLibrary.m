@@ -18,7 +18,8 @@
   account = appDelegate.account;
   
   self.allowedAlbums = [[NSMutableArray alloc] init];
-  assetLibrary = [[ALAssetsLibrary alloc] init];
+  self.defaultAlbum = [[createDefaultAlbum alloc]init];
+  assetAlbumLibrary = [[ALAssetsLibrary alloc] init];
   
   [self loadAllowedAlbums];
   
@@ -27,7 +28,7 @@
 
 // register for photo library notifications
 - (void) registerForNotifications {
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetChanged:) name:ALAssetsLibraryChangedNotification object:assetLibrary];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetChanged:) name:ALAssetsLibraryChangedNotification object:assetAlbumLibrary];
 }
 
 - (void) unRegisterForNotifications {
@@ -171,7 +172,7 @@
           //          [defaults setValue:date forKey:[NSString stringWithFormat:@"%@-%@", DATE, ]]
           
           // async call to load the asset from asset library
-          [assetLibrary assetForURL:url
+          [assetAlbumLibrary assetForURL:url
                          resultBlock:^(ALAsset *asset) {
                            if (asset) {
                              [self addAsset:asset];
@@ -198,7 +199,7 @@
     };
     
     // Process!
-    [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
+    [assetAlbumLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
                                      usingBlock:assetGroupEnumerator
                                    failureBlock:^(NSError *error) {
                                      NSLog(@"There is an error");
@@ -209,68 +210,68 @@
 }
 
 - (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata {
-  __weak ALAssetsLibrary *lib = assetLibrary;
   __weak LocalLibrary *se = self;
-  
-  [assetLibrary addAssetsGroupAlbumWithName:SAVE_PHOTO_ALBUM resultBlock:^(ALAssetsGroup *group) {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    __block BOOL found = NO;
+
+    ALAssetsLibraryGroupsEnumerationResultsBlock
+    assetGroupEnumerator = ^(ALAssetsGroup *group, BOOL *stop){
+
+        if (group) {
+            NSString *albumName = [group valueForProperty:ALAssetsGroupPropertyName];
+            NSString *albumUrl = [group valueForProperty:ALAssetsGroupPropertyURL];
+            if ([SAVE_PHOTO_ALBUM isEqualToString:albumName]) {
+                
+                NSMutableArray *arr = [[NSMutableArray alloc] init];
+                [arr addObject:[albumUrl description]];
+                NSLog(@"found album %@", SAVE_PHOTO_ALBUM);
+                [defaults setValue:arr forKey:ALBUMS];
+                
+                self.didAlbumCreated = NO; //reset checking album flag
+                //save image
+                [assetAlbumLibrary writeImageDataToSavedPhotosAlbum:UIImageJPEGRepresentation(image, 100) metadata:metadata
+                                               completionBlock:^(NSURL *assetURL, NSError *error) {
+                                                   
+                                                   //then get the image asseturl
+                                                   [assetAlbumLibrary assetForURL:assetURL
+                                                                 resultBlock:^(ALAsset *asset) {
+                                                                     //put it into our album
+                                                                     [group addAsset:asset];
+                                                                     
+                                                                     bool didPhotoAddIntoAlbum = [group addAsset:asset];
+                                                                     // add image to core data after saving into album
+                                                                     if (didPhotoAddIntoAlbum) {
+                                                                         [self addAsset:asset];
+                                                                     }
+                                                                     
+                                                                     [se loadLocalImages:NO];
+                                                                     
+                                                                 } failureBlock:^(NSError *error) {
+                                                                     NSLog(@"%@", error);
+                                                                 }];
+                                               }];
+                *stop = YES;
+                found = YES;
+            }}
+        else { // not found, create the album
+            if (found)
+                return;
+           
+            if (!self.didAlbumCreated) {
+                 NSLog(@"album not found, try making album");
+                [self.defaultAlbum createAlbum];
+                self.didAlbumCreated = YES;
+            }
+            //recall saveImage function after new album exist
+            [self saveImage:image metadata:metadata];
+        }
+    };
     
-    ///checks if group previously created
-    if(group == nil){
-      
-      //enumerate albums
-      [lib enumerateGroupsWithTypes:ALAssetsGroupAlbum
-                         usingBlock:^(ALAssetsGroup *g, BOOL *stop)
-       {
-         //if the album is equal to our album
-         if ([[g valueForProperty:ALAssetsGroupPropertyName] isEqualToString:SAVE_PHOTO_ALBUM]) {
-           
-           //save image
-           [lib writeImageDataToSavedPhotosAlbum:UIImageJPEGRepresentation(image, 100) metadata:metadata
-                                 completionBlock:^(NSURL *assetURL, NSError *error) {
-                                   
-                                   //then get the image asseturl
-                                   [lib assetForURL:assetURL
-                                        resultBlock:^(ALAsset *asset) {
-                                          //put it into our album
-                                          [g addAsset:asset];
-                                          
-                                          [se loadLocalImages:NO];
-                                          
-                                        } failureBlock:^(NSError *error) {
-                                          NSLog(@"%@", error);
-                                        }];
-                                 }];
-           
-         }
-       }failureBlock:^(NSError *error){
-         NSLog(@"There was an error saving image to disk");
-       }];
-      
-    }else{
-      // save image directly to library
-      [lib writeImageDataToSavedPhotosAlbum:UIImageJPEGRepresentation(image, 100) metadata:metadata
-                            completionBlock:^(NSURL *assetURL, NSError *error) {
-                              
-                              [lib assetForURL:assetURL
-                                   resultBlock:^(ALAsset *asset) {
-                                     
-                                     [group addAsset:asset];
-                                     
-                                     [se loadLocalImages:NO];
-                                   } failureBlock:^(NSError *error) {
-                                     
+    [assetAlbumLibrary enumerateGroupsWithTypes:ALAssetsGroupAlbum
+                                     usingBlock:assetGroupEnumerator
+                                   failureBlock:^(NSError *error) {
+                                       NSLog(@"album access denied");
                                    }];
-                            }];
-    }
-    
-  } failureBlock:^(NSError *error) {
-    NSLog(@"%@", error);
-  }];
-  
-//  UIImageWriteToSavedPhotosAlbum(image,
-//                                 self, // send the message to 'self' when calling the callback
-//                                 @selector(thisImage:hasBeenSavedInPhotoAlbumWithError:usingContextInfo:), // the selector to tell the method to call on completion
-//                                 NULL); // you generally won't need a contextInfo here
 }
 
 @end

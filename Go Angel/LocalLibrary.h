@@ -11,7 +11,7 @@
 #import "AppDelegate.h"
 #import "CoreDataWrapper.h"
 #import "AccountDataWrapper.h"
-
+#import "createDefaultAlbum.h"
 
 // class that manages getting photos from the ios photo library
 // it registers for notifications for when the albums changes and
@@ -19,7 +19,7 @@
 
 @interface LocalLibrary : NSObject {
   AccountDataWrapper *account;
-  ALAssetsLibrary *assetLibrary;
+  ALAssetsLibrary *assetAlbumLibrary;
   
   // lock to make asset library loading syncrounous
   NSConditionLock* readLock;
@@ -27,7 +27,8 @@
 
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) NSMutableArray *allowedAlbums;
-
+@property (nonatomic, strong) createDefaultAlbum *defaultAlbum;
+@property (nonatomic, assign) BOOL didAlbumCreated;
 // callback to call when photo gets added to core data
 @property (nonatomic, copy) void(^addCallback)();
 
