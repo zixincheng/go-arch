@@ -13,5 +13,7 @@
 @property (strong) NSString *uuid;
 @property (strong) NSString *storageLabel;
 @property (strong) NSString *pluged_in;
-
+@property (strong) NSString *mounted;
+@property (strong) NSNumber *freeSpace;
+@property (strong) NSNumber *totalSpace;
 @end

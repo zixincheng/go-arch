@@ -210,7 +210,6 @@
 }
 
 - (void) getStorages: (void (^) (NSMutableArray *storages)) callback {
-    NSLog(@"hello");
     NSOperationQueue *background = [[NSOperationQueue alloc] init];
     
     
@@ -223,6 +222,7 @@
         if (error == nil) {
             NSError *jsonError;
             NSDictionary *respon = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            NSLog(@"%@",respon);
             NSArray *storageArr = [respon objectForKey:@"stores"];
             NSMutableArray *storages = [[NSMutableArray alloc] init];
             NSLog(@"%@",storageArr);
@@ -230,11 +230,17 @@
                 NSString *storageLabel = [d objectForKey:@"label"];
                 NSString *uuid = [d objectForKey:@"uuid"];
                 NSString *plugged_in = [d objectForKey:@"plugged_in"];
+                NSString *mounted = [d objectForKey:@"mounted"];
+                NSNumber *freeSpace = [d objectForKey:@"free"];
+                NSNumber *totalSpace = [d objectForKey:@"total"];
                 
                 CSStorage *newSto = [[CSStorage alloc] init];
                 newSto.storageLabel = storageLabel;
                 newSto.uuid = uuid;
                 newSto.pluged_in = plugged_in;
+                newSto.mounted = mounted;
+                newSto.freeSpace = freeSpace;
+                newSto.totalSpace = totalSpace;
                 
                 [storages addObject:newSto];
             }

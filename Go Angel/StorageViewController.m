@@ -20,7 +20,7 @@ static NSString *MyIdentifier = @"StorageCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
-    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Fetch Photos"];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Fetch Storage"];
     [refresh addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 
@@ -39,6 +39,12 @@ static NSString *MyIdentifier = @"StorageCell";
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+
+-(void) viewWillAppear:(BOOL)animated{
+    
+    [self.tableView reloadData];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -104,7 +110,7 @@ static NSString *MyIdentifier = @"StorageCell";
     // Configure
     CSStorage *s = self.storages[[indexPath row]];
     cell.StorageName.text = s.storageLabel;
-    cell.StorageStat.text = s.uuid;
+    cell.StorageStat.text = [NSString stringWithFormat:@"Mounted: %@",([s.mounted boolValue] ? @"YES": @"NO")];
     
     // Here we use the provided setImageWithURL: method to load the web image
     // Ensure you use a placeholder image otherwise cells will be initialized with no image

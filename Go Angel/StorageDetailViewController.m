@@ -16,9 +16,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+    
     self.StorageNameLabel.text = self.storages.storageLabel;
     self.StorageUUIDLabel.text = self.storages.uuid;
+    NSNumber *number =[NSNumber numberWithFloat: 1 - [self.storages.freeSpace floatValue] / [self.storages.totalSpace floatValue]];
+    NSString *numberStr = [NSNumberFormatter localizedStringFromNumber:number numberStyle:NSNumberFormatterPercentStyle];
+    self.StorageUsageLabel.text = numberStr;
+    
+    self.StorageMountLabel.text = [NSString stringWithFormat:@"%@",([self.storages.mounted boolValue] ? @"YES": @"NO")];
+    
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -31,11 +38,30 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void) reload{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+    [self stopRefresh];
+}
+- (void)stopRefresh {
+    if (self.refreshControl != nil && [self.refreshControl isRefreshing]) {
+        [self.refreshControl endRefreshing];
+    }
+}
+
 -(IBAction)buttonPressed:(id)sender{
     if (sender == self.ejectBtn) {
-        [self.coinsorter updateStorage:@"format" stoUUID:self.storages.uuid infoCallback:^(NSDictionary *Data){
+        [self.coinsorter updateStorage:@"setPrimary" stoUUID:self.storages.uuid infoCallback:^(NSDictionary *Data){
             if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
+                self.storages.mounted = 0;
+                self.storages.freeSpace = nil;
+                self.storages.totalSpace = nil;
                 dispatch_async(dispatch_get_main_queue(), ^ {
+                    self.StorageMountLabel.text = @"NO";
+                    NSNumber *number =[NSNumber numberWithFloat: 1 - [self.storages.freeSpace floatValue] / [self.storages.totalSpace floatValue]];
+                    NSString *numberStr = [NSNumberFormatter localizedStringFromNumber:number numberStyle:NSNumberFormatterPercentStyle];
+                    self.StorageUsageLabel.text = numberStr;
                     UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Format Successful!"
                                                                       message:[Data objectForKey:@"message"]
                                                                      delegate:nil
@@ -88,7 +114,12 @@
         
         [self.coinsorter updateStorage:@"mount" stoUUID:self.storages.uuid infoCallback:^(NSDictionary *Data){
             if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
+                self.storages.mounted = @"1";
                 dispatch_async(dispatch_get_main_queue(), ^ {
+                    NSNumber *number =[NSNumber numberWithFloat: 1 - [self.storages.freeSpace floatValue] / [self.storages.totalSpace floatValue]];
+                    NSString *numberStr = [NSNumberFormatter localizedStringFromNumber:number numberStyle:NSNumberFormatterPercentStyle];
+                    self.StorageUsageLabel.text = numberStr;
+                    self.StorageMountLabel.text = @"YES";
                     UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Mount Successful!"
                                                                       message:[Data objectForKey:@"message"]
                                                                      delegate:nil

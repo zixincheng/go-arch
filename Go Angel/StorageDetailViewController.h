@@ -17,9 +17,11 @@
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) Coinsorter *coinsorter;
 
+
 @property (weak, nonatomic) IBOutlet UILabel *StorageNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *StorageUUIDLabel;
 @property (weak, nonatomic) IBOutlet UILabel *StorageUsageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *StorageMountLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *ejectBtn;
 @property (weak, nonatomic) IBOutlet UIButton *copyingBtn;
