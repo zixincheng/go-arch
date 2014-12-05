@@ -119,8 +119,41 @@
 }
 
 
--(void) updateStorage: (NSString*) queryAction stoUUID:(NSString *) uuid infoCallback: (void (^) (NSDictionary *)) infoCallback{
+-(void) updateStorage: (NSString*) queryAction stoUUID:(NSString *) uuid crontime: (NSString *) crontime infoCallback: (void (^) (NSDictionary *)) infoCallback{
+    NSLog(@"cron time    %@",crontime);
+    NSString *query = [NSString stringWithFormat:@"?action=%@&uuid=%@",queryAction,uuid];
+    
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
+    NSMutableURLRequest *request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/storage/%@", query]];
+    
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSError *error;
+    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: crontime, @"crontime",nil];
+    
 
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
+    [request setHTTPBody:postData];
+    
+    NSURLSessionDataTask *postDataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSError *jsonError;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        NSLog(@"%@",jsonData);
+        if (error == nil) {
+            infoCallback(jsonData);
+        }else {
+            infoCallback(nil);
+        }
+    }];
+    
+    [postDataTask resume];
+    
+}
+
+-(void) updateStorage: (NSString*) queryAction stoUUID:(NSString *) uuid infoCallback: (void (^) (NSDictionary *)) infoCallback{
+    
     NSString *query = [NSString stringWithFormat:@"?action=%@&uuid=%@",queryAction,uuid];
     
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -144,6 +177,7 @@
     [postDataTask resume];
     
 }
+
 // update the device information on server
 - (void) updateDevice {
   NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -231,6 +265,8 @@
                 NSString *uuid = [d objectForKey:@"uuid"];
                 NSString *plugged_in = [d objectForKey:@"plugged_in"];
                 NSString *mounted = [d objectForKey:@"mounted"];
+                NSString *primary = [d objectForKey:@"mirrorflag"];
+                NSString *backup = [d objectForKey:@"backupflag"];
                 NSNumber *freeSpace = [d objectForKey:@"free"];
                 NSNumber *totalSpace = [d objectForKey:@"total"];
                 
@@ -241,6 +277,8 @@
                 newSto.mounted = mounted;
                 newSto.freeSpace = freeSpace;
                 newSto.totalSpace = totalSpace;
+                newSto.primary = primary;
+                newSto.backup = backup;
                 
                 [storages addObject:newSto];
             }
