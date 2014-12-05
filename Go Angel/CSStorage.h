@@ -14,6 +14,8 @@
 @property (strong) NSString *storageLabel;
 @property (strong) NSString *pluged_in;
 @property (strong) NSString *mounted;
+@property (strong) NSString *primary;
+@property (strong) NSString *backup;
 @property (strong) NSNumber *freeSpace;
 @property (strong) NSNumber *totalSpace;
 @end

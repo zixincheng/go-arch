@@ -11,20 +11,31 @@
 #import "CSStorage.h"
 #import "Coinsorter.h"
 
-@interface StorageDetailViewController : UITableViewController <UITableViewDataSource,UITableViewDelegate>
-
+@interface StorageDetailViewController : UITableViewController <UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 @property (nonatomic, strong) CSStorage *storages;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) Coinsorter *coinsorter;
 
+@property (nonatomic) UISwitch *BackupSwitch;
+@property (nonatomic) UISwitch *primarySwitch;
+@property (nonatomic) UILabel *StorageMountLabel;
+@property (nonatomic) UILabel *StorageUsageLabel;
+@property (nonatomic) UIButton *CronSchedule;
 
-@property (weak, nonatomic) IBOutlet UILabel *StorageNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *StorageUUIDLabel;
-@property (weak, nonatomic) IBOutlet UILabel *StorageUsageLabel;
-@property (weak, nonatomic) IBOutlet UILabel *StorageMountLabel;
+@property (nonatomic) UIView *pickerViewContainer;
+@property (nonatomic, retain) UIPickerView *pickerView;
+@property (nonatomic, retain) NSMutableArray *dataArray;
+@property (nonatomic, retain) UIToolbar *pickToolbar;
+@property (nonatomic, retain) UIBarButtonItem *pickerViewButton;
 
-@property (weak, nonatomic) IBOutlet UIButton *ejectBtn;
+@property (nonatomic) UIButton *ejectBtn;
 @property (weak, nonatomic) IBOutlet UIButton *copyingBtn;
 @property (weak, nonatomic) IBOutlet UIButton *mountBtn;
+
+@property (nonatomic)  UISegmentedControl *segmentControl;
+
+@property (nonatomic) NSInteger secondSectionRowCount;
+@property (nonatomic) NSString  *currentSchedule;
+@property (nonatomic) NSString  *cronTime;
 
 @end
