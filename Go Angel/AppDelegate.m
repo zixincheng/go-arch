@@ -7,11 +7,17 @@
 //
 
 #import "AppDelegate.h"
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [Fabric with:@[CrashlyticsKit]];
+
+    
   self.account = [[AccountDataWrapper alloc] init];
   [self.account readSettings];
   NSLog(@"reading settings");
