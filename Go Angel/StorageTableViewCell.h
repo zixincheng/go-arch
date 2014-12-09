@@ -11,5 +11,7 @@
 @interface StorageTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *StorageName;
 @property (weak, nonatomic) IBOutlet UILabel *StorageStat;
+@property (weak, nonatomic) IBOutlet UILabel *StoragePrimary;
+@property (weak, nonatomic) IBOutlet UILabel *StorageBackup;
 
 @end

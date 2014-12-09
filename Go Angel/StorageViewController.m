@@ -110,7 +110,11 @@ static NSString *MyIdentifier = @"StorageCell";
     // Configure
     CSStorage *s = self.storages[[indexPath row]];
     cell.StorageName.text = s.storageLabel;
-    cell.StorageStat.text = [NSString stringWithFormat:@"Mounted: %@",([s.mounted boolValue] ? @"YES": @"NO")];
+    cell.StorageStat.text = [NSString stringWithFormat:@"Mounted: %@",([s.mounted boolValue] ? @"Y": @"N")];
+    cell.StoragePrimary.text = ([s.primary boolValue] ? @"P": @"");
+    cell.StorageBackup.text = ([s.backup boolValue] ? @"B": @"");
+    cell.StorageName.adjustsFontSizeToFitWidth = YES;
+    cell.StorageStat.adjustsFontSizeToFitWidth = YES;
     
     // Here we use the provided setImageWithURL: method to load the web image
     // Ensure you use a placeholder image otherwise cells will be initialized with no image

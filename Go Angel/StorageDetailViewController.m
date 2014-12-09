@@ -17,12 +17,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    /*
-    NSArray *itemArray = [NSArray arrayWithObjects: @"Set Primary", @"Set Backup", nil];
-    self.segmentControl = [[UISegmentedControl alloc]initWithItems:itemArray];
-    self.segmentControl.frame = CGRectMake(8, 7, 304, 30);
-    [self.segmentControl addTarget:self action:@selector(changeSeg:) forControlEvents: UIControlEventValueChanged];
-    */
     
     self.BackupSwitch= [[UISwitch alloc] initWithFrame:CGRectMake(228, 9, 0, 0)];
     [self.BackupSwitch addTarget:self action:@selector(changeBackupSwitch:) forControlEvents:UIControlEventValueChanged];
@@ -112,6 +106,7 @@
         if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
             self.storages.backup = @"1";
             self.storages.mounted = @"1";
+            self.storages.primary = @"0";
             dispatch_async(dispatch_get_main_queue(), ^ {
                 self.primarySwitch.on = NO;
                 self.BackupSwitch.on = YES;
@@ -294,6 +289,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
                 self.storages.primary = @"1";
                 self.storages.mounted = @"1";
+                self.storages.backup = @"0";
                 dispatch_async(dispatch_get_main_queue(), ^ {
                     self.primarySwitch.on = YES;
                     self.BackupSwitch.on = NO;
@@ -331,6 +327,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                 if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
                     self.storages.backup = @"1";
                     self.storages.mounted = @"1";
+                    self.storages.primary = @"0";
                     dispatch_async(dispatch_get_main_queue(), ^ {
                         self.primarySwitch.on = NO;
                         self.BackupSwitch.on = YES;
@@ -643,40 +640,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
                
                     }
-           }/*
-                   else if(self.segmentControl.selectedSegmentIndex == 1){
-                       for (UIView *subviews in cell.contentView.subviews){
-                           [subviews removeFromSuperview];
-                       }
-                       if (indexPath.row == 1) {
-                           UILabel *MountDisplay = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 120, 30.0)];
-                           MountDisplay.text = @"Mounted";
-                           [cell.contentView addSubview:MountDisplay];
-                           
-                           self.StorageMountLabel = [[UILabel alloc] initWithFrame:CGRectMake(228, 9, 85, 30.0)];
-                           self.StorageMountLabel.text = [NSString stringWithFormat:@"%@",([self.storages.mounted boolValue] ? @"YES": @"NO")];
-                           [cell.contentView addSubview:self.StorageMountLabel];
-                       } else if (indexPath.row == 2){
-                       UILabel *SetBackupDisplay = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 120, 30.0)];
-                       SetBackupDisplay.text = @"Set Backup";
-                       [cell.contentView addSubview:SetBackupDisplay];
-
-                       [cell.contentView addSubview:self.BackupSwitch];
-                       } else if (indexPath.row == 3) {
-                           UILabel *CronDisplay = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 120, 30.0)];
-                           CronDisplay.text = @"Cron Schedule";
-                           [cell.contentView addSubview:CronDisplay];
-                           
-                           self.CronSchedule = [[UILabel alloc] initWithFrame:CGRectMake(228, 9, 85, 30.0)];
-                           self.CronSchedule.text = self.currentSchedule;
-                           [cell.contentView addSubview:self.CronSchedule];
-                       }
-                   }
-
-                   
-               }
            }
-*/
            default:
             break;
        }

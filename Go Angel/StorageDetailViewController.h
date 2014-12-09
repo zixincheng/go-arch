@@ -29,10 +29,6 @@
 @property (nonatomic, retain) UIBarButtonItem *pickerViewButton;
 
 @property (nonatomic) UIButton *ejectBtn;
-@property (weak, nonatomic) IBOutlet UIButton *copyingBtn;
-@property (weak, nonatomic) IBOutlet UIButton *mountBtn;
-
-@property (nonatomic)  UISegmentedControl *segmentControl;
 
 @property (nonatomic) NSInteger secondSectionRowCount;
 @property (nonatomic) NSString  *currentSchedule;

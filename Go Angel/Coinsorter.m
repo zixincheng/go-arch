@@ -120,7 +120,6 @@
 
 
 -(void) updateStorage: (NSString*) queryAction stoUUID:(NSString *) uuid crontime: (NSString *) crontime infoCallback: (void (^) (NSDictionary *)) infoCallback{
-    NSLog(@"cron time    %@",crontime);
     NSString *query = [NSString stringWithFormat:@"?action=%@&uuid=%@",queryAction,uuid];
     
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -265,7 +264,7 @@
                 NSString *uuid = [d objectForKey:@"uuid"];
                 NSString *plugged_in = [d objectForKey:@"plugged_in"];
                 NSString *mounted = [d objectForKey:@"mounted"];
-                NSString *primary = [d objectForKey:@"mirrorflag"];
+                NSString *primary = [d objectForKey:@"primaryflag"];
                 NSString *backup = [d objectForKey:@"backupflag"];
                 NSNumber *freeSpace = [d objectForKey:@"free"];
                 NSNumber *totalSpace = [d objectForKey:@"total"];

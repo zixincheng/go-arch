@@ -43,13 +43,25 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ega-7H-85g">
-                                            <rect key="frame" x="8" y="6" width="87" height="30"/>
+                                            <rect key="frame" x="8" y="7" width="67" height="30"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ISi-eM-fLQ">
-                                            <rect key="frame" x="141" y="7" width="129" height="30"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mount" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ISi-eM-fLQ">
+                                            <rect key="frame" x="83" y="9" width="88" height="30"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Backup" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lVf-LR-31r">
+                                            <rect key="frame" x="229" y="8" width="35" height="30"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Primary" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6QQ-zO-QZ5">
+                                            <rect key="frame" x="184" y="9" width="30" height="29"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -57,7 +69,9 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="StorageBackup" destination="lVf-LR-31r" id="tco-vy-KBn"/>
                                     <outlet property="StorageName" destination="Ega-7H-85g" id="iyw-Dp-2ZE"/>
+                                    <outlet property="StoragePrimary" destination="6QQ-zO-QZ5" id="ZBE-En-ZYg"/>
                                     <outlet property="StorageStat" destination="ISi-eM-fLQ" id="MzF-kH-to1"/>
                                 </connections>
                             </tableViewCell>
@@ -74,12 +88,11 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VqJ-99-2ey" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="358" y="-42"/>
+            <point key="canvasLocation" x="358" y="-51"/>
         </scene>
         <!--Storage Detail-->
         <scene sceneID="RrH-56-b3P">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2JJ-27-WZR" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="boU-co-x6c" customClass="StorageDetailViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="rhC-H9-GJS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -103,8 +116,9 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="568"/>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2JJ-27-WZR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="902" y="-89"/>
+            <point key="canvasLocation" x="920" y="-52"/>
         </scene>
         <!--Album Selector-->
         <scene sceneID="BZZ-gi-f7r">
