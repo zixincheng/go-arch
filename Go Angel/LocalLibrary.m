@@ -210,23 +210,16 @@
 }
 
 - (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata {
-  __weak LocalLibrary *se = self;
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    __weak LocalLibrary *se = self;
     __block BOOL found = NO;
+    
 
     ALAssetsLibraryGroupsEnumerationResultsBlock
     assetGroupEnumerator = ^(ALAssetsGroup *group, BOOL *stop){
-
         if (group) {
             NSString *albumName = [group valueForProperty:ALAssetsGroupPropertyName];
-            NSString *albumUrl = [group valueForProperty:ALAssetsGroupPropertyURL];
             if ([SAVE_PHOTO_ALBUM isEqualToString:albumName]) {
-                
-                NSMutableArray *arr = [[NSMutableArray alloc] init];
-                [arr addObject:[albumUrl description]];
-                NSLog(@"found album %@", SAVE_PHOTO_ALBUM);
-                [defaults setValue:arr forKey:ALBUMS];
-                
+
                 self.didAlbumCreated = NO; //reset checking album flag
                 //save image
                 [assetAlbumLibrary writeImageDataToSavedPhotosAlbum:UIImageJPEGRepresentation(image, 100) metadata:metadata
@@ -237,26 +230,24 @@
                                                                  resultBlock:^(ALAsset *asset) {
                                                                      //put it into our album
                                                                      [group addAsset:asset];
-                                                                     
+                                                                     [se loadLocalImages:NO];
                                                                      bool didPhotoAddIntoAlbum = [group addAsset:asset];
                                                                      // add image to core data after saving into album
                                                                      if (didPhotoAddIntoAlbum) {
                                                                          [self addAsset:asset];
                                                                      }
-                                                                     
-                                                                     [se loadLocalImages:NO];
-                                                                     
                                                                  } failureBlock:^(NSError *error) {
                                                                      NSLog(@"%@", error);
-                                                                 }];
-                                               }];
+                                                    }];
+                }];
                 *stop = YES;
                 found = YES;
-            }}
-        else { // not found, create the album
+            }
+        } else {
             if (found)
                 return;
-           
+            
+           // not found Go Angel album, create the album
             if (!self.didAlbumCreated) {
                  NSLog(@"album not found, try making album");
                 [self.defaultAlbum createAlbum];
@@ -272,6 +263,7 @@
                                    failureBlock:^(NSError *error) {
                                        NSLog(@"album access denied");
                                    }];
+ 
 }
 
 @end

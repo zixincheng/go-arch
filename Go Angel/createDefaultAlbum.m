@@ -19,37 +19,29 @@
         PHAssetCollectionChangeRequest* createRequest = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:SAVE_PHOTO_ALBUM];
         newPHAssetCollection = createRequest.placeholderForCreatedAssetCollection;
     } completionHandler:^(BOOL success, NSError *error) {
-            self.didAlbumCreated = success;
     }];
 }
 
 - (void) setDefaultAlbum{
     assetAlbumLibrary = [[ALAssetsLibrary alloc] init];
-    defaults = [NSUserDefaults standardUserDefaults];
-    
     __block BOOL found = NO;
-    //find wanted album and set as a default album
+    
+    //check album group, create Go Angel album if not found
     ALAssetsLibraryGroupsEnumerationResultsBlock
     assetGroupEnumerator = ^(ALAssetsGroup *group, BOOL *stop){
         if (group) {
             NSString *albumName = [group valueForProperty:ALAssetsGroupPropertyName];
-            NSString *albumUrl = [group valueForProperty:ALAssetsGroupPropertyURL];
             if ([SAVE_PHOTO_ALBUM isEqualToString:albumName]) {
-                NSMutableArray *arr = [[NSMutableArray alloc] init];
-                [arr addObject:[albumUrl description]];
-                NSLog(@"found album %@", SAVE_PHOTO_ALBUM);
-                [defaults setValue:arr forKey:ALBUMS];
+                NSLog(@"find default album: %@", SAVE_PHOTO_ALBUM);
                 *stop = YES;
                 found = YES;
             }
-        } else { // not found, create the album
+        } else {
             if (found)
                 return;
-            NSLog(@"album not found, try making album");
-            if (!self.didAlbumCreated) {
-                [self createAlbum];
-            }
-            [self setDefaultAlbum];
+            
+            NSLog(@"album not found, create the %@ album",SAVE_PHOTO_ALBUM);
+            [self createAlbum];
         }
     };
     

@@ -144,6 +144,8 @@
       [d setValue:groupUrl forKey:URL_KEY];
       if ([self isURLSelected:groupUrl]) {
         [d setValue:@"YES" forKey:SELECTED];
+      }else if([groupName isEqualToString:SAVE_PHOTO_ALBUM]){
+        [d setValue:@"YES" forKey:SELECTED];
       }else {
         [d setValue:@"NO" forKey:SELECTED];
       }

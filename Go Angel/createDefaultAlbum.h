@@ -14,10 +14,9 @@
 @interface createDefaultAlbum : NSObject
 {
     ALAssetsLibrary *assetAlbumLibrary;
-    NSUserDefaults *defaults;
 }
 
 - (void) createAlbum;
 - (void) setDefaultAlbum;
-@property(nonatomic,assign) BOOL didAlbumCreated;
+
 @end
