@@ -70,6 +70,7 @@
   }else {
     self.lblError.text = @"password is empty";
   }
+    
 }
 
 // make api call with password to register device
@@ -107,6 +108,7 @@
     account.token = token;
     account.cid = cid;
     account.sid = self.sid;
+    account.name = self.name;
     
     [account saveSettings];
     
