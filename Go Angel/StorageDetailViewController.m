@@ -52,7 +52,7 @@
     [self.pickerView setDataSource: self];
     [self.pickerView setDelegate: self];
      [self.pickerViewContainer addSubview: self.pickerView];
-    [self.pickerView selectRow:1 inComponent:0 animated:YES];
+    [self.pickerView selectRow:0 inComponent:0 animated:YES];
    self.pickerView.showsSelectionIndicator = YES;
     
     if ([self.storages.primary boolValue]){
@@ -116,7 +116,7 @@
                 self.StorageMountLabel.text = @"Yes";
                 self.secondSectionRowCount = 4;
                 [self.tableView reloadData];
-                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Disable Successful!"
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Update Successful!"
                                                                   message:[Data objectForKey:@"message"]
                                                                  delegate:nil
                                                         cancelButtonTitle:@"OK"
@@ -182,102 +182,6 @@
     }];
     
 }
-/*
--(IBAction)buttonPressed:(id)sender{
-    if (sender == self.ejectBtn) {
-        [self.coinsorter updateStorage:@"setPrimary" stoUUID:self.storages.uuid infoCallback:^(NSDictionary *Data){
-            if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
-                self.storages.mounted = 0;
-                self.storages.freeSpace = nil;
-                self.storages.totalSpace = nil;f
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    self.StorageMountLabel.text = @"NO";
-                    NSNumber *number =[NSNumber numberWithFloat: 1 - [self.storages.freeSpace floatValue] / [self.storages.totalSpace floatValue]];
-                    NSString *numberStr = [NSNumberFormatter localizedStringFromNumber:number numberStyle:NSNumberFormatterPercentStyle];
-                    self.StorageUsageLabel.text = numberStr;
-                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Format Successful!"
-                                                                      message:[Data objectForKey:@"message"]
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles:nil];
-                    
-                    [message show];
-                });
-            }
-            else {
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:[Data objectForKey:@"stat"]
-                                                                      message:[Data objectForKey:@"message"]
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles:nil];
-                    [message show];
-                });
-                
-            }
-        }];
-    }
-    else if (sender == self.copyingBtn){
-        [self.coinsorter updateStorage:@"setBackup" stoUUID:self.storages.uuid infoCallback:^(NSDictionary *Data){
-            if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Copy Successful!"
-                                                                      message:[Data objectForKey:@"message"]
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles:nil];
-                    
-                    [message show];
-                });
-            }
-            else {
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:[Data objectForKey:@"stat"]
-                                                                      message:[Data objectForKey:@"message"]
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles:nil];
-                    [message show];
-                });
-                
-            }
-        }];
-    }
-    else if (sender == self.mountBtn){
-        
-        [self.coinsorter updateStorage:@"mount" stoUUID:self.storages.uuid infoCallback:^(NSDictionary *Data){
-            if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
-                self.storages.mounted = @"1";
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    NSNumber *number =[NSNumber numberWithFloat: 1 - [self.storages.freeSpace floatValue] / [self.storages.totalSpace floatValue]];
-                    NSString *numberStr = [NSNumberFormatter localizedStringFromNumber:number numberStyle:NSNumberFormatterPercentStyle];
-                    self.StorageUsageLabel.text = numberStr;
-                    self.StorageMountLabel.text = @"YES";
-                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Mount Successful!"
-                                                                      message:[Data objectForKey:@"message"]
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles:nil];
-                    
-                    [message show];
-                });
-            }
-            else {
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:[Data objectForKey:@"stat"]
-                                                                      message:[Data objectForKey:@"message"]
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles:nil];
-                    [message show];
-                });
-                
-            }
-        }];
-
-    }
-}
-*/
 
 -(void)alertView:(UIAlertView *)alertView
 clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -321,7 +225,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         }
     }else if (alertView.tag == 2) {
             if (buttonIndex == 0) {
-                self.primarySwitch.on = NO;
+                self.BackupSwitch.on = NO;
             } else if (buttonIndex == 1) {
                 [self.coinsorter updateStorage:@"setBackup" stoUUID:self.storages.uuid crontime:self.cronTime infoCallback:^(NSDictionary *Data){
                 if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
@@ -337,7 +241,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                         self.StorageMountLabel.text = @"Yes";
                         self.secondSectionRowCount = 4;
                         [self.tableView reloadData];
-                        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Disable Successful!"
+                        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"setBackup Successful!"
                                                                           message:[Data objectForKey:@"message"]
                                                                          delegate:nil
                                                                 cancelButtonTitle:@"OK"
