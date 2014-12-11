@@ -118,6 +118,65 @@
   [dataTask resume];
 }
 
+
+-(void) updateStorage: (NSString*) queryAction stoUUID:(NSString *) uuid crontime: (NSString *) crontime infoCallback: (void (^) (NSDictionary *)) infoCallback{
+    NSString *query = [NSString stringWithFormat:@"?action=%@&uuid=%@",queryAction,uuid];
+    
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
+    NSMutableURLRequest *request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/storage/%@", query]];
+    
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSError *error;
+    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: crontime, @"crontime",nil];
+    
+
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
+    [request setHTTPBody:postData];
+    
+    NSURLSessionDataTask *postDataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSError *jsonError;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        NSLog(@"%@",jsonData);
+        if (error == nil) {
+            infoCallback(jsonData);
+        }else {
+            infoCallback(nil);
+        }
+    }];
+    
+    [postDataTask resume];
+    
+}
+
+-(void) updateStorage: (NSString*) queryAction stoUUID:(NSString *) uuid infoCallback: (void (^) (NSDictionary *)) infoCallback{
+    
+    NSString *query = [NSString stringWithFormat:@"?action=%@&uuid=%@",queryAction,uuid];
+    
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
+    NSMutableURLRequest *request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/storage/%@", query]];
+    
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSURLSessionDataTask *postDataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSError *jsonError;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        NSLog(@"%@",jsonData);
+        if (error == nil) {
+            infoCallback(jsonData);
+        }else {
+            infoCallback(nil);
+        }
+    }];
+    
+    [postDataTask resume];
+    
+}
+
 // update the device information on server
 - (void) updateDevice {
   NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -183,6 +242,54 @@
   [dataTask resume];
 }
 
+- (void) getStorages: (void (^) (NSMutableArray *storages)) callback {
+    NSOperationQueue *background = [[NSOperationQueue alloc] init];
+    
+    
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
+    NSMutableURLRequest *request = [self getHTTPGetRequest:@"/storage"];
+    
+    //    ^(NSData *data, NSURLResponse *response, NSError *error)
+    NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error == nil) {
+            NSError *jsonError;
+            NSDictionary *respon = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            NSLog(@"%@",respon);
+            NSArray *storageArr = [respon objectForKey:@"stores"];
+            NSMutableArray *storages = [[NSMutableArray alloc] init];
+            NSLog(@"%@",storageArr);
+            for (NSDictionary *d in storageArr) {
+                NSString *storageLabel = [d objectForKey:@"label"];
+                NSString *uuid = [d objectForKey:@"uuid"];
+                NSString *plugged_in = [d objectForKey:@"plugged_in"];
+                NSString *mounted = [d objectForKey:@"mounted"];
+                NSString *primary = [d objectForKey:@"primaryflag"];
+                NSString *backup = [d objectForKey:@"backupflag"];
+                NSNumber *freeSpace = [d objectForKey:@"free"];
+                NSNumber *totalSpace = [d objectForKey:@"total"];
+                
+                CSStorage *newSto = [[CSStorage alloc] init];
+                newSto.storageLabel = storageLabel;
+                newSto.uuid = uuid;
+                newSto.pluged_in = plugged_in;
+                newSto.mounted = mounted;
+                newSto.freeSpace = freeSpace;
+                newSto.totalSpace = totalSpace;
+                newSto.primary = primary;
+                newSto.backup = backup;
+                
+                [storages addObject:newSto];
+            }
+            
+            NSLog(@"sent %lu storages to callback", (unsigned long)storages.count);
+            callback(storages);
+        }
+    }];
+    
+    [dataTask resume];
+}
+
 -(NSData *)dataFromBase64EncodedString:(NSString *)string{
   if (string.length > 0) {
     
@@ -202,9 +309,11 @@
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   
   NSString *deviceName = [defaults objectForKey:DEVICE_NAME];
-  
+    
+  NSString *apnId = [defaults objectForKey:@"apnId"];
+    
   //    NSDictionary *mapData = @{@"Device_Name": name, @"Manufacturer": manufacturer, @"Firmware": firmware_version};
-  NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: deviceName, @"Device_Name", manufacturer, @"Manufacturer", firmware_version, @"Firmware", nil];
+  NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: deviceName, @"Device_Name", manufacturer, @"Manufacturer", firmware_version, @"Firmware",apnId, @"apnId",nil];
   
   return mapData;
 }

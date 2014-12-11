@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CSDevice.h"
 #import "CSPhoto.h"
+#import "CSStorage.h"
 #import "AccountDataWrapper.h"
 #import "CoreDataWrapper.h"
 #import "AppDelegate.h"
@@ -29,7 +30,11 @@
 
 - (id) initWithWrapper: (CoreDataWrapper *) wrap;
 
+- (void) updateStorage: (NSString*) queryAction stoUUID:(NSString *) uuid crontime: (NSString *) crontime infoCallback: (void (^) (NSDictionary *)) infoCallback;
+- (void) updateStorage: (NSString*) queryAction stoUUID:(NSString *) uuid infoCallback: (void (^) (NSDictionary *)) infoCallback;
+//- (void) updateStorage: (NSString*) crontime infoCallback: (void (^) (NSDictionary *)) infoCallback;
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback;
+- (void) getStorages: (void (^) (NSMutableArray *storages)) callback;
 - (void) getToken: (NSString *) ip pass: (NSString *) pass callback: (void (^) (NSDictionary *authData)) callback;
 - (void) getPhotos: (int) lastId callback: (void (^) (NSMutableArray *devices)) callback;
 - (void) uploadPhotos: (NSMutableArray *) photos upCallback: (void (^) ()) upCallback;

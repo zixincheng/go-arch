@@ -31,12 +31,42 @@
   if (deviceName == nil) {
     [defaults setObject:[[UIDevice currentDevice] name] forKey:@"deviceName"];
   }
+    
+   UIUserNotificationSettings *settings =
+     [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert |
+      UIUserNotificationTypeBadge |
+      UIUserNotificationTypeSound
+                                      categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+
   
   self.defaultAlbum = [[createDefaultAlbum alloc] init];
   [self.defaultAlbum setDefaultAlbum];
 
   return YES;
 }
+
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+    
+    NSString *deviceTokenString = [NSString stringWithFormat:@"%@",deviceToken];
+    [[NSUserDefaults standardUserDefaults] setObject:deviceTokenString forKey:@"apnId"];
+    NSLog(@"device token : %@",deviceTokenString);
+}
+
+-(void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    NSLog(@"%@",userInfo);
+    NSString *storageInfo = [userInfo objectForKey:@"data"];
+    NSDictionary *note = [userInfo objectForKey:@"aps"];
+    [[NSUserDefaults standardUserDefaults] setObject:storageInfo forKey:@"storageInfo"];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notification" message:
+                          [note objectForKey:@"alert"] delegate:nil cancelButtonTitle:
+                          @"OK" otherButtonTitles:nil, nil];
+    [alert show];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"pushNotification" object:nil userInfo:userInfo];
+}
+
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler {
   NSLog(@"app went into background, saving completion handler");
@@ -63,6 +93,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
   // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
