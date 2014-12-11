@@ -283,6 +283,30 @@
   return unUploaded;
 }
 
+- (int) getCountUploaded:(NSString *) deviceId  {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+    __block int uploaded = 0;
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@)",DEVICE_ID,deviceId, ON_SERVER, @"1"];
+        [request setPredicate:pred];
+        
+        NSArray*phs = [context executeFetchRequest:request error:nil];
+        
+        if (phs == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        // get count of uploaded photos for specific deviceId on server
+        uploaded = phs.count;
+    }];
+    
+    return uploaded;
+}
+
 - (NSString *) getLatestId {
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
   __block NSString *latestId = @"-1";

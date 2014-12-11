@@ -27,6 +27,7 @@
 - (NSMutableArray *) getPhotos: (NSString *) deviceId;
 - (NSMutableArray *) getPhotosToUpload;
 - (int) getCountUnUploaded;
+- (int) getCountUploaded:(NSString *) deviceId;
 - (CSDevice *) getDevice: (NSString *) cid;
 - (NSString *) getLatestId;
 
