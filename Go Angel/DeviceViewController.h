@@ -19,14 +19,14 @@
 #import <CoreLocation/CoreLocation.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "Reachability.h"
-
+#import "DashboardViewController.h"
 
 // the controller that displays a list of devices that are on the server
 // this is the 'main page' of the app
 // its where all the network calls are made from (upload and download)
 // the app functionality starts here
 
-@interface DeviceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+@interface DeviceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate> {
   NSMutableArray *_selections;
   
   LocalLibrary *localLibrary;
@@ -36,6 +36,9 @@
   // do we need to fully parse local library
   // happens after albums select
   BOOL needParse;
+    
+    IBOutlet UIBarButtonItem *settingButton;
+    UIBarButtonItem *statusButton;
 }
 
 
@@ -60,11 +63,17 @@
 @property (nonatomic, strong) CSDevice *localDevice;
 
 @property (nonatomic )int unUploadedPhotos;
+@property (nonatomic, assign )int totalUploadedPhotos;
+@property (nonatomic, assign )int totalPhotos;
 @property (nonatomic) BOOL currentlyUploading;
 
 @property (nonatomic, retain) Reachability *reach;
 @property (nonatomic, assign) BOOL canConnect;
 @property (nonatomic) NSString *prevBSSID;
 @property (nonatomic) NSInteger networkStatus;
+@property (nonatomic,strong) NSString *currentStatus;
+@property (nonatomic,strong) NSString *homeServer;
+@property (nonatomic,strong) NSString *serverName;
+@property (nonatomic,strong) NSString *serverIP;
 
 @end

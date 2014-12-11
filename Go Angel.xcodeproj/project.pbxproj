@@ -43,6 +43,8 @@
 		20DD6A44199441C900D76DC3 /* GridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20DD6A43199441C900D76DC3 /* GridViewController.m */; };
 		20F74D161992B56B00E0546D /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 20F74D151992B56B00E0546D /* Constants.m */; };
 		B8BD5E6D1AEE4BC883DE0FB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C120E32068A1416CA965B081 /* libPods.a */; };
+		D510B9641A364A8A00307184 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D510B9621A364A8A00307184 /* DashboardViewController.m */; };
+		D510B9651A364A8A00307184 /* DashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D510B9631A364A8A00307184 /* DashboardViewController.xib */; };
 		D5296F251A27B1D80069555B /* createDefaultAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = D5296F241A27B1D80069555B /* createDefaultAlbum.m */; };
 /* End PBXBuildFile section */
 
@@ -154,6 +156,9 @@
 		6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		A67AD59819D2294D0055C3A7 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		C120E32068A1416CA965B081 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D510B9611A364A8A00307184 /* DashboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashboardViewController.h; sourceTree = "<group>"; };
+		D510B9621A364A8A00307184 /* DashboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashboardViewController.m; sourceTree = "<group>"; };
+		D510B9631A364A8A00307184 /* DashboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DashboardViewController.xib; sourceTree = "<group>"; };
 		D5296F231A27B1D80069555B /* createDefaultAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = createDefaultAlbum.h; sourceTree = "<group>"; };
 		D5296F241A27B1D80069555B /* createDefaultAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = createDefaultAlbum.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -232,16 +237,19 @@
 				2061D1D4199193CE001C7E08 /* CSPhoto.m */,
 				2061D1D5199193CE001C7E08 /* DeviceViewController.h */,
 				2061D1D6199193CE001C7E08 /* DeviceViewController.m */,
+				D510B9611A364A8A00307184 /* DashboardViewController.h */,
+				D510B9621A364A8A00307184 /* DashboardViewController.m */,
+				D510B9631A364A8A00307184 /* DashboardViewController.xib */,
 				2061D1DE199193DB001C7E08 /* firstLoadViewController.h */,
 				2061D1DF199193DB001C7E08 /* firstLoadViewController.m */,
 				20931B8319954B8900F57FB0 /* GridCell.h */,
 				20931B8419954B8900F57FB0 /* GridCell.m */,
 				20DD6A42199441C900D76DC3 /* GridViewController.h */,
-				2061D1E3199193DB001C7E08 /* HandshakeTableViewController.m */,
 				20DD6A43199441C900D76DC3 /* GridViewController.m */,
 				2061D1E0199193DB001C7E08 /* GroupTableViewController.h */,
 				2061D1E1199193DB001C7E08 /* GroupTableViewController.m */,
 				2061D1E2199193DB001C7E08 /* HandshakeTableViewController.h */,
+				2061D1E3199193DB001C7E08 /* HandshakeTableViewController.m */,
 				2061D2011991947D001C7E08 /* Images.xcassets */,
 				2061D1E719919428001C7E08 /* InAppSettings.bundle */,
 				2061D1E919919430001C7E08 /* LocalLibrary.h */,
@@ -416,6 +424,7 @@
 				205397221991924B00B1D9AD /* InfoPlist.strings in Resources */,
 				2061D1FC19919440001C7E08 /* settings-25.png in Resources */,
 				2061D1ED19919430001C7E08 /* Main.storyboard in Resources */,
+				D510B9651A364A8A00307184 /* DashboardViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,6 +471,7 @@
 				2061D1DA199193CE001C7E08 /* CoreDataWrapper.m in Sources */,
 				2061D1FE19919440001C7E08 /* UploadPhotosTask.m in Sources */,
 				2061D1D9199193CE001C7E08 /* CoreDataStore.m in Sources */,
+				D510B9641A364A8A00307184 /* DashboardViewController.m in Sources */,
 				20931B8519954B8900F57FB0 /* GridCell.m in Sources */,
 				2061D1D8199193CE001C7E08 /* ConnectViewController.m in Sources */,
 				2061D1EC19919430001C7E08 /* LocalLibrary.m in Sources */,

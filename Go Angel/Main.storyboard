@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dEA-XW-XWb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dEA-XW-XWb">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
@@ -370,6 +370,7 @@
                         <outlet property="btnCamera" destination="D3O-TL-Pk6" id="S3q-5D-RWt"/>
                         <outlet property="btnUpload" destination="8Kp-5G-sYI" id="VgZ-nX-Wwp"/>
                         <outlet property="progressUpload" destination="pQH-gI-mJs" id="s06-Uy-3gm"/>
+                        <outlet property="settingButton" destination="06V-IR-tdU" id="iTE-Qf-0Rv"/>
                         <outlet property="tableView" destination="hYI-Sh-scl" id="JXq-tL-IV1"/>
                         <outlet property="toolUpload" destination="mRQ-sp-0yf" id="sRV-Dn-bqz"/>
                         <segue destination="VtD-xa-xgp" kind="push" identifier="gridSegue" id="VNY-BC-uo4"/>
@@ -569,25 +570,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fby-a5-qRq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1153" y="1135"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="f7W-Fs-RIN">
-            <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="NBN-Jq-480" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Rzs-mi-84W"/>
-                        <viewControllerLayoutGuide type="bottom" id="VEd-zW-IsD"/>
-                    </layoutGuides>
-                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ybn-ZC-SCf">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <toolbarItems/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IKH-DA-yqw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1376" y="1300"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="mS2-O3-wui">

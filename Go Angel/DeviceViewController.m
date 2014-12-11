@@ -49,7 +49,7 @@
   
   // get count of unuploaded photos
   self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
-  
+    
   // set the progress bar to 100% for cool effect later
   [self.progressUpload setProgress:100.0f];
   
@@ -101,6 +101,7 @@
     self.canConnect = NO;
   }
   
+    [self addStatusButton];
   // update ui status bar
   [self updateUploadCountUI];
 }
@@ -352,6 +353,8 @@
     
     NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
     [self.coinsorter uploadPhotos:photos upCallback:^() {
+    //sent a notification to dashboard when finish uploading 1 photo
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"photoUploading" object:nil];
       currentUploaded += 1;
       
       [self removeLocalPhoto];
@@ -369,7 +372,8 @@
           [self.btnUpload setEnabled:YES];
           self.currentlyUploading = NO;
           [self updateUploadCountUI];
-          
+           //sent a notification to dashboard when finish uploading all photos 
+          [[NSNotificationCenter defaultCenter] postNotificationName:@"waitingForPhoto" object:nil];
           // allow app to sleep again
           [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
         }
@@ -512,7 +516,8 @@
   
   if (remoteHostStatus == NotReachable) {
     NSLog(@"not reachable");
-    
+    //sent a notification to dashboard when network is not reachable
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerDisconnected" object:nil];
     self.canConnect = NO;
     [self updateUploadCountUI];
   }else if (remoteHostStatus == ReachableViaWiFi) {
@@ -521,13 +526,15 @@
     if (account.ip != nil) {
       [self.coinsorter pingServer:^(BOOL connected) {
         self.canConnect = connected;
-        
+        //sent a notification to dashboard when network connects with home server
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerConnected" object:nil];
         [self updateUploadCountUI];
       }];
     }
   }else if (remoteHostStatus == ReachableViaWWAN) {
     NSLog(@"wwan");
-    
+    //sent a notification to dashboard when network connects with WIFI not home server
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerDisconnected" object:nil];
     self.canConnect = NO;
     [self updateUploadCountUI];
   }
@@ -545,6 +552,62 @@
     }
   }
   return bssid;
+}
+
+# pragma mark - DashBoard view information
+
+//create a status button in navigation bar programmatically
+- (void) addStatusButton{
+    statusButton = [[UIBarButtonItem alloc] initWithTitle:@"Status" style:UIBarButtonItemStylePlain target:self action:@selector(presentDashboardView:)];
+    NSArray *rightButtonItems = [[NSArray alloc] initWithObjects:settingButton,statusButton,nil];
+    
+    [self.navigationItem setRightBarButtonItems:rightButtonItems animated:YES];
+}
+
+//display app status information on dashboard
+- (void)presentDashboardView:(id)sender{
+    [self uploadPhotosStatus];
+    [self currentUploadingStatus];
+    [self homeServerStatus];
+    
+    DashboardViewController *dashboardVC = [[DashboardViewController alloc] init];
+    dashboardVC.title = @"DashBoard";
+    dashboardVC.totalPhotos = self.totalPhotos;
+    dashboardVC.processedUploadedPhotos = self.totalUploadedPhotos;
+    dashboardVC.currentStatus = self.currentStatus;
+    dashboardVC.homeServer = self.homeServer;
+    dashboardVC.serverName = self.serverName;
+    dashboardVC.serverIP = self.serverIP;
+    
+    [self.navigationController pushViewController:dashboardVC animated:YES];
+}
+
+- (void)uploadPhotosStatus{
+    NSMutableArray *photos = [self.dataWrapper getPhotos:self.localDevice.remoteId];;
+    self.totalUploadedPhotos = [self.dataWrapper getCountUploaded:self.localDevice.remoteId];
+    self.totalPhotos = photos.count;
+}
+
+- (void)currentUploadingStatus{
+    if (self.currentlyUploading) {
+        self.currentStatus = @"Uploading Photos";
+    }
+    else{
+        self.currentStatus = @"Waiting";
+    }
+}
+
+- (void)homeServerStatus{
+    if (self.canConnect) {
+        self.serverName = account.name;
+        self.serverIP = account.ip;
+        self.homeServer = @"YES";
+    }
+    else{
+        self.serverName = @"Unknown";
+        self.serverIP = @"Unknown";
+        self.homeServer = @"NO";
+    }
 }
 
 @end
