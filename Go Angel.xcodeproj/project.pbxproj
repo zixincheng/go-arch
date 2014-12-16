@@ -44,6 +44,9 @@
 		20F74D161992B56B00E0546D /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 20F74D151992B56B00E0546D /* Constants.m */; };
 		4D0F91321A2E9E8500C1936F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0F91301A2E9E8500C1936F /* Crashlytics.framework */; };
 		4D0F91331A2E9E8500C1936F /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0F91311A2E9E8500C1936F /* Fabric.framework */; };
+		9BAF13791A3F6213000B780B /* F3Swirly.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BAF13781A3F6213000B780B /* F3Swirly.m */; };
+		9BAF13811A3F6388000B780B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13801A3F6388000B780B /* CoreMotion.framework */; };
+		9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13821A3F63A5000B780B /* QuartzCore.framework */; };
 		9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */; };
 		9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */; };
 		9BEA5B561A1EB26100CC14FF /* CSStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B531A1EB26100CC14FF /* CSStorage.m */; };
@@ -162,6 +165,10 @@
 		4D0F91301A2E9E8500C1936F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		4D0F91311A2E9E8500C1936F /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		9BAF13771A3F6212000B780B /* F3Swirly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F3Swirly.h; sourceTree = "<group>"; };
+		9BAF13781A3F6213000B780B /* F3Swirly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F3Swirly.m; sourceTree = "<group>"; };
+		9BAF13801A3F6388000B780B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		9BAF13821A3F63A5000B780B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9BB0F2091A26A52A00DF40E3 /* StorageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageDetailViewController.h; sourceTree = "<group>"; };
 		9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageDetailViewController.m; sourceTree = "<group>"; };
 		9BB0F20C1A27A91900DF40E3 /* StorageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageTableViewCell.h; sourceTree = "<group>"; };
@@ -184,6 +191,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */,
+				9BAF13811A3F6388000B780B /* CoreMotion.framework in Frameworks */,
 				4D0F91331A2E9E8500C1936F /* Fabric.framework in Frameworks */,
 				205397181991924B00B1D9AD /* CoreGraphics.framework in Frameworks */,
 				2053971C1991924B00B1D9AD /* CoreData.framework in Frameworks */,
@@ -222,6 +231,8 @@
 		205397141991924B00B1D9AD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9BAF13821A3F63A5000B780B /* QuartzCore.framework */,
+				9BAF13801A3F6388000B780B /* CoreMotion.framework */,
 				205397151991924B00B1D9AD /* Foundation.framework */,
 				205397171991924B00B1D9AD /* CoreGraphics.framework */,
 				205397191991924B00B1D9AD /* UIKit.framework */,
@@ -235,6 +246,8 @@
 		2053971D1991924B00B1D9AD /* Go Angel */ = {
 			isa = PBXGroup;
 			children = (
+				9BAF13771A3F6212000B780B /* F3Swirly.h */,
+				9BAF13781A3F6213000B780B /* F3Swirly.m */,
 				9BB0F2091A26A52A00DF40E3 /* StorageDetailViewController.h */,
 				9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */,
 				9BB0F20C1A27A91900DF40E3 /* StorageTableViewCell.h */,
@@ -535,6 +548,7 @@
 				2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */,
 				2061D1DC199193CE001C7E08 /* CSPhoto.m in Sources */,
 				2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */,
+				9BAF13791A3F6213000B780B /* F3Swirly.m in Sources */,
 				20F74D161992B56B00E0546D /* Constants.m in Sources */,
 				2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */,
 				208169691995828500EEC65C /* SinglePhotoViewController.m in Sources */,

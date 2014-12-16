@@ -20,13 +20,15 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "Reachability.h"
 #import "DashboardViewController.h"
+#import "F3Swirly.h"
 
 // the controller that displays a list of devices that are on the server
 // this is the 'main page' of the app
 // its where all the network calls are made from (upload and download)
 // the app functionality starts here
 
-@interface DeviceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate> {
+@interface DeviceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate> {
+  int selected;
   NSMutableArray *_selections;
   
   LocalLibrary *localLibrary;
@@ -49,6 +51,7 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolUpload;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnUpload;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnCamera;
+@property (retain, nonatomic) IBOutlet F3Swirly *valueSwirly;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) UIRefreshControl *refreshControl;
@@ -71,6 +74,7 @@
 @property (nonatomic, assign) BOOL canConnect;
 @property (nonatomic) NSString *prevBSSID;
 @property (nonatomic) NSInteger networkStatus;
+
 @property (nonatomic,strong) NSString *currentStatus;
 @property (nonatomic,strong) NSString *homeServer;
 @property (nonatomic,strong) NSString *serverName;

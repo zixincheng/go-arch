@@ -11,6 +11,10 @@
 
 #pragma mark - NSUserDefaults Constants
 
+#define IMAGE_VIEW_TAG 11
+#define GRID_CELL      @"gridCell"
+#define SINGLE_PHOTO_SEGUE @"singleImageSegue"
+
 #pragma mark -
 #pragma mark Initialization
 
@@ -24,7 +28,30 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  
+    
+    self.valueSwirly.font            = [UIFont fontWithName:@"Futura-Medium" size:30.0];
+    self.valueSwirly.thickness       = 30.0f;
+    self.valueSwirly.shadowOffset    = CGSizeMake(1,1);
+
+    self.valueSwirly.textColor       = [UIColor whiteColor];
+    self.valueSwirly.shadowColor     = [UIColor blackColor];
+    [self.valueSwirly addThreshold:0
+                    withColor:[UIColor yellowColor]
+                          rpm:0
+                        label:@"Waiting"
+                     segments:5];
+    [self.valueSwirly addThreshold:1
+                         withColor:[UIColor greenColor]
+                               rpm:20
+                             label:@"Uploading"
+                          segments:5];
+    [self.valueSwirly addThreshold:2
+                         withColor:[UIColor redColor]
+                               rpm:0
+                             label:@"Done"
+                          segments:100];
+    self.valueSwirly.value = 2;
+    //[self didChangeValue:self.valueSlider];
   // nav bar
   // make light nav bar
   self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
@@ -37,7 +64,7 @@
   localLibrary = [[LocalLibrary alloc] init];
   defaults = [NSUserDefaults standardUserDefaults];
   self.devices = [[NSMutableArray alloc] init];
-  UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
+ //UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
   needParse = NO;
   self.currentlyUploading = NO;
   
@@ -45,12 +72,13 @@
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
   account = appDelegate.account;
   self.localDevice = [self.dataWrapper getDevice:account.cid];
-  refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Fetch Photos"];
-  [refresh addTarget:self action:@selector(syncAllFromApi) forControlEvents:UIControlEventValueChanged];
-  self.refreshControl = refresh;
-  
+ // refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Fetch Photos"];
+  //[refresh addTarget:self action:@selector(syncAllFromApi) forControlEvents:UIControlEventValueChanged];
+  //self.refreshControl = refresh;
+
   // get count of unuploaded photos
   self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
+  self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
     
   // set the progress bar to 100% for cool effect later
   [self.progressUpload setProgress:100.0f];
@@ -103,11 +131,12 @@
     self.canConnect = NO;
   }
   
-    [self addStatusButton];
+    //[self addStatusButton];
   // update ui status bar
   [self updateUploadCountUI];
-}
+  [self checkDeivceStatus];
 
+}
 // called when this controller leaves memory
 // we need to stop observing asset library and defaults
 - (void) dealloc {
@@ -280,12 +309,19 @@
     
     if (!self.canConnect) {
       title = @"Cannot Connect";
+      [self checkDeivceStatus];
     }else if (self.unUploadedPhotos == 0) {
       title = @"Nothing to Upload";
+        self.valueSwirly.value = 2;
+        [self checkDeivceStatus];
     }else if (self.currentlyUploading) {
       title = [NSString stringWithFormat:@"Uploading %d Photos", self.unUploadedPhotos];
+        self.valueSwirly.value = 1;
+        [self checkDeivceStatus];
     }else {
       title = [NSString stringWithFormat:@"Upload %d Photos", self.unUploadedPhotos];
+        [self checkDeivceStatus];
+        self.valueSwirly.value = 0;
     }
     [self.btnUpload setTitle:title];
     
@@ -419,9 +455,48 @@
   });
 }
 
+#pragma mark -
+#pragma mark Status Table view data source
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return 5;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DashBoardCell"];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DashBoardCell"];
+    }
+    if (indexPath.row == 0) {
+        cell.textLabel.text = [NSString stringWithFormat:@"Photos Progress: %d / %d", self.totalUploadedPhotos,self.totalPhotos];
+    }else if (indexPath.row == 1){
+        cell.textLabel.text = [NSString stringWithFormat:@"Server Name: %@",account.name];
+    }else if (indexPath.row == 2){
+        cell.textLabel.text = [NSString stringWithFormat:@"Server IP: %@",account.ip];
+    }else if (indexPath.row == 3){
+        cell.textLabel.text = [NSString stringWithFormat:@"Uploading Status: %@",self.currentStatus];
+    }else if (indexPath.row == 4){
+        cell.textLabel.text = [NSString stringWithFormat:@"Home Server: %@", self.homeServer];
+    }
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+        return 35;
+}
 #pragma mark -
 #pragma mark Table view data source
+/*
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   return 1;
@@ -470,7 +545,7 @@
   }
 }
 
-
+*/
 # pragma mark - Camera
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -481,6 +556,7 @@
     NSDictionary *metadata = info[UIImagePickerControllerMediaMetadata];
     
     [localLibrary saveImage:image metadata:metadata];
+
   }];
 }
 
@@ -559,18 +635,21 @@
 # pragma mark - DashBoard view information
 
 //create a status button in navigation bar programmatically
+/*
 - (void) addStatusButton{
     statusButton = [[UIBarButtonItem alloc] initWithTitle:@"Status" style:UIBarButtonItemStylePlain target:self action:@selector(presentDashboardView:)];
     NSArray *rightButtonItems = [[NSArray alloc] initWithObjects:settingButton,statusButton,nil];
     
     [self.navigationItem setRightBarButtonItems:rightButtonItems animated:YES];
 }
-
+*/
 //display app status information on dashboard
+/*
 - (void)presentDashboardView:(id)sender{
-    [self uploadPhotosStatus];
-    [self currentUploadingStatus];
-    [self homeServerStatus];
+    //[self uploadPhotosStatus];
+    //[self currentUploadingStatus];
+    //[self homeServerStatus];
+    [self checkDeivceStatus];
     
     DashboardViewController *dashboardVC = [[DashboardViewController alloc] init];
     dashboardVC.title = @"DashBoard";
@@ -583,23 +662,23 @@
     
     [self.navigationController pushViewController:dashboardVC animated:YES];
 }
-
-- (void)uploadPhotosStatus{
-    NSMutableArray *photos = [self.dataWrapper getPhotos:self.localDevice.remoteId];;
+*/
+- (void)checkDeivceStatus{
+    NSMutableArray *photos = [self.dataWrapper getPhotos:self.localDevice.remoteId];
     self.totalUploadedPhotos = [self.dataWrapper getCountUploaded:self.localDevice.remoteId];
     self.totalPhotos = photos.count;
-}
-
-- (void)currentUploadingStatus{
+    
     if (self.currentlyUploading) {
         self.currentStatus = @"Uploading Photos";
+    }
+    else if (self.unUploadedPhotos == 0) {
+        self.currentStatus = @"Nothing to Upload";
+        
     }
     else{
         self.currentStatus = @"Waiting";
     }
-}
-
-- (void)homeServerStatus{
+    
     if (self.canConnect) {
         self.serverName = account.name;
         self.serverIP = account.ip;
@@ -609,6 +688,71 @@
         self.serverName = @"Unknown";
         self.serverIP = @"Unknown";
         self.homeServer = @"NO";
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+
+# pragma mark - CollectionViewController Methods
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView*)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.photos.count;
+}
+
+- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    GridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GRID_CELL forIndexPath:indexPath];
+    UIImageView *imageView = (UIImageView *) [cell viewWithTag:IMAGE_VIEW_TAG];
+    
+    CSPhoto *photo = [self.photos objectAtIndex:[indexPath row]];
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [imageView setImage:image];
+            
+            //      if ([indexPath row] == bottom_selected) {
+            //        UIView *overlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)];
+            //        [overlay setTag:OVERLAY_TAG];
+            //        [overlay setBackgroundColor:[UIColor colorWithRed:255/255.0f green:233/255.0f blue:0/255.0f alpha:0.6f]];
+            //        [imageView addSubview:overlay];
+            //      }
+        });
+    }];
+    
+    return cell;
+}
+- (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+
+    selected = [indexPath row];
+    [self performSegueWithIdentifier:SINGLE_PHOTO_SEGUE sender:self];
+}
+/*
+-(void) addNewcell: (CSPhoto *)photos{
+    
+    long Size = self.photos.count;
+    [self.collectionView performBatchUpdates:^{
+        
+        [self.photos addObject:photos];
+        NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+        
+        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:Size inSection:0]];
+        
+        [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
+    }completion:nil];
+}
+*/
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:SINGLE_PHOTO_SEGUE]) {
+        PhotoSwipeViewController *swipeController = (PhotoSwipeViewController *) segue.destinationViewController;
+        swipeController.selected = selected;
+        swipeController.photos = self.photos;
+
     }
 }
 -(void)pushNotificationReceived{
