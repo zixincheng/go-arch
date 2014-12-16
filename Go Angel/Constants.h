@@ -31,7 +31,7 @@
 #define URL_KEY     @"url"
 #define GPS_META    @"gpsMeta"
 #define DOWN_REMOTE @"downRemote"
-
+#define SAVE_INTO_ALBUM @"saveInAlbum"
 // core data entites
 #define PHOTO @"Photo"
 #define DEVICE @"Device"

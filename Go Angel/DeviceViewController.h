@@ -69,6 +69,7 @@
 
 @property (nonatomic, retain) Reachability *reach;
 @property (nonatomic, assign) BOOL canConnect;
+@property (nonatomic, assign) BOOL saveInAlbum;
 @property (nonatomic) NSString *prevBSSID;
 @property (nonatomic) NSInteger networkStatus;
 @property (nonatomic,strong) NSString *currentStatus;
