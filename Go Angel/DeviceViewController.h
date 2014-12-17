@@ -53,6 +53,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnCamera;
 @property (retain, nonatomic) IBOutlet F3Swirly *valueSwirly;
 
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) UIRefreshControl *refreshControl;
 

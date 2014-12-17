@@ -476,15 +476,11 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DashBoardCell"];
     }
     if (indexPath.row == 0) {
-        cell.textLabel.text = [NSString stringWithFormat:@"Photos Progress: %d / %d", self.totalUploadedPhotos,self.totalPhotos];
+        cell.textLabel.text = [NSString stringWithFormat:@"Status: %d / %d", self.totalUploadedPhotos,self.totalPhotos];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }else if (indexPath.row == 1){
-        cell.textLabel.text = [NSString stringWithFormat:@"Server Name: %@",account.name];
-    }else if (indexPath.row == 2){
-        cell.textLabel.text = [NSString stringWithFormat:@"Server IP: %@",account.ip];
-    }else if (indexPath.row == 3){
-        cell.textLabel.text = [NSString stringWithFormat:@"Uploading Status: %@",self.currentStatus];
-    }else if (indexPath.row == 4){
-        cell.textLabel.text = [NSString stringWithFormat:@"Home Server: %@", self.homeServer];
+        cell.textLabel.text = [NSString stringWithFormat:@"All Photos"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     return cell;
@@ -492,8 +488,54 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        return 35;
+        return 40;
 }
+
+#pragma mark -
+#pragma mark Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    switch (indexPath.row) {
+        case 0:
+            [self performSegueWithIdentifier:@"dashboardSegue" sender:self];
+            break;
+        case 1:
+            self.selectedDevice = self.localDevice;
+            [self performSegueWithIdentifier:@"gridSegue" sender:self];
+        break;
+        default:
+            break;
+    }
+    
+    // Deselect
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:@"gridSegue"]) {
+        GridViewController *gridController = (GridViewController *)segue.destinationViewController;
+        gridController.device = self.selectedDevice;
+        gridController.dataWrapper = self.dataWrapper;
+    }  else if([segue.identifier isEqualToString:SINGLE_PHOTO_SEGUE]) {
+        PhotoSwipeViewController *swipeController = (PhotoSwipeViewController *) segue.destinationViewController;
+        swipeController.selected = selected;
+        swipeController.photos = self.photos;
+    } else if ([segue.identifier isEqualToString:@"dashboardSegue"]){
+        [self checkDeivceStatus];
+        
+        DashboardViewController *dashboardVC = (DashboardViewController *) segue.destinationViewController;
+        dashboardVC.title = @"DashBoard";
+        dashboardVC.totalPhotos = self.totalPhotos;
+        dashboardVC.processedUploadedPhotos = self.totalUploadedPhotos;
+        dashboardVC.currentStatus = self.currentStatus;
+        dashboardVC.homeServer = self.homeServer;
+        dashboardVC.serverName = self.serverName;
+        dashboardVC.serverIP = self.serverIP;
+        
+    }
+}
+
 #pragma mark -
 #pragma mark Table view data source
 /*
@@ -555,8 +597,12 @@
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     NSDictionary *metadata = info[UIImagePickerControllerMediaMetadata];
     
-    [localLibrary saveImage:image metadata:metadata];
-
+      [localLibrary saveImage:image metadata:metadata callback: ^(CSPhoto *photo){
+          dispatch_async(dispatch_get_main_queue(), ^ {
+              [self addNewcell:photo];
+          });
+      }];
+    
   }];
 }
 
@@ -634,17 +680,8 @@
 
 # pragma mark - DashBoard view information
 
-//create a status button in navigation bar programmatically
-/*
-- (void) addStatusButton{
-    statusButton = [[UIBarButtonItem alloc] initWithTitle:@"Status" style:UIBarButtonItemStylePlain target:self action:@selector(presentDashboardView:)];
-    NSArray *rightButtonItems = [[NSArray alloc] initWithObjects:settingButton,statusButton,nil];
-    
-    [self.navigationItem setRightBarButtonItems:rightButtonItems animated:YES];
-}
-*/
 //display app status information on dashboard
-/*
+
 - (void)presentDashboardView:(id)sender{
     //[self uploadPhotosStatus];
     //[self currentUploadingStatus];
@@ -662,7 +699,7 @@
     
     [self.navigationController pushViewController:dashboardVC animated:YES];
 }
-*/
+
 - (void)checkDeivceStatus{
     NSMutableArray *photos = [self.dataWrapper getPhotos:self.localDevice.remoteId];
     self.totalUploadedPhotos = [self.dataWrapper getCountUploaded:self.localDevice.remoteId];
@@ -732,28 +769,19 @@
     selected = [indexPath row];
     [self performSegueWithIdentifier:SINGLE_PHOTO_SEGUE sender:self];
 }
-/*
+
 -(void) addNewcell: (CSPhoto *)photos{
     
     long Size = self.photos.count;
     [self.collectionView performBatchUpdates:^{
         
-        [self.photos addObject:photos];
+       [self.photos addObject:photos];
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
         
         [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:Size inSection:0]];
         
         [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
     }completion:nil];
-}
-*/
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if([segue.identifier isEqualToString:SINGLE_PHOTO_SEGUE]) {
-        PhotoSwipeViewController *swipeController = (PhotoSwipeViewController *) segue.destinationViewController;
-        swipeController.selected = selected;
-        swipeController.photos = self.photos;
-
-    }
 }
 -(void)pushNotificationReceived{
     NSLog(@"recieved notification");
