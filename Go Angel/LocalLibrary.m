@@ -66,7 +66,7 @@
 }
 
 // add asset to core data
-- (void) addAsset: (ALAsset *) asset {
+- (CSPhoto *) addAsset: (ALAsset *) asset {
   NSURL *url = asset.defaultRepresentation.url;
   
   // create photo object
@@ -94,6 +94,7 @@
       self.addCallback();
     }
   }
+    return photo;
 }
 
 - (void)thisImage:(UIImage *)image hasBeenSavedInPhotoAlbumWithError:(NSError *)error usingContextInfo:(void*)ctxInfo {
@@ -209,7 +210,7 @@
   });
 }
 
-- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata {
+- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata callback:(void (^) (CSPhoto *photo)) callback {
     __weak LocalLibrary *se = self;
     __block BOOL found = NO;
     
@@ -234,7 +235,8 @@
                                                                      bool didPhotoAddIntoAlbum = [group addAsset:asset];
                                                                      // add image to core data after saving into album
                                                                      if (didPhotoAddIntoAlbum) {
-                                                                         [self addAsset:asset];
+                                                                         CSPhoto *p = [self addAsset:asset];
+                                                                         callback(p);
                                                                      }
                                                                  } failureBlock:^(NSError *error) {
                                                                      NSLog(@"%@", error);
@@ -254,7 +256,8 @@
                 self.didAlbumCreated = YES;
             }
             //recall saveImage function after new album exist
-            [self saveImage:image metadata:metadata];
+            [self saveImage:image metadata:metadata callback: ^(CSPhoto *photo){
+                }];
         }
     };
     
