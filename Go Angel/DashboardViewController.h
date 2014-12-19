@@ -10,7 +10,7 @@
 #import "AccountDataWrapper.h"
 #import "AppDelegate.h"
 
-@interface DashboardViewController : UIViewController{
+@interface DashboardViewController : UITableViewController<UITableViewDataSource,UITableViewDelegate>{
     AccountDataWrapper *account;
 }
 

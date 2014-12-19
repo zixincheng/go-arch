@@ -44,6 +44,8 @@
 		20F74D161992B56B00E0546D /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 20F74D151992B56B00E0546D /* Constants.m */; };
 		4D0F91321A2E9E8500C1936F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0F91301A2E9E8500C1936F /* Crashlytics.framework */; };
 		4D0F91331A2E9E8500C1936F /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0F91311A2E9E8500C1936F /* Fabric.framework */; };
+		9B3445CD1A410772004BA746 /* RadarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3445CC1A410772004BA746 /* RadarViewController.m */; };
+		9B555D3B1A43B29D00D00025 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D3A1A43B29D00D00025 /* box.png */; };
 		9BAF13791A3F6213000B780B /* F3Swirly.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BAF13781A3F6213000B780B /* F3Swirly.m */; };
 		9BAF13811A3F6388000B780B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13801A3F6388000B780B /* CoreMotion.framework */; };
 		9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13821A3F63A5000B780B /* QuartzCore.framework */; };
@@ -53,7 +55,6 @@
 		9BEA5B571A1EB26100CC14FF /* StorageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B551A1EB26100CC14FF /* StorageViewController.m */; };
 		B8BD5E6D1AEE4BC883DE0FB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C120E32068A1416CA965B081 /* libPods.a */; };
 		D510B9641A364A8A00307184 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D510B9621A364A8A00307184 /* DashboardViewController.m */; };
-		D510B9651A364A8A00307184 /* DashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D510B9631A364A8A00307184 /* DashboardViewController.xib */; };
 		D5296F251A27B1D80069555B /* createDefaultAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = D5296F241A27B1D80069555B /* createDefaultAlbum.m */; };
 /* End PBXBuildFile section */
 
@@ -165,6 +166,9 @@
 		4D0F91301A2E9E8500C1936F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		4D0F91311A2E9E8500C1936F /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		9B3445CB1A410772004BA746 /* RadarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarViewController.h; sourceTree = "<group>"; };
+		9B3445CC1A410772004BA746 /* RadarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadarViewController.m; sourceTree = "<group>"; };
+		9B555D3A1A43B29D00D00025 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
 		9BAF13771A3F6212000B780B /* F3Swirly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F3Swirly.h; sourceTree = "<group>"; };
 		9BAF13781A3F6213000B780B /* F3Swirly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F3Swirly.m; sourceTree = "<group>"; };
 		9BAF13801A3F6388000B780B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -181,7 +185,6 @@
 		C120E32068A1416CA965B081 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D510B9611A364A8A00307184 /* DashboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashboardViewController.h; sourceTree = "<group>"; };
 		D510B9621A364A8A00307184 /* DashboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashboardViewController.m; sourceTree = "<group>"; };
-		D510B9631A364A8A00307184 /* DashboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DashboardViewController.xib; sourceTree = "<group>"; };
 		D5296F231A27B1D80069555B /* createDefaultAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = createDefaultAlbum.h; sourceTree = "<group>"; };
 		D5296F241A27B1D80069555B /* createDefaultAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = createDefaultAlbum.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -246,6 +249,8 @@
 		2053971D1991924B00B1D9AD /* Go Angel */ = {
 			isa = PBXGroup;
 			children = (
+				9B3445CB1A410772004BA746 /* RadarViewController.h */,
+				9B3445CC1A410772004BA746 /* RadarViewController.m */,
 				9BAF13771A3F6212000B780B /* F3Swirly.h */,
 				9BAF13781A3F6213000B780B /* F3Swirly.m */,
 				9BB0F2091A26A52A00DF40E3 /* StorageDetailViewController.h */,
@@ -280,7 +285,6 @@
 				2061D1D6199193CE001C7E08 /* DeviceViewController.m */,
 				D510B9611A364A8A00307184 /* DashboardViewController.h */,
 				D510B9621A364A8A00307184 /* DashboardViewController.m */,
-				D510B9631A364A8A00307184 /* DashboardViewController.xib */,
 				2061D1DE199193DB001C7E08 /* firstLoadViewController.h */,
 				2061D1DF199193DB001C7E08 /* firstLoadViewController.m */,
 				20931B8319954B8900F57FB0 /* GridCell.h */,
@@ -321,6 +325,7 @@
 		2053971E1991924B00B1D9AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9B555D3A1A43B29D00D00025 /* box.png */,
 				2061D1F519919440001C7E08 /* settings-25.png */,
 				2061D1FF1991945F001C7E08 /* main.m */,
 				2053971F1991924B00B1D9AD /* Go Angel-Info.plist */,
@@ -465,8 +470,8 @@
 				2061D2021991947D001C7E08 /* Images.xcassets in Resources */,
 				205397221991924B00B1D9AD /* InfoPlist.strings in Resources */,
 				2061D1FC19919440001C7E08 /* settings-25.png in Resources */,
+				9B555D3B1A43B29D00D00025 /* box.png in Resources */,
 				2061D1ED19919430001C7E08 /* Main.storyboard in Resources */,
-				D510B9651A364A8A00307184 /* DashboardViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -540,6 +545,7 @@
 				2061D2001991945F001C7E08 /* main.m in Sources */,
 				20931B8819954FF000F57FB0 /* MediaLoader.m in Sources */,
 				20DD6A44199441C900D76DC3 /* GridViewController.m in Sources */,
+				9B3445CD1A410772004BA746 /* RadarViewController.m in Sources */,
 				2061D1DD199193CE001C7E08 /* DeviceViewController.m in Sources */,
 				20931B8E19957EEE00F57FB0 /* PhotoSectionHeaderView.m in Sources */,
 				2061D1FD19919440001C7E08 /* SettingsViewController.m in Sources */,

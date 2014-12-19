@@ -94,7 +94,7 @@
     }else if (indexPath.row == 3){
         cell.textLabel.text = [NSString stringWithFormat:@"Uploading Status: %@",self.currentStatus];
     }else if (indexPath.row == 4){
-        cell.textLabel.text = [NSString stringWithFormat:@"Home Server: %@", self.homeServer];
+        cell.textLabel.text = [NSString stringWithFormat:@"Home Network: %@", self.homeServer];
     }
     
     return cell;
