@@ -20,10 +20,10 @@
     account = appDelegate.account;
     
     // notification that current status is uploading
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadingStatus) name:@"photoUploading" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadingStatus) name:@"onePhotoUploaded" object:nil];
     
     // notification that current status is waiting
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endUploadingStatus) name:@"waitingForPhoto" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endUploadingStatus) name:@"endUploading" object:nil];
     
     // notification that home server is disconnected
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(homeServerDisconnected) name:@"homeServerDisconnected" object:nil];
@@ -106,8 +106,8 @@
 }
 
 - (void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"photoUploading" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"waitingForPhoto" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"onePhotoUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"endUploading" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"homeServerDisconnected" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"homeServerConnected" object:nil];
 }

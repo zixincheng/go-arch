@@ -122,6 +122,13 @@
   return object;
 }
 
+- (NSManagedObject *) setLogValues: (ActivityHistory *)log object:(NSManagedObject *) message{
+    [message setValue:log.activityLog forKey:ACTIVITY_LOG];
+    [message setValue:log.timeUpdate forKey:TIME_UPDATE];
+    
+    return message;
+}
+
 - (void) addUpdatePhoto:(CSPhoto *)photo {
   
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
@@ -198,6 +205,57 @@
   p.dateCreated  = [object valueForKey:DATE_CREATED];
   
   return p;
+}
+
+- (ActivityHistory *) getLogFromMessage: (NSManagedObject *) message{
+    ActivityHistory *logText = [[ActivityHistory alloc] init];
+    logText.activityLog = [message valueForKey:ACTIVITY_LOG];
+    logText.timeUpdate = [message valueForKey:TIME_UPDATE];
+    return logText;
+}
+
+- (void) addUpdateLog:(ActivityHistory *)log{
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+    [context performBlockAndWait: ^{
+        NSManagedObject *logObj;
+
+        logObj = [NSEntityDescription insertNewObjectForEntityForName:LOG inManagedObjectContext:context];
+        logObj = [self setLogValues:log object:logObj];
+        
+        [context save:nil];
+        
+    }];
+}
+
+- (NSMutableArray *) getLogs{
+    
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    __block NSMutableArray *arr = [[NSMutableArray alloc] init];
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOG];
+     
+        // set sort
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:TIME_UPDATE ascending:NO];
+        NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
+        [request setSortDescriptors: descriptors];
+        
+        NSArray *message = [context executeFetchRequest:request error:nil];
+        
+        if (message == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        // add all of the log objects to the local log list
+        for (int i =0; i < [message count]; i++) {
+            NSManagedObject *logText = message[i];
+            [arr addObject:[self getLogFromMessage:logText]];
+        }
+    }];
+    
+    return arr;
 }
 
 - (NSMutableArray *)getPhotos: (NSString *) deviceId {

@@ -291,6 +291,33 @@
             </objects>
             <point key="canvasLocation" x="1426" y="647"/>
         </scene>
+        <!--History Table View Controller-->
+        <scene sceneID="1sH-Ie-G2K">
+            <objects>
+                <tableViewController id="oxb-8u-GaZ" customClass="HistoryTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pnx-oE-7Kj">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="y5a-PJ-62y">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="y5a-PJ-62y" id="3BD-ah-TPk">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="oxb-8u-GaZ" id="1JD-NF-boP"/>
+                            <outlet property="delegate" destination="oxb-8u-GaZ" id="nIW-0U-AES"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="X12-Tk-FKr"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bvf-fa-R7K" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1118" y="1933"/>
+        </scene>
         <!--Dashboard View Controller-->
         <scene sceneID="Z77-Df-pmh">
             <objects>
@@ -537,6 +564,7 @@
                         <outlet property="valueSwirly" destination="vwc-Cs-dRc" id="gWq-rH-uud"/>
                         <segue destination="VtD-xa-xgp" kind="push" identifier="gridSegue" id="VNY-BC-uo4"/>
                         <segue destination="emt-rN-v7D" kind="push" identifier="singleImageSegue" id="VNR-5C-VGJ"/>
+                        <segue destination="oxb-8u-GaZ" kind="push" identifier="historySegue" id="7Lh-3a-5RD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IKX-IY-KKX" userLabel="First Responder" sceneMemberID="firstResponder"/>

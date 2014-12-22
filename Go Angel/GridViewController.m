@@ -35,7 +35,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stratUploading) name:@"startUploading" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eachPhotoUploaded) name:@"onePhotoUploaded" object:nil];
+    
   [self.navigationBar setTitle:self.device.deviceName];
   
   self.photos = [self.dataWrapper getPhotos:self.device.remoteId];
@@ -57,6 +59,24 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)stratUploading{
+    self.currentUploading = YES;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        self.photos = [self.dataWrapper getPhotos:self.device.remoteId];
+        dispatch_async(dispatch_get_main_queue(), ^ {
+            [self.collectionView reloadData];
+        });
+    });
+}
+- (void)eachPhotoUploaded{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        self.photos = [self.dataWrapper getPhotos:self.device.remoteId];
+        dispatch_async(dispatch_get_main_queue(), ^ {
+            [self.collectionView reloadData];
+        });
+    });
 }
 
 # pragma mark - Grid View Delegates/Data Source
@@ -90,11 +110,12 @@
   UIImageView *imageView = (UIImageView *) [cell viewWithTag:GRID_IMAGE];
   
   CSPhoto *photo = [self.photos objectAtIndex:[indexPath row]];
-  
+    
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
   [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
     dispatch_async(dispatch_get_main_queue(), ^{
-      [imageView setImage:image];
+        __block UIImage *newimage = [self markedImageStatus:image checkImageStatus:photo.onServer uploadingImage:self.currentUploading];
+        [imageView setImage:newimage];
     });
   }];
   
@@ -118,15 +139,33 @@
   }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (UIImage *)markedImageStatus:(UIImage *) image checkImageStatus:(NSString *)onServer uploadingImage:(BOOL)upload
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    UIGraphicsBeginImageContext(image.size);
+    [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
+    
+    if ([onServer isEqualToString:@"1"]) {
+        UIImage *iconImage = [UIImage imageNamed:@"uploaded.png"];
+        [iconImage drawInRect:CGRectMake(image.size.width-40, image.size.height-40, 40, 40)];
+    }else if((!upload) && [onServer isEqualToString:@"0"]){
+        UIImage *iconImage = [UIImage imageNamed:@"unupload.png"];
+        [iconImage drawInRect:CGRectMake(image.size.width-40, image.size.height-40, 40, 40)];
+    }else if( upload && [onServer isEqualToString:@"0"]){
+        UIImage *iconImage = [UIImage imageNamed:@"uploading.png"];
+        [iconImage drawInRect:CGRectMake(image.size.width-40, image.size.height-40, 40, 40)];
+    }
+    // make image out of bitmap context
+    UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // free the context
+    UIGraphicsEndImageContext();
+    
+    return finalImage;
 }
-*/
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"startUploading" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"onePhotoUploaded" object:nil];
+}
 
 @end

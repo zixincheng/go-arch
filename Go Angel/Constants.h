@@ -35,6 +35,7 @@
 // core data entites
 #define PHOTO @"Photo"
 #define DEVICE @"Device"
+#define LOG @"Log"
 
 // photo entity attributes
 #define DATE_CREATED @"dateCreated"
@@ -45,6 +46,10 @@
 #define REMOTE_PATH @"remotePath"
 #define THUMB_URL @"thumbURL"
 #define ON_SERVER @"onServer"
+
+// log entity attributes
+#define TIME_UPDATE @"timeUpdate"
+#define ACTIVITY_LOG @"activityLog"
 
 // camera
 #define SAVE_PHOTO_ALBUM @"Go Angel"

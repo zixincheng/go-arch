@@ -11,6 +11,7 @@
 #import "CoreDataStore.h"
 #import "CSDevice.h"
 #import "CSPhoto.h"
+#import "ActivityHistory.h"
 
 // the wrapper to manage inserting our objects into the db
 // simple abstraction where we send our objects, and
@@ -22,10 +23,12 @@
 - (void) addDevice: (CSDevice *) device;
 - (void) addUpdatePhoto: (CSPhoto *) photo;
 - (void) addUpdateDevice: (CSDevice *) device;
+- (void) addUpdateLog:(ActivityHistory *)log;
 - (NSMutableArray *) getAllPhotos;
 - (NSMutableArray *) getAllDevices;
 - (NSMutableArray *) getPhotos: (NSString *) deviceId;
 - (NSMutableArray *) getPhotosToUpload;
+- (NSMutableArray *) getLogs;
 - (int) getCountUnUploaded;
 - (int) getCountUploaded:(NSString *) deviceId;
 - (CSDevice *) getDevice: (NSString *) cid;

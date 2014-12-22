@@ -64,6 +64,7 @@
   localLibrary = [[LocalLibrary alloc] init];
   defaults = [NSUserDefaults standardUserDefaults];
   self.devices = [[NSMutableArray alloc] init];
+  log = [[ActivityHistory alloc] init];
  //UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
   needParse = NO;
   self.currentlyUploading = NO;
@@ -131,10 +132,10 @@
     self.canConnect = NO;
   }
   
-    //[self addStatusButton];
   // update ui status bar
   [self updateUploadCountUI];
   [self checkDeivceStatus];
+  [self addHistoryButton];
 
 }
 // called when this controller leaves memory
@@ -382,6 +383,8 @@
   NSMutableArray *photos = [self.dataWrapper getPhotosToUpload];
   __block int currentUploaded = 0;
   if (photos.count > 0) {
+    //sent a notification when start uploading photos
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"startUploading" object:nil];
     self.currentlyUploading = YES;
     // hide upload button tool bar and show progress on
     [self.btnUpload setEnabled:NO];
@@ -391,8 +394,7 @@
     
     NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
     [self.coinsorter uploadPhotos:photos upCallback:^() {
-    //sent a notification to dashboard when finish uploading 1 photo
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"photoUploading" object:nil];
+
       currentUploaded += 1;
       
       [self removeLocalPhoto];
@@ -404,16 +406,26 @@
         float progress = (float) currentUploaded / (float) photos.count;
         
         [self.progressUpload setProgress:progress animated:YES];
-      
+          
+        //sent a notification to dashboard when finish uploading 1 photo
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"onePhotoUploaded" object:nil];
+          
         // the upload is complete
         if (progress == 1.0) {
           [self.btnUpload setEnabled:YES];
           self.currentlyUploading = NO;
           [self updateUploadCountUI];
            //sent a notification to dashboard when finish uploading all photos 
-          [[NSNotificationCenter defaultCenter] postNotificationName:@"waitingForPhoto" object:nil];
+          [[NSNotificationCenter defaultCenter] postNotificationName:@"endUploading" object:nil];
           // allow app to sleep again
           [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+          
+          //add uploading message into activity history class
+          
+          NSString *message = [NSString stringWithFormat: @"App uploads %lu photo to Arch Box",(unsigned long)photos.count];
+          log.activityLog = message;
+          log.timeUpdate = [NSDate date];
+          [self.dataWrapper addUpdateLog:log];
         }
       });
     }];
@@ -504,7 +516,6 @@
             self.selectedDevice = self.localDevice;
             [self performSegueWithIdentifier:@"gridSegue" sender:self];
         break;
-        default:
             break;
     }
     
@@ -517,6 +528,8 @@
         GridViewController *gridController = (GridViewController *)segue.destinationViewController;
         gridController.device = self.selectedDevice;
         gridController.dataWrapper = self.dataWrapper;
+        gridController.currentUploading = self.currentlyUploading;
+        
     }  else if([segue.identifier isEqualToString:SINGLE_PHOTO_SEGUE]) {
         PhotoSwipeViewController *swipeController = (PhotoSwipeViewController *) segue.destinationViewController;
         swipeController.selected = selected;
@@ -532,7 +545,6 @@
         dashboardVC.homeServer = self.homeServer;
         dashboardVC.serverName = self.serverName;
         dashboardVC.serverIP = self.serverIP;
-        
     }
 }
 
@@ -680,26 +692,6 @@
 
 # pragma mark - DashBoard view information
 
-//display app status information on dashboard
-
-- (void)presentDashboardView:(id)sender{
-    //[self uploadPhotosStatus];
-    //[self currentUploadingStatus];
-    //[self homeServerStatus];
-    [self checkDeivceStatus];
-    
-    DashboardViewController *dashboardVC = [[DashboardViewController alloc] init];
-    dashboardVC.title = @"DashBoard";
-    dashboardVC.totalPhotos = self.totalPhotos;
-    dashboardVC.processedUploadedPhotos = self.totalUploadedPhotos;
-    dashboardVC.currentStatus = self.currentStatus;
-    dashboardVC.homeServer = self.homeServer;
-    dashboardVC.serverName = self.serverName;
-    dashboardVC.serverIP = self.serverIP;
-    
-    [self.navigationController pushViewController:dashboardVC animated:YES];
-}
-
 - (void)checkDeivceStatus{
     NSMutableArray *photos = [self.dataWrapper getPhotos:self.localDevice.remoteId];
     self.totalUploadedPhotos = [self.dataWrapper getCountUploaded:self.localDevice.remoteId];
@@ -751,7 +743,8 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [imageView setImage:image];
+           __block UIImage *newimage = [self markedImageStatus:image checkImageStatus:photo.onServer uploadingImage:self.currentlyUploading];
+            [imageView setImage:newimage];
             
             //      if ([indexPath row] == bottom_selected) {
             //        UIView *overlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)];
@@ -787,6 +780,48 @@
     NSLog(@"recieved notification");
     [self performSegueWithIdentifier:@"pushNotification" sender:self];
 
+}
+
+- (UIImage *)markedImageStatus:(UIImage *) image checkImageStatus:(NSString *)onServer uploadingImage:(BOOL)upload
+{
+    UIGraphicsBeginImageContext(image.size);
+    [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
+    
+    if ([onServer isEqualToString:@"1"]) {
+        UIImage *iconImage = [UIImage imageNamed:@"uploaded.png"];
+        [iconImage drawInRect:CGRectMake(image.size.width-40, image.size.height-40, 40, 40)];
+    }else if((!upload) && [onServer isEqualToString:@"0"]){
+        UIImage *iconImage = [UIImage imageNamed:@"unupload.png"];
+        [iconImage drawInRect:CGRectMake(image.size.width-40, image.size.height-40, 40, 40)];
+    }else if( upload && [onServer isEqualToString:@"0"]){
+        UIImage *iconImage = [UIImage imageNamed:@"uploading.png"];
+        [iconImage drawInRect:CGRectMake(image.size.width-40, image.size.height-40, 40, 40)];
+    }
+    // make image out of bitmap context
+    UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // free the context
+    UIGraphicsEndImageContext();
+    
+    return finalImage;
+}
+
+# pragma mark - History View
+
+//create a log button in navigation bar programmatically
+- (void) addHistoryButton{
+    logButton = [[UIBarButtonItem alloc] initWithTitle:@"Log" style:UIBarButtonItemStylePlain target:self action:@selector(presentHistoryView:)];
+    NSArray *rightButtonItems = [[NSArray alloc] initWithObjects:settingButton,logButton,nil];
+    
+    [self.navigationItem setRightBarButtonItems:rightButtonItems animated:YES];
+}
+
+//log button action
+- (void)presentHistoryView:(id)sender{
+    HistoryTableViewController *historyVC = [[HistoryTableViewController alloc] init];
+    historyVC.dataWrapper = self.dataWrapper;
+    historyVC.title = @"Activity History";
+    [self.navigationController pushViewController:historyVC animated:YES];
 }
 
 @end

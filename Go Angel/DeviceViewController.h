@@ -21,6 +21,8 @@
 #import "Reachability.h"
 #import "DashboardViewController.h"
 #import "F3Swirly.h"
+#import "ActivityHistory.h"
+#import "HistoryTableViewController.h"
 
 // the controller that displays a list of devices that are on the server
 // this is the 'main page' of the app
@@ -34,13 +36,14 @@
   LocalLibrary *localLibrary;
   AccountDataWrapper *account;
   NSUserDefaults *defaults;
-  
+  ActivityHistory *log;
+    
   // do we need to fully parse local library
   // happens after albums select
   BOOL needParse;
     
     IBOutlet UIBarButtonItem *settingButton;
-    UIBarButtonItem *statusButton;
+    UIBarButtonItem *logButton;
 }
 
 

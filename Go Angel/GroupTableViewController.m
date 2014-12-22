@@ -36,7 +36,9 @@
   assetLibrary = [[ALAssetsLibrary alloc] init];
   self.allAlbums = [[NSMutableArray alloc] init];
   self.selected = [[NSMutableArray alloc] init];
-  
+  self.dataWrapper = [[CoreDataWrapper alloc] init];
+  self.log = [[ActivityHistory alloc] init];
+
   // load the selected albums from nsuserdefaults
   [self loadDefaults];
   
@@ -89,9 +91,21 @@
   if ([selString isEqualToString:@"NO"]) {
     [d setValue:@"YES" forKey:SELECTED];
     NSLog(@"selected group %@", [d valueForKey:NAME]);
+      
+    //add message into activity history
+    NSString *message = [NSString stringWithFormat: @"Select album %@, photos in %@ can upload to Arch Box", [d valueForKey:NAME], [d valueForKey:NAME]];
+    self.log.activityLog = message;
+    self.log.timeUpdate = [NSDate date];
+    [self.dataWrapper addUpdateLog:self.log];
   }else {
     [d setValue:@"NO" forKey:SELECTED];
     NSLog(@"de-selected group %@", [d valueForKey:NAME]);
+      
+    //add message into activity history
+    NSString *message = [NSString stringWithFormat: @"Remove album %@, new photos in %@ cannot upload to Arch Box", [d valueForKey:NAME], [d valueForKey:NAME]];
+    self.log.activityLog = message;
+    self.log.timeUpdate = [NSDate date];
+    [self.dataWrapper addUpdateLog:self.log];
   }
   
   [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
