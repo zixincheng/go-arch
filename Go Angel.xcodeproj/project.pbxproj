@@ -45,7 +45,10 @@
 		4D0F91321A2E9E8500C1936F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0F91301A2E9E8500C1936F /* Crashlytics.framework */; };
 		4D0F91331A2E9E8500C1936F /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0F91311A2E9E8500C1936F /* Fabric.framework */; };
 		9B3445CD1A410772004BA746 /* RadarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3445CC1A410772004BA746 /* RadarViewController.m */; };
-		9B555D3B1A43B29D00D00025 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D3A1A43B29D00D00025 /* box.png */; };
+		9B555D3D1A44D22A00D00025 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D3C1A44D22A00D00025 /* box.png */; };
+		9B555D3F1A44DDFE00D00025 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D3E1A44DDFE00D00025 /* background.png */; };
+		9B555D421A48ACF900D00025 /* QBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B555D411A48ACF900D00025 /* QBFlatButton.m */; };
+		9B555D471A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D461A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png */; };
 		9BAF13791A3F6213000B780B /* F3Swirly.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BAF13781A3F6213000B780B /* F3Swirly.m */; };
 		9BAF13811A3F6388000B780B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13801A3F6388000B780B /* CoreMotion.framework */; };
 		9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13821A3F63A5000B780B /* QuartzCore.framework */; };
@@ -173,7 +176,11 @@
 		6EE88C704FDF4D93A611F5BF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		9B3445CB1A410772004BA746 /* RadarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarViewController.h; sourceTree = "<group>"; };
 		9B3445CC1A410772004BA746 /* RadarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadarViewController.m; sourceTree = "<group>"; };
-		9B555D3A1A43B29D00D00025 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
+		9B555D3C1A44D22A00D00025 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
+		9B555D3E1A44DDFE00D00025 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		9B555D401A48ACF900D00025 /* QBFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QBFlatButton.h; path = QBFlatButton/QBFlatButton.h; sourceTree = "<group>"; };
+		9B555D411A48ACF900D00025 /* QBFlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QBFlatButton.m; path = QBFlatButton/QBFlatButton.m; sourceTree = "<group>"; };
+		9B555D461A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBar_cameraButton_ready_matte@2x.png"; sourceTree = "<group>"; };
 		9BAF13771A3F6212000B780B /* F3Swirly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F3Swirly.h; sourceTree = "<group>"; };
 		9BAF13781A3F6213000B780B /* F3Swirly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F3Swirly.m; sourceTree = "<group>"; };
 		9BAF13801A3F6388000B780B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -261,6 +268,8 @@
 		2053971D1991924B00B1D9AD /* Go Angel */ = {
 			isa = PBXGroup;
 			children = (
+				9B555D401A48ACF900D00025 /* QBFlatButton.h */,
+				9B555D411A48ACF900D00025 /* QBFlatButton.m */,
 				9B3445CB1A410772004BA746 /* RadarViewController.h */,
 				9B3445CC1A410772004BA746 /* RadarViewController.m */,
 				9BAF13771A3F6212000B780B /* F3Swirly.h */,
@@ -341,10 +350,12 @@
 		2053971E1991924B00B1D9AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9B555D461A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png */,
 				D553C3A11A44C806004076B4 /* uploaded.png */,
 				D553C3A31A44DC85004076B4 /* unupload.png */,
 				D553C3A41A44DC85004076B4 /* uploading.png */,
-				9B555D3A1A43B29D00D00025 /* box.png */,
+				9B555D3E1A44DDFE00D00025 /* background.png */,
+				9B555D3C1A44D22A00D00025 /* box.png */,
 				2061D1F519919440001C7E08 /* settings-25.png */,
 				2061D1FF1991945F001C7E08 /* main.m */,
 				2053971F1991924B00B1D9AD /* Go Angel-Info.plist */,
@@ -485,14 +496,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B555D471A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png in Resources */,
 				D553C3A51A44DC85004076B4 /* unupload.png in Resources */,
 				2061D1E819919428001C7E08 /* InAppSettings.bundle in Resources */,
 				D553C3A61A44DC85004076B4 /* uploading.png in Resources */,
 				D553C3A21A44C806004076B4 /* uploaded.png in Resources */,
 				2061D2021991947D001C7E08 /* Images.xcassets in Resources */,
+				9B555D3F1A44DDFE00D00025 /* background.png in Resources */,
 				205397221991924B00B1D9AD /* InfoPlist.strings in Resources */,
+				9B555D3D1A44D22A00D00025 /* box.png in Resources */,
 				2061D1FC19919440001C7E08 /* settings-25.png in Resources */,
-				9B555D3B1A43B29D00D00025 /* box.png in Resources */,
 				2061D1ED19919430001C7E08 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -571,6 +584,7 @@
 				2061D1DD199193CE001C7E08 /* DeviceViewController.m in Sources */,
 				20931B8E19957EEE00F57FB0 /* PhotoSectionHeaderView.m in Sources */,
 				2061D1FD19919440001C7E08 /* SettingsViewController.m in Sources */,
+				9B555D421A48ACF900D00025 /* QBFlatButton.m in Sources */,
 				2081697519959CC900EEC65C /* PhotoSwipeViewController.m in Sources */,
 				D518B33B1A42046700E249E4 /* ActivityHistory.m in Sources */,
 				D5296F251A27B1D80069555B /* createDefaultAlbum.m in Sources */,

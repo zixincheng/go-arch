@@ -295,7 +295,7 @@
         <scene sceneID="1sH-Ie-G2K">
             <objects>
                 <tableViewController id="oxb-8u-GaZ" customClass="HistoryTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pnx-oE-7Kj">
+                    <tableView key="view" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pnx-oE-7Kj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -322,7 +322,7 @@
         <scene sceneID="Z77-Df-pmh">
             <objects>
                 <tableViewController id="10f-WJ-j2V" customClass="DashboardViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="UOl-CK-mjG">
+                    <tableView key="view" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="UOl-CK-mjG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -459,6 +459,17 @@
                             </progressView>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vwc-Cs-dRc" customClass="F3Swirly">
                                 <rect key="frame" x="0.0" y="64" width="320" height="200"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bsE-PL-BpR">
+                                        <rect key="frame" x="111" y="58" width="98" height="83"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="buttonPressed:" destination="07j-du-bzQ" eventType="touchUpInside" id="ToG-e8-Mue"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="2vV-vp-4D9"/>
@@ -554,6 +565,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="Camera" destination="bsE-PL-BpR" id="F7T-of-3CY"/>
                         <outlet property="btnCamera" destination="fmS-oP-r7M" id="ZGA-pW-rMf"/>
                         <outlet property="btnUpload" destination="8Kp-5G-sYI" id="VgZ-nX-Wwp"/>
                         <outlet property="collectionView" destination="Nxq-ct-ARk" id="F4b-Jy-qTH"/>
@@ -635,13 +647,23 @@
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U1V-Wv-7N4">
                                 <rect key="frame" x="0.0" y="464" width="320" height="104"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dRU-qt-o6Y" customClass="QBFlatButton">
+                                        <rect key="frame" x="71" y="19" width="178" height="66"/>
+                                        <state key="normal" title="Button">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Searching For Box" id="Txf-WK-IdS"/>
                     <connections>
+                        <outlet property="buttonView" destination="U1V-Wv-7N4" id="kcv-SJ-Ema"/>
+                        <outlet property="searchBtn" destination="dRU-qt-o6Y" id="YEp-iR-TYR"/>
                         <segue destination="6bK-TY-GB0" kind="modal" identifier="deviceSegue" id="gb8-t6-M0R"/>
                     </connections>
                 </viewController>

@@ -14,6 +14,7 @@
     NSMutableArray *targets;
     NSMutableArray *Buttons;
     int count;
+    NSTimer *timer;
     
 }
 @end
@@ -24,7 +25,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor =[UIColor blueColor];
+    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    [self.view addSubview:backgroundView];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -47,10 +49,31 @@
     
     [self createHand];
   //  [self createGridSheet];
-    [self start];
+    [self.searchBtn addTarget:self
+               action:@selector(search:)
+     forControlEvents:UIControlEventTouchUpInside];
+    [self.searchBtn setTitle:@"Search" forState:UIControlStateNormal];
+    [self.view addSubview:self.buttonView];
+    [self.buttonView addSubview:self.searchBtn];
 }
 
-
+- (void) search:(id)sender {
+    UIButton *search = (UIButton *)sender;
+    if ([search.currentTitle isEqualToString:@"Search"]) {
+        [self start];
+        [self udpcall];
+        [self.searchBtn setTitle:@"Stop" forState:UIControlStateNormal];
+        
+    } else {
+        [timer invalidate];
+        timer = nil;
+        [self.udpTimer invalidate];
+        self.udpTimer = nil;
+        [self.searchBtn setTitle:@"Search" forState:UIControlStateNormal];
+        
+    }
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -62,11 +85,16 @@
     self.udpTimer = nil;
 }
 
+-(void) udpcall {
+     // Setup a timer to refresh every 10 seconds
+    self.udpTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(periodicallySendUDP) userInfo:nil repeats:YES];
+    
+}
+
 - (void) viewDidAppear:(BOOL)animated
 {
     NSLog(@"viewDidAppear");
     // Setup a timer to refresh every 10 seconds
-    self.udpTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(periodicallySendUDP) userInfo:nil repeats:YES];
     
     [self sendUDPMessage];
 }
@@ -187,7 +215,7 @@
 - (void)createHand
 {
     hand = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 4)];
-    hand.backgroundColor = [self color:3];
+    hand.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:hand];
     hand.layer.anchorPoint = CGPointMake(0, 0.5);
     hand.layer.position = CGPointMake(self.view.frame.size.width/2, (self.view.frame.size.height-self.navigationController.navigationBar.frame.size.height)/2);
@@ -265,7 +293,7 @@
                    action:@selector(displayServer:)
          forControlEvents:UIControlEventTouchUpInside];
         button.frame = CGRectMake(0, 0, 80, 80);
-        //button.layer.cornerRadius = 40.0;
+        button.layer.cornerRadius = 40.0;
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:button.frame];
         imageView.image = [UIImage imageNamed:@"box.png"];
         UIImage *buttonImage = [UIImage imageNamed:@"box.png"];
@@ -295,7 +323,7 @@
 }
 - (void)start
 {
-    [NSTimer scheduledTimerWithTimeInterval:1.5/60.0 target:self selector:@selector(tick:) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.5/60.0 target:self selector:@selector(tick:) userInfo:nil repeats:YES];
 }
 
 - (void)tick:(NSTimer*)sender
@@ -308,7 +336,7 @@
     line.anchorPoint = CGPointMake(0, 0.5);
     line.position = CGPointMake(self.view.frame.size.width/2, (self.view.frame.size.height-self.navigationController.navigationBar.frame.size.height)/2);
     line.transform = CATransform3DMakeRotation(angle, 0, 0, 1);
-    line.backgroundColor = [self color:3].CGColor;
+    line.backgroundColor = [UIColor whiteColor].CGColor;
     line.opacity = 0;
     [self.view.layer addSublayer:line];
     if ( [Buttons count] != 0) {

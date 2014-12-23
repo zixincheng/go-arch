@@ -28,7 +28,7 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-    
+
     self.valueSwirly.font            = [UIFont fontWithName:@"Futura-Medium" size:30.0];
     self.valueSwirly.thickness       = 30.0f;
     self.valueSwirly.shadowOffset    = CGSizeMake(1,1);
@@ -38,17 +38,17 @@
     [self.valueSwirly addThreshold:0
                     withColor:[UIColor yellowColor]
                           rpm:0
-                        label:@"Waiting"
+                        label:@""
                      segments:5];
     [self.valueSwirly addThreshold:1
-                         withColor:[UIColor greenColor]
+                         withColor:[UIColor blueColor]
                                rpm:20
-                             label:@"Uploading"
+                             label:@""
                           segments:5];
     [self.valueSwirly addThreshold:2
-                         withColor:[UIColor redColor]
+                         withColor:[UIColor greenColor]
                                rpm:0
-                             label:@"Done"
+                             label:@""
                           segments:100];
     self.valueSwirly.value = 2;
     //[self didChangeValue:self.valueSlider];
@@ -57,7 +57,13 @@
   self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived) name:@"pushNotification" object:nil];
-  
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.Camera.frame];
+    imageView.image = [UIImage imageNamed:@"tabBar_cameraButton_ready_matte@2x.png"];
+   
+    [self.valueSwirly addSubview:self.Camera];
+    [self.valueSwirly addSubview:imageView];
+
   // init vars
   self.dataWrapper = [[CoreDataWrapper alloc] init];
   self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
@@ -211,7 +217,7 @@
 - (IBAction)buttonPressed:(id)sender {
   if (sender == self.btnUpload) {
     [self uploadPhotosToApi];
-  }else if (sender == self.btnCamera) {
+  }else if (sender == self.Camera) {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
