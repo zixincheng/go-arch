@@ -427,7 +427,6 @@
           [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
           
           //add uploading message into activity history class
-          
           NSString *message = [NSString stringWithFormat: @"App uploads %lu photo to Arch Box",(unsigned long)photos.count];
           log.activityLog = message;
           log.timeUpdate = [NSDate date];
@@ -535,6 +534,8 @@
         gridController.device = self.selectedDevice;
         gridController.dataWrapper = self.dataWrapper;
         gridController.currentUploading = self.currentlyUploading;
+        self.totalUploadedPhotos = [self.dataWrapper getCountUploaded:self.localDevice.remoteId];
+        gridController.totalUploadedPhotos = self.totalUploadedPhotos;
         
     }  else if([segue.identifier isEqualToString:SINGLE_PHOTO_SEGUE]) {
         PhotoSwipeViewController *swipeController = (PhotoSwipeViewController *) segue.destinationViewController;

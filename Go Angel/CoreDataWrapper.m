@@ -290,7 +290,35 @@
   
   return arr;
 }
-
+- (NSString *) getCurrentPhotoOnServerVaule: (NSString *) deviceId CurrentIndex:(int)index{
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    __block CSPhoto *photo;
+    __block NSString *photoOnServer;
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+        
+        // set query
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", DEVICE_ID, deviceId];
+        [request setPredicate:pred];
+        
+        // set sort
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:NO];
+        NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
+        [request setSortDescriptors: descriptors];
+        
+        NSArray*phs = [context executeFetchRequest:request error:nil];
+        
+        if (phs == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        NSManagedObject *p = phs[index];
+        photo = [self getPhotoFromObject:p];
+        photoOnServer = photo.onServer;
+    }];
+    return photoOnServer;
+}
+     
 - (NSMutableArray *) getPhotosToUpload {
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
   __block NSMutableArray *arr = [[NSMutableArray alloc] init];

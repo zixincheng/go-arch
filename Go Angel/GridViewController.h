@@ -31,5 +31,6 @@
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSDevice *device;
 @property (nonatomic, assign) BOOL currentUploading;
+@property (nonatomic, assign) int totalUploadedPhotos;
 
 @end

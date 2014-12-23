@@ -33,5 +33,6 @@
 - (int) getCountUploaded:(NSString *) deviceId;
 - (CSDevice *) getDevice: (NSString *) cid;
 - (NSString *) getLatestId;
+- (NSString *) getCurrentPhotoOnServerVaule: (NSString *) deviceId CurrentIndex:(int)index;
 
 @end

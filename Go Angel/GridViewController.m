@@ -35,7 +35,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stratUploading) name:@"startUploading" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eachPhotoUploaded) name:@"onePhotoUploaded" object:nil];
     
   [self.navigationBar setTitle:self.device.deviceName];
@@ -61,22 +60,22 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)stratUploading{
-    self.currentUploading = YES;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        self.photos = [self.dataWrapper getPhotos:self.device.remoteId];
-        dispatch_async(dispatch_get_main_queue(), ^ {
-            [self.collectionView reloadData];
-        });
-    });
-}
 - (void)eachPhotoUploaded{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        self.photos = [self.dataWrapper getPhotos:self.device.remoteId];
-        dispatch_async(dispatch_get_main_queue(), ^ {
-            [self.collectionView reloadData];
-        });
+    self.totalUploadedPhotos += 1;
+    int currentPhotoIndex = (int)self.photos.count - self.totalUploadedPhotos;
+    
+    //update current uploaded photo onServer value
+    CSPhoto *photo = [self.photos objectAtIndex:currentPhotoIndex];
+    photo.onServer = [self.dataWrapper getCurrentPhotoOnServerVaule:self.device.remoteId CurrentIndex:currentPhotoIndex];
+    [self.photos replaceObjectAtIndex:currentPhotoIndex withObject:photo];
+    NSLog(@"current photo onServer value is: %@", photo.onServer);
+    
+    NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+    [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:currentPhotoIndex inSection:0]];
+    dispatch_async(dispatch_get_main_queue(), ^ {
+        [self.collectionView reloadItemsAtIndexPaths:arrayWithIndexPaths];
     });
+    NSLog(@"reload current photo at index : %i", currentPhotoIndex);
 }
 
 # pragma mark - Grid View Delegates/Data Source
