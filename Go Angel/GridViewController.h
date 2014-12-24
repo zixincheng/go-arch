@@ -26,6 +26,9 @@
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *editBtn;
+
+- (IBAction)editButtonTouched:(id)sender;
 
 @property (nonatomic, strong) NSMutableArray *photos;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;

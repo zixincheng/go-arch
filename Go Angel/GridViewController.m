@@ -16,7 +16,10 @@
 // tags in cell
 #define GRID_IMAGE 11
 
-@interface GridViewController ()
+@interface GridViewController () {
+    BOOL enableEdit;
+    NSMutableArray *selectedPhotos;
+}
 
 @end
 
@@ -34,6 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    selectedPhotos = [NSMutableArray array];
     // Do any additional setup after loading the view.
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eachPhotoUploaded) name:@"onePhotoUploaded" object:nil];
     
@@ -107,10 +111,11 @@
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   GridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GRID_CELL forIndexPath:indexPath];
   UIImageView *imageView = (UIImageView *) [cell viewWithTag:GRID_IMAGE];
-  
+    
   CSPhoto *photo = [self.photos objectAtIndex:[indexPath row]];
     
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selectedbackground.png"]];
   [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
     dispatch_async(dispatch_get_main_queue(), ^{
         __block UIImage *newimage = [self markedImageStatus:image checkImageStatus:photo.onServer uploadingImage:self.currentUploading];
@@ -122,8 +127,23 @@
 }
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (enableEdit) {
+        CSPhoto *selectedphoto = [self.photos objectAtIndex:indexPath.row];
+        // Add the selected item into the array
+        [selectedPhotos addObject:selectedphoto];
+    } else {
   selected = [indexPath row];
   [self performSegueWithIdentifier:SINGLE_PHOTO_SEGUE sender:self];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (enableEdit) {
+       NSString *deSelectedPhoto = [self.photos objectAtIndex:indexPath.row];
+        [selectedPhotos removeObject:deSelectedPhoto];
+    }
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -165,6 +185,19 @@
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"startUploading" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"onePhotoUploaded" object:nil];
+}
+
+- (IBAction)editButtonTouched:(id)sender {
+    UIBarButtonItem *editbtn =  (UIBarButtonItem *)sender;
+    if ([editbtn.title isEqualToString:@"Edit"]) {
+        self.collectionView.allowsMultipleSelection = YES;
+        enableEdit = YES;
+        self.editBtn.title = @"Done";
+    } else {
+        self.collectionView.allowsMultipleSelection = NO;
+        enableEdit = NO;
+        self.editBtn.title = @"Edit";
+    }
 }
 
 @end

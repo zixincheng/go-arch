@@ -49,6 +49,7 @@
 		9B555D3F1A44DDFE00D00025 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D3E1A44DDFE00D00025 /* background.png */; };
 		9B555D421A48ACF900D00025 /* QBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B555D411A48ACF900D00025 /* QBFlatButton.m */; };
 		9B555D471A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D461A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png */; };
+		9B555D571A4A32FB00D00025 /* selectedbackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D561A4A32FB00D00025 /* selectedbackground.png */; };
 		9BAF13791A3F6213000B780B /* F3Swirly.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BAF13781A3F6213000B780B /* F3Swirly.m */; };
 		9BAF13811A3F6388000B780B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13801A3F6388000B780B /* CoreMotion.framework */; };
 		9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13821A3F63A5000B780B /* QuartzCore.framework */; };
@@ -181,6 +182,7 @@
 		9B555D401A48ACF900D00025 /* QBFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QBFlatButton.h; path = QBFlatButton/QBFlatButton.h; sourceTree = "<group>"; };
 		9B555D411A48ACF900D00025 /* QBFlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QBFlatButton.m; path = QBFlatButton/QBFlatButton.m; sourceTree = "<group>"; };
 		9B555D461A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBar_cameraButton_ready_matte@2x.png"; sourceTree = "<group>"; };
+		9B555D561A4A32FB00D00025 /* selectedbackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectedbackground.png; sourceTree = "<group>"; };
 		9BAF13771A3F6212000B780B /* F3Swirly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F3Swirly.h; sourceTree = "<group>"; };
 		9BAF13781A3F6213000B780B /* F3Swirly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F3Swirly.m; sourceTree = "<group>"; };
 		9BAF13801A3F6388000B780B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -350,6 +352,7 @@
 		2053971E1991924B00B1D9AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9B555D561A4A32FB00D00025 /* selectedbackground.png */,
 				9B555D461A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png */,
 				D553C3A11A44C806004076B4 /* uploaded.png */,
 				D553C3A31A44DC85004076B4 /* unupload.png */,
@@ -498,6 +501,7 @@
 			files = (
 				9B555D471A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png in Resources */,
 				D553C3A51A44DC85004076B4 /* unupload.png in Resources */,
+				9B555D571A4A32FB00D00025 /* selectedbackground.png in Resources */,
 				2061D1E819919428001C7E08 /* InAppSettings.bundle in Resources */,
 				D553C3A61A44DC85004076B4 /* uploading.png in Resources */,
 				D553C3A21A44C806004076B4 /* uploaded.png in Resources */,
