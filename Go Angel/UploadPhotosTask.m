@@ -144,7 +144,7 @@
         CGImageRef iref = [rep fullResolutionImage];
         
         // if the asset exists
-        if (iref) {
+        if (iref) { //photos found in album
           // Retrieve the image orientation from the ALAsset
           UIImageOrientation orientation = UIImageOrientationUp;
           NSNumber* orientationValue = [asset valueForProperty:ALAssetPropertyOrientation];
@@ -193,6 +193,40 @@
           
           [readLock lock];
           [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
+        }else{ //if photos not found in album, try to find in application folder
+            AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            NSString *urlString = [NSString stringWithFormat:@"%@%@%@", @"https://", appDelegate.account.ip, @"/photos"];
+            
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            
+            // TODO: Get these values from photo
+            // eg. filename = actual filename (not unique string)
+            NSArray *objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"image/jpg", nil];
+            
+            NSArray *keys = [NSArray arrayWithObjects:@"token", @"filename", @"image-type", nil];
+            NSDictionary *headers = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+            NSLog(@"%@",p);
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+            
+            [request setURL:url];
+            [request setHTTPMethod:@"POST"];
+            [request setAllHTTPHeaderFields:headers];
+            
+            NSURL *filepath = [NSURL URLWithString:[p.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            
+            NSURLSessionUploadTask *uploadTask = [self.session uploadTaskWithRequest:request fromFile:filepath];
+            
+            p.taskIdentifier = uploadTask.taskIdentifier;
+            
+            @synchronized (self.uploadingPhotos) {
+                [self.uploadingPhotos addObject:p];
+            }
+            [uploadTask resume];
+            
+            [readLock lock];
+            [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
         }
       };
       

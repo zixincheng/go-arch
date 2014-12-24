@@ -74,7 +74,9 @@
  //UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
   needParse = NO;
   self.currentlyUploading = NO;
-  
+    
+  self.saveInAlbum = [defaults boolForKey:SAVE_INTO_ALBUM];
+    
   // setup objects
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
   account = appDelegate.account;
@@ -95,7 +97,7 @@
   
   // load the devices array
   [self loadDevices];
-  
+
   // call methods to start controller
   
   // check if the camera button should be shown (only if the device has a camera)
@@ -109,9 +111,12 @@
   [defaults addObserver:self forKeyPath:DEVICE_NAME options:NSKeyValueObservingOptionNew context:NULL];
   [defaults addObserver:self forKeyPath:ALBUMS options:NSKeyValueObservingOptionNew context:NULL];
   [defaults addObserver:self forKeyPath:DOWN_REMOTE options:NSKeyValueObservingOptionNew context:NULL];
-  
+  [defaults addObserver:self forKeyPath:SAVE_INTO_ALBUM options:NSKeyValueObservingOptionNew context:NULL];
+
+    
   // notification so we know when app comes into foreground
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    
   
   // Start networking
   
@@ -152,7 +157,7 @@
   [defaults removeObserver:self forKeyPath:DEVICE_NAME];
   [defaults removeObserver:self forKeyPath:ALBUMS];
 //  [defaults removeObserver:self forKeyPath:DOWN_REMOTE];
-  
+
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
@@ -209,8 +214,9 @@
     if (downRemote) {
       [self syncAllFromApi];
     }
-    
     [self loadDevices];
+  }else if([keyPath isEqualToString:SAVE_INTO_ALBUM]){
+      self.saveInAlbum = [defaults boolForKey:SAVE_INTO_ALBUM];
   }
 }
 
@@ -615,13 +621,18 @@
     // picker disappeared
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     NSDictionary *metadata = info[UIImagePickerControllerMediaMetadata];
-    
-      [localLibrary saveImage:image metadata:metadata callback: ^(CSPhoto *photo){
-          dispatch_async(dispatch_get_main_queue(), ^ {
-              [self addNewcell:photo];
-          });
-      }];
-    
+
+    if (self.saveInAlbum) {
+        NSLog(@"save photos into album");
+        [localLibrary saveImage:image metadata:metadata callback: ^(CSPhoto *photo){
+            dispatch_async(dispatch_get_main_queue(), ^ {
+                [self addNewcell:photo];
+            });
+        }];
+    }else{
+        NSLog(@"save photos into application folder");
+        [self saveImageIntoDocument:image];
+    }
   }];
 }
 
@@ -829,6 +840,54 @@
     historyVC.dataWrapper = self.dataWrapper;
     historyVC.title = @"Activity History";
     [self.navigationController pushViewController:historyVC animated:YES];
+}
+
+#pragma mark -
+#pragma mark Image Save Into document
+
+// save photos to the document directory
+
+
+//get currentdate so that each image can have a unique name
+
+-(NSString*)getCurrentDateTime
+{
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyyMMddHHmmss"];
+    NSDate *now = [NSDate date];
+    NSString *retStr = [format stringFromDate:now];
+    
+    return retStr;
+}
+
+
+// save photos to the document directory and save to core data
+- (void) saveImageIntoDocument:(UIImage *)image{
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    
+    NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", [self getCurrentDateTime]]];
+    NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
+    
+    
+    CSPhoto *p = [[CSPhoto alloc] init];
+    
+
+    p.dateCreated = [NSDate date];
+    p.deviceId = self.localDevice.remoteId;
+    p.onServer = @"0";
+    p.thumbURL = fullPath;
+    p.imageURL = fullPath;
+    
+    NSData *data = UIImageJPEGRepresentation(image, 100);
+    [data writeToFile:filePath atomically:YES];
+    NSLog(@"saving photo to %@", filePath);
+    
+    [self.dataWrapper addPhoto:p];
+    
+    self.unUploadedPhotos++;
+    [self updateUploadCountUI];
 }
 
 @end
