@@ -188,7 +188,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bxq-1k-QLP">
-                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="85"/>
+                                                    <rect key="frame" x="4" y="5" width="72" height="69"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -230,9 +230,16 @@
                             <constraint firstAttribute="trailing" secondItem="4hm-uj-fHj" secondAttribute="trailing" id="uAq-LN-JN4"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Photos" id="59j-Cc-HSr"/>
+                    <navigationItem key="navigationItem" title="Photos" id="59j-Cc-HSr">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="mAX-w3-5Yp">
+                            <connections>
+                                <action selector="editButtonTouched:" destination="VtD-xa-xgp" id="K7r-ZQ-dtF"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="4hm-uj-fHj" id="dft-XM-pqh"/>
+                        <outlet property="editBtn" destination="mAX-w3-5Yp" id="uoE-K4-RyI"/>
                         <outlet property="navigationBar" destination="59j-Cc-HSr" id="2Uq-Xz-cqS"/>
                         <segue destination="emt-rN-v7D" kind="push" identifier="singleImageSegue" id="Ee8-Cy-eab"/>
                     </connections>
@@ -637,33 +644,15 @@
         <scene sceneID="78E-e8-WTB">
             <objects>
                 <viewController id="hB3-Ch-tIc" customClass="RadarViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="a6z-5g-MGC"/>
-                        <viewControllerLayoutGuide type="bottom" id="Kxp-q8-uZ1"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ed8-2F-g1R">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U1V-Wv-7N4">
-                                <rect key="frame" x="0.0" y="464" width="320" height="104"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dRU-qt-o6Y" customClass="QBFlatButton">
-                                        <rect key="frame" x="71" y="19" width="178" height="66"/>
-                                        <state key="normal" title="Button">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Searching For Box" id="Txf-WK-IdS"/>
+                    <navigationItem key="navigationItem" title="Searching For Box" id="Txf-WK-IdS">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="O5h-jf-3jo">
+                            <connections>
+                                <action selector="buttonPressed:" destination="hB3-Ch-tIc" id="wJA-he-OP1"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="buttonView" destination="U1V-Wv-7N4" id="kcv-SJ-Ema"/>
-                        <outlet property="searchBtn" destination="dRU-qt-o6Y" id="YEp-iR-TYR"/>
+                        <outlet property="addServerButton" destination="O5h-jf-3jo" id="XMz-B0-EZ7"/>
                         <segue destination="6bK-TY-GB0" kind="modal" identifier="deviceSegue" id="gb8-t6-M0R"/>
                     </connections>
                 </viewController>
@@ -842,6 +831,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="gb8-t6-M0R"/>
-        <segue reference="VNR-5C-VGJ"/>
+        <segue reference="Ee8-Cy-eab"/>
     </inferredMetricsTieBreakers>
 </document>

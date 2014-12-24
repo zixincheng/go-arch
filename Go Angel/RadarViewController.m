@@ -48,15 +48,17 @@
     [self createContourLine];
     
     [self createHand];
-  //  [self createGridSheet];
+    [self start];
+    /*
     [self.searchBtn addTarget:self
                action:@selector(search:)
      forControlEvents:UIControlEventTouchUpInside];
     [self.searchBtn setTitle:@"Search" forState:UIControlStateNormal];
     [self.view addSubview:self.buttonView];
     [self.buttonView addSubview:self.searchBtn];
+     */
 }
-
+/*
 - (void) search:(id)sender {
     UIButton *search = (UIButton *)sender;
     if ([search.currentTitle isEqualToString:@"Search"]) {
@@ -74,6 +76,7 @@
     }
     
 }
+ */
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -95,7 +98,7 @@
 {
     NSLog(@"viewDidAppear");
     // Setup a timer to refresh every 10 seconds
-    
+    [self udpcall];
     [self sendUDPMessage];
 }
 
@@ -359,27 +362,6 @@
     
 }
 
-#define UIColorHex(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
-    
-- (UIColor*)color:(int)i
-{
-    switch (i) {
-        case 0:
-            return UIColorHex(0x122B1C);
-        case 1:
-            return UIColorHex(0x467339);
-        case 2:
-            return UIColorHex(0x78AB46);
-        case 3:
-            return UIColorHex(0xB5ED63);
-        case 4:
-            return UIColorHex(0xF2F7CD);
-        default:
-            break;
-    }
-    return nil;
-}
-
 #pragma mark -
 #pragma mark server connection
 
@@ -399,20 +381,41 @@
     [[alertView textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeURL];
     [[alertView textFieldAtIndex:0] becomeFirstResponder];
     
+    alertView.tag = 1;
+    
     [alertView show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSString *buttonTitle=[alertView buttonTitleAtIndex:buttonIndex];
-    if([buttonTitle isEqualToString:@"Cancel"]) {
-        return;
-    }
-    else if([buttonTitle isEqualToString:@"Connect"]) {
-        NSString *text = [alertView textFieldAtIndex:0].text;
-        
-        if (![text isEqualToString:@""]) {
-            [self authDevice:text];
+    if (alertView.tag == 1) {
+        if([buttonTitle isEqualToString:@"Cancel"]) {
+            return;
         }
+        else if([buttonTitle isEqualToString:@"Connect"]) {
+            NSString *text = [alertView textFieldAtIndex:0].text;
+        
+            if (![text isEqualToString:@""]) {
+                [self authDevice:text];
+            }
+        }
+    } else if (alertView.tag ==2) {
+        if([buttonTitle isEqualToString:@"Cancel"]) {
+            return;
+        }
+        else if([buttonTitle isEqualToString:@"Add"]) {
+            NSString *text = [alertView textFieldAtIndex:0].text;
+            
+            if (![text isEqualToString:@""]) {
+                Server *s = [[Server alloc] init];
+                s.ip = text;
+                s.hostname = @"Unknow";
+                [self.servers addObject:s];
+                [self createTargets:s];
+            }
+        }
+
+        
     }
 }
 
@@ -470,6 +473,19 @@
         });
     }];
 }
+
+- (IBAction)buttonPressed:(id)sender {
+    if (sender == self.addServerButton) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Manually Add Server" message:@"Enter Server IP" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
+        
+        alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        [[alertView textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeURL];
+        [[alertView textFieldAtIndex:0] becomeFirstResponder];
+        alertView.tag =2;
+        [alertView show];
+    }
+}
+
 /*
 #pragma mark - Navigation
 
