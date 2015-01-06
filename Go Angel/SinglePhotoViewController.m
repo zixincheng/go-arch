@@ -37,11 +37,12 @@
   }];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
+- (void) viewDidAppear:(BOOL)animated {  
   [self.navBar setTitle:[NSString stringWithFormat:@"%d / %d", self.selected + 1, self.photos.count]];
 }
 
-- (void)didReceiveMemoryWarning
+- (void
+   )didReceiveMemoryWarning
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.

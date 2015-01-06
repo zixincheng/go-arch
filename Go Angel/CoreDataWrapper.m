@@ -203,6 +203,7 @@
   p.thumbURL     = [object valueForKey:THUMB_URL];
   p.dateUploaded = [object valueForKey:DATE_UPLOADED];
   p.dateCreated  = [object valueForKey:DATE_CREATED];
+  p.remoteID     = [object valueForKey:REMOTE_ID];
   
   return p;
 }
