@@ -89,6 +89,7 @@
 
   if (indexPath.section == 0) {
     cell.textLabel.text = @"All Photos";
+    cell.detailTextLabel.text = @"";
 
     if (allPhotosSelected) {
       cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -100,8 +101,8 @@
   } else {
     NSDictionary *d = [self.allAlbums objectAtIndex:[indexPath row]];
 
-    // Configure the cell...
-    cell.textLabel.text = [d valueForKey:NAME];
+    cell.textLabel.text  = [d valueForKey:NAME];
+    cell.detailTextLabel.text = [d valueForKey:EST_COUNT];
 
     NSString *selString = [d valueForKey:SELECTED];
     if ([selString isEqualToString:@"YES"] && !allPhotosSelected)
