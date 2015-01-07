@@ -121,6 +121,9 @@
 
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  
+  [tableView deselectRowAtIndexPath:indexPath animated:NO];
+  
   // if all photos was selected
   if (indexPath.section == 0) {
     allPhotosSelected = !allPhotosSelected;
@@ -130,8 +133,6 @@
     [self.tableView reloadData];
 
   } else {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-
     NSDictionary *d = [self.allAlbums objectAtIndex:[indexPath row]];
     NSString *selString = [d valueForKey:SELECTED];
     if ([selString isEqualToString:@"NO"]) {
@@ -204,9 +205,9 @@
 
   // load all of the selected albums
   NSMutableArray *arr = [defaults mutableArrayValueForKey:ALBUMS];
-  for (NSString *url in arr) {
-    [self.selected addObject:url];
-    NSLog(@"found selected album %@", url);
+  for (NSString *name in arr) {
+    [self.selected addObject:name];
+    NSLog(@"found selected album %@", name);
   }
 }
 
@@ -222,8 +223,8 @@
   for (NSDictionary *d in self.allAlbums) {
     NSString *selString = [d valueForKey:SELECTED];
     if ([selString isEqualToString:@"YES"]) {
-      NSString *url = [d valueForKey:URL_KEY];
-      [arr addObject:[url description]];
+      NSString *name = [d valueForKey:NAME];
+      [arr addObject:[name description]];
     }
   }
 
@@ -235,10 +236,10 @@
 // load all albums names and urls into array
 - (void)loadAllAlbums {
 
+  [self.allAlbums removeAllObjects];
+  
   // get all the user created albums (not smart ones) using the photo framework
   PHFetchOptions *userAlbumsOptions = [PHFetchOptions new];
-  userAlbumsOptions.predicate =
-      [NSPredicate predicateWithFormat:@"estimatedAssetCount > 0"];
 
   PHFetchResult *userAlbums = [PHAssetCollection
       fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
@@ -247,11 +248,26 @@
 
   [userAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *collection,
                                            NSUInteger idx, BOOL *stop) {
-      NSLog(@"ALBUM: %@ COUNT: %d", collection.localizedTitle, collection.estimatedAssetCount);
+      NSLog(@"ALBUM: %@ COUNT: %lu", collection.localizedTitle, (unsigned long)collection.estimatedAssetCount);
+    
+    NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
+    [d setValue:collection.localizedTitle forKey:NAME];
+    [d setValue:[NSString stringWithFormat:@"%lu", (unsigned long)collection.estimatedAssetCount] forKey:EST_COUNT];
+    if ([self isAlbumSelected:collection.localizedTitle]) {
+      [d setValue:@"YES" forKey:SELECTED];
+    }else {
+      [d setValue:@"NO" forKey:SELECTED];
+    }
+    
+    [self.allAlbums addObject:d];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self.tableView reloadData];
+    });
     
   }];
 
-  [self.allAlbums removeAllObjects];
+//  [self.allAlbums removeAllObjects];
   void (^assetGroupEnumerator)(ALAssetsGroup *, BOOL *) =
       ^(ALAssetsGroup *group, BOOL *stop) {
       if (group != nil) {
@@ -271,7 +287,7 @@
           [d setValue:@"NO" forKey:SELECTED];
         }
 
-        [self.allAlbums addObject:d];
+//        [self.allAlbums addObject:d];
 
         NSLog(@"found album - %@ - %@", groupUrl, groupName);
 
@@ -293,6 +309,16 @@
 - (BOOL)isURLSelected:(NSString *)url {
   for (NSString *u in self.selected) {
     if ([u isEqualToString:[url description]]) {
+      return YES;
+    }
+  }
+  return NO;
+}
+
+// checks to see if the given album is selected by name
+- (BOOL)isAlbumSelected:(NSString *)name {
+  for (NSString *n in self.selected) {
+    if([n isEqualToString:[name description]]) {
       return YES;
     }
   }

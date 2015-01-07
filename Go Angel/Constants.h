@@ -30,6 +30,7 @@
 #define ALBUMS      @"albums"
 #define ALL_PHOTOS  @"allPhotos"
 #define URL_KEY     @"url"
+#define EST_COUNT   @"est_count"
 #define GPS_META    @"gpsMeta"
 #define DOWN_REMOTE @"downRemote"
 #define SAVE_INTO_ALBUM @"saveInAlbum"

@@ -60,6 +60,16 @@
   return NO;
 }
 
+// checks if the given albums name is a selected album
+- (BOOL) albumsIsAllowed: (NSString *) name {
+  for (NSString *n in self.allowedAlbums) {
+    if ([n isEqualToString:[name description]]) {
+      return YES;
+    }
+  }
+  return NO;
+}
+
 // called when an asset in the photo library changes
 - (void) assetChanged: (NSNotification *) notification {
   [self loadLocalImages:NO];
@@ -114,6 +124,11 @@
 
 // load all the local photos from allowed albums to core data
 - (void) loadLocalImages: (BOOL) parseAll {
+  
+  // PHOTO FRAMEWORK METHOD
+  
+  
+  
   
   // Run in the background as it takes a while to get all assets from the library
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -193,7 +208,7 @@
         NSString *groupUrl = [group valueForProperty:ALAssetsGroupPropertyURL];
 
         // only get pictures from the allowed albums
-        if ([self urlIsAllowed:groupUrl]) {
+        if ([self albumsIsAllowed:groupName]) {
           [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetEnumerator];
         }
       }
