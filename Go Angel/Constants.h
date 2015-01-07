@@ -28,6 +28,7 @@
 #define SELECTED    @"selected"
 #define NAME        @"name"
 #define ALBUMS      @"albums"
+#define ALL_PHOTOS  @"allPhotos"
 #define URL_KEY     @"url"
 #define GPS_META    @"gpsMeta"
 #define DOWN_REMOTE @"downRemote"
