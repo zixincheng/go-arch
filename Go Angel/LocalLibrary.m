@@ -42,6 +42,8 @@
 - (void) loadAllowedAlbums {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   
+  allPhotosSeleceted = [defaults boolForKey:ALL_PHOTOS];
+  
   [self.allowedAlbums removeAllObjects];
   NSMutableArray *arr = [defaults mutableArrayValueForKey:ALBUMS];
   for (NSString *url in arr) {
@@ -62,6 +64,7 @@
 
 // checks if the given albums name is a selected album
 - (BOOL) albumsIsAllowed: (NSString *) name {
+  if (allPhotosSeleceted) return YES;
   for (NSString *n in self.allowedAlbums) {
     if ([n isEqualToString:[name description]]) {
       return YES;
