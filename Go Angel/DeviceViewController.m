@@ -117,7 +117,7 @@
   // notification so we know when app comes into foreground
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
-  
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eachPhotoUploaded) name:@"onePhotoUploaded" object:nil];
   // Start networking
   
   self.prevBSSID = [self currentWifiBSSID];
@@ -790,8 +790,8 @@
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
         
         [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:Size inSection:0]];
-        
         [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
+
     }completion:nil];
 }
 -(void)pushNotificationReceived{
@@ -891,5 +891,21 @@
     [self updateUploadCountUI];
 }
 
+- (void)eachPhotoUploaded{
+    self.totalUploadedPhotos += 1;
+    int currentPhotoIndex = (int)self.photos.count-1;
+    //update current uploaded photo onServer value
+    CSPhoto *photo = [self.photos objectAtIndex:currentPhotoIndex];
+    photo.onServer = [self.dataWrapper getCurrentPhotoOnServerVaule:self.localDevice.remoteId CurrentIndex:currentPhotoIndex];
+    [self.photos replaceObjectAtIndex:currentPhotoIndex withObject:photo];
+    NSLog(@"current photo onServer value is: %@", photo.onServer);
+    
+    NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+    [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:currentPhotoIndex inSection:0]];
+    dispatch_async(dispatch_get_main_queue(), ^ {
+        [self.collectionView reloadItemsAtIndexPaths:arrayWithIndexPaths];
+    });
+    NSLog(@"reload current photo at index : %i", currentPhotoIndex);
+}
 @end
 
