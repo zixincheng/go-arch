@@ -10,6 +10,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "CSPhoto.h"
 
+@import Photos;
+
 
 // class to load images into a uiimage view
 // it should handle all caching and locations for you
