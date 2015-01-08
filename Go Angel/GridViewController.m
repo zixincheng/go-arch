@@ -47,6 +47,11 @@
   self.photos = [self.dataWrapper getPhotos:self.device.remoteId];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"view appear");
+    [self clearCellSelections];
+}
+
 - (void) viewDidAppear:(BOOL)animated {
   // get photo async
 //  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -90,7 +95,6 @@
   
   if (kind == UICollectionElementKindSectionHeader) {
     PhotoSectionHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:PHOTO_HEADER forIndexPath:indexPath];
-      NSLog(@"indexpath %@",indexPath);
     if (self.photos != nil) {
       NSString *title = [NSString stringWithFormat:@"%d Photos", self.photos.count];
       headerView.lblHeader.text = title;
@@ -209,22 +213,11 @@
 -(void)alertView:(UIAlertView *)alertView
 clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
+        [self clearCellSelections];
         self.collectionView.allowsMultipleSelection = NO;
         enableEdit = NO;
         self.editBtn.title = @"Delete";
     } else if (buttonIndex == 1){
-        NSArray *selectedIndexPath = [self.collectionView indexPathsForSelectedItems];
-        [self.collectionView performBatchUpdates:^{
-             [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
-             [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
-         } completion:^(BOOL finished){
-             [self.collectionView reloadData];
-         }];
-
-        self.collectionView.allowsMultipleSelection = NO;
-        enableEdit = NO;
-        self.editBtn.title = @"Delete";
-    } else if (buttonIndex == 2) {
         NSArray *selectedIndexPath = [self.collectionView indexPathsForSelectedItems];
         [self.collectionView performBatchUpdates:^{
             [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
@@ -236,9 +229,40 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         self.collectionView.allowsMultipleSelection = NO;
         enableEdit = NO;
         self.editBtn.title = @"Delete";
-        [self.coinsorter DeletePhoto:selectedPhotos];
+    } else if (buttonIndex == 2) {
+        NSString *onserver;
+
+        for (CSPhoto *p in selectedPhotos) {
+            if ([p.onServer isEqualToString:@"0"]) {
+                onserver = @"0";
+                break;
+            }
+        }
+        if ([onserver isEqualToString:@"0"]) {
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                              message:@"Can't delete photo on server because it has not been uploaded yet"
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                                    otherButtonTitles:nil];
+            [message show];
+        } else {
+            NSArray *selectedIndexPath = [self.collectionView indexPathsForSelectedItems];
+            [self.collectionView performBatchUpdates:^{
+                [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
+                [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
+            } completion:^(BOOL finished){
+                [self.collectionView reloadData];
+            }];
+
+            self.collectionView.allowsMultipleSelection = NO;
+            enableEdit = NO;
+            self.editBtn.title = @"Delete";
+
+            [self.coinsorter DeletePhoto:selectedPhotos];
+        }
     }
 }
+
 -(void) deleteItemsFromDataSourceAtIndexPaths :(NSArray *)itemPaths{
 
     NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
@@ -250,4 +274,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [self.dataWrapper deletePhotos:itemPaths];
 }
 
+- (void)clearCellSelections {
+    int collectonViewCount = [self.collectionView numberOfItemsInSection:0];
+    for (int i=0; i<=collectonViewCount; i++) {
+        [self.collectionView deselectItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0] animated:YES];
+    }
+}
 @end
