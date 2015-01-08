@@ -129,6 +129,26 @@
     return message;
 }
 
+- (void) deletePhotos:(NSArray *) itemPaths {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    [context performBlock: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+
+        NSError *err;
+        NSArray *result = [context executeFetchRequest:request error:&err];
+
+        if (result == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        for (NSIndexPath *itemPath  in itemPaths) {
+            [context deleteObject:[result objectAtIndex:itemPath.row]];
+        }
+        [context save:nil];
+    }];
+
+}
+
 - (void) addUpdatePhoto:(CSPhoto *)photo {
   
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
