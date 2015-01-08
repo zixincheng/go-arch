@@ -231,7 +231,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Photos" id="59j-Cc-HSr">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="mAX-w3-5Yp">
+                        <barButtonItem key="rightBarButtonItem" title="Delete" id="mAX-w3-5Yp">
                             <connections>
                                 <action selector="editButtonTouched:" destination="VtD-xa-xgp" id="K7r-ZQ-dtF"/>
                             </connections>

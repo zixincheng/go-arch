@@ -14,6 +14,7 @@
 #import "GridCell.h"
 #import "PhotoSectionHeaderView.h"
 #import "PhotoSwipeViewController.h"
+#import "Coinsorter.h"
 
 
 // the grid view for a devices photos
@@ -35,5 +36,7 @@
 @property (nonatomic, strong) CSDevice *device;
 @property (nonatomic, assign) BOOL currentUploading;
 @property (nonatomic, assign) int totalUploadedPhotos;
+
+@property (nonatomic, strong) Coinsorter *coinsorter;
 
 @end

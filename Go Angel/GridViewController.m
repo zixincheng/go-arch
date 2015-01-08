@@ -37,6 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
     selectedPhotos = [NSMutableArray array];
     // Do any additional setup after loading the view.
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eachPhotoUploaded) name:@"onePhotoUploaded" object:nil];
@@ -89,7 +90,7 @@
   
   if (kind == UICollectionElementKindSectionHeader) {
     PhotoSectionHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:PHOTO_HEADER forIndexPath:indexPath];
-    
+      NSLog(@"indexpath %@",indexPath);
     if (self.photos != nil) {
       NSString *title = [NSString stringWithFormat:@"%d Photos", self.photos.count];
       headerView.lblHeader.text = title;
@@ -189,15 +190,64 @@
 
 - (IBAction)editButtonTouched:(id)sender {
     UIBarButtonItem *editbtn =  (UIBarButtonItem *)sender;
-    if ([editbtn.title isEqualToString:@"Edit"]) {
+    if ([editbtn.title isEqualToString:@"Delete"]) {
         self.collectionView.allowsMultipleSelection = YES;
         enableEdit = YES;
         self.editBtn.title = @"Done";
     } else {
+
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete"
+                                                          message:@"Delete Selected Photos?"
+                                                         delegate:self
+                                                cancelButtonTitle:@"Cancel"
+                                                otherButtonTitles:@"Delete Only Locally", @"Delete Both Locally and Remote", nil];
+        [message show];
+
+    }
+}
+
+-(void)alertView:(UIAlertView *)alertView
+clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
         self.collectionView.allowsMultipleSelection = NO;
         enableEdit = NO;
-        self.editBtn.title = @"Edit";
+        self.editBtn.title = @"Delete";
+    } else if (buttonIndex == 1){
+        NSArray *selectedIndexPath = [self.collectionView indexPathsForSelectedItems];
+        [self.collectionView performBatchUpdates:^{
+             [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
+             [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
+         } completion:^(BOOL finished){
+             [self.collectionView reloadData];
+         }];
+
+        self.collectionView.allowsMultipleSelection = NO;
+        enableEdit = NO;
+        self.editBtn.title = @"Delete";
+    } else if (buttonIndex == 2) {
+        NSArray *selectedIndexPath = [self.collectionView indexPathsForSelectedItems];
+        [self.collectionView performBatchUpdates:^{
+            [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
+            [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
+        } completion:^(BOOL finished){
+            [self.collectionView reloadData];
+        }];
+
+        self.collectionView.allowsMultipleSelection = NO;
+        enableEdit = NO;
+        self.editBtn.title = @"Delete";
+        [self.coinsorter DeletePhoto:selectedPhotos];
     }
+}
+-(void) deleteItemsFromDataSourceAtIndexPaths :(NSArray *)itemPaths{
+
+    NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+    for (NSIndexPath *itemPath  in itemPaths) {
+        [indexSet addIndex:itemPath.row];
+    }
+    [self.photos removeObjectsAtIndexes:indexSet];
+
+    [self.dataWrapper deletePhotos:itemPaths];
 }
 
 @end
