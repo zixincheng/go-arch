@@ -3,7 +3,7 @@
 //  Go Angel
 //
 // acdGO data backup and recovery
-// © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
+// © acdGO Softwa:qre, Ltd., 2013-2014, All Rights Reserved.
 //
 
 #import "Coinsorter.h"
@@ -12,12 +12,15 @@
 #define UUID_ACCOUNT @"UID_ACCOUNT"
 #define PING_TIMEOUT 3
 
-@implementation Coinsorter
+@implementation Coinsorter {
+    
+    NSMutableArray * deletePhotoId;
+}
 
 
 -(id) initWithWrapper:(CoreDataWrapper *)wrap {
   self = [super init];
-  
+  deletePhotoId = [NSMutableArray array];
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
   account = appDelegate.account;
   
@@ -316,6 +319,36 @@
   NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: deviceName, @"Device_Name", manufacturer, @"Manufacturer", firmware_version, @"Firmware",apnId, @"apnId",nil];
   
   return mapData;
+}
+
+- (void) DeletePhoto:(NSMutableArray*) deletePhotos {
+     NSLog(@"delete");
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
+    NSMutableURLRequest *request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/photos/delete"]];
+    
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSError *error;
+    for (CSPhoto *p in deletePhotos) {
+        NSString * photoId = p.remoteID;
+        [deletePhotoId addObject:photoId];
+    }
+    
+    NSDictionary *deleted = [[NSDictionary alloc] initWithObjectsAndKeys:deletePhotoId,@"restore", nil];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:deleted options:0 error:&error];
+    [request setHTTPBody:postData];
+    NSLog(@"%@",postData);
+    NSURLSessionDataTask *postDataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSError *jsonError;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        NSLog(@"delete result %@ ", jsonData);
+        // TODO: check to see if device update worked
+        // by reading json response
+    }];
+    
+    [postDataTask resume];
 }
 
 - (void) getPhotos:(int) lastId callback: (void (^) (NSMutableArray *photos)) callback {
