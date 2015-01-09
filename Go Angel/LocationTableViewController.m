@@ -17,16 +17,57 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  self.onLocation = [defaults boolForKey:CURR_LOC_ON];
+  
+  numberSections = 3;
+  if (!self.onLocation) numberSections = 1;
+  
   // set hidden at start so 'home' doesn't show
   [self.lblName setHidden:YES];
+  
+  self.txtUnit.delegate = self;
 
   [self startStandardUpdates];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+  [self stopStandardUpdates];
+  NSLog(@"stopped watching location");
 }
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
 }
+
+- (IBAction)toggleLocationTagging:(id)sender {
+  self.onLocation = [self.toggleLocation isOn];
+  
+  if (self.onLocation) {
+    numberSections = 3;
+  }else {
+    numberSections = 1;
+  }
+  
+  [self.tableView reloadData];
+  
+  [self saveLocation];
+}
+
+- (IBAction)unitChanged:(id)sender {
+  self.unit = self.txtUnit.text;
+  
+  [self saveLocation];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+  [textField resignFirstResponder];
+  
+  return YES;
+}
+
 
 #pragma mark - Location
 
@@ -37,10 +78,10 @@
     locationManager = [[CLLocationManager alloc] init];
 
   locationManager.delegate = self;
-  locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+  locationManager.desiredAccuracy = kCLLocationAccuracyBest;
 
   // Set a movement threshold for new events.
-  locationManager.distanceFilter = 100; // meters
+  locationManager.distanceFilter = 10; // meters
 
   // Check for iOS 8. Without this guard the code will crash with "unknown
   // selector" on iOS 7.
@@ -94,83 +135,40 @@
                            [p.addressDictionary objectForKey:@"Country"];
                        self.city = [p.addressDictionary objectForKey:@"City"];
                        self.name = [p.addressDictionary objectForKey:@"Name"];
+                       
+                       self.unit = self.txtUnit.text;
 
                        [self.lblName setText:self.name];
                        [self.lblName setHidden:NO];
+                       
+                       [self saveLocation];
                      }
                  }];
 }
 
+- (void) saveLocation {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  
+  [defaults setObject:[NSString stringWithFormat:@"%f", self.currentLocation.coordinate.latitude] forKey:CURR_LOC_LAT];
+  [defaults setObject:[NSString stringWithFormat:@"%f", self.currentLocation.coordinate.longitude] forKey:CURR_LOC_LONG];
+  [defaults setObject:self.name forKey:CURR_LOC_NAME];
+  [defaults setObject:self.unit forKey:CURR_LOC_UNIT];
+  [defaults setBool:self.onLocation forKey:CURR_LOC_ON];
+  
+  [defaults synchronize];
+  
+  NSLog(@"saving location settings to defaults");
+}
+
 #pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+  return numberSections;
+}
 
 - (CGFloat)tableView:(UITableView *)tableView
     heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   return 44;
 }
-
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView
-cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView
-dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#>
-forIndexPath:indexPath];
-
-    // Configure the cell...
-
-    return cell;
-}
-*/
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath
-*)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView
-commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath]
-withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the
-array, and add a new row to the table view
-    }
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath
-*)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath
-*)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little
-preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

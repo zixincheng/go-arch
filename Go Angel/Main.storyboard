@@ -832,6 +832,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4EL-GI-c5j">
                                                     <rect key="frame" x="263" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="toggleLocationTagging:" destination="lTK-s4-vBM" eventType="valueChanged" id="el1-Qe-nO4"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -915,10 +918,13 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1my-zX-Qdz">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="1my-zX-Qdz">
                                                     <rect key="frame" x="208" y="7" width="97" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="namePhonePad"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="namePhonePad" returnKeyType="done"/>
+                                                    <connections>
+                                                        <action selector="unitChanged:" destination="lTK-s4-vBM" eventType="editingChanged" id="P6Z-Gp-kzK"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -936,6 +942,7 @@
                         <outlet property="lblLatitude" destination="s4v-JD-5Fy" id="YaV-3X-JP3"/>
                         <outlet property="lblLongitude" destination="iSm-Lx-NYM" id="HNQ-ga-Lm8"/>
                         <outlet property="lblName" destination="LNa-vk-dt8" id="iKU-C1-5E7"/>
+                        <outlet property="toggleLocation" destination="4EL-GI-c5j" id="qgx-Ho-zuy"/>
                         <outlet property="txtUnit" destination="1my-zX-Qdz" id="4CA-k8-Tah"/>
                     </connections>
                 </tableViewController>
