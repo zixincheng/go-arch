@@ -134,6 +134,10 @@
     [context performBlock: ^{
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
 
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated"
+                                                                       ascending:NO];
+        [request setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
+
         NSError *err;
         NSArray *result = [context executeFetchRequest:request error:&err];
 

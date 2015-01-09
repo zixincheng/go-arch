@@ -278,6 +278,11 @@
 
 // called when the controllers view will become forground
 - (void)viewWillAppear:(BOOL)animated {
+    self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
+    [self.collectionView reloadData];
+    [self updateUploadCountUI];
+    self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
+    [self checkDeivceStatus];
   [super viewWillAppear:animated];
   //    self.navigationController.navigationBar.barTintColor = [UIColor greenColor];
   //    self.navigationController.navigationBar.translucent = NO;
@@ -403,6 +408,7 @@
     [self.progressUpload setProgress:0.0 animated:YES];
     
     [self updateUploadCountUI];
+      [self updateUploadingStatus];
     
     NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
     [self.coinsorter uploadPhotos:photos upCallback:^() {
@@ -762,6 +768,7 @@
     [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^{
            __block UIImage *newimage = [self markedImageStatus:image checkImageStatus:photo.onServer uploadingImage:self.currentlyUploading];
+            NSLog(self.currentlyUploading ? @"Yes":@"No");
             [imageView setImage:newimage];
             
             //      if ([indexPath row] == bottom_selected) {
@@ -783,16 +790,25 @@
 
 -(void) addNewcell: (CSPhoto *)photos{
     
-    long Size = self.photos.count;
+    int Size = (int)self.photos.count;
     [self.collectionView performBatchUpdates:^{
         
        [self.photos addObject:photos];
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
         
-        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:Size inSection:0]];
+        self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
+        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
         [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
 
-    }completion:nil];
+        if (Size != 0) {
+            [self.collectionView reloadItemsAtIndexPaths:arrayWithIndexPaths];
+        }
+
+    }completion:^(BOOL finished) {
+        if (finished) {
+            self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
+        }
+    }];
 }
 -(void)pushNotificationReceived{
     NSLog(@"recieved notification");
@@ -892,20 +908,51 @@
 }
 
 - (void)eachPhotoUploaded{
+    if (self.unUploadedPhotos == 0) {
+        dispatch_async(dispatch_get_main_queue(), ^ {
+            CSPhoto *photo = [self.photos objectAtIndex:0];
+            photo.onServer = [self.dataWrapper getCurrentPhotoOnServerVaule:self.localDevice.remoteId CurrentIndex:0];
+            [self.photos replaceObjectAtIndex:0 withObject:photo];
+            NSLog(@"current photo onServer value is: %@", photo.onServer);
+
+            NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+            [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
+            dispatch_async(dispatch_get_main_queue(), ^ {
+                [self.collectionView reloadItemsAtIndexPaths:arrayWithIndexPaths];
+            });
+            NSLog(@"reload current photo at index : %i", 0);
+
+        });
+    } else {
     self.totalUploadedPhotos += 1;
-    int currentPhotoIndex = (int)self.photos.count-1;
+    int currentPhotoIndex = (int)self.unUploadedPhotos;
     //update current uploaded photo onServer value
     CSPhoto *photo = [self.photos objectAtIndex:currentPhotoIndex];
     photo.onServer = [self.dataWrapper getCurrentPhotoOnServerVaule:self.localDevice.remoteId CurrentIndex:currentPhotoIndex];
     [self.photos replaceObjectAtIndex:currentPhotoIndex withObject:photo];
     NSLog(@"current photo onServer value is: %@", photo.onServer);
-    
+
     NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
     [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:currentPhotoIndex inSection:0]];
     dispatch_async(dispatch_get_main_queue(), ^ {
         [self.collectionView reloadItemsAtIndexPaths:arrayWithIndexPaths];
     });
     NSLog(@"reload current photo at index : %i", currentPhotoIndex);
+    }
+}
+
+-(void) updateUploadingStatus {
+    NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+    if (self.currentlyUploading) {
+        for (int i = 0; i < self.unUploadedPhotos; i++) {
+                    [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^ {
+            [self.collectionView reloadItemsAtIndexPaths:arrayWithIndexPaths];
+        });
+
+    }
+
 }
 @end
 
