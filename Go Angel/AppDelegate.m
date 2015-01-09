@@ -29,6 +29,13 @@
   if (deviceName == nil) {
     [defaults setObject:[[UIDevice currentDevice] name] forKey:@"deviceName"];
   }
+  
+  // check if the 'tag photo with location' setting has been set before
+  // if it hasn't, set it to true
+  BOOL onLocation = [defaults boolForKey:CURR_LOC_ON];
+  if (!onLocation) {
+    [defaults setBool:YES forKey:CURR_LOC_ON];
+  }
     
    UIUserNotificationSettings *settings =
      [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert |
