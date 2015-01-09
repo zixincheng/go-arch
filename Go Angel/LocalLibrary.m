@@ -37,15 +37,16 @@
 
 #pragma mark - Load Local Images
 
-
 // get the allowed albums from user defaults and load into array
 - (void) loadAllowedAlbums {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   
+  allPhotosSeleceted = [defaults boolForKey:ALL_PHOTOS];
+  
   [self.allowedAlbums removeAllObjects];
   NSMutableArray *arr = [defaults mutableArrayValueForKey:ALBUMS];
-  for (NSString *url in arr) {
-    [self.allowedAlbums addObject:url];
+  for (NSString *name in arr) {
+    [self.allowedAlbums addObject:name];
   }
 }
 
@@ -60,12 +61,23 @@
   return NO;
 }
 
+// checks if the given albums name is a selected album
+- (BOOL) albumsIsAllowed: (NSString *) name {
+  if (allPhotosSeleceted) return YES;
+  for (NSString *n in self.allowedAlbums) {
+    if ([n isEqualToString:[name description]]) {
+      return YES;
+    }
+  }
+  return NO;
+}
+
 // called when an asset in the photo library changes
 - (void) assetChanged: (NSNotification *) notification {
   [self loadLocalImages:NO];
 }
 
-// add asset to core data
+// add alasset to core data
 - (CSPhoto *) addAsset: (ALAsset *) asset {
   NSURL *url = asset.defaultRepresentation.url;
   
@@ -97,6 +109,25 @@
     return photo;
 }
 
+// add phasset to core data
+- (CSPhoto *) addPhoto: (PHAsset *) asset {
+  CSPhoto *photo = [[CSPhoto alloc] init];
+  
+  photo.deviceId = account.cid;
+  photo.onServer = @"0";
+  photo.dateCreated = asset.creationDate;
+  
+  // add photo to core data
+  BOOL added = [self.dataWrapper addPhoto: photo];
+  if (added) {
+    if (self.addCallback != nil) {
+      self.addCallback();
+    }
+  }
+  
+  return photo;
+}
+
 - (void)thisImage:(UIImage *)image hasBeenSavedInPhotoAlbumWithError:(NSError *)error usingContextInfo:(void*)ctxInfo {
   if (error) {
     // Do anything needed to handle the error or display it to the user
@@ -114,6 +145,77 @@
 
 // load all the local photos from allowed albums to core data
 - (void) loadLocalImages: (BOOL) parseAll {
+  
+  // PHOTO FRAMEWORK METHOD - TODO: FInd wat to get disk url for PHAsset
+//  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    
+//    // the latest date that is stored in the user defaults
+//    NSDate *latestStored = [defaults objectForKey:DATE];
+//    
+//    // this is the new latest date that we will set after
+//    // getting all of the photos
+//    __block NSDate *newLatest = [latestStored copy];
+//    
+//    PHFetchOptions *userAlbumsOptions = [PHFetchOptions new];
+//
+//    NSLog(@"\n\n\n");
+//    
+//    // TODO: Fix when All Photos is selected, cannot first go through collections
+//    
+//    NSMutableArray *parrAlbums = [NSMutableArray array];
+//    for (NSString *name in self.allowedAlbums) {
+//      [parrAlbums addObject:[NSPredicate predicateWithFormat:@"title == %@", name]];
+//      NSLog(@"ALLOWED ALBUM IS %@", name);
+//    }
+//    NSPredicate *compoundpredAlbums = [NSCompoundPredicate orPredicateWithSubpredicates:parrAlbums];
+//    userAlbumsOptions.predicate = compoundpredAlbums;
+//    
+//    PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:userAlbumsOptions];
+//    
+//    [userAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+//      PHFetchOptions *onlyImagesOptions = [PHFetchOptions new];
+//      
+//      NSMutableArray *parrPhotos = [NSMutableArray array];
+//      [parrPhotos addObject:[NSPredicate predicateWithFormat:@"mediaType = %i", PHAssetMediaTypeImage]];
+//      
+//      // only add date predicate if we don't want to parse all photos
+//      if (!parseAll && latestStored != nil) [parrPhotos addObject:[NSPredicate predicateWithFormat:@"creationDate > %@", latestStored]];
+//      NSPredicate *compoundpredPhotos = [NSCompoundPredicate andPredicateWithSubpredicates:parrPhotos];
+//      onlyImagesOptions.predicate = compoundpredPhotos;
+//      
+//      PHFetchResult *result = [PHAsset fetchAssetsInAssetCollection:collection options:onlyImagesOptions];
+//      
+//      NSLog(@"GETTING PHOTOS AFTER %@", latestStored);
+//      
+//      NSLog(@"ALBUM: %@", collection.localizedTitle);
+//      [result enumerateObjectsUsingBlock:^(PHAsset *asset, NSUInteger idx, BOOL *stop) {
+//        NSLog(@"\tPHOTO DATE: %@ LATEST STORED DATE: %@", asset.creationDate, latestStored);
+//
+//        // store the latest date back into the defaults
+//        NSComparisonResult result;
+//        if (newLatest != nil) {
+//          result = [newLatest compare:asset.creationDate];
+//          if (result == NSOrderedAscending) {
+//            newLatest = asset.creationDate;
+//            [defaults setObject:newLatest forKey:DATE];
+//            [defaults synchronize];
+//          }
+//        }else {
+//          newLatest = asset.creationDate;
+//          [defaults setObject:newLatest forKey:DATE];
+//          [defaults synchronize];
+//        }
+//        
+//        [self addPhoto:asset];
+//      }];
+//    }];
+//    
+//    NSLog(@"\n\n\n");
+//  });
+  
+  
+  
   
   // Run in the background as it takes a while to get all assets from the library
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -193,7 +295,7 @@
         NSString *groupUrl = [group valueForProperty:ALAssetsGroupPropertyURL];
 
         // only get pictures from the allowed albums
-        if ([self urlIsAllowed:groupUrl]) {
+        if ([self albumsIsAllowed:groupName]) {
           [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetEnumerator];
         }
       }

@@ -13,6 +13,7 @@
 
 @interface GroupTableViewController : UITableViewController {
   ALAssetsLibrary *assetLibrary;
+  BOOL allPhotosSelected;
 }
 
 // this is the page where the user can select and deselect watched albums
@@ -24,4 +25,5 @@
 @property (nonatomic, strong) NSMutableArray *selected;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) ActivityHistory *log;
+
 @end

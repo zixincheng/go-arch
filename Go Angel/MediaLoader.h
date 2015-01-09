@@ -10,6 +10,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "CSPhoto.h"
 
+@import Photos;
+
 
 // class to load images into a uiimage view
 // it should handle all caching and locations for you
@@ -21,6 +23,7 @@
 @property (strong, nonatomic) NSCache *imageCache;
 
 - (void) loadThumbnail: (CSPhoto *) photo completionHandler: (void (^) (UIImage *image)) completionHandler;
-- (void) loadFullImage: (CSPhoto *) photo completionHandler: (void (^) (UIImage *image)) completionHandler;
+- (void) loadFullScreenImage: (CSPhoto *) photo completionHandler: (void (^) (UIImage *image)) completionHandler;
+- (void) loadFullResImage: (CSPhoto *) photo completionHandler: (void (^) (UIImage *image)) completionHandler;
 
 @end

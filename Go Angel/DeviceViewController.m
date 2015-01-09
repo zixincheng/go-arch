@@ -887,6 +887,7 @@
     [self.dataWrapper addPhoto:p];
     
     self.unUploadedPhotos++;
+    [self addNewcell:p];
     [self updateUploadCountUI];
 }
 

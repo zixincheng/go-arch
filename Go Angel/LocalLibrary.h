@@ -23,6 +23,8 @@
   
   // lock to make asset library loading syncrounous
   NSConditionLock* readLock;
+  
+  BOOL allPhotosSeleceted;
 }
 
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;

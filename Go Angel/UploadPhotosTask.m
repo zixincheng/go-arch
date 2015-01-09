@@ -22,9 +22,9 @@
     NSString *currentVer = [[UIDevice currentDevice] systemVersion];
     NSString *reqVer = @"8.0";
     if([currentVer compare:reqVer options:NSNumericSearch] != NSOrderedAscending) {
-    config = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:[NSString stringWithFormat:@"com.go.upload"]];
+      config = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:[NSString stringWithFormat:@"com.go.upload"]];
     } else {
-        config = [NSURLSessionConfiguration backgroundSessionConfiguration:[NSString stringWithFormat:@"com.go.upload"]];
+      config = [NSURLSessionConfiguration backgroundSessionConfiguration:[NSString stringWithFormat:@"com.go.upload"]];
     }
     
     
@@ -318,12 +318,24 @@ enum {
   }
   
   CSPhoto *p = [self getPhotoWithTaskIdentifier:task.taskIdentifier];
+  
+  NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)task.response;
+  if ([task.response respondsToSelector:@selector(allHeaderFields)]) {
+    NSDictionary *dictionary = [httpResponse allHeaderFields];
+    p.remoteID = [dictionary valueForKey:@"photo_id"];
+  }
+  
+  
+//  NSData * data = [NSJSONSerialization dataWithJSONObject:task.response options:0 error:nil];
+//  NSLog(@"%@", data);
+  
   //  NSLog(@"PHOTO COUNT %d", self.uploadingPhotos.count);
   if (p != nil) {
     NSLog(@"Finsished uploading %@", p.imageURL);
     
     [p onServerSet:YES];
     p.dateUploaded = [NSDate date];
+
     [self.dataWrapper addUpdatePhoto:p];
     
     @synchronized (self.uploadingPhotos) {
