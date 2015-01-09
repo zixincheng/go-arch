@@ -127,11 +127,24 @@
   
   // if all photos was selected
   if (indexPath.section == 0) {
+    
     allPhotosSelected = !allPhotosSelected;
 
     [self colorOtherAlbums];
 
     [self.tableView reloadData];
+    
+    // add log message
+    NSString *message;
+    if (allPhotosSelected) {
+      message = [NSString stringWithFormat:@"Select All Photos, all photos can upload to Arch Box"];
+    }else {
+      message = [NSString stringWithFormat:@"Deslect All Photos, no albums selected"];
+    }
+    
+    self.log.activityLog = message;
+    self.log.timeUpdate = [NSDate date];
+    [self.dataWrapper addUpdateLog:self.log];
 
   } else {
     NSDictionary *d = [self.allAlbums objectAtIndex:[indexPath row]];
