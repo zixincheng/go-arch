@@ -25,6 +25,7 @@
 #import "IASKSpecifier.h"
 #import "IASKSpecifierValuesViewController.h"
 #import "IASKTextField.h"
+#import "IASKMultipleValueSelection.h"
 
 #if !__has_feature(objc_arc)
 #error "IASK needs ARC"
@@ -46,6 +47,8 @@ CGRect IASKCGRectSwap(CGRect rect);
     id                      _currentFirstResponder;
     __weak UIViewController *_currentChildViewController;
     BOOL _reloadDisabled;
+	/// The selected index for every group (in case it's a radio group).
+	NSArray *_selections;
 }
 
 @property (nonatomic, strong) id currentFirstResponder;
@@ -92,7 +95,28 @@ CGRect IASKCGRectSwap(CGRect rect);
     self.tableView.contentOffset = CGPointMake(0, 0);
     self.settingsReader = nil; // automatically initializes itself
     _hiddenKeys = nil;
-    if (!_reloadDisabled) [self.tableView reloadData];
+    if (!_reloadDisabled) {
+		[self.tableView reloadData];
+		[self createSelections];
+	}
+}
+
+- (void)createSelections {
+	NSMutableArray *sectionSelection = [NSMutableArray new];
+	for (int i = 0; i < _settingsReader.numberOfSections; i++) {
+		IASKSpecifier *specifier = [self.settingsReader headerSpecifierForSection:i];
+		if ([specifier.type isEqualToString:kIASKPSRadioGroupSpecifier]) {
+			IASKMultipleValueSelection *selection = [IASKMultipleValueSelection new];
+			selection.tableView = self.tableView;
+			selection.specifier = specifier;
+			selection.section = i;
+			selection.settingsStore = self.settingsStore;
+			[sectionSelection addObject:selection];
+		} else {
+			[sectionSelection addObject:[NSNull null]];
+		}
+	}
+	_selections = sectionSelection;
 }
 
 - (BOOL)isPad {
@@ -169,7 +193,7 @@ CGRect IASKCGRectSwap(CGRect rect);
 	if ([self.settingsStore isKindOfClass:[IASKSettingsStoreUserDefaults class]]) {
 		NSNotificationCenter *dc = NSNotificationCenter.defaultCenter;
 		[dc addObserver:self selector:@selector(userDefaultsDidChange) name:NSUserDefaultsDidChangeNotification object:[NSUserDefaults standardUserDefaults]];
-		[dc addObserver:self selector:@selector(didChangeSettingViaIASK:) name:kIASKAppSettingChanged object:self];
+		[dc addObserver:self selector:@selector(didChangeSettingViaIASK:) name:kIASKAppSettingChanged object:nil];
 		[self userDefaultsDidChange]; // force update in case of changes while we were hidden
 	}
 	[super viewWillAppear:animated];
@@ -579,6 +603,10 @@ CGRect IASKCGRectSwap(CGRect rect);
 			cell.textLabel.textColor = tableView.tintColor;
 		}
 		cell.accessoryType = (specifier.textAlignment == NSTextAlignmentLeft) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+	} else if ([specifier.type isEqualToString:kIASKPSRadioGroupSpecifier]) {
+		NSInteger index = [specifier.multipleValues indexOfObject:specifier.radioGroupValue];
+		cell.textLabel.text = [self.settingsReader titleForStringId:specifier.multipleTitles[index]];
+		[_selections[indexPath.section] updateSelectionInCell:cell indexPath:indexPath];
 	} else {
 		cell.textLabel.text = specifier.title;
 	}
@@ -773,6 +801,8 @@ CGRect IASKCGRectSwap(CGRect rect);
         
     } else if ([[specifier type] isEqualToString:kIASKCustomViewSpecifier] && [self.delegate respondsToSelector:@selector(settingsViewController:tableView:didSelectCustomViewSpecifier:)]) {
         [self.delegate settingsViewController:self tableView:tableView didSelectCustomViewSpecifier:specifier];
+	} else if ([[specifier type] isEqualToString:kIASKPSRadioGroupSpecifier]) {
+		[_selections[indexPath.section] selectRowAtIndexPath:indexPath];
     } else {
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
@@ -837,7 +867,7 @@ static NSDictionary *oldUserDefaults = nil;
 		for (NSString *key in currentDict.allKeys) {
 			if (oldUserDefaults && ![[oldUserDefaults valueForKey:key] isEqual:[currentDict valueForKey:key]]) {
 				NSIndexPath *path = [self.settingsReader indexPathForKey:key];
-				if (path && ![[self.settingsReader specifierForKey:key].type isEqualToString:kIASKCustomViewSpecifier]) {
+				if (path && ![[self.settingsReader specifierForKey:key].type isEqualToString:kIASKCustomViewSpecifier] && [self.tableView.indexPathsForVisibleRows containsObject:path]) {
 					[indexPathsToUpdate addObject:path];
 				}
 			}
@@ -850,9 +880,7 @@ static NSDictionary *oldUserDefaults = nil;
 			}
 		}
 		if (indexPathsToUpdate.count) {
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-				[self.tableView reloadRowsAtIndexPaths:indexPathsToUpdate withRowAnimation:UITableViewRowAnimationNone];
-			});
+			[self.tableView reloadRowsAtIndexPaths:indexPathsToUpdate withRowAnimation:UITableViewRowAnimationAutomatic];
 		}
 	});
 }
