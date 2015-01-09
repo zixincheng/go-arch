@@ -15,47 +15,97 @@
 @implementation LocationTableViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+  [super viewDidLoad];
+
+  // Uncomment the following line to preserve selection between presentations.
+  // self.clearsSelectionOnViewWillAppear = NO;
+
+  // Uncomment the following line to display an Edit button in the navigation
+  // bar for this view controller.
+  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+  [self startStandardUpdates];
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Location
+
+- (void)startStandardUpdates {
+  // Create the location manager if this object does not
+  // already have one.
+  if (nil == locationManager)
+    locationManager = [[CLLocationManager alloc] init];
+
+  locationManager.delegate = self;
+  locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+
+  // Set a movement threshold for new events.
+  locationManager.distanceFilter = 500; // meters
+
+  // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
+  if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+    [locationManager requestWhenInUseAuthorization];
+  }
+  
+  NSLog(@"starting location updates");
+  [locationManager startUpdatingLocation];
+
+  NSLog(@"LOCATION NOW: %@", [locationManager location]);
+}
+
+- (void)stopStandardUpdates {
+  if (locationManager != nil) {
+    [locationManager stopUpdatingLocation];
+  }
+}
+
+// delegate method for location manager
+- (void)locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations {
+  // If it's a relatively recent event, turn off updates to save power.
+  CLLocation *location = [locations lastObject];
+  NSDate *eventDate = location.timestamp;
+  NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+  NSLog(@"latitude %+.6f, longitude %+.6f\n", location.coordinate.latitude,
+        location.coordinate.longitude);
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 #warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+  // Return the number of sections.
+  return 0;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView
+    numberOfRowsInSection:(NSInteger)section {
 #warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+  // Return the number of rows in the section.
+  return 0;
 }
 
 /*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView
+cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView
+dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#>
+forIndexPath:indexPath];
+
     // Configure the cell...
-    
+
     return cell;
 }
 */
 
 /*
 // Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath
+*)indexPath {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
@@ -63,25 +113,31 @@
 
 /*
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView
+commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteRowsAtIndexPaths:@[indexPath]
+withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+        // Create a new instance of the appropriate class, insert it into the
+array, and add a new row to the table view
+    }
 }
 */
 
 /*
 // Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath
+*)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 }
 */
 
 /*
 // Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath
+*)indexPath {
     // Return NO if you do not want the item to be re-orderable.
     return YES;
 }
@@ -90,7 +146,8 @@
 /*
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
+// In a storyboard-based application, you will often want to do a little
+preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
