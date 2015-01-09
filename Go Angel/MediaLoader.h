@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSCache *imageCache;
 
 - (void) loadThumbnail: (CSPhoto *) photo completionHandler: (void (^) (UIImage *image)) completionHandler;
-- (void) loadFullImage: (CSPhoto *) photo completionHandler: (void (^) (UIImage *image)) completionHandler;
+- (void) loadFullScreenImage: (CSPhoto *) photo completionHandler: (void (^) (UIImage *image)) completionHandler;
+- (void) loadFullResImage: (CSPhoto *) photo completionHandler: (void (^) (UIImage *image)) completionHandler;
 
 @end

@@ -11,8 +11,6 @@
 #define IMAGE_LOCAL 1
 #define IMAGE_REMOTE 2
 
-#define SQUARE_THUMB_SIZE 150
-
 @implementation MediaLoader
 
 - (id)init {
@@ -40,9 +38,18 @@
   }
 }
 
+
+- (void) loadFullScreenImage:(CSPhoto *)photo completionHandler:(void (^)(UIImage *))completionHandler {
+  [self loadFullImage:photo fullRes:NO completionHandler:completionHandler];
+}
+
+- (void) loadFullResImage:(CSPhoto *)photo completionHandler:(void (^)(UIImage *))completionHandler {
+  [self loadFullImage:photo fullRes:YES completionHandler:completionHandler];
+}
+
 // full screen image with async callback
 // loaded uiimage passed to completionHandler when finished
-- (void)loadFullImage:(CSPhoto *)photo
+- (void)loadFullImage:(CSPhoto *)photo fullRes:(BOOL) fullRes
     completionHandler:(void (^)(UIImage *))completionHandler {
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
       NSURL *url = [NSURL URLWithString:photo.imageURL];
@@ -66,10 +73,15 @@
           // only use the resolution of the screen instead of the full quality image
           CGFloat width = [UIScreen mainScreen].bounds.size.width;
           CGFloat height = [UIScreen mainScreen].bounds.size.height;
+          CGSize targetSize = CGSizeMake(width, height);
+          
+          if (fullRes) {
+            targetSize = PHImageManagerMaximumSize;
+          }
           
             [[PHImageManager defaultManager]
                 requestImageForAsset:asset
-                          targetSize:CGSizeMake(width, height)
+                          targetSize:targetSize
                          contentMode:PHImageContentModeDefault
                              options:options
                        resultHandler:^(UIImage *image, NSDictionary *info){
@@ -155,6 +167,8 @@
       if (type == IMAGE_LOCAL) {
         // load the image from the phimagemanager
         
+        // WHEN LOADING THE THUMBNAILS, IT SEEMS TO BE BETTER NOT TO USE THE PHIMAGEMANAGER
+        // AND CONTINUING USING THE ASSET LIBRARY
 //        PHFetchResult *result =
 //        [PHAsset fetchAssetsWithALAssetURLs:[NSArray arrayWithObject:url]
 //                                    options:nil];
