@@ -371,7 +371,7 @@
 #pragma mark -
 #pragma mark Coinsorter api
 
-// get devices, photos, and upload from server
+// get devices, photos from server
 - (void) syncAllFromApi {
   
   BOOL downRemote = [defaults boolForKey:DOWN_REMOTE];
