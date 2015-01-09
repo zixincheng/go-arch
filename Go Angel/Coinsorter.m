@@ -41,6 +41,8 @@
   [request setURL:url];
   [request setHTTPMethod:@"GET"];
   [request setAllHTTPHeaderFields:headers];
+  [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+  [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   
   NSLog(@"making get request to %@", urlString);
   
@@ -57,6 +59,8 @@
   [request setURL:url];
   [request setHTTPMethod:@"POST"];
   [request setAllHTTPHeaderFields:headers];
+  [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+  [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   
   NSLog(@"making post request to %@", urlString);
   

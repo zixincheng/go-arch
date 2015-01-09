@@ -115,8 +115,10 @@
   [object setValue:photo.dateCreated forKeyPath:DATE_CREATED];
   [object setValue:photo.dateUploaded forKey:DATE_UPLOADED];
   
+  NSLog(@"REMOTE ID %@", photo.remoteID);
+  
   if (photo.remoteID != nil) {
-    [object setValue:photo.remoteID forKey:REMOTE_ID];
+    [object setValue:[NSString stringWithFormat:@"%@", photo.remoteID] forKey:REMOTE_ID];
   }
   
   return object;
