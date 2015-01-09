@@ -28,7 +28,7 @@
   // Do any additional setup after loading the view.
 
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-  [appDelegate.mediaLoader loadFullImage:self.selectedPhoto
+  [appDelegate.mediaLoader loadFullScreenImage:self.selectedPhoto
                        completionHandler:^(UIImage *image) {
 
                            dispatch_async(dispatch_get_main_queue(), ^{
@@ -53,19 +53,20 @@
 
 - (void)shareAction {
   
-  UIImage *image = [self.imageView image];
-  
-  NSArray *objectsToShare = @[ image ];
-
-  UIActivityViewController *activityVC =
-      [[UIActivityViewController alloc] initWithActivityItems:objectsToShare
-                                        applicationActivities:nil];
-
-  NSArray *excludeActivities = @[ ];
-
-  activityVC.excludedActivityTypes = excludeActivities;
-
-  [self presentViewController:activityVC animated:YES completion:nil];
+  AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+  [appDelegate.mediaLoader loadFullResImage:self.selectedPhoto completionHandler:^(UIImage *image) {
+    NSArray *objectsToShare = @[ image ];
+    
+    UIActivityViewController *activityVC =
+    [[UIActivityViewController alloc] initWithActivityItems:objectsToShare
+                                      applicationActivities:nil];
+    
+    NSArray *excludeActivities = @[ ];
+    
+    activityVC.excludedActivityTypes = excludeActivities;
+    
+    [self presentViewController:activityVC animated:YES completion:nil];
+  }];
 }
 
 - (void)didReceiveMemoryWarning {
