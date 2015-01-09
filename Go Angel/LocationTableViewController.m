@@ -16,6 +16,9 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  
+  // set hidden at start so 'home' doesn't show
+  [self.lblName setHidden:YES];
 
   [self startStandardUpdates];
 }
@@ -86,11 +89,6 @@
   [geocoder reverseGeocodeLocation:location
                  completionHandler:^(NSArray *placemarks, NSError *error) {
                      if ([placemarks count] > 0) {
-                       // with the placemark you can now retrieve the city name
-                       //                       NSString *city =
-                       //                       [placemarks.lastObject.addressDictionary
-                       //                       objectForKey:(NSString*)
-                       //                       kABPersonAddressCityKey];
                        CLPlacemark *p = [placemarks lastObject];
                        self.country =
                            [p.addressDictionary objectForKey:@"Country"];
@@ -98,9 +96,7 @@
                        self.name = [p.addressDictionary objectForKey:@"Name"];
 
                        [self.lblName setText:self.name];
-                       NSLog(@"Current Location %@", self.name);
-                       
-                       [self.tableView reloadData];
+                       [self.lblName setHidden:NO];
                      }
                  }];
 }

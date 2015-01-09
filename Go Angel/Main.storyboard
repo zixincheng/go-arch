@@ -935,7 +935,7 @@
                     <connections>
                         <outlet property="lblLatitude" destination="s4v-JD-5Fy" id="YaV-3X-JP3"/>
                         <outlet property="lblLongitude" destination="iSm-Lx-NYM" id="HNQ-ga-Lm8"/>
-                        <outlet property="lblName" destination="LNa-vk-dt8" id="DxQ-cC-jSC"/>
+                        <outlet property="lblName" destination="LNa-vk-dt8" id="iKU-C1-5E7"/>
                         <outlet property="txtUnit" destination="1my-zX-Qdz" id="4CA-k8-Tah"/>
                     </connections>
                 </tableViewController>
