@@ -12,6 +12,19 @@
 
 @interface LocationTableViewController : UITableViewController <CLLocationManagerDelegate> {
   CLLocationManager *locationManager;
+  CLGeocoder *geocoder;
 }
+
+@property (nonatomic, strong) CLLocation *currentLocation;
+
+@property (weak, nonatomic) IBOutlet UILabel *lblLatitude;
+@property (weak, nonatomic) IBOutlet UILabel *lblLongitude;
+@property (weak, nonatomic) IBOutlet UITextField *txtUnit;
+@property (weak, nonatomic) IBOutlet UILabel *lblName;
+
+@property (nonatomic, strong) NSString *country;
+@property (nonatomic, strong) NSString *city;
+@property (nonatomic, strong) NSString *name;
+
 
 @end

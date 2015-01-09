@@ -17,13 +17,6 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  // Uncomment the following line to preserve selection between presentations.
-  // self.clearsSelectionOnViewWillAppear = NO;
-
-  // Uncomment the following line to display an Edit button in the navigation
-  // bar for this view controller.
-  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
   [self startStandardUpdates];
 }
 
@@ -41,20 +34,20 @@
     locationManager = [[CLLocationManager alloc] init];
 
   locationManager.delegate = self;
-  locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+  locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
 
   // Set a movement threshold for new events.
-  locationManager.distanceFilter = 500; // meters
+  locationManager.distanceFilter = 100; // meters
 
-  // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
-  if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+  // Check for iOS 8. Without this guard the code will crash with "unknown
+  // selector" on iOS 7.
+  if ([locationManager
+          respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
     [locationManager requestWhenInUseAuthorization];
   }
-  
+
   NSLog(@"starting location updates");
   [locationManager startUpdatingLocation];
-
-  NSLog(@"LOCATION NOW: %@", [locationManager location]);
 }
 
 - (void)stopStandardUpdates {
@@ -67,26 +60,56 @@
 - (void)locationManager:(CLLocationManager *)manager
      didUpdateLocations:(NSArray *)locations {
   // If it's a relatively recent event, turn off updates to save power.
-  CLLocation *location = [locations lastObject];
-  NSDate *eventDate = location.timestamp;
-  NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
-  NSLog(@"latitude %+.6f, longitude %+.6f\n", location.coordinate.latitude,
-        location.coordinate.longitude);
+  self.currentLocation = [locations lastObject];
+
+  //  NSLog(@"latitude %+.6f, longitude %+.6f\n",
+  //        self.currentLocation.coordinate.latitude,
+  //        self.currentLocation.coordinate.longitude);
+
+  [self updateLocationLabels];
+  [self geocodeLocation:self.currentLocation];
+}
+
+- (void)updateLocationLabels {
+  [self.lblLatitude
+      setText:[NSString stringWithFormat:@"%f", self.currentLocation.coordinate
+                                                    .latitude]];
+  [self.lblLongitude
+      setText:[NSString stringWithFormat:@"%f", self.currentLocation.coordinate
+                                                    .longitude]];
+}
+
+- (void)geocodeLocation:(CLLocation *)location {
+  if (!geocoder)
+    geocoder = [[CLGeocoder alloc] init];
+
+  [geocoder reverseGeocodeLocation:location
+                 completionHandler:^(NSArray *placemarks, NSError *error) {
+                     if ([placemarks count] > 0) {
+                       // with the placemark you can now retrieve the city name
+                       //                       NSString *city =
+                       //                       [placemarks.lastObject.addressDictionary
+                       //                       objectForKey:(NSString*)
+                       //                       kABPersonAddressCityKey];
+                       CLPlacemark *p = [placemarks lastObject];
+                       self.country =
+                           [p.addressDictionary objectForKey:@"Country"];
+                       self.city = [p.addressDictionary objectForKey:@"City"];
+                       self.name = [p.addressDictionary objectForKey:@"Name"];
+
+                       [self.lblName setText:self.name];
+                       NSLog(@"Current Location %@", self.name);
+                       
+                       [self.tableView reloadData];
+                     }
+                 }];
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-  // Return the number of sections.
-  return 0;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView
-    numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-  // Return the number of rows in the section.
-  return 0;
+- (CGFloat)tableView:(UITableView *)tableView
+    heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  return 44;
 }
 
 /*
