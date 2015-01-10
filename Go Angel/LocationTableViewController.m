@@ -8,6 +8,8 @@
 
 #import "LocationTableViewController.h"
 
+#define NORMAL_SECTIONS_COUNT 4
+
 @interface LocationTableViewController ()
 
 @end
@@ -20,7 +22,7 @@
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   self.onLocation = [defaults boolForKey:CURR_LOC_ON];
   
-  numberSections = 3;
+  numberSections = NORMAL_SECTIONS_COUNT;
   if (!self.onLocation) numberSections = 1;
   
   // set hidden at start so 'home' doesn't show
@@ -45,7 +47,7 @@
   self.onLocation = [self.toggleLocation isOn];
   
   if (self.onLocation) {
-    numberSections = 3;
+    numberSections = NORMAL_SECTIONS_COUNT;
   }else {
     numberSections = 1;
   }
@@ -164,11 +166,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   return numberSections;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView
-    heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 44;
 }
 
 @end
