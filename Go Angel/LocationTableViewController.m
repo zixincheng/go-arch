@@ -23,6 +23,10 @@
   self.onLocation = [defaults boolForKey:CURR_LOC_ON];
   
   numberSections = NORMAL_SECTIONS_COUNT;
+  
+  [self.toggleLocation setOn:self.onLocation];
+  
+  // only show top section if the onLoction is off
   if (!self.onLocation) numberSections = 1;
   
   // set hidden at start so 'home' doesn't show
@@ -30,7 +34,10 @@
   
   self.txtUnit.delegate = self;
 
-  [self startStandardUpdates];
+  // only start updating location if onLocation is true
+  if (self.onLocation) {
+    [self startStandardUpdates];
+  }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -43,11 +50,18 @@
   // Dispose of any resources that can be recreated.
 }
 
+// switch for location tagging was toggled
 - (IBAction)toggleLocationTagging:(id)sender {
   self.onLocation = [self.toggleLocation isOn];
   
   if (self.onLocation) {
     numberSections = NORMAL_SECTIONS_COUNT;
+    
+    // if we haven't started updating location (because it was
+    // first set to false when entering page), then start updating it now
+    if (!hasStartedUpdating) {
+      [self startStandardUpdates];
+    }
   }else {
     numberSections = 1;
   }
@@ -57,12 +71,14 @@
   [self saveLocation];
 }
 
+// text field for unit # was changed
 - (IBAction)unitChanged:(id)sender {
   self.unit = self.txtUnit.text;
   
   [self saveLocation];
 }
 
+// when return button pressed, hide keyboard
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
   [textField resignFirstResponder];
@@ -73,16 +89,24 @@
 
 #pragma mark - Location
 
+// start updating location using location services
 - (void)startStandardUpdates {
+  hasStartedUpdating = YES;
+  
   // Create the location manager if this object does not
   // already have one.
   if (nil == locationManager)
     locationManager = [[CLLocationManager alloc] init];
 
   locationManager.delegate = self;
+  
+  // use best accuracy because the only time we are checking the location
+  // is on this page, so it shouldn't be using to much power
   locationManager.desiredAccuracy = kCLLocationAccuracyBest;
 
   // Set a movement threshold for new events.
+  // we want to be really accurate here as distance between houses
+  // is not that much
   locationManager.distanceFilter = 10; // meters
 
   // Check for iOS 8. Without this guard the code will crash with "unknown
@@ -96,6 +120,7 @@
   [locationManager startUpdatingLocation];
 }
 
+// stop updating location
 - (void)stopStandardUpdates {
   if (locationManager != nil) {
     [locationManager stopUpdatingLocation];
@@ -116,6 +141,7 @@
   [self geocodeLocation:self.currentLocation];
 }
 
+// update the latitude and longitude labels on page
 - (void)updateLocationLabels {
   [self.lblLatitude
       setText:[NSString stringWithFormat:@"%f", self.currentLocation.coordinate
@@ -125,6 +151,7 @@
                                                     .longitude]];
 }
 
+// reverse lookup lat/long to get human readable address
 - (void)geocodeLocation:(CLLocation *)location {
   if (!geocoder)
     geocoder = [[CLGeocoder alloc] init];
@@ -132,6 +159,8 @@
   [geocoder reverseGeocodeLocation:location
                  completionHandler:^(NSArray *placemarks, NSError *error) {
                      if ([placemarks count] > 0) {
+                       
+                       // get address properties of location
                        CLPlacemark *p = [placemarks lastObject];
                        self.country =
                            [p.addressDictionary objectForKey:@"Country"];
@@ -148,6 +177,7 @@
                  }];
 }
 
+// save the current location in the user defaults
 - (void) saveLocation {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   
@@ -157,6 +187,7 @@
   [defaults setObject:self.unit forKey:CURR_LOC_UNIT];
   [defaults setBool:self.onLocation forKey:CURR_LOC_ON];
   
+  // save defaults to disk
   [defaults synchronize];
   
   NSLog(@"saving location settings to defaults");

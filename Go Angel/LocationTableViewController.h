@@ -14,7 +14,11 @@
   CLLocationManager *locationManager;
   CLGeocoder *geocoder;
   
+  // the number of sections currently visible in table view
   NSInteger numberSections;
+  
+  // whether or not we have turned on the location updates
+  BOOL hasStartedUpdating;
 }
 
 @property (nonatomic, strong) CLLocation *currentLocation;
