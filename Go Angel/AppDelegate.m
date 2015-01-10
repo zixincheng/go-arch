@@ -34,7 +34,7 @@
   // if it hasn't, set it to true
   BOOL onLocation = [defaults boolForKey:CURR_LOC_ON];
   if (!onLocation) {
-    [defaults setBool:YES forKey:CURR_LOC_ON];
+    [defaults setBool:NO forKey:CURR_LOC_ON];
   }
     
    UIUserNotificationSettings *settings =
