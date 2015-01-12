@@ -267,42 +267,6 @@
     });
     
   }];
-
-//  [self.allAlbums removeAllObjects];
-  void (^assetGroupEnumerator)(ALAssetsGroup *, BOOL *) =
-      ^(ALAssetsGroup *group, BOOL *stop) {
-      if (group != nil) {
-        NSString *groupName =
-            [group valueForProperty:ALAssetsGroupPropertyName];
-        NSString *groupUrl = [group valueForProperty:ALAssetsGroupPropertyURL];
-
-        NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
-        [d setValue:groupName forKey:NAME];
-        [d setValue:groupUrl forKey:URL_KEY];
-        if ([self isURLSelected:groupUrl]) {
-          [d setValue:@"YES" forKey:SELECTED];
-        } else if ([groupName isEqualToString:SAVE_PHOTO_ALBUM]) {
-          // TODO: Do we always want to have this album selected?
-          //          [d setValue:@"YES" forKey:SELECTED];
-        } else {
-          [d setValue:@"NO" forKey:SELECTED];
-        }
-
-//        [self.allAlbums addObject:d];
-
-        NSLog(@"found album - %@ - %@", groupUrl, groupName);
-
-        dispatch_async(dispatch_get_main_queue(),
-                       ^{ [self.tableView reloadData]; });
-      }
-  };
-
-  // Process!
-  [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
-                              usingBlock:assetGroupEnumerator
-                            failureBlock:^(NSError *error) {
-                                NSLog(@"There is an error");
-                            }];
 }
 
 // checks to see if the given url is selected
