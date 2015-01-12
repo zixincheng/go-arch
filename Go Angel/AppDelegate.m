@@ -36,6 +36,11 @@
   if (!onLocation) {
     [defaults setBool:NO forKey:CURR_LOC_ON];
   }
+  
+  BOOL uploadGPS = [defaults boolForKey:GPS_META];
+  if (!uploadGPS) {
+    [defaults setBool:YES forKey:GPS_META];
+  }
     
    UIUserNotificationSettings *settings =
      [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert |
