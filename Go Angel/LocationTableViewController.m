@@ -168,9 +168,7 @@
                        self.city = [p.addressDictionary objectForKey:@"City"];
                        self.name = [p.addressDictionary objectForKey:@"Name"];
                        self.prov = [p.addressDictionary objectForKey:@"State"];
-                       
-                       NSLog(@"%@", p.addressDictionary);
-                       
+                      
                        self.unit = self.txtUnit.text;
                        
 
