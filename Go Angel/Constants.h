@@ -49,6 +49,7 @@
 #define REMOTE_PATH @"remotePath"
 #define THUMB_URL @"thumbURL"
 #define ON_SERVER @"onServer"
+#define FILE_NAME @"fileName"
 
 // log entity attributes
 #define TIME_UPDATE @"timeUpdate"

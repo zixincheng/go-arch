@@ -114,6 +114,7 @@
   [object setValue:photo.onServer forKey:ON_SERVER];
   [object setValue:photo.dateCreated forKeyPath:DATE_CREATED];
   [object setValue:photo.dateUploaded forKey:DATE_UPLOADED];
+  [object setValue:photo.fileName forKey:FILE_NAME];
   
   NSLog(@"REMOTE ID %@", photo.remoteID);
   
@@ -206,6 +207,7 @@
   p.dateUploaded = [object valueForKey:DATE_UPLOADED];
   p.dateCreated  = [object valueForKey:DATE_CREATED];
   p.remoteID     = [object valueForKey:REMOTE_ID];
+  p.fileName     = [object valueForKey:FILE_NAME];
   
   return p;
 }

@@ -395,6 +395,7 @@
         
         photo.thumbURL = fullPath;
         photo.imageURL = fullPath;
+        photo.fileName = [NSString stringWithFormat:@"%@.jpg", photoId];
         
         NSData *data = [self dataFromBase64EncodedString:thumbnail];
         [data writeToFile:filePath atomically:YES];
