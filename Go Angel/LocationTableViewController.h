@@ -31,7 +31,9 @@
 
 
 @property (nonatomic, strong) NSString *country;
+@property (nonatomic, strong) NSString *countryCode;
 @property (nonatomic, strong) NSString *city;
+@property (nonatomic, strong) NSString *prov;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *unit;
 @property (nonatomic) BOOL onLocation;

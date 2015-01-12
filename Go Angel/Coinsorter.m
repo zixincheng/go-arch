@@ -87,8 +87,9 @@
         connectCallback(NO);
         NSLog(@"ping failed");
       }
-    }else {
+    } else {
       NSLog(@"ping failed");
+      
       connectCallback(NO);
     }
   }];

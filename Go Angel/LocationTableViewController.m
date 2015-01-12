@@ -164,10 +164,15 @@
                        CLPlacemark *p = [placemarks lastObject];
                        self.country =
                            [p.addressDictionary objectForKey:@"Country"];
+                       self.countryCode = [p.addressDictionary objectForKey:@"CountryCode"];
                        self.city = [p.addressDictionary objectForKey:@"City"];
                        self.name = [p.addressDictionary objectForKey:@"Name"];
+                       self.prov = [p.addressDictionary objectForKey:@"State"];
+                       
+                       NSLog(@"%@", p.addressDictionary);
                        
                        self.unit = self.txtUnit.text;
+                       
 
                        [self.lblName setText:self.name];
                        [self.lblName setHidden:NO];
@@ -185,6 +190,11 @@
   [defaults setObject:[NSString stringWithFormat:@"%f", self.currentLocation.coordinate.longitude] forKey:CURR_LOC_LONG];
   [defaults setObject:self.name forKey:CURR_LOC_NAME];
   [defaults setObject:self.unit forKey:CURR_LOC_UNIT];
+  [defaults setObject:self.country forKey:CURR_LOC_COUNTRY];
+  [defaults setObject:self.countryCode forKey:CURR_LOC_COUN_CODE];
+  [defaults setObject:self.prov forKey:CURR_LOC_PROV];
+  [defaults setObject:self.city forKey:CURR_LOC_CITY];
+  
   [defaults setBool:self.onLocation forKey:CURR_LOC_ON];
   
   // save defaults to disk
