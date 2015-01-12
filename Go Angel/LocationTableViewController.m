@@ -29,8 +29,10 @@
   // only show top section if the onLoction is off
   if (!self.onLocation) numberSections = 1;
   
-  // set hidden at start so 'home' doesn't show
+  // set hidden at start so 'home/lat/long' doesn't show
   [self.lblName setHidden:YES];
+  [self.lblLatitude setHidden:YES];
+  [self.lblLongitude setHidden:YES];
   
   self.txtUnit.delegate = self;
 
@@ -149,6 +151,9 @@
   [self.lblLongitude
       setText:[NSString stringWithFormat:@"%f", self.currentLocation.coordinate
                                                     .longitude]];
+  
+  [self.lblLatitude setHidden:NO];
+  [self.lblLongitude setHidden:NO];
 }
 
 // reverse lookup lat/long to get human readable address
