@@ -43,6 +43,9 @@
   return self;
 }
 
+// function to strip away gps photo metadata if user does not want uploaded
+// also, if location tagging is enabled, the IPTC metadata of the photo is
+// is edited to included all location properites
 - (NSMutableDictionary *)manipulateMetadata:(NSDictionary *)metadata {
   NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
 
@@ -77,10 +80,13 @@
     NSString *country = [defaults objectForKey:CURR_LOC_COUNTRY];
     
     NSString *sublocation = name;
+    
+    // if there is a unit to the location, then change the sublocation to be UNIT - ADDRESS
     if (![unit isEqualToString:@""]) {
       sublocation = [NSString stringWithFormat:@"Unit %@ - %@", unit, name];
     }
     
+    // set the properites for teh IPTCDictionary
     [IPTCDictionary setObject:sublocation forKey:(NSString *)kCGImagePropertyIPTCSubLocation];
     [IPTCDictionary setObject:city forKey:(NSString *)kCGImagePropertyIPTCCity];
     [IPTCDictionary setObject:state forKey:(NSString *)kCGImagePropertyIPTCProvinceState];
@@ -131,16 +137,20 @@
   return metadataAsMutable;
 }
 
+// get NSData with correct metadata from an UIImage and ALAsset
 - (NSData *)getPhotoWithMetaDataFromAsset:(UIImage *)image
                                     asset:(ALAsset *)asset {
 
+  // convert UIImage to NSData (100% quality)
   NSData *jpeg = [NSData dataWithData:UIImageJPEGRepresentation(image, 1.0)];
 
   CGImageSourceRef source =
       CGImageSourceCreateWithData((__bridge CFDataRef)jpeg, NULL);
 
+  // get metadata from asset
   NSDictionary *metadata = [[asset defaultRepresentation] metadata];
 
+  // edit the metadata according to the user settings
   NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata];
 
   CFStringRef UTI = CGImageSourceGetType(source);
@@ -162,6 +172,7 @@
   return dest_data;
 }
 
+// get NSData with correc tmetadata from local filepath
 - (NSData *)getPhotoWithMetaDataFromFile:(NSString *)textPath {
 
   NSData *imageData = [NSData dataWithContentsOfFile:textPath];
@@ -171,6 +182,7 @@
   NSDictionary *metadata = (NSDictionary *)CFBridgingRelease(
       CGImageSourceCopyPropertiesAtIndex(source, 0, NULL));
 
+  // edit the metadata according to the user settings
   NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata];
   
   CFStringRef UTI = CGImageSourceGetType(source);
@@ -191,6 +203,14 @@
   
   return dest_data;
 }
+
+// upload an array of CSPhotos to the server
+// after each photo is uploaded, the upCallback function is called
+
+// Process to upload photos is as follows
+/*
+ *
+ */
 
 - (void)uploadPhotoArray:(NSMutableArray *)photos
               upCallback:(void (^)())upCallback {
@@ -315,6 +335,7 @@
                   [NSArray arrayWithObjects:appDelegate.account.token,
                                             uniqueString, @"image/jpg", nil];
 
+              // set headers
               NSArray *keys = [NSArray
                   arrayWithObjects:@"token", @"filename", @"image-type", nil];
               NSDictionary *headers =
@@ -326,16 +347,15 @@
               [request setURL:url];
               [request setHTTPMethod:@"POST"];
               [request setAllHTTPHeaderFields:headers];
-
-              // TODO: ATTACH METADATA TO PHOTO
-              // possible have to get photo data, write metadata to data, then
-              // save file to temp dir
+              
+              // get documents directory
               NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
                   NSDocumentDirectory, NSUserDomainMask, YES);
               NSString *documentsDirectory = [pathArray objectAtIndex:0];
               NSString *textPath = [documentsDirectory
                   stringByAppendingPathComponent:p.fileName];
 
+              // get image data from file path
               NSData *imageData = [self getPhotoWithMetaDataFromFile:textPath];
               NSString *fileName = [NSString
                   stringWithFormat:@"%@_%@", p.fileName, @"image.jpg"];
@@ -343,10 +363,12 @@
                   [NSURL fileURLWithPath:[NSTemporaryDirectory()
                                              stringByAppendingString:fileName]];
 
+              // write the image data to a temp dir
               [imageData writeToURL:fileURL
                             options:NSDataWritingAtomic
                               error:nil];
 
+              // upload the file from the temp dir
               NSURLSessionUploadTask *uploadTask =
                   [self.session uploadTaskWithRequest:request fromFile:fileURL];
 
@@ -355,6 +377,8 @@
               @synchronized(self.uploadingPhotos) {
                 [self.uploadingPhotos addObject:p];
               }
+              
+              // start upload
               [uploadTask resume];
 
               [readLock lock];
@@ -496,6 +520,8 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
   }
 }
 
+// need to avoid errors when using https self signed certs
+// REMOVE IN PRODUCTION
 #warning removing using self-signed certs in production
 - (void)URLSession:(NSURLSession *)session
     didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
