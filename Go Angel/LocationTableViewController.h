@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 
-@interface LocationTableViewController : UITableViewController <CLLocationManagerDelegate, UITextFieldDelegate> {
+@interface LocationTableViewController : UITableViewController <CLLocationManagerDelegate, UITextFieldDelegate, UIAlertViewDelegate> {
   CLLocationManager *locationManager;
   CLGeocoder *geocoder;
   
@@ -19,6 +19,12 @@
   
   // whether or not we have turned on the location updates
   BOOL hasStartedUpdating;
+  
+  // whether or not the user has allowed location services to be used
+  BOOL allowedLocation;
+  
+  // are you currently showing the alert view dialog box
+  BOOL showingAlertView;
 }
 
 @property (nonatomic, strong) CLLocation *currentLocation;
