@@ -87,8 +87,9 @@
         connectCallback(NO);
         NSLog(@"ping failed");
       }
-    }else {
+    } else {
       NSLog(@"ping failed");
+      
       connectCallback(NO);
     }
   }];
@@ -395,6 +396,7 @@
         
         photo.thumbURL = fullPath;
         photo.imageURL = fullPath;
+        photo.fileName = [NSString stringWithFormat:@"%@.jpg", photoId];
         
         NSData *data = [self dataFromBase64EncodedString:thumbnail];
         [data writeToFile:filePath atomically:YES];

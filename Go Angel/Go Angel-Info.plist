@@ -38,6 +38,8 @@
 	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Tag photos by location</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

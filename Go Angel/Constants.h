@@ -34,6 +34,7 @@
 #define GPS_META    @"gpsMeta"
 #define DOWN_REMOTE @"downRemote"
 #define SAVE_INTO_ALBUM @"saveInAlbum"
+
 // core data entites
 #define PHOTO @"Photo"
 #define DEVICE @"Device"
@@ -48,6 +49,7 @@
 #define REMOTE_PATH @"remotePath"
 #define THUMB_URL @"thumbURL"
 #define ON_SERVER @"onServer"
+#define FILE_NAME @"fileName"
 
 // log entity attributes
 #define TIME_UPDATE @"timeUpdate"
@@ -55,6 +57,18 @@
 
 // camera
 #define SAVE_PHOTO_ALBUM @"Go Angel"
+
+// location
+#define CURR_LOC_LAT      @"currentLocationLongitude"
+#define CURR_LOC_LONG      @"currentLocationLatitude"
+#define CURR_LOC_NAME      @"currentLocationName"
+#define CURR_LOC_UNIT      @"currentLocationUnit"
+#define CURR_LOC_CITY      @"currentLocationCity"
+#define CURR_LOC_PROV      @"currentLocationProv"
+#define CURR_LOC_COUNTRY   @"currentLocationCountry"
+#define CURR_LOC_COUN_CODE @"currentLocationCountryCode"
+
+#define CURR_LOC_ON   @"currentLocationOn"
 
 // device entitiy attributes
 // same as above ones
