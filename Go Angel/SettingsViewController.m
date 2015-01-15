@@ -8,11 +8,38 @@
 
 #import "SettingsViewController.h"
 
+#ifdef USES_IASK_STATIC_LIBRARY
+  #import "InAppSettingsKit/IASKSettingsReader.h"
+#else
+  #import "IASKSettingsReader.h"
+#endif
+
 @interface SettingsViewController ()
 
 @end
 
 @implementation SettingsViewController
+
+@synthesize appSettingsViewController;
+
+- (IASKAppSettingsViewController*)appSettingsViewController {
+  if (!appSettingsViewController) {
+    appSettingsViewController = [[IASKAppSettingsViewController alloc] init];
+    appSettingsViewController.delegate = self;
+    
+    // Should put put code to never show privacy settings here
+    // but currently does not work, so manual fix in place
+  }
+  return appSettingsViewController;
+}
+
+#pragma mark -
+#pragma mark IASKAppSettingsViewControllerDelegate protocol
+- (void)settingsViewControllerDidEnd:(IASKAppSettingsViewController*)sender {
+  [self dismissViewControllerAnimated:YES completion:nil];
+  
+  // your code here to reconfigure the app for changed settings
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -20,6 +47,7 @@
   if (self) {
     // Custom initialization
   }
+
   return self;
 }
 

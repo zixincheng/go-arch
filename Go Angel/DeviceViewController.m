@@ -376,7 +376,7 @@
 #pragma mark -
 #pragma mark Coinsorter api
 
-// get devices, photos, and upload from server
+// get devices, photos from server
 - (void) syncAllFromApi {
   
   BOOL downRemote = [defaults boolForKey:DOWN_REMOTE];
@@ -882,8 +882,10 @@
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsPath = [paths objectAtIndex:0];
-    
-    NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", [self getCurrentDateTime]]];
+  
+  NSString *photoUID = [self getCurrentDateTime];
+
+    NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
     NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
     
     
@@ -895,10 +897,12 @@
     p.onServer = @"0";
     p.thumbURL = fullPath;
     p.imageURL = fullPath;
-    
+    p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];
+
+  
     NSData *data = UIImageJPEGRepresentation(image, 100);
     [data writeToFile:filePath atomically:YES];
-    NSLog(@"saving photo to %@", filePath);
+    NSLog(@"saving photo to %@ with filename %@", filePath, p.fileName);
     
     [self.dataWrapper addPhoto:p];
     
