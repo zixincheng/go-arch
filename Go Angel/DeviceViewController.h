@@ -58,7 +58,7 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolUpload;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnUpload;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnCamera;
-@property (weak, nonatomic) IBOutlet UIButton *Camera;
+//@property (weak, nonatomic) IBOutlet UIButton *Camera;
 @property (retain, nonatomic) IBOutlet F3Swirly *valueSwirly;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;

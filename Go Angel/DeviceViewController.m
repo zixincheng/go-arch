@@ -50,7 +50,7 @@
     //self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     //[self addCameraCover];
     takingPhoto = YES;
-
+/*
     self.valueSwirly.font            = [UIFont fontWithName:@"Futura-Medium" size:30.0];
     self.valueSwirly.thickness       = 30.0f;
     self.valueSwirly.shadowOffset    = CGSizeMake(1,1);
@@ -72,7 +72,7 @@
                                rpm:0
                              label:@""
                           segments:100];
-    self.valueSwirly.value = 2;
+    self.valueSwirly.value = 2;*/
     //[self didChangeValue:self.valueSlider];
   // nav bar
   // make light nav bar
@@ -80,11 +80,11 @@
     
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived) name:@"pushNotification" object:nil];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.Camera.frame];
-    imageView.image = [UIImage imageNamed:@"tabBar_cameraButton_ready_matte@2x.png"];
+   // UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.Camera.frame];
+    //imageView.image = [UIImage imageNamed:@"tabBar_cameraButton_ready_matte@2x.png"];
    
-    [self.valueSwirly addSubview:self.Camera];
-    [self.valueSwirly addSubview:imageView];
+    //[self.valueSwirly addSubview:self.Camera];
+    //[self.valueSwirly addSubview:imageView];
 
   // init vars
   self.dataWrapper = [[CoreDataWrapper alloc] init];
@@ -247,7 +247,7 @@
 - (IBAction)buttonPressed:(id)sender {
   if (sender == self.btnUpload) {
     [self uploadPhotosToApi];
-  }else if (sender == self.Camera) {
+  }else if (sender == self.btnCamera) {
     self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     self.picker.delegate = self;
     self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -361,16 +361,16 @@
       [self checkDeivceStatus];
     }else if (self.unUploadedPhotos == 0) {
       title = @"Nothing to Upload";
-        self.valueSwirly.value = 2;
+        //self.valueSwirly.value = 2;
         [self checkDeivceStatus];
     }else if (self.currentlyUploading) {
       title = [NSString stringWithFormat:@"Uploading %d Photos", self.unUploadedPhotos];
-        self.valueSwirly.value = 1;
+        //self.valueSwirly.value = 1;
         [self checkDeivceStatus];
     }else {
       title = [NSString stringWithFormat:@"Upload %d Photos", self.unUploadedPhotos];
         [self checkDeivceStatus];
-        self.valueSwirly.value = 0;
+        //self.valueSwirly.value = 0;
     }
     [self.btnUpload setTitle:title];
     
