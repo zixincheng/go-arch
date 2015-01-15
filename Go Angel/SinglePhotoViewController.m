@@ -26,10 +26,11 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-   NSLog(@"is video%@",self.selectedPhoto.isVideo);
+   NSLog(@"is video %@",self.selectedPhoto.isVideo);
 
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    if ([self.selectedPhoto.isVideo isEqualToString:@"0"]) {
+    if (self.selectedPhoto.isVideo == nil || [self.selectedPhoto.isVideo isEqualToString:@"0"]) {
+      NSLog(@"NOT VIDEO, LOAD FULL SCREEN IMAGE");
         [appDelegate.mediaLoader loadFullScreenImage:self.selectedPhoto
                        completionHandler:^(UIImage *image) {
 
