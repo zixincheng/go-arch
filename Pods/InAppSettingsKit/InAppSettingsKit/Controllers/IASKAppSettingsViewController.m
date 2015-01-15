@@ -72,9 +72,6 @@ CGRect IASKCGRectSwap(CGRect rect);
 		if (self.neverShowPrivacySettings) {
 			_settingsReader.showPrivacySettings = NO;
 		}
-
-    // MANUAL FIX TO NEVER SHOW PRIVACY SETTINGS
-    _settingsReader.showPrivacySettings = NO;
 	}
 	return _settingsReader;
 }
