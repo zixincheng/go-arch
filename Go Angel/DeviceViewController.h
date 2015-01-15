@@ -23,6 +23,10 @@
 #import "F3Swirly.h"
 #import "ActivityHistory.h"
 #import "HistoryTableViewController.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <AVFoundation/AVFoundation.h>
+#import "Constants.h"
 
 // the controller that displays a list of devices that are on the server
 // this is the 'main page' of the app
@@ -85,5 +89,24 @@
 @property (nonatomic,strong) NSString *homeServer;
 @property (nonatomic,strong) NSString *serverName;
 @property (nonatomic,strong) NSString *serverIP;
+
+@property (nonatomic, strong) UIView *topContainerView;
+@property (nonatomic, strong) UILabel *topLbl;
+@property (nonatomic, strong) UIView *bottomContainerView;
+@property (nonatomic, strong) UIView *cameraMenuView;
+@property (nonatomic, strong) NSMutableSet *cameraBtnSet;
+
+@property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
+@property (nonatomic) AVCaptureSession *session;
+@property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
+@property (nonatomic, strong) AVCaptureDeviceInput *inputDevice;
+@property (nonatomic, strong) UIView *doneCameraDownView;
+@property (nonatomic, strong) UIView *doneCameraUpView;
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
+@property (nonatomic, assign) CGRect previewRect;
+
+@property (nonatomic) UIView *overlay;
+@property (nonatomic) UIImagePickerController *picker;
+@property (nonatomic) UIButton *caremaBtn;
 
 @end

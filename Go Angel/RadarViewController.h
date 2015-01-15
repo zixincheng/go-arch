@@ -12,7 +12,6 @@
 #import "ConnectViewController.h"
 #import "Coinsorter.h"
 #import "ConnectViewController.h"
-#import "QBFlatButton.h"
 
 @interface RadarViewController : UIViewController<GCDAsyncUdpSocketDelegate, UIAlertViewDelegate>
 
@@ -22,8 +21,6 @@
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) NSTimer *udpTimer;
 @property (nonatomic, strong) Server *selectedServer;
-//@property (weak, nonatomic) IBOutlet UIView *buttonView;
-//@property (weak, nonatomic) IBOutlet QBFlatButton  *searchBtn;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addServerButton;
 

@@ -26,15 +26,35 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+   NSLog(@"is video%@",self.selectedPhoto.isVideo);
 
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-  [appDelegate.mediaLoader loadFullScreenImage:self.selectedPhoto
+    if ([self.selectedPhoto.isVideo isEqualToString:@"0"]) {
+        [appDelegate.mediaLoader loadFullScreenImage:self.selectedPhoto
                        completionHandler:^(UIImage *image) {
 
                            dispatch_async(dispatch_get_main_queue(), ^{
                                [self.imageView setImage:image];
                            });
                        }];
+    } else {
+        
+        NSLog(@"%@",self.selectedPhoto.isVideo);
+            
+            NSString *newUrl = [[NSString alloc] initWithFormat:@"%@",self.selectedPhoto.imageURL];
+            self.videoController = [[MPMoviePlayerController alloc]init];
+
+            NSURL *theURL = [NSURL URLWithString:newUrl];
+            [self.videoController.view setFrame:CGRectMake (0, 0, 320, 510)];
+            
+            [self.videoController setContentURL:theURL];
+        
+            [self.view insertSubview:self.videoController.view aboveSubview:self.imageView];
+            self.videoController.shouldAutoplay = NO;
+            [self.videoController prepareToPlay];
+        //[self.videoController play];
+            
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {

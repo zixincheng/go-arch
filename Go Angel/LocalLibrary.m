@@ -78,7 +78,7 @@
 }
 
 // add alasset to core data
-- (CSPhoto *) addAsset: (ALAsset *) asset {
+- (CSPhoto *) addAsset: (ALAsset *) asset videoFlag:(BOOL) videoFlag{
   NSURL *url = asset.defaultRepresentation.url;
   
   // create photo object
@@ -86,7 +86,11 @@
   photo.imageURL = url.absoluteString;
   photo.deviceId = account.cid;
   photo.onServer = @"0";
-  
+    if (videoFlag) {
+        photo.isVideo = @"1";
+    } else {
+        photo.isVideo = @"0";
+    }
   // add data to photo
   NSDate *date = [asset valueForProperty:ALAssetPropertyDate];
   photo.dateCreated = date;
@@ -278,7 +282,7 @@
           [assetAlbumLibrary assetForURL:url
                          resultBlock:^(ALAsset *asset) {
                            if (asset) {
-                             [self addAsset:asset];
+                               [self addAsset:asset videoFlag:NO];
                            }
                          }
                         failureBlock:^(NSError *error){
@@ -311,18 +315,71 @@
     NSLog(@"finished loading local photos");
   });
 }
-
-- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata callback:(void (^) (CSPhoto *photo)) callback {
+- (void) saveVideo: (NSURL *)moviePath callback:(void(^) (CSPhoto *video)) callback{
+    
     __weak LocalLibrary *se = self;
     __block BOOL found = NO;
     
+    ALAssetsLibraryGroupsEnumerationResultsBlock
+    assetGroupEnumerator = ^(ALAssetsGroup *group, BOOL *stop){
+        if (group) {
+            NSString *albumName = [group valueForProperty:ALAssetsGroupPropertyName];
+            if ([SAVE_PHOTO_ALBUM isEqualToString:albumName]) {
+                self.didAlbumCreated = NO; //reset checking album flag
+                //save image
+                [assetAlbumLibrary writeVideoAtPathToSavedPhotosAlbum:moviePath completionBlock:^(NSURL *assetURL, NSError *error) {
+                    //then get the image asseturl
+                    NSLog(@"%@",assetURL);
+                    [assetAlbumLibrary assetForURL:assetURL
+                                       resultBlock:^(ALAsset *asset) {
+                                           //put it into our album
+                                           [group addAsset:asset];
+                                           [se loadLocalImages:NO];
+                                           bool didPhotoAddIntoAlbum = [group addAsset:asset];
+                                           // add image to core data after saving into album
+                                           if (didPhotoAddIntoAlbum) {
+                                               CSPhoto *p = [self addAsset:asset videoFlag:YES];
+                                               callback(p);
+                                           }
+                                       } failureBlock:^(NSError *error) {
+                                           NSLog(@"%@", error);
+                                       }];
+                }];
+                *stop = YES;
+                found = YES;
+            }
+        } else {
+            if (found)
+                return;
+            
+            // not found Go Angel album, create the album
+            if (!self.didAlbumCreated) {
+                NSLog(@"album not found, try making album");
+                [self.defaultAlbum createAlbum];
+                self.didAlbumCreated = YES;
+            }
+            //recall saveImage function after new album exist
+            [self saveVideo: (NSURL *)moviePath callback: ^(CSPhoto *photo){
+            }];
+        }
+    };
+    
+    [assetAlbumLibrary enumerateGroupsWithTypes:ALAssetsGroupAlbum
+                                     usingBlock:assetGroupEnumerator
+                                   failureBlock:^(NSError *error) {
+                                       NSLog(@"album access denied");
+                                   }];
+
+}
+- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata callback:(void (^) (CSPhoto *photo)) callback {
+    __weak LocalLibrary *se = self;
+    __block BOOL found = NO;
 
     ALAssetsLibraryGroupsEnumerationResultsBlock
     assetGroupEnumerator = ^(ALAssetsGroup *group, BOOL *stop){
         if (group) {
             NSString *albumName = [group valueForProperty:ALAssetsGroupPropertyName];
             if ([SAVE_PHOTO_ALBUM isEqualToString:albumName]) {
-
                 self.didAlbumCreated = NO; //reset checking album flag
                 //save image
                 [assetAlbumLibrary writeImageDataToSavedPhotosAlbum:UIImageJPEGRepresentation(image, 100) metadata:metadata
@@ -337,7 +394,7 @@
                                                                      bool didPhotoAddIntoAlbum = [group addAsset:asset];
                                                                      // add image to core data after saving into album
                                                                      if (didPhotoAddIntoAlbum) {
-                                                                         CSPhoto *p = [self addAsset:asset];
+                                                                         CSPhoto *p = [self addAsset:asset videoFlag:NO];
                                                                          callback(p);
                                                                      }
                                                                  } failureBlock:^(NSError *error) {

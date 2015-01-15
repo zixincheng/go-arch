@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "CSPhoto.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 
 // controller to display the fullscreen photo
@@ -25,5 +26,6 @@
 @property (nonatomic, strong) CSPhoto *selectedPhoto;
 @property (nonatomic, strong) NSMutableArray *photos;
 @property (nonatomic, strong) UINavigationItem *navBar;
+@property (strong, nonatomic) MPMoviePlayerController *videoController;
 
 @end

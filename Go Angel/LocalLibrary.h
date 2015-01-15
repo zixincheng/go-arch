@@ -38,6 +38,7 @@
 - (void) loadLocalImages: (BOOL) parseAll addCallback: (void (^) ()) addCallback;
 - (void) loadAllowedAlbums;
 - (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata callback:(void (^) (CSPhoto *photo)) callback;
+- (void) saveVideo: (NSURL *)moviePath callback:(void (^) (CSPhoto *photo)) callback;
 - (void) registerForNotifications;
 - (void) unRegisterForNotifications;
 

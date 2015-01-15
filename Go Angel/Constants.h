@@ -73,6 +73,19 @@
 // device entitiy attributes
 // same as above ones
 
+//Custom Carema view
+//frame and size
+#define DEVICE_BOUNDS    [[UIScreen mainScreen] bounds]
+#define DEVICE_SIZE      [[UIScreen mainScreen] bounds].size
+
+#define APP_FRAME        [[UIScreen mainScreen] applicationFrame]
+#define APP_SIZE         [[UIScreen mainScreen] applicationFrame].size
+
+#define SELF_CON_FRAME      self.view.frame
+#define SELF_CON_SIZE       self.view.frame.size
+#define SELF_VIEW_FRAME     self.frame
+#define SELF_VIEW_SIZE      self.frame.size
+
 @interface Constants : NSObject
 
 @end
