@@ -87,7 +87,6 @@
 		9B555D3F1A44DDFE00D00025 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D3E1A44DDFE00D00025 /* background.png */; };
 		9B555D471A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D461A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png */; };
 		9B555D571A4A32FB00D00025 /* selectedbackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D561A4A32FB00D00025 /* selectedbackground.png */; };
-		9BAF13791A3F6213000B780B /* F3Swirly.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BAF13781A3F6213000B780B /* F3Swirly.m */; };
 		9BAF13811A3F6388000B780B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13801A3F6388000B780B /* CoreMotion.framework */; };
 		9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13821A3F63A5000B780B /* QuartzCore.framework */; };
 		9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */; };
@@ -266,8 +265,6 @@
 		9B555D3E1A44DDFE00D00025 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		9B555D461A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBar_cameraButton_ready_matte@2x.png"; sourceTree = "<group>"; };
 		9B555D561A4A32FB00D00025 /* selectedbackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectedbackground.png; sourceTree = "<group>"; };
-		9BAF13771A3F6212000B780B /* F3Swirly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F3Swirly.h; sourceTree = "<group>"; };
-		9BAF13781A3F6213000B780B /* F3Swirly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F3Swirly.m; sourceTree = "<group>"; };
 		9BAF13801A3F6388000B780B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		9BAF13821A3F63A5000B780B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9BB0F2091A26A52A00DF40E3 /* StorageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageDetailViewController.h; sourceTree = "<group>"; };
@@ -382,8 +379,6 @@
 				D510B9621A364A8A00307184 /* DashboardViewController.m */,
 				2061D1D5199193CE001C7E08 /* DeviceViewController.h */,
 				2061D1D6199193CE001C7E08 /* DeviceViewController.m */,
-				9BAF13771A3F6212000B780B /* F3Swirly.h */,
-				9BAF13781A3F6213000B780B /* F3Swirly.m */,
 				2061D1DE199193DB001C7E08 /* firstLoadViewController.h */,
 				2061D1DF199193DB001C7E08 /* firstLoadViewController.m */,
 				20931B8319954B8900F57FB0 /* GridCell.h */,
@@ -769,7 +764,6 @@
 				2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */,
 				2061D1DC199193CE001C7E08 /* CSPhoto.m in Sources */,
 				2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */,
-				9BAF13791A3F6213000B780B /* F3Swirly.m in Sources */,
 				20F74D161992B56B00E0546D /* Constants.m in Sources */,
 				2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */,
 				208169691995828500EEC65C /* SinglePhotoViewController.m in Sources */,

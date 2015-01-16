@@ -50,42 +50,13 @@
     //self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     //[self addCameraCover];
     takingPhoto = YES;
-/*
-    self.valueSwirly.font            = [UIFont fontWithName:@"Futura-Medium" size:30.0];
-    self.valueSwirly.thickness       = 30.0f;
-    self.valueSwirly.shadowOffset    = CGSizeMake(1,1);
 
-    self.valueSwirly.textColor       = [UIColor whiteColor];
-    self.valueSwirly.shadowColor     = [UIColor blackColor];
-    [self.valueSwirly addThreshold:0
-                    withColor:[UIColor yellowColor]
-                          rpm:0
-                        label:@""
-                     segments:5];
-    [self.valueSwirly addThreshold:1
-                         withColor:[UIColor blueColor]
-                               rpm:20
-                             label:@""
-                          segments:5];
-    [self.valueSwirly addThreshold:2
-                         withColor:[UIColor greenColor]
-                               rpm:0
-                             label:@""
-                          segments:100];
-    self.valueSwirly.value = 2;*/
-    //[self didChangeValue:self.valueSlider];
   // nav bar
   // make light nav bar
   self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived) name:@"pushNotification" object:nil];
     
-   // UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.Camera.frame];
-    //imageView.image = [UIImage imageNamed:@"tabBar_cameraButton_ready_matte@2x.png"];
-   
-    //[self.valueSwirly addSubview:self.Camera];
-    //[self.valueSwirly addSubview:imageView];
-
   // init vars
   self.dataWrapper = [[CoreDataWrapper alloc] init];
   self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
@@ -315,9 +286,6 @@
     self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
     [self checkDeivceStatus];
   [super viewWillAppear:animated];
-  //    self.navigationController.navigationBar.barTintColor = [UIColor greenColor];
-  //    self.navigationController.navigationBar.translucent = NO;
-  //    [self.navigationController setNavigationBarHidden:YES animated:YES];
   
   // this gets set when we add a new album
   // we want to parse through all of the new photos
@@ -684,12 +652,9 @@
                 });
             }];
 
-           // if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(moviePath)) {
-               // UISaveVideoAtPathToSavedPhotosAlbum(moviePath, self, nil, nil);
-            //}
         }
     }
-//  }];
+    
 }
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -838,6 +803,7 @@
     [self performSegueWithIdentifier:SINGLE_PHOTO_SEGUE sender:self];
 }
 
+//update the collection view cell
 -(void) addNewcell: (CSPhoto *)photos{
     
     int Size = (int)self.photos.count;
@@ -865,6 +831,7 @@
 
 }
 
+//uploading status image update
 - (UIImage *)markedImageStatus:(UIImage *) image checkImageStatus:(NSString *)onServer uploadingImage:(BOOL)upload
 {
     UIGraphicsBeginImageContext(image.size);
@@ -948,7 +915,7 @@
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];
 
-  
+// save the metada information into image
     NSData *data = UIImageJPEGRepresentation(image, 100);
     CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
 
@@ -973,6 +940,7 @@
     [self updateUploadCountUI];
 }
 
+// update the status image everytime a photo been uploaded
 - (void)eachPhotoUploaded{
     if (self.unUploadedPhotos == 0) {
         dispatch_async(dispatch_get_main_queue(), ^ {
@@ -1020,6 +988,8 @@
     }
 
 }
+
+//create custom camera overlay
 -(UIView *) creatCaremaOverlay {
     
     [self addTopViewWithText:@"Taking Photo"];
@@ -1029,6 +999,7 @@
     
 }
 
+// text message at top of the custom camera view
 - (void)addTopViewWithText:(NSString*)text{
     if (!_topContainerView) {
         CGRect topFrame = CGRectMake(0, 0, APP_SIZE.width, CAMERA_TOPVIEW_HEIGHT);
@@ -1055,6 +1026,7 @@
     _topLbl.text = text;
 }
 
+// create camera menu view, include camera button and camera control buttons
 - (void)addCameraMenuView{
     
     //Button to take photo
@@ -1139,6 +1111,7 @@
     [parentLayer addSublayer:layer];
 }
 
+// create a camra cover to indicate each time taking a photo
 - (void)addCameraCover {
     UIView *upView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, APP_SIZE.width, 0)];
     upView.backgroundColor = [UIColor blackColor];
@@ -1150,6 +1123,8 @@
     [self.overlay addSubview:downView];
     self.doneCameraDownView = downView;
 }
+
+// camera cover animation
 - (void)showCameraCover:(BOOL)toShow {
     
     [UIView animateWithDuration:0.38f animations:^{
@@ -1163,11 +1138,12 @@
         _doneCameraDownView.frame = downFrame;
     }];
 }
+
 #pragma mark Camera buttons actions
 
 //button taking picture
 - (void)takePictureBtnPressed: (id) sender{
-
+// if the camera is under photo model
     if (takingPhoto) {
         [self.picker takePicture];
         [self showCameraCover:YES];
@@ -1177,7 +1153,9 @@
             //sender.userInteractionEnabled = YES;
             [self showCameraCover:NO];
         });
-    } else {
+    }
+// if the camera is under video model
+    else {
         if (recording) {
             [self.caremaBtn setImage:[UIImage imageNamed:@"video.png"] forState:UIControlStateNormal];
             [self.picker stopVideoCapture];
@@ -1205,6 +1183,8 @@
     }];
 
 }
+
+// taking videos
 - (void)VideoBtnPressed:(UIButton*)sender {
 
     sender.selected = !sender.selected;
@@ -1223,6 +1203,7 @@
     }
 }
 
+// set a timer when video starts, to display the time of a video has been taken
 -(void)videotimer {
     NSLog(@"timer");
     sec = sec % 60;
@@ -1245,7 +1226,6 @@
 
     [self.session beginConfiguration];
     [self.session removeInput:self.inputDevice];
-    //[self.session setSessionPreset:AVCaptureSessionPresetHigh];
     
     [self addVideoInputFrontCamera:sender.selected];
     [self.session commitConfiguration];

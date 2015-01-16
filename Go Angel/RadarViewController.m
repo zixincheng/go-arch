@@ -224,6 +224,7 @@
     hand.layer.position = CGPointMake(self.view.frame.size.width/2, (self.view.frame.size.height-self.navigationController.navigationBar.frame.size.height)/2);
 }
 
+// manuelly create server server label
 - (void)createView{
     
     UIView *t0 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 100)];
@@ -285,7 +286,7 @@
     [targets addObject:t5];
     
 }
-
+//create images and set the text of server label
 - (void)createTargets: (Server *) s
 {
  
@@ -324,6 +325,8 @@
 
     NSLog(@"%@",button);
 }
+
+// start the timer to move the radar hand
 - (void)start
 {
     timer = [NSTimer scheduledTimerWithTimeInterval:1.5/60.0 target:self selector:@selector(tick:) userInfo:nil repeats:YES];

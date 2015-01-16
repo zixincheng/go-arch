@@ -20,7 +20,6 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "Reachability.h"
 #import "DashboardViewController.h"
-#import "F3Swirly.h"
 #import "ActivityHistory.h"
 #import "HistoryTableViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
@@ -58,8 +57,6 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolUpload;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnUpload;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnCamera;
-//@property (weak, nonatomic) IBOutlet UIButton *Camera;
-@property (retain, nonatomic) IBOutlet F3Swirly *valueSwirly;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -92,18 +89,13 @@
 
 @property (nonatomic, strong) UIView *topContainerView;
 @property (nonatomic, strong) UILabel *topLbl;
-@property (nonatomic, strong) UIView *bottomContainerView;
 @property (nonatomic, strong) UIView *cameraMenuView;
 @property (nonatomic, strong) NSMutableSet *cameraBtnSet;
 
-@property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
 @property (nonatomic) AVCaptureSession *session;
-@property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic, strong) AVCaptureDeviceInput *inputDevice;
 @property (nonatomic, strong) UIView *doneCameraDownView;
 @property (nonatomic, strong) UIView *doneCameraUpView;
-@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
-@property (nonatomic, assign) CGRect previewRect;
 
 @property (nonatomic) UIView *overlay;
 @property (nonatomic) UIImagePickerController *picker;

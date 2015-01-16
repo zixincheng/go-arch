@@ -18,6 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //init buttons
     self.BackupSwitch= [[UISwitch alloc] initWithFrame:CGRectMake(228, 9, 0, 0)];
     [self.BackupSwitch addTarget:self action:@selector(changeBackupSwitch:) forControlEvents:UIControlEventValueChanged];
     
@@ -76,6 +77,7 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+//setup cron time to match specific string
 -(void) determineCronTime {
     if ([self.currentSchedule isEqualToString: @"Every Hour"]) {
         self.cronTime = @"*/5 * * * * *";
@@ -94,6 +96,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+// picker view done button action, update the cron time
 -(void) doneSelect: (UIBarButtonItem *)button {
     [self.tableView reloadData];
     [UIView beginAnimations:nil context:NULL];
@@ -139,7 +142,7 @@
     }];
 
 }
-
+//display the picker view
 -(void) showAction: (UIButton *)button {
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3];
@@ -148,6 +151,7 @@
     
 }
 
+// eject button to unmount the external device
 -(void) ejectStorage:(UIButton*)button {
     [self.coinsorter updateStorage:@"unmount" stoUUID:self.storages.uuid infoCallback:^(NSDictionary *Data){
         if ([[Data objectForKey:@"stat"] isEqualToString:@"OK"]) {
@@ -185,6 +189,7 @@
 
 -(void)alertView:(UIAlertView *)alertView
 clickedButtonAtIndex:(NSInteger)buttonIndex {
+    // set to primary alert view
     if (alertView.tag ==1) {
         if (buttonIndex == 0) {
             self.primarySwitch.on = NO;
@@ -223,7 +228,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             }
         }];
         }
-    }else if (alertView.tag == 2) {
+    }
+    // set to backup alert view
+    else if (alertView.tag == 2) {
             if (buttonIndex == 0) {
                 self.BackupSwitch.on = NO;
             } else if (buttonIndex == 1) {
@@ -265,6 +272,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         }
     }
 }
+
+//switches that enable or disable primary storage
 - (void)changePrimarySwitch:(UISwitch *)primarySwitch{
     
     if(primarySwitch.on){
@@ -310,6 +319,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
     
 }
+//switches that enable or disable backup storage
 - (void)changeBackupSwitch:(UISwitch *)backupSwitch{
     
     if(backupSwitch.on){
