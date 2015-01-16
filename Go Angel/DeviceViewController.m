@@ -669,7 +669,7 @@
             }];
         }else{
             NSLog(@"save photos into application folder");
-            [self saveImageIntoDocument:image];
+            [self saveImageIntoDocument:image metadata:metadata];
         }
     } else {
         NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
@@ -927,7 +927,7 @@
 
 
 // save photos to the document directory and save to core data
-- (void) saveImageIntoDocument:(UIImage *)image{
+- (void) saveImageIntoDocument:(UIImage *)image metadata:(NSDictionary *)metadata{
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsPath = [paths objectAtIndex:0];
@@ -950,9 +950,22 @@
 
   
     NSData *data = UIImageJPEGRepresentation(image, 100);
-    [data writeToFile:filePath atomically:YES];
+    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
+
+    CFStringRef UTI = CGImageSourceGetType(source);
+     NSMutableData *dest_data = [NSMutableData data];
+    CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef) dest_data, UTI, 1, NULL);
+
+    CGImageDestinationAddImageFromSource(
+                                         destination, source, 0, (__bridge CFDictionaryRef)metadata);
+
+    CGImageDestinationFinalize(destination);
+
+    [dest_data writeToFile:filePath atomically:YES];
+
+    CFRelease(destination);
     NSLog(@"saving photo to %@ with filename %@", filePath, p.fileName);
-    
+
     [self.dataWrapper addPhoto:p];
     
     self.unUploadedPhotos++;
