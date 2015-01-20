@@ -74,7 +74,6 @@
 		20C3BBE31A687EFA0019DE40 /* touch_focus.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBBF1A687EFA0019DE40 /* touch_focus.png */; };
 		20C3BBE41A687EFA0019DE40 /* touch_focus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBC01A687EFA0019DE40 /* touch_focus@2x.png */; };
 		20C3BBE51A687EFA0019DE40 /* unupload.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBC11A687EFA0019DE40 /* unupload.png */; };
-		20C3BBE61A687EFA0019DE40 /* uploaded.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBC21A687EFA0019DE40 /* uploaded.png */; };
 		20C3BBE71A687EFA0019DE40 /* uploading.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBC31A687EFA0019DE40 /* uploading.png */; };
 		20C3BBE81A687EFA0019DE40 /* videoDone.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBC41A687EFA0019DE40 /* videoDone.png */; };
 		20C3BBE91A687EFA0019DE40 /* videoDone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBC51A687EFA0019DE40 /* videoDone@2x.png */; };
@@ -246,7 +245,6 @@
 		20C3BBBF1A687EFA0019DE40 /* touch_focus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = touch_focus.png; sourceTree = "<group>"; };
 		20C3BBC01A687EFA0019DE40 /* touch_focus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "touch_focus@2x.png"; sourceTree = "<group>"; };
 		20C3BBC11A687EFA0019DE40 /* unupload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unupload.png; sourceTree = "<group>"; };
-		20C3BBC21A687EFA0019DE40 /* uploaded.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uploaded.png; sourceTree = "<group>"; };
 		20C3BBC31A687EFA0019DE40 /* uploading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uploading.png; sourceTree = "<group>"; };
 		20C3BBC41A687EFA0019DE40 /* videoDone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoDone.png; sourceTree = "<group>"; };
 		20C3BBC51A687EFA0019DE40 /* videoDone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "videoDone@2x.png"; sourceTree = "<group>"; };
@@ -463,7 +461,6 @@
 				20C3BBBF1A687EFA0019DE40 /* touch_focus.png */,
 				20C3BBC01A687EFA0019DE40 /* touch_focus@2x.png */,
 				20C3BBC11A687EFA0019DE40 /* unupload.png */,
-				20C3BBC21A687EFA0019DE40 /* uploaded.png */,
 				20C3BBC31A687EFA0019DE40 /* uploading.png */,
 				20C3BBC41A687EFA0019DE40 /* videoDone.png */,
 				20C3BBC51A687EFA0019DE40 /* videoDone@2x.png */,
@@ -675,7 +672,6 @@
 				20C3BBDC1A687EFA0019DE40 /* switch_camera_h.png in Resources */,
 				20C3BBE91A687EFA0019DE40 /* videoDone@2x.png in Resources */,
 				20C3BBCA1A687EFA0019DE40 /* camera_line.png in Resources */,
-				20C3BBE61A687EFA0019DE40 /* uploaded.png in Resources */,
 				20C3BBCF1A687EFA0019DE40 /* close_cha@2x.png in Resources */,
 				20C3BBCE1A687EFA0019DE40 /* close_cha.png in Resources */,
 				20C3BBD51A687EFA0019DE40 /* flashing_on@2x.png in Resources */,

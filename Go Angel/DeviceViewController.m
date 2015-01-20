@@ -46,6 +46,7 @@
     self.session = tmpSession;
     [self.session startRunning];
     self.picker = [[UIImagePickerController alloc] init];
+    self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     [self addVideoInputFrontCamera:YES];
     //self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     //[self addCameraCover];
@@ -219,7 +220,6 @@
   if (sender == self.btnUpload) {
     [self uploadPhotosToApi];
   }else if (sender == self.btnCamera) {
-    self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     self.picker.delegate = self;
     self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     self.overlay = [self creatCaremaOverlay];
@@ -637,20 +637,45 @@
             }];
         }else{
             NSLog(@"save photos into application folder");
-            [self saveImageIntoDocument:image metadata:metadata];
-        }
-    } else {
-        NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
-        // Handle a movie capture
-        if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
-            NSURL *moviePath = [info objectForKey:UIImagePickerControllerMediaURL];
-            NSLog(@"%@",moviePath);
-            
-            [localLibrary saveVideo:moviePath callback:^(CSPhoto *photo) {
+            [self saveImageIntoDocument:image metadata:metadata callback: ^(CSPhoto *photo){
                 dispatch_async(dispatch_get_main_queue(), ^ {
                     [self addNewcell:photo];
+                    [self updateUploadCountUI];
                 });
             }];
+
+        }
+    } else {
+        if (self.saveInAlbum) {
+            NSLog(@"save video into album");
+            NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+            // Handle a movie capture
+            if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
+                NSURL *moviePath = [info objectForKey:UIImagePickerControllerMediaURL];
+                NSLog(@"%@",moviePath);
+                NSData *data = [NSData dataWithContentsOfURL:moviePath];
+
+                [localLibrary saveVideo:moviePath callback:^(CSPhoto *photo) {
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                        [self addNewcell:photo];
+                    });
+                }];
+            }
+        } else {
+            NSLog(@"save video into application folder");
+            NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+            // Handle a movie capture
+            if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
+                NSURL *moviePath = [info objectForKey:UIImagePickerControllerMediaURL];
+                NSLog(@"%@",moviePath);
+                NSData *data = [NSData dataWithContentsOfURL:moviePath];
+
+                [self saveVideoIntoDocument:moviePath callback:^(CSPhoto *photo) {
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                        [self addNewcell:photo];
+                    });
+                }];
+            }
 
         }
     }
@@ -875,7 +900,7 @@
 }
 
 #pragma mark -
-#pragma mark Image Save Into document
+#pragma mark Image/Video Save Into document
 
 // save photos to the document directory
 
@@ -892,21 +917,50 @@
     return retStr;
 }
 
+-(void) saveVideoIntoDocument:(NSURL *)moviePath callback:(void (^) (CSPhoto *photo)) callback{
 
-// save photos to the document directory and save to core data
-- (void) saveImageIntoDocument:(UIImage *)image metadata:(NSDictionary *)metadata{
-    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsPath = [paths objectAtIndex:0];
-  
-  NSString *photoUID = [self getCurrentDateTime];
+
+    NSString *photoUID = [self getCurrentDateTime];
+
+    NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.mov", photoUID]];
+    NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
+
+    NSData *videoData = [NSData dataWithContentsOfURL:moviePath];
+
+    [videoData writeToFile:filePath atomically:YES];
+
+    CSPhoto *p = [[CSPhoto alloc] init];
+
+    p.dateCreated = [NSDate date];
+    p.deviceId = self.localDevice.remoteId;
+    p.onServer = @"0";
+    p.thumbURL = fullPath;
+    p.imageURL = fullPath;
+    p.fileName = [NSString stringWithFormat:@"%@.mov",photoUID];
+    p.isVideo = @"1";
+
+    [self.dataWrapper addPhoto:p];
+
+    self.unUploadedPhotos++;
+    callback(p);
+
+}
+
+// save photos to the document directory and save to core data
+- (void) saveImageIntoDocument:(UIImage *)image metadata:(NSDictionary *)metadata callback: (void (^) (CSPhoto *photo)) callback {
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+
+    NSString *photoUID = [self getCurrentDateTime];
 
     NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
     NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
-    
+
     
     CSPhoto *p = [[CSPhoto alloc] init];
-    
 
     p.dateCreated = [NSDate date];
     p.deviceId = self.localDevice.remoteId;
@@ -914,6 +968,7 @@
     p.thumbURL = fullPath;
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];
+    p.isVideo = @"0";
 
 // save the metada information into image
     NSData *data = UIImageJPEGRepresentation(image, 100);
@@ -934,10 +989,9 @@
     NSLog(@"saving photo to %@ with filename %@", filePath, p.fileName);
 
     [self.dataWrapper addPhoto:p];
-    
+
     self.unUploadedPhotos++;
-    [self addNewcell:p];
-    [self updateUploadCountUI];
+    callback(p);
 }
 
 // update the status image everytime a photo been uploaded
@@ -1033,7 +1087,7 @@
     CGFloat cameraBtnLength = 90;
     self.caremaBtn =[self buildButton:CGRectMake((APP_SIZE.width - cameraBtnLength) / 2, (DEVICE_SIZE.height - CAMERA_MENU_VIEW_HEIGH - cameraBtnLength)  , cameraBtnLength, cameraBtnLength)
          normalImgStr:@"shot.png"
-      highlightImgStr:@"shot_h.png"
+      highlightImgStr:@""
        selectedImgStr:@""
                action:@selector(takePictureBtnPressed:)
            parentView:self.overlay];
@@ -1158,6 +1212,7 @@
     else {
         if (recording) {
             [self.caremaBtn setImage:[UIImage imageNamed:@"video.png"] forState:UIControlStateNormal];
+            
             [self.picker stopVideoCapture];
             recording = NO;
             sec = 0;
@@ -1219,7 +1274,7 @@
 // button switch fron and back camera
 - (void)switchCameraBtnPressed:(UIButton*)sender {
     sender.selected = !sender.selected;
-    NSLog(@"inpuyt %@",self.inputDevice);
+    NSLog(@"input %@",self.inputDevice);
     if (!self.inputDevice) {
         return;
     }
