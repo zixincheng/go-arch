@@ -152,7 +152,7 @@
 
   // edit the metadata according to the user settings
   NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata];
-
+NSLog(@"%@",metadataAsMutable);
   CFStringRef UTI = CGImageSourceGetType(source);
 
   NSMutableData *dest_data = [NSMutableData data];
@@ -184,6 +184,7 @@
 
   // edit the metadata according to the user settings
   NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata];
+    NSLog(@"%@",metadataAsMutable);
   
   CFStringRef UTI = CGImageSourceGetType(source);
   
@@ -203,6 +204,149 @@
   
   return dest_data;
 }
+
+// get NSData with correc tmetadata from local filepath
+- (NSData *)getVideoWithMetaDataFromFile:(NSString *)textPath {
+
+    NSData *VideoData = [NSData dataWithContentsOfFile:textPath];
+    CGImageSourceRef source =
+    CGImageSourceCreateWithData((CFMutableDataRef)VideoData, NULL);
+
+    NSDictionary *metadata = (NSDictionary *)CFBridgingRelease(
+                                                               CGImageSourceCopyPropertiesAtIndex(source, 0, NULL));
+
+    // edit the metadata according to the user settings
+    NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata];
+    NSLog(@"%@",metadataAsMutable);
+
+    CFStringRef UTI = CGImageSourceGetType(source);
+
+    NSMutableData *dest_data = [NSMutableData data];
+
+    CGImageDestinationRef destination = CGImageDestinationCreateWithData(
+                                                                         (__bridge CFMutableDataRef)dest_data, UTI, 1, NULL);
+
+    CGImageDestinationAddImageFromSource(
+                                         destination, source, 0, (__bridge CFDictionaryRef)metadataAsMutable);
+
+    BOOL success = NO;
+    success = CGImageDestinationFinalize(destination);
+
+    CFRelease(destination);
+    CFRelease(source);
+
+    return dest_data;
+}
+
+-(void) uploadVideos:(NSMutableArray *)photos upCallback:(void (^)())upCallback {
+    self.upCallback = upCallback;
+
+
+    // This generates a guranteed unique string
+    NSString *uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
+
+    __block UIBackgroundTaskIdentifier background_task; // Create a task object
+
+    UIApplication *application = [UIApplication sharedApplication];
+
+    background_task = [application beginBackgroundTaskWithExpirationHandler:^{
+        [application endBackgroundTask:background_task]; // Tell the system that
+        // we are done with the
+        // tasks
+        background_task = UIBackgroundTaskInvalid; // Set the task to be invalid
+    
+        // System will be shutting down the app at any point in time now
+    }];
+
+    // Background tasks require you to use asyncrous tasks
+    // This background task will have 30 seconds to complete before apple kills us
+    // This should allow us to start all of the uploads which will then be able to
+    // run in the background
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        // Perform your tasks that your application requires
+
+        // prevent app from going to sleep when uploading
+        [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+        for (CSPhoto *p in photos) {
+            // sets up a condition lock with "pending reads"
+            readLock =
+            [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
+
+            ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
+                ALAssetRepresentation *rep = [asset defaultRepresentation];
+
+                CGImageRef iref = [rep fullResolutionImage];
+                // if the asset exists
+                if (iref) {
+
+
+                    NSString *moviePath = p.imageURL;
+                    
+                    // add the metadata to image before we upload
+                    NSData *movieData =
+                    [self getVideoWithMetaDataFromFile:moviePath];
+
+                    NSString *fileName = [NSString
+                                          stringWithFormat:@"%@_%@", uniqueString, @"movie.mov"];
+                    NSURL *fileURL = [NSURL
+                                      fileURLWithPath:[NSTemporaryDirectory()
+                                                       stringByAppendingPathComponent:fileName]];
+
+                    [movieData writeToURL:fileURL
+                                  options:NSDataWritingAtomic
+                                    error:nil];
+
+                    AppDelegate *appDelegate =
+                    [[UIApplication sharedApplication] delegate];
+                    NSString *urlString = [NSString
+                                           stringWithFormat:@"%@%@%@", @"https://",
+                                           appDelegate.account.ip, @"/photos"];
+                    NSURL *url = [NSURL URLWithString:urlString];
+
+                    // TODO: Get these values from photo
+                    // eg. filename = actual filename (not unique string)
+                    NSArray *objects =
+                    [NSArray arrayWithObjects:appDelegate.account.token,
+                     uniqueString, @"movie/mov", nil];
+                    NSArray *keys = [NSArray
+                                     arrayWithObjects:@"token", @"filename", @"file-type", nil];
+                    NSDictionary *headers =
+                    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+
+                    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+                    [request setURL:url];
+                    [request setHTTPMethod:@"POST"];
+                    [request setAllHTTPHeaderFields:headers];
+                    [request setValue:@"multipart/form-data; boundary=AaB03x" forHTTPHeaderField:@"Content-Type"];
+
+                    NSURLSessionUploadTask *uploadTask =
+                    [self.session uploadTaskWithRequest:request fromFile:fileURL];
+                    p.taskIdentifier = uploadTask.taskIdentifier;
+
+                    @synchronized(self.uploadingPhotos) {
+                        [self.uploadingPhotos addObject:p];
+                    }
+
+                    [uploadTask resume];
+                    NSLog(@"making post request to %@", urlString);
+
+                    [readLock lock];
+                    [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
+                } else {
+                    
+                }
+            };
+        }
+        [application endBackgroundTask:background_task]; // End the task so the
+        // system knows that you
+        // are done with what you
+        // need to perform
+        background_task =
+        UIBackgroundTaskInvalid; // Invalidate the background_task
+    });
+}
+
+
 
 // upload an array of CSPhotos to the server
 // after each photo is uploaded, the upCallback function is called
@@ -244,12 +388,142 @@
       [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 
       for (CSPhoto *p in photos) {
-        // sets up a condition lock with "pending reads"
-        readLock =
-            [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
+              readLock =
+              [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
+              
+              ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
+                  ALAssetRepresentation *rep = [asset defaultRepresentation];
+              if ([p.isVideo isEqualToString:@"1"]) {
+                  CGImageRef iref = [rep fullResolutionImage];
+                  // if the asset exists
+                  if (iref) {
+                      
+                      NSLog(@"uploading from album");
+                      NSString *moviePath = p.imageURL;
+                      //NSURL *movieurl = [NSURL URLWithString:moviePath];
+                      // add the metadata to image before we upload
+                      //NSData *movieData = [NSData dataWithContentsOfURL:movieurl];
+                      ALAssetRepresentation *rep = [asset defaultRepresentation];
+                      Byte *buffer = (Byte*)malloc(rep.size);
+                      NSUInteger buffered = [rep getBytes:buffer fromOffset:0.0 length:rep.size error:nil];
+                      NSData *movieData = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
+                      //[self getVideoWithMetaDataFromFile:moviePath];
+                      
+                      NSString *fileName = [NSString
+                                            stringWithFormat:@"%@_%@", uniqueString, @"movie.mov"];
+                      NSURL *fileURL = [NSURL
+                                        fileURLWithPath:[NSTemporaryDirectory()
+                                                         stringByAppendingPathComponent:fileName]];
+                      
+                      [movieData writeToURL:fileURL
+                                    options:NSDataWritingAtomic
+                                      error:nil];
+                      NSLog(@"fileurl %@",fileURL);
+                      NSLog(@"moive path %@",moviePath);
+                      NSLog(@"movie data %@", movieData);
+                      AppDelegate *appDelegate =
+                      [[UIApplication sharedApplication] delegate];
+                      NSString *urlString = [NSString
+                                             stringWithFormat:@"%@%@%@", @"https://",
+                                             appDelegate.account.ip, @"/videos"];
+                      NSURL *url = [NSURL URLWithString:urlString];
+                      
+                      // TODO: Get these values from photo
+                      // eg. filename = actual filename (not unique string)
+                      NSArray *objects =
+                      [NSArray arrayWithObjects:appDelegate.account.token,
+                       uniqueString, @"movie/mov", nil];
+                      NSArray *keys = [NSArray
+                                       arrayWithObjects:@"token", @"filename", @"file-type", nil];
+                      NSDictionary *headers =
+                      [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+                      
+                      NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+                      [request setURL:url];
+                      [request setHTTPMethod:@"POST"];
+                      [request setAllHTTPHeaderFields:headers];
+                     // [request setValue:@"multipart/form-data; boundary=AaB03x" forHTTPHeaderField:@"Content-Type"];
+                      
+                      NSURLSessionUploadTask *uploadTask =
+                      [self.session uploadTaskWithRequest:request fromFile:fileURL];
+                      p.taskIdentifier = uploadTask.taskIdentifier;
+                      
+                      @synchronized(self.uploadingPhotos) {
+                          [self.uploadingPhotos addObject:p];
+                      }
+                      
+                      [uploadTask resume];
+                      NSLog(@"making post request to %@", urlString);
+                      
+                      [readLock lock];
+                      [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
+                  } else {
+                      NSLog(@"uploading from device folder");
+                      AppDelegate *appDelegate =
+                      [[UIApplication sharedApplication] delegate];
+                      NSString *urlString = [NSString
+                                             stringWithFormat:@"%@%@%@", @"https://",
+                                             appDelegate.account.ip, @"/videos"];
+                      
+                      NSURL *url = [NSURL URLWithString:urlString];
+                      
+                      // TODO: Get these values from photo
+                      // eg. filename = actual filename (not unique string)
+                      NSArray *objects =
+                      [NSArray arrayWithObjects:appDelegate.account.token,
+                       uniqueString, @"movie/mov", nil];
+                      
+                      // set headers
+                      NSArray *keys = [NSArray
+                                       arrayWithObjects:@"token", @"filename", @"file-type", nil];
+                      NSDictionary *headers =
+                      [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+                      NSLog(@"%@", p);
+                      
+                      NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+                      
+                      [request setURL:url];
+                      [request setHTTPMethod:@"POST"];
+                      [request setAllHTTPHeaderFields:headers];
+                      
+                      // get documents directory
+                      NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
+                                                                               NSDocumentDirectory, NSUserDomainMask, YES);
+                      NSString *documentsDirectory = [pathArray objectAtIndex:0];
+                      NSString *textPath = [documentsDirectory
+                                            stringByAppendingPathComponent:p.fileName];
+                      
+                      // get movie data from file path
+                      NSData *movieData = [NSData dataWithContentsOfFile:textPath];
+                      NSString *fileName = [NSString
+                                            stringWithFormat:@"%@_%@", p.fileName, @"movie.mov"];
+                      NSURL *fileURL =
+                      [NSURL fileURLWithPath:[NSTemporaryDirectory()
+                                              stringByAppendingString:fileName]];
+                      // write the image data to a temp dir
+                      [movieData writeToURL:fileURL
+                                    options:NSDataWritingAtomic
+                                      error:nil];
+                      
+                      // upload the file from the temp dir
+                      NSURLSessionUploadTask *uploadTask =
+                      [self.session uploadTaskWithRequest:request fromFile:fileURL];
+                      
+                      p.taskIdentifier = uploadTask.taskIdentifier;
+                      
+                      @synchronized(self.uploadingPhotos) {
+                          [self.uploadingPhotos addObject:p];
+                      }
+                      
+                      // start upload
+                      [uploadTask resume];
+                      
+                      [readLock lock];
+                      [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
 
-        ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
-            ALAssetRepresentation *rep = [asset defaultRepresentation];
+                  }
+              }
+              else {
 
             CGImageRef iref = [rep fullResolutionImage];
 
@@ -362,7 +636,9 @@
               NSURL *fileURL =
                   [NSURL fileURLWithPath:[NSTemporaryDirectory()
                                              stringByAppendingString:fileName]];
-
+                NSLog(@"text path %@",textPath);
+                NSLog(@"p,url %@",p.imageURL);
+                NSLog(@"file url %@",fileURL);
               // write the image data to a temp dir
               [imageData writeToURL:fileURL
                             options:NSDataWritingAtomic
@@ -384,6 +660,7 @@
               [readLock lock];
               [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
             }
+           }
         };
 
         ALAssetsLibraryAccessFailureBlock failureBlock = ^(NSError *err) {
