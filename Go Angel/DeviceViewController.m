@@ -44,13 +44,13 @@
   [super viewDidLoad];
     AVCaptureSession *tmpSession = [[AVCaptureSession alloc] init];
     self.session = tmpSession;
+    [self.session setSessionPreset:AVCaptureSessionPresetHigh];
     [self.session startRunning];
     self.picker = [[UIImagePickerController alloc] init];
     self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     [self addVideoInputFrontCamera:YES];
     //self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     //[self addCameraCover];
-    takingPhoto = YES;
 
   // nav bar
   // make light nav bar
@@ -225,6 +225,7 @@
     self.overlay = [self creatCaremaOverlay];
     self.picker.cameraOverlayView = self.overlay;
     self.picker.showsCameraControls = NO;
+    takingPhoto = YES;
 
     
     [self presentViewController:self.picker animated:YES completion:^{
@@ -621,7 +622,6 @@
 # pragma mark - Camera
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-  
   //[picker dismissViewControllerAnimated:NO completion:^{
     // picker disappeared
     if (takingPhoto) {
@@ -630,6 +630,7 @@
 
         if (self.saveInAlbum) {
             NSLog(@"save photos into album");
+
             [localLibrary saveImage:image metadata:metadata callback: ^(CSPhoto *photo){
                 dispatch_async(dispatch_get_main_queue(), ^ {
                     [self addNewcell:photo];
@@ -653,7 +654,6 @@
             if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
                 NSURL *moviePath = [info objectForKey:UIImagePickerControllerMediaURL];
                 NSLog(@"%@",moviePath);
-                NSData *data = [NSData dataWithContentsOfURL:moviePath];
 
                 [localLibrary saveVideo:moviePath callback:^(CSPhoto *photo) {
                     dispatch_async(dispatch_get_main_queue(), ^ {
@@ -668,7 +668,6 @@
             if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
                 NSURL *moviePath = [info objectForKey:UIImagePickerControllerMediaURL];
                 NSLog(@"%@",moviePath);
-                NSData *data = [NSData dataWithContentsOfURL:moviePath];
 
                 [self saveVideoIntoDocument:moviePath callback:^(CSPhoto *photo) {
                     dispatch_async(dispatch_get_main_queue(), ^ {
@@ -808,7 +807,6 @@
     [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^{
            __block UIImage *newimage = [self markedImageStatus:image checkImageStatus:photo.onServer uploadingImage:self.currentlyUploading];
-            NSLog(self.currentlyUploading ? @"Yes":@"No");
             [imageView setImage:newimage];
             
             //      if ([indexPath row] == bottom_selected) {
@@ -919,24 +917,40 @@
 
 -(void) saveVideoIntoDocument:(NSURL *)moviePath callback:(void (^) (CSPhoto *photo)) callback{
 
+
+    // generate thumbnail for video
+    AVAsset *asset = [AVAsset assetWithURL:moviePath];
+    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
+    CMTime time = [asset duration];
+    time.value = 0;
+    CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
+    UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+
+    // get app document path
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsPath = [paths objectAtIndex:0];
 
-    NSString *photoUID = [self getCurrentDateTime];
 
+    NSString *photoUID = [self getCurrentDateTime];
+    NSString *thumbPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
     NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.mov", photoUID]];
+
     NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
+    NSString *fullthumbPath = [[NSURL fileURLWithPath:thumbPath] absoluteString];
 
     NSData *videoData = [NSData dataWithContentsOfURL:moviePath];
 
     [videoData writeToFile:filePath atomically:YES];
+    NSData *thumbData = [NSData dataWithData:UIImageJPEGRepresentation(thumbnail, 1.0)];
+    [thumbData writeToFile:thumbPath atomically:YES];
 
     CSPhoto *p = [[CSPhoto alloc] init];
 
     p.dateCreated = [NSDate date];
     p.deviceId = self.localDevice.remoteId;
     p.onServer = @"0";
-    p.thumbURL = fullPath;
+    p.thumbURL = fullthumbPath;
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.mov",photoUID];
     p.isVideo = @"1";
