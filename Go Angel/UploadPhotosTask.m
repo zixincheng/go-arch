@@ -78,7 +78,8 @@
     NSString *state = [defaults objectForKey:CURR_LOC_PROV];
     NSString *countryCode = [defaults objectForKey:CURR_LOC_COUN_CODE];
     NSString *country = [defaults objectForKey:CURR_LOC_COUNTRY];
-    
+    NSString *longitude = [defaults objectForKey:CURR_LOC_LONG];
+    NSString *latitude = [defaults objectForKey:CURR_LOC_LAT];
     NSString *sublocation = name;
     
     // if there is a unit to the location, then change the sublocation to be UNIT - ADDRESS
@@ -92,8 +93,9 @@
     [IPTCDictionary setObject:state forKey:(NSString *)kCGImagePropertyIPTCProvinceState];
     [IPTCDictionary setObject:countryCode forKey:(NSString *)kCGImagePropertyIPTCCountryPrimaryLocationCode];
     [IPTCDictionary setObject:country forKey:(NSString *)kCGImagePropertyIPTCCountryPrimaryLocationName];
+    [IPTCDictionary setValue:longitude forKey:(NSString *) kCGImagePropertyGPSDestLongitude];
+    [IPTCDictionary setValue:latitude forKey:(NSString *)kCGImagePropertyGPSDestLatitude];
   }
-  
 
   if (!EXIFDictionary) {
     EXIFDictionary = [NSMutableDictionary dictionary];
@@ -103,7 +105,13 @@
   if (!GPSDictionary || !gpsMeta) {
     GPSDictionary = [NSMutableDictionary dictionary];
   }
+  if (gpsMeta) {
 
+        NSString *longitude = [defaults objectForKey:CURR_LOC_LONG];
+        NSString *latitude = [defaults objectForKey:CURR_LOC_LAT];
+        [GPSDictionary setObject:longitude forKeyedSubscript:(NSString *) kCGImagePropertyGPSLongitude];
+        [GPSDictionary setObject:latitude forKeyedSubscript:(NSString *) kCGImagePropertyGPSLatitude];
+    }
   if (!TIFFDictionary) {
     TIFFDictionary = [NSMutableDictionary dictionary];
   }
@@ -187,7 +195,7 @@ NSLog(@"%@",metadataAsMutable);
     NSLog(@"%@",metadataAsMutable);
   
   CFStringRef UTI = CGImageSourceGetType(source);
-  
+
   NSMutableData *dest_data = [NSMutableData data];
   
   CGImageDestinationRef destination = CGImageDestinationCreateWithData(
@@ -203,6 +211,21 @@ NSLog(@"%@",metadataAsMutable);
   CFRelease(source);
   
   return dest_data;
+}
+
+// get NSData with correct metadata from an UIImage and ALAsset
+- (NSData *)getVideoWithMetaDataFromAsset:(NSString *)videPath
+                                    asset:(ALAsset *)asset {
+    
+    NSData *movieData = [NSData dataWithContentsOfFile:videPath];
+    
+    
+    
+    CLLocation *location = [asset valueForProperty:ALAssetPropertyLocation];
+    NSLog(@"Location Meta: %@", location);
+    
+    return movieData;
+
 }
 
 // get NSData with correc tmetadata from local filepath
@@ -237,116 +260,6 @@ NSLog(@"%@",metadataAsMutable);
 
     return dest_data;
 }
-
--(void) uploadVideos:(NSMutableArray *)photos upCallback:(void (^)())upCallback {
-    self.upCallback = upCallback;
-
-
-    // This generates a guranteed unique string
-    NSString *uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
-
-    __block UIBackgroundTaskIdentifier background_task; // Create a task object
-
-    UIApplication *application = [UIApplication sharedApplication];
-
-    background_task = [application beginBackgroundTaskWithExpirationHandler:^{
-        [application endBackgroundTask:background_task]; // Tell the system that
-        // we are done with the
-        // tasks
-        background_task = UIBackgroundTaskInvalid; // Set the task to be invalid
-    
-        // System will be shutting down the app at any point in time now
-    }];
-
-    // Background tasks require you to use asyncrous tasks
-    // This background task will have 30 seconds to complete before apple kills us
-    // This should allow us to start all of the uploads which will then be able to
-    // run in the background
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        // Perform your tasks that your application requires
-
-        // prevent app from going to sleep when uploading
-        [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-        for (CSPhoto *p in photos) {
-            // sets up a condition lock with "pending reads"
-            readLock =
-            [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
-
-            ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
-                ALAssetRepresentation *rep = [asset defaultRepresentation];
-
-                CGImageRef iref = [rep fullResolutionImage];
-                // if the asset exists
-                if (iref) {
-
-
-                    NSString *moviePath = p.imageURL;
-                    
-                    // add the metadata to image before we upload
-                    NSData *movieData =
-                    [self getVideoWithMetaDataFromFile:moviePath];
-
-                    NSString *fileName = [NSString
-                                          stringWithFormat:@"%@_%@", uniqueString, @"movie.mov"];
-                    NSURL *fileURL = [NSURL
-                                      fileURLWithPath:[NSTemporaryDirectory()
-                                                       stringByAppendingPathComponent:fileName]];
-
-                    [movieData writeToURL:fileURL
-                                  options:NSDataWritingAtomic
-                                    error:nil];
-
-                    AppDelegate *appDelegate =
-                    [[UIApplication sharedApplication] delegate];
-                    NSString *urlString = [NSString
-                                           stringWithFormat:@"%@%@%@", @"https://",
-                                           appDelegate.account.ip, @"/photos"];
-                    NSURL *url = [NSURL URLWithString:urlString];
-
-                    // TODO: Get these values from photo
-                    // eg. filename = actual filename (not unique string)
-                    NSArray *objects =
-                    [NSArray arrayWithObjects:appDelegate.account.token,
-                     uniqueString, @"movie/mov", nil];
-                    NSArray *keys = [NSArray
-                                     arrayWithObjects:@"token", @"filename", @"file-type", nil];
-                    NSDictionary *headers =
-                    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-
-                    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-                    [request setURL:url];
-                    [request setHTTPMethod:@"POST"];
-                    [request setAllHTTPHeaderFields:headers];
-                    [request setValue:@"multipart/form-data; boundary=AaB03x" forHTTPHeaderField:@"Content-Type"];
-
-                    NSURLSessionUploadTask *uploadTask =
-                    [self.session uploadTaskWithRequest:request fromFile:fileURL];
-                    p.taskIdentifier = uploadTask.taskIdentifier;
-
-                    @synchronized(self.uploadingPhotos) {
-                        [self.uploadingPhotos addObject:p];
-                    }
-
-                    [uploadTask resume];
-                    NSLog(@"making post request to %@", urlString);
-
-                    [readLock lock];
-                    [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
-                } else {
-                    
-                }
-            };
-        }
-        [application endBackgroundTask:background_task]; // End the task so the
-        // system knows that you
-        // are done with what you
-        // need to perform
-        background_task =
-        UIBackgroundTaskInvalid; // Invalidate the background_task
-    });
-}
-
-
 
 // upload an array of CSPhotos to the server
 // after each photo is uploaded, the upCallback function is called
@@ -397,18 +310,11 @@ NSLog(@"%@",metadataAsMutable);
                   CGImageRef iref = [rep fullResolutionImage];
                   // if the asset exists
                   if (iref) {
-                      
                       NSLog(@"uploading from album");
-                      NSString *moviePath = p.imageURL;
-                      //NSURL *movieurl = [NSURL URLWithString:moviePath];
-                      // add the metadata to image before we upload
-                      //NSData *movieData = [NSData dataWithContentsOfURL:movieurl];
-                      ALAssetRepresentation *rep = [asset defaultRepresentation];
                       Byte *buffer = (Byte*)malloc(rep.size);
                       NSUInteger buffered = [rep getBytes:buffer fromOffset:0.0 length:rep.size error:nil];
                       NSData *movieData = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
-                      //[self getVideoWithMetaDataFromFile:moviePath];
-                      
+
                       NSString *fileName = [NSString
                                             stringWithFormat:@"%@_%@", uniqueString, @"movie.mov"];
                       NSURL *fileURL = [NSURL
@@ -418,9 +324,8 @@ NSLog(@"%@",metadataAsMutable);
                       [movieData writeToURL:fileURL
                                     options:NSDataWritingAtomic
                                       error:nil];
-                      NSLog(@"fileurl %@",fileURL);
-                      NSLog(@"moive path %@",moviePath);
-                      NSLog(@"movie data %@", movieData);
+                      CLLocation *location = [asset valueForProperty:ALAssetPropertyLocation];
+                      NSLog(@"Location Meta: %@", location);
                       AppDelegate *appDelegate =
                       [[UIApplication sharedApplication] delegate];
                       NSString *urlString = [NSString
@@ -430,11 +335,28 @@ NSLog(@"%@",metadataAsMutable);
                       
                       // TODO: Get these values from photo
                       // eg. filename = actual filename (not unique string)
-                      NSArray *objects =
-                      [NSArray arrayWithObjects:appDelegate.account.token,
-                       uniqueString, @"movie/mov", nil];
-                      NSArray *keys = [NSArray
-                                       arrayWithObjects:@"token", @"filename", @"file-type", nil];
+                      NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                      BOOL tagLocation = [[NSUserDefaults standardUserDefaults] boolForKey:CURR_LOC_ON];
+                      NSArray * keys;
+                      NSArray *objects;
+                      
+                      NSString *name = [defaults objectForKey:CURR_LOC_NAME];
+                      NSString *unit = [defaults objectForKey:(CURR_LOC_UNIT)];
+                      NSString *city = [defaults objectForKey:CURR_LOC_CITY];
+                      NSString *state = [defaults objectForKey:CURR_LOC_PROV];
+                      NSString *countryCode = [defaults objectForKey:CURR_LOC_COUN_CODE];
+                      NSString *country = [defaults objectForKey:CURR_LOC_COUNTRY];
+                      NSString *longitude = [defaults objectForKey:CURR_LOC_LONG];
+                      NSString *latitude = [defaults objectForKey:CURR_LOC_LAT];
+                      if (tagLocation) {
+                          keys = [NSArray
+                                  arrayWithObjects:@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
+                          objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, name, nil];
+                      } else {
+                          keys = [NSArray
+                                  arrayWithObjects:@"token", @"filename", @"file-type",nil];
+                          objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"movie/mov", nil];
+                      }
                       NSDictionary *headers =
                       [NSDictionary dictionaryWithObjects:objects forKeys:keys];
                       
@@ -469,19 +391,40 @@ NSLog(@"%@",metadataAsMutable);
                       
                       // TODO: Get these values from photo
                       // eg. filename = actual filename (not unique string)
-                      NSArray *objects =
-                      [NSArray arrayWithObjects:appDelegate.account.token,
-                       uniqueString, @"movie/mov", nil];
+                      //[NSArray arrayWithObjects:appDelegate.account.token,
+                      // uniqueString, @"movie/mov", nil];
                       
                       // set headers
-                      NSArray *keys = [NSArray
-                                       arrayWithObjects:@"token", @"filename", @"file-type", nil];
+                     // NSArray *keys = [NSArray
+                                       //arrayWithObjects:@"token", @"filename", @"file-type", nil];
+                      
+                      NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                      BOOL tagLocation = [[NSUserDefaults standardUserDefaults] boolForKey:CURR_LOC_ON];
+                      NSArray * keys;
+                      NSArray *objects;
+
+                      NSString *name = [defaults objectForKey:CURR_LOC_NAME];
+                      NSString *unit = [defaults objectForKey:(CURR_LOC_UNIT)];
+                      NSString *city = [defaults objectForKey:CURR_LOC_CITY];
+                      NSString *state = [defaults objectForKey:CURR_LOC_PROV];
+                      NSString *countryCode = [defaults objectForKey:CURR_LOC_COUN_CODE];
+                      NSString *country = [defaults objectForKey:CURR_LOC_COUNTRY];
+                      NSString *longitude = [defaults objectForKey:CURR_LOC_LONG];
+                      NSString *latitude = [defaults objectForKey:CURR_LOC_LAT];
+                      if (tagLocation) {
+                          keys = [NSArray
+                                  arrayWithObjects:@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
+                          objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, name, nil];
+                      } else {
+                          keys = [NSArray
+                                  arrayWithObjects:@"token", @"filename", @"file-type",nil];
+                          objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"movie/mov", nil];
+                      }
                       NSDictionary *headers =
                       [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-                      NSLog(@"%@", p);
                       
                       NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-                      
+                      NSLog(@"%@",headers);
                       [request setURL:url];
                       [request setHTTPMethod:@"POST"];
                       [request setAllHTTPHeaderFields:headers];
