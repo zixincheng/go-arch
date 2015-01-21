@@ -410,11 +410,34 @@
             NSString *text = [alertView textFieldAtIndex:0].text;
             
             if (![text isEqualToString:@""]) {
-                Server *s = [[Server alloc] init];
-                s.ip = text;
-                s.hostname = @"Unknow";
-                [self.servers addObject:s];
-                [self createTargets:s];
+                [self.coinsorter getSid:text infoCallback:^(NSData *data) {
+                    if (data) {
+                        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                        NSString *sid = [jsonData objectForKey:@"SID"];
+                        NSString *hostname = [jsonData objectForKey:@"HOSTNAME"];
+
+                        Server *s = [[Server alloc] init];
+                        s.ip = text;
+                        s.hostname = hostname;
+                        s.serverId = sid;
+
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            @synchronized (self.servers) {
+
+                                // Before adding it, lets attempt to find it in the list first.
+                                NSArray *array = [self.servers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"serverId == %@", sid]];
+
+                                if (array == nil || [array count] == 0) {
+                                    // If nothing exists at all
+                                    [self.servers addObject:s];
+                                    [self createTargets: s];
+                                }
+                            }
+                        });
+                    } else {
+                        NSLog(@"no server");
+                    }
+                }];
             }
         }
 
