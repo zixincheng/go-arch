@@ -90,6 +90,9 @@
 		9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13821A3F63A5000B780B /* QuartzCore.framework */; };
 		9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */; };
 		9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */; };
+		9BDDBAF51A70827900697C25 /* CSLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDDBAF41A70827900697C25 /* CSLocation.m */; };
+		9BE4F6FE1A717F1D009FEB3F /* MainLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BE4F6FD1A717F1D009FEB3F /* MainLocationViewController.m */; };
+		9BE4F7051A71AC02009FEB3F /* AddingLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BE4F7041A71AC02009FEB3F /* AddingLocationViewController.m */; };
 		9BEA5B561A1EB26100CC14FF /* CSStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B531A1EB26100CC14FF /* CSStorage.m */; };
 		9BEA5B571A1EB26100CC14FF /* StorageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B551A1EB26100CC14FF /* StorageViewController.m */; };
 		D510B9641A364A8A00307184 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D510B9621A364A8A00307184 /* DashboardViewController.m */; };
@@ -269,6 +272,12 @@
 		9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageDetailViewController.m; sourceTree = "<group>"; };
 		9BB0F20C1A27A91900DF40E3 /* StorageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageTableViewCell.h; sourceTree = "<group>"; };
 		9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageTableViewCell.m; sourceTree = "<group>"; };
+		9BDDBAF31A70827900697C25 /* CSLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSLocation.h; sourceTree = "<group>"; };
+		9BDDBAF41A70827900697C25 /* CSLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSLocation.m; sourceTree = "<group>"; };
+		9BE4F6FC1A717F1D009FEB3F /* MainLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainLocationViewController.h; sourceTree = "<group>"; };
+		9BE4F6FD1A717F1D009FEB3F /* MainLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainLocationViewController.m; sourceTree = "<group>"; };
+		9BE4F7031A71AC02009FEB3F /* AddingLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddingLocationViewController.h; sourceTree = "<group>"; };
+		9BE4F7041A71AC02009FEB3F /* AddingLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddingLocationViewController.m; sourceTree = "<group>"; };
 		9BEA5B521A1EB26100CC14FF /* CSStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSStorage.h; sourceTree = "<group>"; };
 		9BEA5B531A1EB26100CC14FF /* CSStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSStorage.m; sourceTree = "<group>"; };
 		9BEA5B541A1EB26100CC14FF /* StorageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageViewController.h; sourceTree = "<group>"; };
@@ -371,6 +380,8 @@
 				2061D1D2199193CE001C7E08 /* CSDevice.m */,
 				2061D1D3199193CE001C7E08 /* CSPhoto.h */,
 				2061D1D4199193CE001C7E08 /* CSPhoto.m */,
+				9BDDBAF31A70827900697C25 /* CSLocation.h */,
+				9BDDBAF41A70827900697C25 /* CSLocation.m */,
 				9BEA5B521A1EB26100CC14FF /* CSStorage.h */,
 				9BEA5B531A1EB26100CC14FF /* CSStorage.m */,
 				D510B9611A364A8A00307184 /* DashboardViewController.h */,
@@ -395,7 +406,11 @@
 				2061D1EA19919430001C7E08 /* LocalLibrary.m */,
 				2040D2231A6058EA00E490F3 /* LocationTableViewController.h */,
 				2040D2241A6058EA00E490F3 /* LocationTableViewController.m */,
+				9BE4F7031A71AC02009FEB3F /* AddingLocationViewController.h */,
+				9BE4F7041A71AC02009FEB3F /* AddingLocationViewController.m */,
 				2061D1EB19919430001C7E08 /* Main.storyboard */,
+				9BE4F6FC1A717F1D009FEB3F /* MainLocationViewController.h */,
+				9BE4F6FD1A717F1D009FEB3F /* MainLocationViewController.m */,
 				20931B8619954FF000F57FB0 /* MediaLoader.h */,
 				20931B8719954FF000F57FB0 /* MediaLoader.m */,
 				2061D1EE19919436001C7E08 /* Model.xcdatamodeld */,
@@ -745,8 +760,10 @@
 				9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */,
 				2061D1E4199193DB001C7E08 /* firstLoadViewController.m in Sources */,
 				2061D1DB199193CE001C7E08 /* CSDevice.m in Sources */,
+				9BE4F7051A71AC02009FEB3F /* AddingLocationViewController.m in Sources */,
 				2061D2001991945F001C7E08 /* main.m in Sources */,
 				20931B8819954FF000F57FB0 /* MediaLoader.m in Sources */,
+				9BDDBAF51A70827900697C25 /* CSLocation.m in Sources */,
 				20DD6A44199441C900D76DC3 /* GridViewController.m in Sources */,
 				9B3445CD1A410772004BA746 /* RadarViewController.m in Sources */,
 				2040D2251A6058EA00E490F3 /* LocationTableViewController.m in Sources */,
@@ -754,6 +771,7 @@
 				20931B8E19957EEE00F57FB0 /* PhotoSectionHeaderView.m in Sources */,
 				2061D1FD19919440001C7E08 /* SettingsViewController.m in Sources */,
 				2081697519959CC900EEC65C /* PhotoSwipeViewController.m in Sources */,
+				9BE4F6FE1A717F1D009FEB3F /* MainLocationViewController.m in Sources */,
 				D518B33B1A42046700E249E4 /* ActivityHistory.m in Sources */,
 				D5296F251A27B1D80069555B /* createDefaultAlbum.m in Sources */,
 				D5E2672B1A410EDE00611A67 /* HistoryTableViewController.m in Sources */,
