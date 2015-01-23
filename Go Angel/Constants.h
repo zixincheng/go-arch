@@ -39,6 +39,15 @@
 #define PHOTO @"Photo"
 #define DEVICE @"Device"
 #define LOG @"Log"
+#define LOCATION @"Location"
+
+// location entity attributes
+#define COUNTRY @"country"
+#define COUNTRYCODE @"countryCode"
+#define CITY @"city"
+#define PROVINCE @"province"
+#define UNIT @"unit"
+#define NAME @"name"
 
 // photo entity attributes
 #define DATE_CREATED @"dateCreated"

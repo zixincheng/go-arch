@@ -10,6 +10,8 @@
 
 @implementation CoreDataWrapper
 
+#pragma mark -
+#pragma mark Device fucntions
 - (void) addUpdateDevice:(CSDevice *)device {
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
   
@@ -107,6 +109,9 @@
   return arr;
 }
 
+#pragma mark -
+#pragma mark Photo functions
+
 - (NSManagedObject *) setObjectValues: (CSPhoto *) photo object: (NSManagedObject *) object {
   [object setValue:photo.imageURL forKey:IMAGE_URL];
   [object setValue:photo.thumbURL forKey:THUMB_URL];
@@ -124,13 +129,6 @@
   }
   
   return object;
-}
-
-- (NSManagedObject *) setLogValues: (ActivityHistory *)log object:(NSManagedObject *) message{
-    [message setValue:log.activityLog forKey:ACTIVITY_LOG];
-    [message setValue:log.timeUpdate forKey:TIME_UPDATE];
-    
-    return message;
 }
 
 - (void) deletePhotos:(NSArray *) itemPaths {
@@ -236,57 +234,6 @@
   p.isVideo      = [object valueForKey:@"isVideo"];
   
   return p;
-}
-
-- (ActivityHistory *) getLogFromMessage: (NSManagedObject *) message{
-    ActivityHistory *logText = [[ActivityHistory alloc] init];
-    logText.activityLog = [message valueForKey:ACTIVITY_LOG];
-    logText.timeUpdate = [message valueForKey:TIME_UPDATE];
-    return logText;
-}
-
-- (void) addUpdateLog:(ActivityHistory *)log{
-    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
-    
-    [context performBlockAndWait: ^{
-        NSManagedObject *logObj;
-
-        logObj = [NSEntityDescription insertNewObjectForEntityForName:LOG inManagedObjectContext:context];
-        logObj = [self setLogValues:log object:logObj];
-        
-        [context save:nil];
-        
-    }];
-}
-
-- (NSMutableArray *) getLogs{
-    
-    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
-    __block NSMutableArray *arr = [[NSMutableArray alloc] init];
-    
-    [context performBlockAndWait: ^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOG];
-     
-        // set sort
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:TIME_UPDATE ascending:NO];
-        NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
-        [request setSortDescriptors: descriptors];
-        
-        NSArray *message = [context executeFetchRequest:request error:nil];
-        
-        if (message == nil) {
-            NSLog(@"error with core data request");
-            abort();
-        }
-        
-        // add all of the log objects to the local log list
-        for (int i =0; i < [message count]; i++) {
-            NSManagedObject *logText = message[i];
-            [arr addObject:[self getLogFromMessage:logText]];
-        }
-    }];
-    
-    return arr;
 }
 
 - (NSMutableArray *)getPhotos: (NSString *) deviceId {
@@ -458,5 +405,172 @@
   
   return latestId;
 }
+
+#pragma mark -
+#pragma mark Log functions
+
+- (NSManagedObject *) setLogValues: (ActivityHistory *)log object:(NSManagedObject *) message{
+    [message setValue:log.activityLog forKey:ACTIVITY_LOG];
+    [message setValue:log.timeUpdate forKey:TIME_UPDATE];
+    
+    return message;
+}
+
+- (NSMutableArray *) getLogs{
+    
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    __block NSMutableArray *arr = [[NSMutableArray alloc] init];
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOG];
+        
+        // set sort
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:TIME_UPDATE ascending:NO];
+        NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
+        [request setSortDescriptors: descriptors];
+        
+        NSArray *message = [context executeFetchRequest:request error:nil];
+        
+        if (message == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        // add all of the log objects to the local log list
+        for (int i =0; i < [message count]; i++) {
+            NSManagedObject *logText = message[i];
+            [arr addObject:[self getLogFromMessage:logText]];
+        }
+    }];
+    
+    return arr;
+}
+
+- (ActivityHistory *) getLogFromMessage: (NSManagedObject *) message{
+    ActivityHistory *logText = [[ActivityHistory alloc] init];
+    logText.activityLog = [message valueForKey:ACTIVITY_LOG];
+    logText.timeUpdate = [message valueForKey:TIME_UPDATE];
+    return logText;
+}
+
+- (void) addUpdateLog:(ActivityHistory *)log{
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+    [context performBlockAndWait: ^{
+        NSManagedObject *logObj;
+        
+        logObj = [NSEntityDescription insertNewObjectForEntityForName:LOG inManagedObjectContext:context];
+        logObj = [self setLogValues:log object:logObj];
+        
+        [context save:nil];
+        
+    }];
+}
+
+#pragma mark -
+#pragma mark Location functions
+
+- (void) addLocation:(CSLocation *)location {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
+        
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",UNIT,location.unit,CITY,location.city,NAME,location.name];
+        [request setPredicate:pred];
+        
+
+        NSArray *result = [context executeFetchRequest:request error:nil];
+        
+        
+        if (result == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        NSManagedObject *locationObj;
+        
+        if (result.count == 0) {
+            locationObj = [NSEntityDescription insertNewObjectForEntityForName:LOCATION inManagedObjectContext:context];
+            NSLog(@"created new device");
+        }else {
+            locationObj = result[0];
+            NSLog(@"updated Location - %@", location.name);
+        }
+
+        [locationObj setValue:location.country forKey:COUNTRY];
+        [locationObj setValue:location.countryCode forKey:COUNTRYCODE];
+        [locationObj setValue:location.city forKey:CITY];
+        [locationObj setValue:location.province forKey:PROVINCE];
+        [locationObj setValue:location.unit forKey:UNIT];
+        [locationObj setValue:location.name forKey:NAME];
+
+        [context save:nil];
+        
+    }];
+}
+- (CSLocation *) getLocationFromObject: (NSManagedObject *) object {
+    CSLocation *location     = [[CSLocation alloc] init];
+    location.country = [object valueForKey:COUNTRY];
+    location.countryCode = [object valueForKey:COUNTRYCODE];
+    location.city = [object valueForKey:CITY];
+    location.province = [object valueForKey:PROVINCE];
+    location.unit = [object valueForKey:UNIT];
+    location.name = [object valueForKey:NAME];
+
+    return location;
+}
+
+- (NSMutableArray *) getLocations{
+    
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    __block NSMutableArray *arr = [[NSMutableArray alloc] init];
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
+        
+        // set sort
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:NO];
+        NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
+        [request setSortDescriptors: descriptors];
+        
+        NSArray *locations = [context executeFetchRequest:request error:nil];
+        
+        if (locations == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        // add all of the log objects to the local log list
+        for (int i =0; i < [locations count]; i++) {
+            NSManagedObject *locationObj = locations[i];
+            [arr addObject:[self getLocationFromObject:locationObj]];
+        }
+    }];
+    
+    return arr;
+}
+
+- (void) deleteLocation:(CSLocation *) location {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    [context performBlock: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
+        
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",UNIT,location.unit,CITY,location.city,NAME,location.name];
+        [request setPredicate:pred];
+        
+        NSError *err;
+        NSArray *result = [context executeFetchRequest:request error:&err];
+        
+        if (result == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        } else {
+        [context deleteObject:result[0]];
+        }
+        [context save:nil];
+    }];
+    
+}
+
 
 @end

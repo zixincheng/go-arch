@@ -10,4 +10,11 @@
 
 @interface CSLocation : NSObject
 
+@property (nonatomic, strong) NSString *country;
+@property (nonatomic, strong) NSString *countryCode;
+@property (nonatomic, strong) NSString *city;
+@property (nonatomic, strong) NSString *province;
+@property (nonatomic, strong) NSString *unit;
+@property (nonatomic, strong) NSString *name;
+
 @end

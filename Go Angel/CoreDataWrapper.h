@@ -11,6 +11,7 @@
 #import "CoreDataStore.h"
 #import "CSDevice.h"
 #import "CSPhoto.h"
+#import "CSLocation.h"
 #import "ActivityHistory.h"
 
 // the wrapper to manage inserting our objects into the db
@@ -29,10 +30,13 @@
 - (NSMutableArray *) getPhotos: (NSString *) deviceId;
 - (NSMutableArray *) getPhotosToUpload;
 - (NSMutableArray *) getLogs;
+- (NSMutableArray *) getLocations;
 - (int) getCountUnUploaded;
 - (int) getCountUploaded:(NSString *) deviceId;
 - (CSDevice *) getDevice: (NSString *) cid;
 - (NSString *) getLatestId;
 - (NSString *) getCurrentPhotoOnServerVaule: (NSString *) deviceId CurrentIndex:(int)index;
 - (void) deletePhotos:(NSArray *) itemPaths;
+- (void) addLocation:(CSLocation *)location;
+- (void) deleteLocation:(CSLocation *) location;
 @end
