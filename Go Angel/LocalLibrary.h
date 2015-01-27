@@ -12,6 +12,7 @@
 #import "CoreDataWrapper.h"
 #import "AccountDataWrapper.h"
 #import "createDefaultAlbum.h"
+#import "CSLocation.h"
 
 // class that manages getting photos from the ios photo library
 // it registers for notifications for when the albums changes and
@@ -37,8 +38,8 @@
 - (void) loadLocalImages: (BOOL) parseAll;
 - (void) loadLocalImages: (BOOL) parseAll addCallback: (void (^) ()) addCallback;
 - (void) loadAllowedAlbums;
-- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata callback:(void (^) (CSPhoto *photo)) callback;
-- (void) saveVideo: (NSURL *)moviePath callback:(void (^) (CSPhoto *photo)) callback;
+- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata location: (CSLocation *)location callback:(void (^) (CSPhoto *photo)) callback;
+- (void) saveVideo: (NSURL *)moviePath location: (CSLocation *)location callback:(void (^) (CSPhoto *photo)) callback;
 - (void) registerForNotifications;
 - (void) unRegisterForNotifications;
 

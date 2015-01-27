@@ -44,7 +44,7 @@
     
   [self.navigationBar setTitle:self.device.deviceName];
   
-  self.photos = [self.dataWrapper getPhotos:self.device.remoteId];
+  //self.photos = [self.dataWrapper getPhotos:self.device.remoteId ];
 }
 
 -(void)viewWillAppear:(BOOL)animated{

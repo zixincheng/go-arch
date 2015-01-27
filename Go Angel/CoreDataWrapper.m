@@ -121,6 +121,10 @@
   [object setValue:photo.dateUploaded forKey:DATE_UPLOADED];
   [object setValue:photo.fileName forKey:FILE_NAME];
   [object setValue:photo.isVideo forKey:@"isVideo"];
+  [object setValue:photo.tag forKey:@"tag"];
+  [object setValue:photo.unit forKey:UNIT];
+  [object setValue:photo.name forKey:NAME];
+  [object setValue:photo.city forKey:CITY];
   
   NSLog(@"REMOTE ID %@", photo.remoteID);
   
@@ -181,7 +185,7 @@
     }
     
     photoObj = [self setObjectValues:photo object:photoObj];
-    
+      NSLog(@"%@",photo.tag);
     [context save:nil];
   }];
 }
@@ -213,6 +217,7 @@
       [context save:nil];
       
       NSLog(@"added new photo to core data");
+
       added = YES;
     }else {
       NSLog(@"photo already in core data");
@@ -223,6 +228,7 @@
 
 - (CSPhoto *) getPhotoFromObject: (NSManagedObject *) object {
   CSPhoto *p     = [[CSPhoto alloc] init];
+
   p.deviceId     = [object valueForKey:DEVICE_ID];
   p.onServer     = [object valueForKey:ON_SERVER];
   p.imageURL     = [object valueForKey:IMAGE_URL];
@@ -232,27 +238,34 @@
   p.remoteID     = [object valueForKey:REMOTE_ID];
   p.fileName     = [object valueForKey:FILE_NAME];
   p.isVideo      = [object valueForKey:@"isVideo"];
+  p.tag          = [object valueForKey:@"tag"];
+  p.unit         = [object valueForKey:UNIT];
+  p.name         = [object valueForKey:NAME];
+  p.city         = [object valueForKey:CITY];
+    
   
   return p;
 }
 
-- (NSMutableArray *)getPhotos: (NSString *) deviceId {
+- (NSMutableArray *)getPhotos: (NSString *) deviceId location:(CSLocation *)location{
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
   __block NSMutableArray *arr = [[NSMutableArray alloc] init];
   
   [context performBlockAndWait: ^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+   // [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"Location", nil]];
     
     // set query
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", DEVICE_ID, deviceId];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@)", DEVICE_ID, deviceId, UNIT, location.unit, NAME, location.name, CITY, location.city];
     [request setPredicate:pred];
-    
     // set sort
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:NO];
     NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
     [request setSortDescriptors: descriptors];
     
     NSArray*phs = [context executeFetchRequest:request error:nil];
+
+
     
     if (phs == nil) {
       NSLog(@"error with core data request");

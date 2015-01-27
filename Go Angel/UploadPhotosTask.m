@@ -93,8 +93,8 @@
     [IPTCDictionary setObject:state forKey:(NSString *)kCGImagePropertyIPTCProvinceState];
     [IPTCDictionary setObject:countryCode forKey:(NSString *)kCGImagePropertyIPTCCountryPrimaryLocationCode];
     [IPTCDictionary setObject:country forKey:(NSString *)kCGImagePropertyIPTCCountryPrimaryLocationName];
-    [IPTCDictionary setValue:longitude forKey:(NSString *) kCGImagePropertyGPSDestLongitude];
-    [IPTCDictionary setValue:latitude forKey:(NSString *)kCGImagePropertyGPSDestLatitude];
+    [IPTCDictionary setValue:longitude forKey:(NSString *) kCGImagePropertyGPSLongitude];
+    [IPTCDictionary setValue:latitude forKey:(NSString *)kCGImagePropertyGPSLatitude];
   }
 
   if (!EXIFDictionary) {

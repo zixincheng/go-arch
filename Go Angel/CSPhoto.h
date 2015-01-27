@@ -22,6 +22,10 @@
 @property (nonatomic, strong) NSDate *dateCreated;
 @property (nonatomic, strong) NSDate *dateUploaded;
 @property (nonatomic, strong) NSString *isVideo;
+@property (nonatomic, strong) NSString *tag;
+@property (nonatomic, strong) NSString *unit;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *city;
 
 // the background upload task id.
 // if this is greater than -1, it means the photo is currently being uploaded

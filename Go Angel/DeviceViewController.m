@@ -81,7 +81,7 @@
 
   // get count of unuploaded photos
   self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
-  self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
+  //self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
     
   // set the progress bar to 100% for cool effect later
   [self.progressUpload setProgress:100.0f];
@@ -281,7 +281,7 @@
 
 // called when the controllers view will become forground
 - (void)viewWillAppear:(BOOL)animated {
-    self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
+    //self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
     [self.collectionView reloadData];
     [self updateUploadCountUI];
     self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
@@ -630,20 +630,20 @@
 
         if (self.saveInAlbum) {
             NSLog(@"save photos into album");
-
+/*
             [localLibrary saveImage:image metadata:metadata callback: ^(CSPhoto *photo){
                 dispatch_async(dispatch_get_main_queue(), ^ {
                     [self addNewcell:photo];
                 });
-            }];
+            }];*/
         }else{
             NSLog(@"save photos into application folder");
-            [self saveImageIntoDocument:image metadata:metadata callback: ^(CSPhoto *photo){
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    [self addNewcell:photo];
-                    [self updateUploadCountUI];
-                });
-            }];
+           // [self saveImageIntoDocument:image metadata:metadata callback: ^(CSPhoto *photo){
+              //  dispatch_async(dispatch_get_main_queue(), ^ {
+              //      [self addNewcell:photo];
+               //     [self updateUploadCountUI];
+               // });
+           // }];
 
         }
     } else {
@@ -655,11 +655,11 @@
                 NSURL *moviePath = [info objectForKey:UIImagePickerControllerMediaURL];
                 NSLog(@"%@",moviePath);
 
-                [localLibrary saveVideo:moviePath callback:^(CSPhoto *photo) {
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                        [self addNewcell:photo];
-                    });
-                }];
+               // [localLibrary saveVideo:moviePath callback:^(CSPhoto *photo) {
+                   // dispatch_async(dispatch_get_main_queue(), ^ {
+                    //    [self addNewcell:photo];
+                    //});
+               // }];
             }
         } else {
             NSLog(@"save video into application folder");
@@ -756,9 +756,9 @@
 # pragma mark - DashBoard view information
 
 - (void)checkDeivceStatus{
-    NSMutableArray *photos = [self.dataWrapper getPhotos:self.localDevice.remoteId];
+    //NSMutableArray *photos = [self.dataWrapper getPhotos:self.localDevice.remoteId];
     self.totalUploadedPhotos = [self.dataWrapper getCountUploaded:self.localDevice.remoteId];
-    self.totalPhotos = photos.count;
+   // self.totalPhotos = photos.count;
     
     if (self.currentlyUploading) {
         self.currentStatus = @"Uploading Photos";
@@ -835,7 +835,7 @@
        [self.photos addObject:photos];
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
         
-        self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
+       // self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
         [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
         [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
 
@@ -844,7 +844,7 @@
         }
     }completion:^(BOOL finished) {
         if (finished) {
-            self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
+           // self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId];
         }
     }];
 }

@@ -82,6 +82,7 @@
 		4D0F91321A2E9E8500C1936F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0F91301A2E9E8500C1936F /* Crashlytics.framework */; };
 		4D0F91331A2E9E8500C1936F /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0F91311A2E9E8500C1936F /* Fabric.framework */; };
 		9B3445CD1A410772004BA746 /* RadarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3445CC1A410772004BA746 /* RadarViewController.m */; };
+		9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */; };
 		9B555D3D1A44D22A00D00025 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D3C1A44D22A00D00025 /* box.png */; };
 		9B555D3F1A44DDFE00D00025 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D3E1A44DDFE00D00025 /* background.png */; };
 		9B555D471A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D461A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png */; };
@@ -262,6 +263,8 @@
 		86B97520B3241BF2F0995750 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		9B3445CB1A410772004BA746 /* RadarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarViewController.h; sourceTree = "<group>"; };
 		9B3445CC1A410772004BA746 /* RadarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadarViewController.m; sourceTree = "<group>"; };
+		9B4C12921A72DCC6004CC973 /* IndividualEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndividualEntryViewController.h; sourceTree = "<group>"; };
+		9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndividualEntryViewController.m; sourceTree = "<group>"; };
 		9B555D3C1A44D22A00D00025 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
 		9B555D3E1A44DDFE00D00025 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		9B555D461A48E8BB00D00025 /* tabBar_cameraButton_ready_matte@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBar_cameraButton_ready_matte@2x.png"; sourceTree = "<group>"; };
@@ -409,6 +412,8 @@
 				9BE4F7031A71AC02009FEB3F /* AddingLocationViewController.h */,
 				9BE4F7041A71AC02009FEB3F /* AddingLocationViewController.m */,
 				2061D1EB19919430001C7E08 /* Main.storyboard */,
+				9B4C12921A72DCC6004CC973 /* IndividualEntryViewController.h */,
+				9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */,
 				9BE4F6FC1A717F1D009FEB3F /* MainLocationViewController.h */,
 				9BE4F6FD1A717F1D009FEB3F /* MainLocationViewController.m */,
 				20931B8619954FF000F57FB0 /* MediaLoader.h */,
@@ -782,6 +787,7 @@
 				2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */,
 				208169691995828500EEC65C /* SinglePhotoViewController.m in Sources */,
 				2061D1C6199193B5001C7E08 /* AccountDataWrapper.m in Sources */,
+				9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */,
 				2061D1FB19919440001C7E08 /* Server.m in Sources */,
 				9BEA5B561A1EB26100CC14FF /* CSStorage.m in Sources */,
 				2061D1FA19919440001C7E08 /* Reachability.m in Sources */,

@@ -27,7 +27,7 @@
 - (void) addUpdateLog:(ActivityHistory *)log;
 - (NSMutableArray *) getAllPhotos;
 - (NSMutableArray *) getAllDevices;
-- (NSMutableArray *) getPhotos: (NSString *) deviceId;
+- (NSMutableArray *) getPhotos: (NSString *) deviceId location:(CSLocation *)location;
 - (NSMutableArray *) getPhotosToUpload;
 - (NSMutableArray *) getLogs;
 - (NSMutableArray *) getLocations;

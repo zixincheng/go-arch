@@ -78,7 +78,7 @@
 }
 
 // add alasset to core data
-- (CSPhoto *) addAsset: (ALAsset *) asset videoFlag:(BOOL) videoFlag{
+- (CSPhoto *) addAsset: (ALAsset *) asset videoFlag:(BOOL) videoFlag location:(CSLocation *)location{
   NSURL *url = asset.defaultRepresentation.url;
   
   // create photo object
@@ -102,6 +102,9 @@
   NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb-%@", name]];
   
   photo.thumbURL = filePath;
+  photo.unit = location.unit;
+  photo.name = location.name;
+  photo.city = location.city;
   
   // add photo to db
   BOOL added = [self.dataWrapper addPhoto:photo];
@@ -282,7 +285,7 @@
           [assetAlbumLibrary assetForURL:url
                          resultBlock:^(ALAsset *asset) {
                            if (asset) {
-                               [self addAsset:asset videoFlag:NO];
+                              // [self addAsset:asset videoFlag:NO];
                            }
                          }
                         failureBlock:^(NSError *error){
@@ -315,7 +318,7 @@
     NSLog(@"finished loading local photos");
   });
 }
-- (void) saveVideo: (NSURL *)moviePath callback:(void(^) (CSPhoto *video)) callback{
+- (void) saveVideo: (NSURL *)moviePath location: (CSLocation *)location callback:(void(^) (CSPhoto *video)) callback{
     
     __weak LocalLibrary *se = self;
     __block BOOL found = NO;
@@ -338,7 +341,7 @@
                                            bool didPhotoAddIntoAlbum = [group addAsset:asset];
                                            // add image to core data after saving into album
                                            if (didPhotoAddIntoAlbum) {
-                                               CSPhoto *p = [self addAsset:asset videoFlag:YES];
+                                               CSPhoto *p = [self addAsset:asset videoFlag:YES location:location];
                                                callback(p);
                                            }
                                        } failureBlock:^(NSError *error) {
@@ -359,7 +362,7 @@
                 self.didAlbumCreated = YES;
             }
             //recall saveImage function after new album exist
-            [self saveVideo: (NSURL *)moviePath callback: ^(CSPhoto *photo){
+            [self saveVideo: (NSURL *)moviePath location:location callback: ^(CSPhoto *photo){
             }];
         }
     };
@@ -371,7 +374,7 @@
                                    }];
 
 }
-- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata callback:(void (^) (CSPhoto *photo)) callback {
+- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata location: (CSLocation *)location callback:(void (^) (CSPhoto *photo)) callback {
     __weak LocalLibrary *se = self;
     __block BOOL found = NO;
 
@@ -394,7 +397,7 @@
                                                                      bool didPhotoAddIntoAlbum = [group addAsset:asset];
                                                                      // add image to core data after saving into album
                                                                      if (didPhotoAddIntoAlbum) {
-                                                                         CSPhoto *p = [self addAsset:asset videoFlag:NO];
+                                                                         CSPhoto *p = [self addAsset:asset videoFlag:NO location:location];
                                                                          callback(p);
                                                                      }
                                                                  } failureBlock:^(NSError *error) {
@@ -415,7 +418,7 @@
                 self.didAlbumCreated = YES;
             }
             //recall saveImage function after new album exist
-            [self saveImage:image metadata:metadata callback: ^(CSPhoto *photo){
+            [self saveImage:image metadata:metadata location: (CSLocation *)location callback: ^(CSPhoto *photo){
                 }];
         }
     };
