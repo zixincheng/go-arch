@@ -111,22 +111,22 @@
     UIView *tagView = (UIView *) [cell viewWithTag:TAG_VIEW_TAG];
     UITextField *tagTextField = (UITextField *) [cell viewWithTag:TextField_TAG];
 
-    UIButton *editBtn = (UIButton *) [cell viewWithTag:BUTTON_TAG];
-    [editBtn addTarget:self action:@selector(tagEditButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     NSLog(@"tags count %lu",(unsigned long)self.tags.count);
     tagTextField.delegate = self;
     tagTextField.enabled = YES;
     
     
     [tagView addSubview:tagTextField];
-    [tagView addSubview:editBtn];
     [cell addSubview:tagView];
     
     CSPhoto *photo = [self.photos objectAtIndex:[indexPath row]];
     [self.photos objectAtIndex:[indexPath row]];
     
-    tagTextField.text = photo.tag;
-    tagTextField.tag = indexPath.row;
+    if (![photo.tag isEqualToString:@""]) {
+         tagTextField.text = photo.tag;
+    }
+    
+    [tagTextField addTarget:self action:@selector(textfieldChanged:) forControlEvents:UIControlEventEditingChanged];
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 
@@ -162,34 +162,17 @@
     return YES;
 }
 
-
--(void) tagEditButtonPressed:(id)sender {
+- (void)textfieldChanged:(id)sender {
     
-    UIButton *button = sender;
-    NSString *title = [button currentTitle];
-    
-    GridCell *cell = (GridCell *)button.superview.superview.superview;
+    UITextField *text = sender;
+    GridCell *cell = (GridCell *)text.superview.superview.superview;
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
     CSPhoto *p = [self.photos objectAtIndex:indexPath.row];
-    NSLog(@"tags count %lu",(unsigned long)self.tags.count);
-    UITextField *text = [self.tags objectAtIndex:indexPath.row];
-    NSLog(@"indexpath %ld",(long)indexPath.row);
-    
-    if ([title isEqualToString:@"Edit"]) {
-        text.enabled = YES;
-        NSLog(@"%@",p.tag);
-        [button setTitle:@"Done" forState:UIControlStateNormal];
-         }
-    else {
-        [sender setTitle:@"Edit" forState:UIControlStateNormal];
-        text.enabled = NO;
-        p.tag = text.text;
-        NSLog(@"%@",text.text);
-        [self.dataWrapper addUpdatePhoto:p];
-        NSLog(@"%@",p.tag);
-        }
-
+    p.tag = text.text;
+    [self.dataWrapper addUpdatePhoto:p];
 }
+
+
 # pragma mark - Camera Button
 
 -(void)cameraButtonPressed:(id)sender{
