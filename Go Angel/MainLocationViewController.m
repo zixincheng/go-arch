@@ -17,6 +17,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //init ui parts
+    UIBarButtonItem * addLocationBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addLocationbuttonPressed:)];
+    self.navigationItem.rightBarButtonItem = addLocationBtn;
+    
+    [self.navigationController setToolbarHidden:NO];
+    self.btnUpload = [[UIBarButtonItem alloc]initWithTitle:@"Nothing to upload" style:UIBarButtonItemStylePlain target:self action:@selector(addLocationbuttonPressed:)];
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    self.toolbarItems = [NSArray arrayWithObjects:flexibleSpace, self.btnUpload, flexibleSpace, nil];
+    
     // init vars
     self.dataWrapper = [[CoreDataWrapper alloc] init];
     self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
@@ -29,6 +39,8 @@
     
     [refresh addTarget:self action:@selector(PullTorefresh) forControlEvents:UIControlEventValueChanged];
     
+    self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
+    
     // setup objects
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
@@ -37,7 +49,6 @@
     
     // add the refresh control to the table view
     self.refreshControl = refresh;
-    [self.tableView addSubview:self.refreshControl];
     
     // Start networking
     self.prevBSSID = [self currentWifiBSSID];
@@ -51,7 +62,7 @@
         [self.coinsorter pingServer:^(BOOL connected) {
             self.canConnect = connected;
             
-            //[self updateUploadCountUI];
+            [self updateUploadCountUI];
             
             if (self.canConnect) {
                 // get all devices and photos from server
@@ -72,8 +83,6 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
      //self.navigationItem.rightBarButtonItem = self.editButtonItem;
-     UIBarButtonItem * addLocationBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addLocationbuttonPressed:)];
-    self.navigationItem.rightBarButtonItem = addLocationBtn;
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -128,6 +137,15 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    self.selectedlocation = self.locations[[indexPath row]];
+    [self performSegueWithIdentifier:@"individualSegue" sender:self];
+    
+    // Deselect
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 70;
@@ -175,6 +193,16 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"individualSegue"]) {
+        
+        IndividualEntryViewController *individualViewControll = (IndividualEntryViewController *)segue.destinationViewController;
+        
+        individualViewControll.dataWrapper = self.dataWrapper;
+        individualViewControll.localDevice = self.localDevice;
+        individualViewControll.location = self.selectedlocation;
+        
+
+    }
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
@@ -255,6 +283,40 @@
 -(void) addLocationbuttonPressed: (id) sender {
     
     [self performSegueWithIdentifier:@"LocationSettingSegue" sender:self];
+}
+
+#pragma mark - ui
+- (void) updateUploadCountUI {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *title;
+        
+        if (!self.canConnect) {
+            title = @"Cannot Connect";
+        }else if (self.unUploadedPhotos == 0) {
+            title = @"Nothing to Upload";
+
+        }else if (self.currentlyUploading) {
+            title = [NSString stringWithFormat:@"Uploading %d Photos", self.unUploadedPhotos];
+
+        }else {
+            title = [NSString stringWithFormat:@"Upload %d Photos", self.unUploadedPhotos];
+
+        }
+        [self.btnUpload setTitle:title];
+        
+        if (self.canConnect) {
+            //[self.progressUpload setTintColor:nil];
+        }else {
+            UIColor * color = [UIColor colorWithRed:212/255.0f green:1/255.0f blue:0/255.0f alpha:1.0f];
+            //[self.progressUpload setTintColor:color];
+        }
+        
+        if (self.unUploadedPhotos == 0 || self.currentlyUploading || !self.canConnect) {
+            [self.btnUpload setEnabled: NO];
+        }else {
+            [self.btnUpload setEnabled: YES];
+        }
+    });
 }
 
 @end

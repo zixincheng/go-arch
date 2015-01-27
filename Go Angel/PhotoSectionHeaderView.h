@@ -13,5 +13,6 @@
 @interface PhotoSectionHeaderView : UICollectionReusableView
 
 @property (weak, nonatomic) IBOutlet UILabel *lblHeader;
+@property (weak, nonatomic) IBOutlet UILabel *HeaderLabel;
 
 @end

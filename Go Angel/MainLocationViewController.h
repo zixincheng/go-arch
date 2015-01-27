@@ -15,6 +15,7 @@
 #import "LocalLibrary.h"
 #import "Reachability.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import "IndividualEntryViewController.h"
 
 @interface MainLocationViewController : UITableViewController {
     LocalLibrary *localLibrary;
@@ -35,6 +36,10 @@
 @property (nonatomic) NSString *prevBSSID;
 @property (nonatomic) NSInteger networkStatus;
 @property (nonatomic, assign) BOOL canConnect;
-@property (weak, nonatomic) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) UIBarButtonItem *btnUpload;
+
+@property (nonatomic )int unUploadedPhotos;
+@property (nonatomic) BOOL currentlyUploading;
 
 @end
