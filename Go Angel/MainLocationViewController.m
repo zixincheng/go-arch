@@ -124,16 +124,29 @@
     //[tableView dequeueReusableCellWithIdentifier:@"LocationCell" forIndexPath:indexPath];
     
     CSLocation *l = self.locations[[indexPath row]];
-    
+    CSPhoto *photo;
+    self.photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:l];
+    UIImage *defaultImage = [UIImage imageNamed:@"box.png"];
+    cell.imageView.image = defaultImage;
+    if (self.photos.count != 0) {
+        photo = [self.photos objectAtIndex:0];
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.imageView.image = image;
+            });
+        }];
+    }
     if (![l.unit isEqualToString:@""]) {
         cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@",l.unit, l.name];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",l.city,l.province];
     } else {
-    
-    cell.textLabel.text = l.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",l.city,l.province];
+        cell.textLabel.text = l.name;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",l.city,l.province];
     // Configure the cell...
     }
+
+
     return cell;
 }
 

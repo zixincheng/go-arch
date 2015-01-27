@@ -12,6 +12,7 @@
 #import "Coinsorter.h"
 #import "AccountDataWrapper.h"
 #import "CSDevice.h"
+#import "CSPhoto.h"
 #import "LocalLibrary.h"
 #import "Reachability.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
@@ -33,6 +34,8 @@
 
 @property (nonatomic, strong) NSMutableArray *devices;
 @property (nonatomic, strong) NSMutableArray *locations;
+@property (nonatomic, strong) NSMutableArray *photos;
+
 @property (nonatomic) NSString *prevBSSID;
 @property (nonatomic) NSInteger networkStatus;
 @property (nonatomic, assign) BOOL canConnect;

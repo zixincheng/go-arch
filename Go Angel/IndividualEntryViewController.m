@@ -62,7 +62,7 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
     
-    self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId location:self.location];
+    self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     self.tags = [[NSArray alloc]init];
     // Do any additional setup after loading the view.
 }
@@ -264,7 +264,7 @@
         [self.photos addObject:photos];
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
         
-        self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId location:self.location];
+        self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
         [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
         [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
         
@@ -273,7 +273,7 @@
         }
     }completion:^(BOOL finished) {
         if (finished) {
-            self.photos =  [self.dataWrapper getPhotos:self.localDevice.remoteId location:self.location];
+            self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
         }
     }];
 }
