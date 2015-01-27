@@ -139,6 +139,12 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     [self saveLocation];
 }
 
+// text field for unit # was changed
+- (IBAction)nameChanged:(id)sender {
+    self.location.name = self.streetName.text;
+    [self saveLocation];
+}
+
 // when return button pressed, hide keyboard
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
@@ -260,8 +266,8 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
                            
                            self.location.unit = self.txtUnit.text;
                            
-                           [self.lblName setText:self.location.name];
-                           [self.lblName setHidden:NO];
+                           [self.streetName setText:self.location.name];
+                           [self.streetName setHidden:NO];
                            
                            [self saveLocation];
                        }

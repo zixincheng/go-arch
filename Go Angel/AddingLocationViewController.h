@@ -35,7 +35,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblLatitude;
 @property (weak, nonatomic) IBOutlet UILabel *lblLongitude;
 @property (weak, nonatomic) IBOutlet UITextField *txtUnit;
-@property (weak, nonatomic) IBOutlet UILabel *lblName;
+@property (weak, nonatomic) IBOutlet UITextField *streetName;
 
 - (IBAction)AddBtn:(id)sender;
 

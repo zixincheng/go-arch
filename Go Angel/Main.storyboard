@@ -495,7 +495,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                                 <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="E77-eH-zKN">
-                                    <size key="itemSize" width="303" height="232"/>
+                                    <size key="itemSize" width="303" height="238"/>
                                     <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -505,7 +505,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="303" height="232"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="303" height="238"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bPb-6e-AwZ">
@@ -514,17 +514,14 @@
                                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APw-lW-Wbd">
                                                     <rect key="frame" x="2" y="198" width="299" height="34"/>
                                                     <subviews>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="8" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="724-m5-Pi0">
-                                                            <rect key="frame" x="0.0" y="0.0" width="216" height="34"/>
+                                                        <textField opaque="NO" clipsSubviews="YES" tag="8" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Add Tag here..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="724-m5-Pi0">
+                                                            <rect key="frame" x="0.0" y="0.0" width="299" height="34"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits"/>
+                                                            <connections>
+                                                                <action selector="textfieldChanged:" destination="fIS-qb-jvn" eventType="editingDidEnd" id="E4L-H9-AfB"/>
+                                                            </connections>
                                                         </textField>
-                                                        <button opaque="NO" tag="9" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FoM-iG-QYT">
-                                                            <rect key="frame" x="224" y="5" width="67" height="24"/>
-                                                            <state key="normal" title="Edit">
-                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                            </state>
-                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
@@ -1147,45 +1144,48 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Photo taken at" id="Gjc-vl-fZo">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="edL-Yz-fVr" detailTextLabel="FVk-5s-8pN" style="IBUITableViewCellStyleValue1" id="3gu-45-Wn7">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vbk-CU-fSs">
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3gu-45-Wn7" id="Tbh-xB-BKt">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vbk-CU-fSs" id="5WP-eB-1mc">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Location Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="edL-Yz-fVr">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Location name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rmd-YE-0o8">
+                                                    <rect key="frame" x="14" y="6" width="298" height="37"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="home" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FVk-5s-8pN">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="FmK-lV-1LU">
+                                                    <rect key="frame" x="142" y="8" width="170" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="namePhonePad" returnKeyType="done"/>
+                                                    <connections>
+                                                        <action selector="nameChanged:" destination="Q4B-RI-MsH" eventType="editingDidEnd" id="6Ed-Z2-TBZ"/>
+                                                    </connections>
+                                                </textField>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="d6m-OY-MeK">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="QHn-uH-IBH">
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d6m-OY-MeK" id="ZFH-j9-56j">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QHn-uH-IBH" id="dVL-ky-lsU">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Unit #" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sVh-V8-Y4e">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KJz-F9-qMA">
+                                                    <rect key="frame" x="215" y="7" width="97" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="namePhonePad" returnKeyType="done"/>
+                                                    <connections>
+                                                        <action selector="unitChanged:" destination="lTK-s4-vBM" eventType="editingChanged" id="Uoa-e1-4ME"/>
+                                                        <action selector="unitChanged:" destination="Q4B-RI-MsH" eventType="editingDidEnd" id="s7K-hb-Sos"/>
+                                                    </connections>
+                                                </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Unit #" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yRj-3i-ISt">
                                                     <rect key="frame" x="15" y="0.0" width="290" height="44"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="D9Y-9p-Nps">
-                                                    <rect key="frame" x="208" y="7" width="97" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="namePhonePad" returnKeyType="done"/>
-                                                    <connections>
-                                                        <action selector="unitChanged:" destination="Q4B-RI-MsH" eventType="editingChanged" id="c9M-5Q-ahw"/>
-                                                    </connections>
-                                                </textField>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1198,12 +1198,6 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MIh-5h-W4V" id="5a5-RP-geg">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add This Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cct-nD-sI1">
-                                                    <rect key="frame" x="15" y="0.0" width="250" height="44"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="owh-Rm-5LD">
                                                     <rect key="frame" x="266" y="7" width="30" height="30"/>
                                                     <state key="normal" title="Add">
@@ -1213,6 +1207,12 @@
                                                         <action selector="AddBtn:" destination="Q4B-RI-MsH" eventType="touchUpInside" id="hOI-yn-rBU"/>
                                                     </connections>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add This Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cct-nD-sI1">
+                                                    <rect key="frame" x="15" y="0.0" width="250" height="44"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1242,13 +1242,13 @@
                     <connections>
                         <outlet property="lblLatitude" destination="LbZ-8l-Yfm" id="16V-SA-0vM"/>
                         <outlet property="lblLongitude" destination="bde-tb-Vtc" id="HCh-Hf-fUY"/>
-                        <outlet property="lblName" destination="FVk-5s-8pN" id="s8x-yU-0W8"/>
-                        <outlet property="txtUnit" destination="D9Y-9p-Nps" id="nbU-f1-Idb"/>
+                        <outlet property="streetName" destination="FmK-lV-1LU" id="G5d-pL-R9m"/>
+                        <outlet property="txtUnit" destination="KJz-F9-qMA" id="HtW-Z8-LkG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Lj-LQ-t8X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2141" y="1403"/>
+            <point key="canvasLocation" x="-2141" y="1398"/>
         </scene>
     </scenes>
     <resources>
