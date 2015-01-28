@@ -19,6 +19,7 @@
 #import "LocalLibrary.h"
 #import "AccountDataWrapper.h"
 #import "AppDelegate.h"
+#import "PhotoSwipeViewController.h"
 
 @interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate>{
     
@@ -38,8 +39,11 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, assign) BOOL saveInAlbum;
 @property (nonatomic, strong) NSMutableArray *photos;
-@property (nonatomic, strong) NSMutableArray *tags;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *editBtn;
+@property (nonatomic, strong) UIBarButtonItem *deleteBtn;
+@property (nonatomic, strong) UIBarButtonItem *shareBtn;
+@property (nonatomic, strong) UIBarButtonItem *flexibleSpace;
 // Camera vars
 @property (nonatomic, strong) UIBarButtonItem *mainCameraBtn;
 @property (nonatomic) UIImagePickerController *picker;

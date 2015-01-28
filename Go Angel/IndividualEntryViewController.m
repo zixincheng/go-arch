@@ -14,6 +14,8 @@
 #define BUTTON_TAG 9
 #define PHOTO_HEADER @"photoSectionHeader"
 #define GRID_CELL @"ImageCell"
+#define GRID_CELL2 @"TagCell"
+#define SINGLE_PHOTO_SEGUE @"singleImageSegue"
 //height
 #define CAMERA_TOPVIEW_HEIGHT   44  //title
 #define CAMERA_MENU_VIEW_HEIGH  44  //menu
@@ -26,6 +28,9 @@
     int sec;
     int min;
     int hour;
+    BOOL enableEdit;
+    NSMutableArray *selectedPhotos;
+    int selected;
 }
 @end
 
@@ -33,7 +38,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     // Camera vars init
     AVCaptureSession *tmpSession = [[AVCaptureSession alloc] init];
     self.session = tmpSession;
@@ -46,9 +50,11 @@
     
     [self.navigationController setToolbarHidden:NO];
     self.mainCameraBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed:)];
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    self.deleteBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteBtnPressed:)];
+    self.shareBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareAction)];
+    self.flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-    self.toolbarItems = [NSArray arrayWithObjects:flexibleSpace, self.mainCameraBtn, flexibleSpace, nil];
+    self.toolbarItems = [NSArray arrayWithObjects:self.flexibleSpace, self.mainCameraBtn, self.flexibleSpace, nil];
 
     //init vars
     localLibrary = [[LocalLibrary alloc] init];
@@ -56,6 +62,7 @@
     defaults = [NSUserDefaults standardUserDefaults];
     
     self.saveInAlbum = [defaults boolForKey:SAVE_INTO_ALBUM];
+    selectedPhotos = [NSMutableArray array];
     
     
     // setup objects
@@ -63,7 +70,6 @@
     account = appDelegate.account;
     
     self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
-    self.tags = [[NSArray alloc]init];
     // Do any additional setup after loading the view.
 }
 
@@ -75,6 +81,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     
     [self.collectionView reloadData];
+    [self clearCellSelections];
 }
 
 # pragma mark - Collection View Delegates/Data Source
@@ -108,16 +115,17 @@
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     GridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GRID_CELL forIndexPath:indexPath];
     UIImageView *imageView = (UIImageView *) [cell viewWithTag:IMAGE_VIEW_TAG];
-    UIView *tagView = (UIView *) [cell viewWithTag:TAG_VIEW_TAG];
-    UITextField *tagTextField = (UITextField *) [cell viewWithTag:TextField_TAG];
 
-    NSLog(@"tags count %lu",(unsigned long)self.tags.count);
+    UITextField *tagTextField = (UITextField *) [cell viewWithTag:TextField_TAG];
+    
+    UIView *tageview = (UIView *) [cell viewWithTag:TAG_VIEW_TAG];
+
     tagTextField.delegate = self;
     tagTextField.enabled = YES;
-    
-    
-    [tagView addSubview:tagTextField];
-    [cell addSubview:tagView];
+    cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selectedbackground.png"]];
+
+    [tageview addSubview:tagTextField];
+    [cell addSubview:tageview];
     
     CSPhoto *photo = [self.photos objectAtIndex:[indexPath row]];
     [self.photos objectAtIndex:[indexPath row]];
@@ -131,7 +139,6 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 
     [appDelegate.mediaLoader loadFullResImage:photo completionHandler:^(UIImage *image) {
-        NSLog(@"reload indexpath %ld",(long)indexPath.row);
         dispatch_async(dispatch_get_main_queue(), ^{
             [imageView setImage:image];
         });
@@ -139,17 +146,135 @@
     
     return cell;
 }
-/*
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (enableEdit) {
+        NSString *deSelectedPhoto = [self.photos objectAtIndex:indexPath.row];
+        [selectedPhotos removeObject:deSelectedPhoto];
+        if (selectedPhotos.count == 0) {
+            self.shareBtn.enabled = NO;
+            self.deleteBtn.enabled = NO;
+        }
+    }
+}
+
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    GridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GRID_CELL forIndexPath:indexPath];
-    UIImageView *imageView = (UIImageView *) [cell viewWithTag:IMAGE_VIEW_TAG];
-    UIView *tagView = (UIView *) [cell viewWithTag:TAG_VIEW_TAG];
-    UITextField *tagTextField = [self.tags objectAtIndex:indexPath.row];
     
-    tagTextField.enabled = YES;
+    if (enableEdit) {
+        CSPhoto *selectedphoto = [self.photos objectAtIndex:indexPath.row];
+        // Add the selected item into the array
+        [selectedPhotos addObject:selectedphoto];
+        if (selectedPhotos.count != 0) {
+            self.shareBtn.enabled = YES;
+            self.deleteBtn.enabled = YES;
+        }
+    } else {
+        selected = [indexPath row];
+        [self performSegueWithIdentifier:SINGLE_PHOTO_SEGUE sender:self];
+    }
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:SINGLE_PHOTO_SEGUE]) {
+        PhotoSwipeViewController *swipeController = (PhotoSwipeViewController *) segue.destinationViewController;
+        swipeController.selected = selected;
+        swipeController.photos = self.photos;
+    }
+
+}
+# pragma mark - delete button Actions
+- (IBAction)editBtnPressed:(id)sender {
+    
+    UIBarButtonItem *editbtn =  (UIBarButtonItem *)sender;
+    if ([editbtn.title isEqualToString:@"Edit"]) {
+        self.collectionView.allowsMultipleSelection = YES;
+        enableEdit = YES;
+        self.editBtn.title = @"Done";
+        [self clearCellSelections];
+        self.toolbarItems = [NSArray arrayWithObjects:self.shareBtn,self.flexibleSpace, self.deleteBtn, nil];
+        self.shareBtn.enabled = NO;
+        self.deleteBtn.enabled = NO;
+    } else {
+        self.editBtn.title = @"Edit";
+        enableEdit = NO;
+        self.collectionView.allowsMultipleSelection = NO;
+        [self clearCellSelections];
+        self.toolbarItems = [NSArray arrayWithObjects:self.flexibleSpace, self.mainCameraBtn, self.flexibleSpace, nil];
+
+        
+    }
+}
+
+-(void) deleteBtnPressed:(id)sender {
+    
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete"
+                                                      message:@"Delete Selected Photos?"
+                                                     delegate:self
+                                            cancelButtonTitle:@"Cancel"
+                                            otherButtonTitles:@"Yes", nil];
+    [message show];
     
 }
-*/
+
+-(void)alertView:(UIAlertView *)alertView
+clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        [self clearCellSelections];
+    } else if (buttonIndex == 1){
+        NSArray *selectedIndexPath = [self.collectionView indexPathsForSelectedItems];
+        [self.collectionView performBatchUpdates:^{
+            [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
+            [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
+        } completion:^(BOOL finished){
+            [self.collectionView reloadData];
+        }];
+    }
+}
+
+- (void)clearCellSelections {
+    int collectonViewCount = [self.collectionView numberOfItemsInSection:0];
+    for (int i=0; i<=collectonViewCount; i++) {
+        [self.collectionView deselectItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0] animated:YES];
+    }
+}
+
+-(void) deleteItemsFromDataSourceAtIndexPaths :(NSArray *)itemPaths{
+    
+    NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+    for (NSIndexPath *itemPath  in itemPaths) {
+        [indexSet addIndex:itemPath.row];
+    }
+    [self.photos removeObjectsAtIndexes:indexSet];
+    
+    [self.dataWrapper deletePhotos:itemPaths];
+}
+
+# pragma mark - share actions
+
+- (void)shareAction {
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    for (CSPhoto *selectPhoto in selectedPhotos) {
+
+        [appDelegate.mediaLoader loadFullResImage:selectPhoto completionHandler:^(UIImage *image) {
+            NSArray *objectsToShare = @[ image ];
+        
+            UIActivityViewController *activityVC =
+            [[UIActivityViewController alloc] initWithActivityItems:objectsToShare
+                                          applicationActivities:nil];
+        
+            NSArray *excludeActivities = @[ ];
+        
+            activityVC.excludedActivityTypes = excludeActivities;
+        
+            [self presentViewController:activityVC animated:YES completion:nil];
+        }];
+    }
+}
+
+
 # pragma mark - TextField delegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     return YES;

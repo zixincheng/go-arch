@@ -253,7 +253,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iea-VW-UNN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-970" y="1892"/>
+            <point key="canvasLocation" x="-1138" y="1970"/>
         </scene>
         <!--Single Photo View Controller-->
         <scene sceneID="VgW-Vh-gdt">
@@ -303,7 +303,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mPt-T4-aga" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1238" y="622"/>
+            <point key="canvasLocation" x="-74" y="1770"/>
         </scene>
         <!--History Table View Controller-->
         <scene sceneID="1sH-Ie-G2K">
@@ -362,7 +362,7 @@
         <!--Photo Swipe View Controller-->
         <scene sceneID="f4h-ss-7dn">
             <objects>
-                <viewController id="emt-rN-v7D" customClass="PhotoSwipeViewController" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="emt-rN-v7D" customClass="PhotoSwipeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dMV-Jo-xba"/>
                         <viewControllerLayoutGuide type="bottom" id="foY-qb-vvg"/>
@@ -427,7 +427,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D5V-kh-SUD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-963" y="2544"/>
+            <point key="canvasLocation" x="-476" y="926"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="AHS-qK-Kgf">
@@ -439,7 +439,7 @@
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x3U-7p-uDl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="823" y="622"/>
+            <point key="canvasLocation" x="-489" y="1770"/>
         </scene>
         <!--Main Location View Controller-->
         <scene sceneID="5ok-t0-M5u">
@@ -495,7 +495,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                                 <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="E77-eH-zKN">
-                                    <size key="itemSize" width="303" height="238"/>
+                                    <size key="itemSize" width="309" height="238"/>
                                     <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -505,19 +505,19 @@
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="303" height="238"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="309" height="238"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bPb-6e-AwZ">
-                                                    <rect key="frame" x="2" y="0.0" width="299" height="198"/>
+                                                    <rect key="frame" x="10" y="8" width="287" height="190"/>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APw-lW-Wbd">
-                                                    <rect key="frame" x="2" y="198" width="299" height="34"/>
+                                                    <rect key="frame" x="10" y="198" width="287" height="32"/>
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" tag="8" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Add Tag here..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="724-m5-Pi0">
-                                                            <rect key="frame" x="0.0" y="0.0" width="299" height="34"/>
+                                                            <rect key="frame" x="0.0" y="1" width="287" height="31"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits"/>
+                                                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                                             <connections>
                                                                 <action selector="textfieldChanged:" destination="fIS-qb-jvn" eventType="editingDidEnd" id="E4L-H9-AfB"/>
                                                             </connections>
@@ -553,14 +553,22 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Aav-pw-WhI"/>
+                    <navigationItem key="navigationItem" id="Aav-pw-WhI">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="zFK-0I-2Yb">
+                            <connections>
+                                <action selector="editBtnPressed:" destination="fIS-qb-jvn" id="cxx-Sh-jb0"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="2GZ-lI-a0c" id="cgM-BG-dHO"/>
+                        <outlet property="editBtn" destination="zFK-0I-2Yb" id="xGj-lm-2OQ"/>
+                        <segue destination="emt-rN-v7D" kind="push" identifier="singleImageSegue" id="wvE-Ao-sls"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j5n-pb-Smf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-972" y="661"/>
+            <point key="canvasLocation" x="-969" y="661"/>
         </scene>
         <!--Devices-->
         <scene sceneID="69u-OC-JmX">
@@ -1260,8 +1268,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="VNR-5C-VGJ"/>
         <segue reference="9ug-Sj-mVg"/>
         <segue reference="oS0-4u-Scj"/>
+        <segue reference="wvE-Ao-sls"/>
     </inferredMetricsTieBreakers>
 </document>
