@@ -21,7 +21,7 @@
 #import "AppDelegate.h"
 #import "PhotoSwipeViewController.h"
 
-@interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate>{
+@interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate>{
     
     LocalLibrary *localLibrary;
     NSUserDefaults *defaults;
@@ -30,12 +30,15 @@
 
 @property (nonatomic, strong) CSLocation *location;
 @property (nonatomic, strong) CSDevice *localDevice;
+@property (nonatomic, strong) CSPhoto *selectedCoverPhoto;
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 
 
-
+@property (nonatomic) UIView *setCoverPageViewContainer;
+@property (nonatomic) UIButton *DonesetCover;
+@property (nonatomic) UIButton *CancelsetCover;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, assign) BOOL saveInAlbum;
 @property (nonatomic, strong) NSMutableArray *photos;

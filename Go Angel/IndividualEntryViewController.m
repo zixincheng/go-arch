@@ -47,7 +47,26 @@
     self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     
     //init ui parts
+    self.setCoverPageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 600, 320, 150)];
+    self.setCoverPageViewContainer.backgroundColor = [UIColor lightGrayColor];
+    [self.view addSubview:self.setCoverPageViewContainer];
     
+    self.DonesetCover = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.DonesetCover.backgroundColor = [UIColor redColor];
+    self.DonesetCover.frame = CGRectMake(0, 0, 320, 50);
+    [self.DonesetCover addTarget:self action:@selector(donesetCover:) forControlEvents:UIControlEventTouchUpInside];
+    [self.DonesetCover setTitle:@"Set As Cover image" forState:UIControlStateNormal];
+    [self.setCoverPageViewContainer addSubview:self.DonesetCover];
+    
+    self.CancelsetCover = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.CancelsetCover.frame = CGRectMake(0, 50, 320, 50);
+    [self.CancelsetCover addTarget:self action:@selector(cancelsetCover:) forControlEvents:UIControlEventTouchUpInside];
+    [self.CancelsetCover setTitle:@"Cancel" forState:UIControlStateNormal];
+    [self.setCoverPageViewContainer addSubview:self.CancelsetCover];
+    
+    
+    
+    //init buttons on tool bar
     [self.navigationController setToolbarHidden:NO];
     self.mainCameraBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed:)];
     self.deleteBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteBtnPressed:)];
@@ -55,6 +74,12 @@
     self.flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     self.toolbarItems = [NSArray arrayWithObjects:self.flexibleSpace, self.mainCameraBtn, self.flexibleSpace, nil];
+    
+    //init long press gesture
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressRecognizer:)];
+    lpgr.minimumPressDuration = 2.0;
+    lpgr.delegate = self;
+    [self.collectionView addGestureRecognizer:lpgr];
 
     //init vars
     localLibrary = [[LocalLibrary alloc] init];
@@ -183,6 +208,7 @@
     }
 
 }
+
 # pragma mark - delete button Actions
 - (IBAction)editBtnPressed:(id)sender {
     
@@ -297,7 +323,45 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [self.dataWrapper addUpdatePhoto:p];
 }
 
+# pragma mark - long press gesture and set to home image
 
+-(void) longPressRecognizer: (UILongPressGestureRecognizer *) gestureRecognizer {
+    
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        CGPoint p = [gestureRecognizer locationInView:self.collectionView];
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
+        if (indexPath == nil) {
+            NSLog(@"long press is not in any cell");
+        } else {
+            UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+            if (cell.highlighted) {
+                self.setCoverPageViewContainer.frame = CGRectMake(0, 430, 320, 150);
+                NSLog(@"long press select at %ld", (long)indexPath.row);
+                self.selectedCoverPhoto = [self.photos objectAtIndex:indexPath.row];
+
+            }
+        }
+    }
+}
+
+-(void) donesetCover:(id) sender {
+    
+    CSPhoto *oldCover = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+    if (oldCover == nil) {
+        
+    } else {
+        oldCover.cover = @"0";
+        [self.dataWrapper addUpdatePhoto:oldCover];
+    }
+    NSLog(@" cover2 %@",self.selectedCoverPhoto.cover);
+    self.selectedCoverPhoto.cover = @"1";
+    NSLog(@" cover3 %@",self.selectedCoverPhoto.cover);
+    [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
+    self.setCoverPageViewContainer.frame = CGRectMake(0, 600, 320, 150);
+}
+-(void) cancelsetCover:(id) sender {
+    self.setCoverPageViewContainer.frame = CGRectMake(0, 600, 320, 150);
+}
 # pragma mark - Camera Button
 
 -(void)cameraButtonPressed:(id)sender{
@@ -460,6 +524,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     p.unit = self.location.unit;
     p.city = self.location.city;
     p.name = self.location.name;
+    p.cover = @"0";
     
     [self.dataWrapper addPhoto:p];
     
@@ -492,6 +557,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     p.unit = self.location.unit;
     p.city = self.location.city;
     p.name = self.location.name;
+    p.cover = @"0";
     
     // save the metada information into image
     NSData *data = UIImageJPEGRepresentation(image, 100);

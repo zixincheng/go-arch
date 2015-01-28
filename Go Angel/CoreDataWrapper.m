@@ -125,6 +125,7 @@
   [object setValue:photo.unit forKey:UNIT];
   [object setValue:photo.name forKey:NAME];
   [object setValue:photo.city forKey:CITY];
+  [object setValue:photo.cover forKey:@"cover"];
   
   NSLog(@"REMOTE ID %@", photo.remoteID);
   
@@ -242,6 +243,7 @@
   p.unit         = [object valueForKey:UNIT];
   p.name         = [object valueForKey:NAME];
   p.city         = [object valueForKey:CITY];
+  p.cover        = [object valueForKey:@"cover"];
     
   
   return p;
@@ -315,6 +317,42 @@
     }];
     
     return arr;
+}
+
+- (CSPhoto *)getCoverPhoto: (NSString *) deviceId location:(CSLocation *)location{
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    __block CSPhoto *coverPhoto = [[CSPhoto alloc] init];
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+        
+        // set query
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@) AND (cover = 1)", DEVICE_ID, deviceId, UNIT, location.unit, NAME, location.name, CITY, location.city];
+        [request setPredicate:pred];
+        // set sort
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:NO];
+        NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
+        [request setSortDescriptors: descriptors];
+        
+        NSArray *phs = [context executeFetchRequest:request error:nil];
+        
+        
+        
+        if (phs == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        // add all of the photo objects to the local photo list
+        if (phs.count == 0) {
+            coverPhoto = nil;
+        } else {
+        NSManagedObject *p = phs[0];
+        coverPhoto = [self getPhotoFromObject:p];
+        }
+    }];
+    
+    return coverPhoto;
 }
 
 - (NSString *) getCurrentPhotoOnServerVaule: (NSString *) deviceId CurrentIndex:(int)index{

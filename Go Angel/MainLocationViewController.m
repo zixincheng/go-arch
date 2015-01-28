@@ -131,7 +131,11 @@
     UIImage *defaultImage = [UIImage imageNamed:@"box.png"];
     cell.imageView.image = defaultImage;
     if (self.photos.count != 0) {
-        photo = [self.photos objectAtIndex:0];
+        photo = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:l];
+        NSLog(@"%@",photo);
+        if (photo == nil) {
+            photo = [self.photos objectAtIndex:0];
+        }
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
             dispatch_async(dispatch_get_main_queue(), ^{

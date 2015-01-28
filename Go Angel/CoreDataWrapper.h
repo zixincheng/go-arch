@@ -28,6 +28,7 @@
 - (NSMutableArray *) getAllPhotos;
 - (NSMutableArray *) getAllDevices;
 - (NSMutableArray *) getPhotosWithLocation: (NSString *) deviceId location:(CSLocation *)location;
+- (CSPhoto *)getCoverPhoto: (NSString *) deviceId location:(CSLocation *)location;
 - (NSMutableArray *) getPhotos: (NSString *) deviceId;
 - (NSMutableArray *) getPhotosToUpload;
 - (NSMutableArray *) getLogs;

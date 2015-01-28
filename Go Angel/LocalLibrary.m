@@ -105,6 +105,7 @@
   photo.unit = location.unit;
   photo.name = location.name;
   photo.city = location.city;
+  photo.cover = @"0";
   
   // add photo to db
   BOOL added = [self.dataWrapper addPhoto:photo];
