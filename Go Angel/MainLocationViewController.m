@@ -22,7 +22,7 @@
     self.navigationItem.rightBarButtonItem = addLocationBtn;
     
     [self.navigationController setToolbarHidden:NO];
-    self.btnUpload = [[UIBarButtonItem alloc]initWithTitle:@"Nothing to upload" style:UIBarButtonItemStylePlain target:self action:@selector(addLocationbuttonPressed:)];
+    self.btnUpload = [[UIBarButtonItem alloc]initWithTitle:@"Nothing to upload" style:UIBarButtonItemStylePlain target:self action:@selector(uploadBtnPressed:)];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     self.toolbarItems = [NSArray arrayWithObjects:flexibleSpace, self.btnUpload, flexibleSpace, nil];
@@ -87,7 +87,9 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     self.locations = [self.dataWrapper getLocations];
-    [self.tableView reloadData];;
+    [self.tableView reloadData];
+    self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
+    [self updateUploadCountUI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -298,6 +300,10 @@
     [self performSegueWithIdentifier:@"LocationSettingSegue" sender:self];
 }
 
+- (void)uploadBtnPressed:(id)sender {
+        [self uploadPhotosToApi];
+}
+
 #pragma mark - ui
 - (void) updateUploadCountUI {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -331,5 +337,65 @@
         }
     });
 }
+
+- (void) removeLocalPhoto {
+    self.unUploadedPhotos--;
+    [self updateUploadCountUI];
+}
+
+- (void) uploadPhotosToApi {
+    NSMutableArray *photos = [self.dataWrapper getPhotosToUpload];
+    __block int currentUploaded = 0;
+    if (photos.count > 0) {
+        //sent a notification when start uploading photos
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"startUploading" object:nil];
+        self.currentlyUploading = YES;
+        // hide upload button tool bar and show progress on
+        [self.btnUpload setEnabled:NO];
+        //[self.progressUpload setProgress:0.0 animated:YES];
+        
+        [self updateUploadCountUI];
+        
+        NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
+        [self.coinsorter uploadPhotos:photos upCallback:^() {
+            
+            currentUploaded += 1;
+            
+            [self removeLocalPhoto];
+            
+            NSLog(@"%d / %lu", currentUploaded, (unsigned long)photos.count);
+            
+            // update progress bar on main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                float progress = (float) currentUploaded / (float) photos.count;
+                
+                //[self.progressUpload setProgress:progress animated:YES];
+                
+                //sent a notification to dashboard when finish uploading 1 photo
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"onePhotoUploaded" object:nil];
+                
+                // the upload is complete
+                if (progress == 1.0) {
+                    [self.btnUpload setEnabled:YES];
+                    self.currentlyUploading = NO;
+                    [self updateUploadCountUI];
+                    //sent a notification to dashboard when finish uploading all photos
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"endUploading" object:nil];
+                    // allow app to sleep again
+                    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+                    
+                    //add uploading message into activity history class
+                   // NSString *message = [NSString stringWithFormat: @"App uploads %lu photo to Arch Box",(unsigned long)photos.count];
+                    //log.activityLog = message;
+                    //log.timeUpdate = [NSDate date];
+                   // [self.dataWrapper addUpdateLog:log];
+                }
+            });
+        }];
+    }else {
+        NSLog(@"there are no photos to upload");
+    }
+}
+
 
 @end
