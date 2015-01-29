@@ -94,6 +94,16 @@
     [self updateUploadCountUI];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    NSLog(@"view did appear");
+    
+    // Attempt to upload all the time
+    if (self.canConnect) {
+        [self uploadPhotosToApi];
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
