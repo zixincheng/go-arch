@@ -17,6 +17,7 @@
 #import "Reachability.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "IndividualEntryViewController.h"
+#import "SearchMapViewController.h"
 
 @interface MainLocationViewController : UITableViewController {
     LocalLibrary *localLibrary;

@@ -81,6 +81,8 @@
 		20F74D161992B56B00E0546D /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 20F74D151992B56B00E0546D /* Constants.m */; };
 		4D0F91321A2E9E8500C1936F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0F91301A2E9E8500C1936F /* Crashlytics.framework */; };
 		4D0F91331A2E9E8500C1936F /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0F91311A2E9E8500C1936F /* Fabric.framework */; };
+		9B12113C1A79B0FD0088CD3A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B12113B1A79B0FD0088CD3A /* MapKit.framework */; };
+		9B1211431A79B13B0088CD3A /* SearchMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1211421A79B13B0088CD3A /* SearchMapViewController.m */; };
 		9B3445CD1A410772004BA746 /* RadarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3445CC1A410772004BA746 /* RadarViewController.m */; };
 		9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */; };
 		9B555D3D1A44D22A00D00025 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D3C1A44D22A00D00025 /* box.png */; };
@@ -261,6 +263,9 @@
 		5156205FBB92D853EE88431F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		7163F6E40BAC95B07900B684 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		86B97520B3241BF2F0995750 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		9B12113B1A79B0FD0088CD3A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		9B1211411A79B13B0088CD3A /* SearchMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchMapViewController.h; sourceTree = "<group>"; };
+		9B1211421A79B13B0088CD3A /* SearchMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchMapViewController.m; sourceTree = "<group>"; };
 		9B3445CB1A410772004BA746 /* RadarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarViewController.h; sourceTree = "<group>"; };
 		9B3445CC1A410772004BA746 /* RadarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadarViewController.m; sourceTree = "<group>"; };
 		9B4C12921A72DCC6004CC973 /* IndividualEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndividualEntryViewController.h; sourceTree = "<group>"; };
@@ -304,6 +309,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B12113C1A79B0FD0088CD3A /* MapKit.framework in Frameworks */,
 				2040D22A1A6059BE00E490F3 /* CoreLocation.framework in Frameworks */,
 				9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */,
 				9BAF13811A3F6388000B780B /* CoreMotion.framework in Frameworks */,
@@ -345,6 +351,7 @@
 		205397141991924B00B1D9AD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9B12113B1A79B0FD0088CD3A /* MapKit.framework */,
 				2040D2291A6059BE00E490F3 /* CoreLocation.framework */,
 				9BAF13821A3F63A5000B780B /* QuartzCore.framework */,
 				9BAF13801A3F6388000B780B /* CoreMotion.framework */,
@@ -412,6 +419,8 @@
 				9BE4F7031A71AC02009FEB3F /* AddingLocationViewController.h */,
 				9BE4F7041A71AC02009FEB3F /* AddingLocationViewController.m */,
 				2061D1EB19919430001C7E08 /* Main.storyboard */,
+				9B1211411A79B13B0088CD3A /* SearchMapViewController.h */,
+				9B1211421A79B13B0088CD3A /* SearchMapViewController.m */,
 				9B4C12921A72DCC6004CC973 /* IndividualEntryViewController.h */,
 				9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */,
 				9BE4F6FC1A717F1D009FEB3F /* MainLocationViewController.h */,
@@ -784,6 +793,7 @@
 				2061D1DC199193CE001C7E08 /* CSPhoto.m in Sources */,
 				2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */,
 				20F74D161992B56B00E0546D /* Constants.m in Sources */,
+				9B1211431A79B13B0088CD3A /* SearchMapViewController.m in Sources */,
 				2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */,
 				208169691995828500EEC65C /* SinglePhotoViewController.m in Sources */,
 				2061D1C6199193B5001C7E08 /* AccountDataWrapper.m in Sources */,

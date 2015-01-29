@@ -18,9 +18,11 @@
     [super viewDidLoad];
     
     //init ui parts
+    UIBarButtonItem * searchBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(showSearch:)];
     UIBarButtonItem * addLocationBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addLocationbuttonPressed:)];
     self.navigationItem.rightBarButtonItem = addLocationBtn;
-    
+    NSArray *rightButtonItems = [[NSArray alloc]initWithObjects:searchBtn, addLocationBtn, nil];
+    [self.navigationItem setRightBarButtonItems:rightButtonItems];
     [self.navigationController setToolbarHidden:NO];
     self.btnUpload = [[UIBarButtonItem alloc]initWithTitle:@"Nothing to upload" style:UIBarButtonItemStylePlain target:self action:@selector(uploadBtnPressed:)];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -211,6 +213,11 @@
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void) showSearch: (id) sender {
+    [self performSegueWithIdentifier:@"searchSegue" sender:self];
+    
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"individualSegue"]) {
         
@@ -221,6 +228,12 @@
         individualViewControll.location = self.selectedlocation;
         
 
+    } else if ([segue.identifier isEqualToString:@"searchSegue"]) {
+        
+        SearchMapViewController *searchVC = (SearchMapViewController *)segue.destinationViewController;
+        searchVC.dataWrapper = self.dataWrapper;
+        searchVC.localDevice = self.localDevice;
+        
     }
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
