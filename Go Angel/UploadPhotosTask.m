@@ -350,8 +350,8 @@ NSLog(@"%@",metadataAsMutable);
                       NSString *latitude = [defaults objectForKey:CURR_LOC_LAT];
                       if (tagLocation) {
                           keys = [NSArray
-                                  arrayWithObjects:@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
-                          objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, name, nil];
+                                  arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
+                          objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, name, nil];
                       } else {
                           keys = [NSArray
                                   arrayWithObjects:@"token", @"filename", @"file-type",nil];
@@ -413,8 +413,8 @@ NSLog(@"%@",metadataAsMutable);
                       NSString *latitude = [defaults objectForKey:CURR_LOC_LAT];
                       if (tagLocation) {
                           keys = [NSArray
-                                  arrayWithObjects:@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
-                          objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, name, nil];
+                                  arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
+                          objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, name, nil];
                       } else {
                           keys = [NSArray
                                   arrayWithObjects:@"token", @"filename", @"file-type",nil];
@@ -511,10 +511,10 @@ NSLog(@"%@",metadataAsMutable);
               // TODO: Get these values from photo
               // eg. filename = actual filename (not unique string)
               NSArray *objects =
-                  [NSArray arrayWithObjects:appDelegate.account.token,
+                  [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token,
                                             uniqueString, @"image/jpeg", nil];
               NSArray *keys = [NSArray
-                  arrayWithObjects:@"token", @"filename", @"image-type", nil];
+                  arrayWithObjects:@"cid",@"token", @"filename", @"image-type", nil];
               NSDictionary *headers =
                   [NSDictionary dictionaryWithObjects:objects forKeys:keys];
 
@@ -549,12 +549,12 @@ NSLog(@"%@",metadataAsMutable);
               // TODO: Get these values from photo
               // eg. filename = actual filename (not unique string)
               NSArray *objects =
-                  [NSArray arrayWithObjects:appDelegate.account.token,
+                  [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token,
                                             uniqueString, @"image/jpg", nil];
 
               // set headers
               NSArray *keys = [NSArray
-                  arrayWithObjects:@"token", @"filename", @"image-type", nil];
+                  arrayWithObjects:@"cid",@"token", @"filename", @"image-type", nil];
               NSDictionary *headers =
                   [NSDictionary dictionaryWithObjects:objects forKeys:keys];
               NSLog(@"%@", p);

@@ -410,7 +410,7 @@
         dateString = [dateString stringByAppendingString:@"Z"];
         NSDateFormatter *dataFormatter = [[NSDateFormatter alloc] init];
         [dataFormatter setLocale:[NSLocale currentLocale]];
-        [dataFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        [dataFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
         NSDate *date = [dataFormatter dateFromString:dateString];
         photo.dateCreated = date;
         
