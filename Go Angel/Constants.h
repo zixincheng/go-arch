@@ -48,6 +48,8 @@
 #define PROVINCE @"province"
 #define UNIT @"unit"
 #define NAME @"name"
+#define LONG @"longitude"
+#define LAT @"latitude"
 
 // photo entity attributes
 #define DATE_CREATED @"dateCreated"

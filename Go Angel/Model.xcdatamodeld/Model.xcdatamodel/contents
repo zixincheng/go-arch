@@ -8,6 +8,8 @@
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="countryCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="province" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="unit" optional="YES" attributeType="String" syncable="YES"/>
@@ -37,7 +39,7 @@
     </entity>
     <elements>
         <element name="Device" positionX="-153" positionY="-208" width="128" height="73"/>
-        <element name="Location" positionX="61" positionY="-58" width="128" height="148"/>
+        <element name="Location" positionX="61" positionY="-58" width="128" height="180"/>
         <element name="Log" positionX="16" positionY="-207" width="128" height="75"/>
         <element name="Photo" positionX="-162" positionY="-126" width="162" height="285"/>
     </elements>

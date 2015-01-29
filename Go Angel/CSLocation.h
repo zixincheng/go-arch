@@ -16,5 +16,7 @@
 @property (nonatomic, strong) NSString *province;
 @property (nonatomic, strong) NSString *unit;
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *longitude;
+@property (nonatomic, strong) NSString *latitude;
 
 @end

@@ -590,6 +590,8 @@
         [locationObj setValue:location.province forKey:PROVINCE];
         [locationObj setValue:location.unit forKey:UNIT];
         [locationObj setValue:location.name forKey:NAME];
+        [locationObj setValue:location.longitude forKey:LONG];
+        [locationObj setValue:location.latitude forKey:LAT];
 
         [context save:nil];
         
@@ -603,6 +605,8 @@
     location.province = [object valueForKey:PROVINCE];
     location.unit = [object valueForKey:UNIT];
     location.name = [object valueForKey:NAME];
+    location.longitude = [object valueForKey:LONG];
+    location.latitude = [object valueForKey:LAT];
 
     return location;
 }

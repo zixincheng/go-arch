@@ -263,7 +263,10 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
                            self.location.city = [p.addressDictionary objectForKey:@"City"];
                            self.location.name = [p.addressDictionary objectForKey:@"Name"];
                            self.location.province = [p.addressDictionary objectForKey:@"State"];
-                           
+                           self.location.longitude = [NSString stringWithFormat:@"%f", self.currentLocation.coordinate
+                                                       .longitude];
+                           self.location.latitude = [NSString stringWithFormat:@"%f", self.currentLocation.coordinate
+                                                      .latitude];
                            self.location.unit = self.txtUnit.text;
                            
                            [self.streetName setText:self.location.name];
