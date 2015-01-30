@@ -84,6 +84,7 @@
 		9B12113C1A79B0FD0088CD3A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B12113B1A79B0FD0088CD3A /* MapKit.framework */; };
 		9B1211431A79B13B0088CD3A /* SearchMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1211421A79B13B0088CD3A /* SearchMapViewController.m */; };
 		9B3445CD1A410772004BA746 /* RadarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3445CC1A410772004BA746 /* RadarViewController.m */; };
+		9B4ADCB61A7C168500375C01 /* SearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */; };
 		9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */; };
 		9B555D3D1A44D22A00D00025 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D3C1A44D22A00D00025 /* box.png */; };
 		9B555D3F1A44DDFE00D00025 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D3E1A44DDFE00D00025 /* background.png */; };
@@ -268,6 +269,8 @@
 		9B1211421A79B13B0088CD3A /* SearchMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchMapViewController.m; sourceTree = "<group>"; };
 		9B3445CB1A410772004BA746 /* RadarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarViewController.h; sourceTree = "<group>"; };
 		9B3445CC1A410772004BA746 /* RadarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadarViewController.m; sourceTree = "<group>"; };
+		9B4ADCB41A7C168500375C01 /* SearchResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewController.h; sourceTree = "<group>"; };
+		9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewController.m; sourceTree = "<group>"; };
 		9B4C12921A72DCC6004CC973 /* IndividualEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndividualEntryViewController.h; sourceTree = "<group>"; };
 		9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndividualEntryViewController.m; sourceTree = "<group>"; };
 		9B555D3C1A44D22A00D00025 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
@@ -448,6 +451,8 @@
 				9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */,
 				9BEA5B541A1EB26100CC14FF /* StorageViewController.h */,
 				9BEA5B551A1EB26100CC14FF /* StorageViewController.m */,
+				9B4ADCB41A7C168500375C01 /* SearchResultsTableViewController.h */,
+				9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */,
 				2053971E1991924B00B1D9AD /* Supporting Files */,
 				2061D1F819919440001C7E08 /* UploadPhotosTask.h */,
 				2061D1F919919440001C7E08 /* UploadPhotosTask.m */,
@@ -770,6 +775,7 @@
 				9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */,
 				2061D1EC19919430001C7E08 /* LocalLibrary.m in Sources */,
 				2053974C199192FE00B1D9AD /* AppDelegate.m in Sources */,
+				9B4ADCB61A7C168500375C01 /* SearchResultsTableViewController.m in Sources */,
 				2061D1D7199193CE001C7E08 /* Coinsorter.m in Sources */,
 				9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */,
 				2061D1E4199193DB001C7E08 /* firstLoadViewController.m in Sources */,

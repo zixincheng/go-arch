@@ -16,8 +16,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //init search controller
+    UINavigationController *searchResultsController = [[self storyboard] instantiateViewControllerWithIdentifier:@"TableSearchResultsNavController"];
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:searchResultsController];
+    self.searchController.searchResultsUpdater = self;
     
-    //init ui parts
+    self.searchController.searchBar.frame = CGRectMake(self.searchController.searchBar.frame.origin.x, self.searchController.searchBar.frame.origin.y, self.searchController.searchBar.frame.size.width, 44.0);
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+    
+    self.definesPresentationContext = YES;
+    
+    //init ui navigation buttons parts
     UIBarButtonItem * searchBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(showSearch:)];
     UIBarButtonItem * addLocationBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addLocationbuttonPressed:)];
     self.navigationItem.rightBarButtonItem = addLocationBtn;
@@ -421,6 +430,53 @@
         }];
     }else {
         NSLog(@"there are no photos to upload");
+    }
+}
+
+#pragma mark - UISearchResultsUpdating
+
+-(void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    
+    NSString *searchString = [self.searchController.searchBar text];
+    
+    [self searchForAddress:searchString];
+    
+    if (self.searchController.searchResultsController) {
+        UINavigationController *navController = (UINavigationController *)self.searchController.searchResultsController;
+        
+        SearchResultsTableViewController *vc = (SearchResultsTableViewController *)navController.topViewController;
+        vc.searchResults = self.searchResults;
+        
+        [vc.tableView reloadData];
+    }
+    
+}
+
+#pragma mark - Content Filtering
+
+- (void)searchForAddress:(NSString *)address {
+    
+
+    if ((address == nil) || [address length] == 0) {
+
+        self.searchResults = [self.locations mutableCopy];
+        return;
+    } else {
+        [self.searchResults removeAllObjects]; // First clear the filtered array.
+        
+        for (CSLocation *locaion in self.locations) {
+            NSUInteger searchOptions = NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch;
+            NSRange addressRange = NSMakeRange(0, locaion.name.length);
+            NSRange unitRange = NSMakeRange(0, locaion.unit.length);
+            NSRange foundNameRange = [locaion.name rangeOfString:address options:searchOptions range:addressRange];
+            NSRange foundUnitRange = NSRangeFromString(@"");
+            if (![locaion.unit isEqualToString:@""]) {
+                foundUnitRange= [locaion.unit rangeOfString:address options:searchOptions range:unitRange];
+            }
+            if ((foundNameRange.length > 0) || (foundUnitRange.length > 0)) {
+                [self.searchResults addObject:locaion];
+            }
+        }
     }
 }
 

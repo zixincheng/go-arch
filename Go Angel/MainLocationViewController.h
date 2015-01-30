@@ -18,13 +18,16 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "IndividualEntryViewController.h"
 #import "SearchMapViewController.h"
+#import "SearchResultsTableViewController.h"
 
-@interface MainLocationViewController : UITableViewController {
+@interface MainLocationViewController : UITableViewController <UISearchResultsUpdating, UISearchBarDelegate> {
     LocalLibrary *localLibrary;
     AccountDataWrapper *account;
     NSUserDefaults *defaults;
     
 }
+@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, strong) NSMutableArray *searchResults;
 
 @property (nonatomic, strong) CSLocation *selectedlocation;
 @property (nonatomic, strong) CSDevice *localDevice;
