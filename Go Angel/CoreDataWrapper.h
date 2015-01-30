@@ -41,4 +41,5 @@
 - (void) deletePhotos:(NSArray *) itemPaths;
 - (void) addLocation:(CSLocation *)location;
 - (void) deleteLocation:(CSLocation *) location;
+- (NSMutableArray *) searchLocation: (NSString *) location;
 @end

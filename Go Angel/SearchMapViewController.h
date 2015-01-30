@@ -14,8 +14,9 @@
 #import "CSLocation.h"
 #import "IndividualEntryViewController.h"
 
-@interface SearchMapViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate>
+@interface SearchMapViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate,UISearchBarDelegate,NSFetchedResultsControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLLocation *currentLocation;
@@ -25,7 +26,8 @@
 @property (nonatomic, strong) CSLocation *selectedLocation;
 
 @property (nonatomic, strong) NSMutableArray *locations;
+@property (nonatomic, strong) NSMutableArray *searchResultLocations;
 @property (nonatomic, strong) NSArray *pins;
-
+@property (nonatomic, strong) NSMutableArray *points;
 
 @end

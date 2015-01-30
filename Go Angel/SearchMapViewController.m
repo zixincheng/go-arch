@@ -17,6 +17,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //init location auto-dectect
+    
     self.locations = [self.dataWrapper getLocations];
     
     
@@ -32,7 +34,8 @@
         [self.locationManager requestWhenInUseAuthorization];
     }
     
-    NSMutableArray *points = [[NSMutableArray alloc]init];
+    // setup pins for each location in map
+    self.points = [[NSMutableArray alloc]init];
     
     for (CSLocation *l in self.locations) {
         float latitude = [l.latitude floatValue];
@@ -43,15 +46,28 @@
         if (![l.unit isEqualToString:@""]) {
             point.subtitle = [NSString stringWithFormat:@"Unit %@",l.unit];
         }
-        [points addObject:point];
+        [self.points addObject:point];
     }
-    self.pins = [[NSArray alloc] initWithArray:points];
+    MKPointAnnotation *point1 = [[MKPointAnnotation alloc]init];
+    point1.coordinate =CLLocationCoordinate2DMake(0, 0);
+    [self.points addObject:point1];
+    
+
+    
+    self.pins = [[NSArray alloc] initWithArray:self.points];
     [self.mapView addAnnotations:self.pins];
     
     [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
 
+
     // Do any additional setup after loading the view.
 }
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 
 - (void)locationManager:(CLLocationManager *)manager
      didUpdateLocations:(NSArray *)locations {
@@ -70,6 +86,8 @@
     [self.mapView setRegion:viewRegion animated:YES];
 }
 */
+
+#pragma mark - mapView delegate
 
 -(void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
     
@@ -97,15 +115,39 @@
 
 -(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
     //id <MKAnnotation> annotation = [view annotation];
-    NSLog(@"%@",view.annotation);
+
     MKPointAnnotation *point  = view.annotation;
     NSUInteger index = [self.pins indexOfObject:point];
-    
     self.selectedLocation = [self.locations objectAtIndex:index];
     
-    NSLog(@"%f", point.coordinate.longitude);
     [self performSegueWithIdentifier:@"locationSegue" sender:self];
 }
+
+- (void) searchResultPinAction: (NSMutableArray *) result {
+    [self.mapView removeAnnotations:self.mapView.annotations];
+    [self.points removeAllObjects];
+    for (CSLocation *l in result) {
+        float latitude = [l.latitude floatValue];
+        float longitude = [l.longitude floatValue];
+        MKPointAnnotation *point = [[MKPointAnnotation alloc]init];
+        point.coordinate =CLLocationCoordinate2DMake(latitude, longitude);
+        point.title = l.name;
+        if (![l.unit isEqualToString:@""]) {
+            point.subtitle = [NSString stringWithFormat:@"Unit %@",l.unit];
+        }
+        [self.points addObject:point];
+    }
+    
+   // NSMutableArray * annotationsToRemove = [ self.mapView.annotations mutableCopy ] ;
+   // [ annotationsToRemove removeObject:self.mapView.userLocation ] ;
+    //[ self.mapView removeAnnotations:annotationsToRemove ] ;
+    self.pins = [[NSArray alloc] initWithArray:self.points];
+    NSLog(@"pins %@",self.pins);
+    NSLog(@"points %@",self.points);
+    [self.mapView addAnnotations:self.pins];
+}
+
+#pragma mark - navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"locationSegue"]) {
@@ -120,19 +162,25 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - searchbar delegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    
+    self.searchResultLocations = [self.dataWrapper searchLocation:searchBar.text];
+    NSLog(@"%@",self.searchResultLocations);
+    
+    [self searchResultPinAction: self.searchResultLocations];
+    [searchBar resignFirstResponder];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void) searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    
+    [searchBar resignFirstResponder];
 }
-*/
+
+- (void) searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    
+    [searchBar resignFirstResponder];
+}
 
 @end

@@ -663,5 +663,39 @@
     
 }
 
+- (NSMutableArray *) searchLocation: (NSString *) location {
+    
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    __block NSMutableArray *arr = [[NSMutableArray alloc] init];
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
+        
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(ANY %K CONTAINS[c] %@)",NAME, location];
+        [request setPredicate:pred];
+
+        
+        // set sort
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:NO];
+        NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
+        [request setSortDescriptors: descriptors];
+        
+        NSArray *locations = [context executeFetchRequest:request error:nil];
+        
+        if (locations == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        // add all of the log objects to the local log list
+        for (int i =0; i < [locations count]; i++) {
+            NSManagedObject *locationObj = locations[i];
+            [arr addObject:[self getLocationFromObject:locationObj]];
+        }
+    }];
+    
+    return arr;
+}
+
 
 @end

@@ -22,9 +22,16 @@
                                     <outlet property="delegate" destination="hJr-Yz-gfu" id="ucN-qq-uFb"/>
                                 </connections>
                             </mapView>
-                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c9D-dA-F5r">
+                            <searchBar contentMode="redraw" fixedFrame="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c9D-dA-F5r">
                                 <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
+                                <connections>
+                                    <outlet property="delegate" destination="hJr-Yz-gfu" id="d8i-u2-BH8"/>
+                                </connections>
                             </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -32,6 +39,7 @@
                     <navigationItem key="navigationItem" title="LOCATION SEARCH" id="Zkl-Cy-Mit"/>
                     <connections>
                         <outlet property="mapView" destination="oPS-ay-ivG" id="rj5-C8-GcX"/>
+                        <outlet property="searchBar" destination="c9D-dA-F5r" id="mBQ-26-H8o"/>
                         <segue destination="fIS-qb-jvn" kind="push" identifier="locationSegue" id="rcp-IH-j7u"/>
                     </connections>
                 </viewController>
