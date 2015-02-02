@@ -340,23 +340,23 @@ NSLog(@"%@",metadataAsMutable);
                       NSArray * keys;
                       NSArray *objects;
                       
-                      NSString *name = [defaults objectForKey:CURR_LOC_NAME];
-                      NSString *unit = [defaults objectForKey:(CURR_LOC_UNIT)];
-                      NSString *city = [defaults objectForKey:CURR_LOC_CITY];
-                      NSString *state = [defaults objectForKey:CURR_LOC_PROV];
-                      NSString *countryCode = [defaults objectForKey:CURR_LOC_COUN_CODE];
-                      NSString *country = [defaults objectForKey:CURR_LOC_COUNTRY];
-                      NSString *longitude = [defaults objectForKey:CURR_LOC_LONG];
-                      NSString *latitude = [defaults objectForKey:CURR_LOC_LAT];
+                      NSString *name = p.location.name;
+                      NSString *unit = p.location.unit;
+                      NSString *city = p.location.city;
+                      NSString *state = p.location.province;
+                      NSString *countryCode = p.location.countryCode;
+                      NSString *country = p.location.country;
+                      NSString *longitude = p.location.longitude;
+                      NSString *latitude = p.location.latitude;
                       if (tagLocation) {
                           keys = [NSArray
                                   arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
                           objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, name, nil];
-                      } else {
-                          keys = [NSArray
-                                  arrayWithObjects:@"token", @"filename", @"file-type",nil];
-                          objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"movie/mov", nil];
-                      }
+                      } //else {
+                         // keys = [NSArray
+                          //        arrayWithObjects:@"token", @"filename", @"file-type",nil];
+                          //objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"movie/mov", nil];
+                     // }
                       NSDictionary *headers =
                       [NSDictionary dictionaryWithObjects:objects forKeys:keys];
                       
@@ -403,23 +403,23 @@ NSLog(@"%@",metadataAsMutable);
                       NSArray * keys;
                       NSArray *objects;
 
-                      NSString *name = [defaults objectForKey:CURR_LOC_NAME];
-                      NSString *unit = [defaults objectForKey:(CURR_LOC_UNIT)];
-                      NSString *city = [defaults objectForKey:CURR_LOC_CITY];
-                      NSString *state = [defaults objectForKey:CURR_LOC_PROV];
-                      NSString *countryCode = [defaults objectForKey:CURR_LOC_COUN_CODE];
-                      NSString *country = [defaults objectForKey:CURR_LOC_COUNTRY];
-                      NSString *longitude = [defaults objectForKey:CURR_LOC_LONG];
-                      NSString *latitude = [defaults objectForKey:CURR_LOC_LAT];
-                      if (tagLocation) {
+                      NSString *name = p.location.name;
+                      NSString *unit = p.location.unit;
+                      NSString *city = p.location.city;
+                      NSString *state = p.location.province;
+                      NSString *countryCode = p.location.countryCode;
+                      NSString *country = p.location.country;
+                      NSString *longitude = p.location.longitude;
+                      NSString *latitude = p.location.latitude;
+                      //if (tagLocation) {
                           keys = [NSArray
                                   arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
                           objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, name, nil];
-                      } else {
-                          keys = [NSArray
-                                  arrayWithObjects:@"token", @"filename", @"file-type",nil];
-                          objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"movie/mov", nil];
-                      }
+                     // } //else {
+                        //  keys = [NSArray
+                         //         arrayWithObjects:@"token", @"filename", @"file-type",nil];
+                        //  objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"movie/mov", nil];
+                      //}
                       NSDictionary *headers =
                       [NSDictionary dictionaryWithObjects:objects forKeys:keys];
                       
@@ -714,6 +714,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
   if ([task.response respondsToSelector:@selector(allHeaderFields)]) {
     NSDictionary *dictionary = [httpResponse allHeaderFields];
     p.remoteID = [dictionary valueForKey:@"photo_id"];
+      NSLog(@"%@",dictionary);
   }
 
   //  NSData * data = [NSJSONSerialization dataWithJSONObject:task.response
