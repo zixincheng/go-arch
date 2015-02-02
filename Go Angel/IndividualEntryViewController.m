@@ -162,13 +162,20 @@
     [tagTextField addTarget:self action:@selector(textfieldChanged:) forControlEvents:UIControlEventEditingChanged];
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-
+    
+    if ([photo.isVideo isEqualToString:@"1"]) {
+        [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [imageView setImage:image];
+            });
+        }];
+    } else {
     [appDelegate.mediaLoader loadFullResImage:photo completionHandler:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [imageView setImage:image];
         });
     }];
-    
+    }
     return cell;
 }
 
@@ -521,10 +528,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.mov",photoUID];
     p.isVideo = @"1";
-    p.unit = self.location.unit;
-    p.city = self.location.city;
-    p.name = self.location.name;
     p.cover = @"0";
+    p.location = self.location;
     
     [self.dataWrapper addPhoto:p];
     
@@ -554,10 +559,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];
     p.isVideo = @"0";
-    p.unit = self.location.unit;
-    p.city = self.location.city;
-    p.name = self.location.name;
     p.cover = @"0";
+    p.location = self.location;
     
     // save the metada information into image
     NSData *data = UIImageJPEGRepresentation(image, 100);

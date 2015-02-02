@@ -61,6 +61,15 @@
 #define THUMB_URL @"thumbURL"
 #define ON_SERVER @"onServer"
 #define FILE_NAME @"fileName"
+#define PHOTO_LOCATION @"location"
+#define PHOTO_COUNTRY @"location.country"
+#define PHOTO_COUNTRYCODE @"location.countryCode"
+#define PHOTO_CITY @"location.city"
+#define PHOTO_PROVINCE @"location.province"
+#define PHOTO_UNIT @"location.unit"
+#define PHOTO_NAME @"location.name"
+#define PHOTO_LONG @"location.longitude"
+#define PHOTO_LAT @"location.latitude"
 
 // log entity attributes
 #define TIME_UPDATE @"timeUpdate"

@@ -122,12 +122,12 @@
   [object setValue:photo.fileName forKey:FILE_NAME];
   [object setValue:photo.isVideo forKey:@"isVideo"];
   [object setValue:photo.tag forKey:@"tag"];
-  [object setValue:photo.unit forKey:UNIT];
-  [object setValue:photo.name forKey:NAME];
-  [object setValue:photo.city forKey:CITY];
   [object setValue:photo.cover forKey:@"cover"];
-  
-  NSLog(@"REMOTE ID %@", photo.remoteID);
+    
+  //object = [self relationLocation:photo.location object:object];
+   // NSLog(@"obj %@",object);
+  //[object setValue:location forKey:@"location"];
+
   
   if (photo.remoteID != nil) {
     [object setValue:[NSString stringWithFormat:@"%@", photo.remoteID] forKey:REMOTE_ID];
@@ -211,9 +211,11 @@
     
     if (results.count == 0) {
       NSManagedObject *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
-      
+       // NSManagedObject *location = [self relationLocation:photo.location];
+      //  NSLog(@"obj %@",location);
       newPhoto = [self setObjectValues:photo object:newPhoto];
-      
+      newPhoto = [self relationLocation:photo.location object:newPhoto];
+        NSLog(@"obj %@",newPhoto);
       // save context to updated other threads
       [context save:nil];
       
@@ -240,12 +242,10 @@
   p.fileName     = [object valueForKey:FILE_NAME];
   p.isVideo      = [object valueForKey:@"isVideo"];
   p.tag          = [object valueForKey:@"tag"];
-  p.unit         = [object valueForKey:UNIT];
-  p.name         = [object valueForKey:NAME];
-  p.city         = [object valueForKey:CITY];
   p.cover        = [object valueForKey:@"cover"];
-    
-  
+  NSManagedObject *locationObj = [object valueForKey:@"location"];
+  p.location =  [self getLocationFromObject:locationObj];
+    NSLog(@"%@",p.location.name);
   return p;
 }
 
@@ -258,7 +258,7 @@
    // [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"Location", nil]];
     
     // set query
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@)", DEVICE_ID, deviceId, UNIT, location.unit, NAME, location.name, CITY, location.city];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.name, PHOTO_CITY, location.city];
     [request setPredicate:pred];
     // set sort
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:NO];
@@ -327,7 +327,7 @@
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
         
         // set query
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@) AND (cover = 1)", DEVICE_ID, deviceId, UNIT, location.unit, NAME, location.name, CITY, location.city];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@) AND (cover = 1)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.name, PHOTO_CITY, location.city];
         [request setPredicate:pred];
         // set sort
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:NO];
@@ -609,6 +609,29 @@
     location.latitude = [object valueForKey:LAT];
 
     return location;
+}
+
+- (NSManagedObject *) relationLocation: (CSLocation *) location object:(NSManagedObject *) object {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    [context performBlock: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
+        
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",UNIT,location.unit,CITY,location.city,NAME,location.name];
+        [request setPredicate:pred];
+        
+        NSError *err;
+        NSArray *result = [context executeFetchRequest:request error:&err];
+        
+        if (result == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        NSManagedObject* resultObj = result[0];
+        [object setValue:resultObj forKey:@"location"];
+    }];
+
+    return object;
 }
 
 - (NSMutableArray *) getLocations{

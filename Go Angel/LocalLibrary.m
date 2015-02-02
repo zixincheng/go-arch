@@ -102,9 +102,7 @@
   NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb-%@", name]];
   
   photo.thumbURL = filePath;
-  photo.unit = location.unit;
-  photo.name = location.name;
-  photo.city = location.city;
+  photo.location = location;
   photo.cover = @"0";
   
   // add photo to db

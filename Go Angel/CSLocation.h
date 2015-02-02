@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
+@class CSPhoto;
 @interface CSLocation : NSObject
+
 
 @property (nonatomic, strong) NSString *country;
 @property (nonatomic, strong) NSString *countryCode;
@@ -18,5 +21,6 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *longitude;
 @property (nonatomic, strong) NSString *latitude;
+@property (nonatomic, strong) CSPhoto *photo;
 
 @end

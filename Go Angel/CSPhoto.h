@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "CSDevice.h"
 
 // simple photo object class
-
+@class CSLocation;
 @interface CSPhoto : NSObject
 
 @property (nonatomic, strong) NSString *deviceId;
@@ -23,10 +24,8 @@
 @property (nonatomic, strong) NSDate *dateUploaded;
 @property (nonatomic, strong) NSString *isVideo;
 @property (nonatomic, strong) NSString *tag;
-@property (nonatomic, strong) NSString *unit;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *city;
 @property (nonatomic, strong) NSString *cover;
+@property (nonatomic, strong) CSLocation *location;
 
 // the background upload task id.
 // if this is greater than -1, it means the photo is currently being uploaded
