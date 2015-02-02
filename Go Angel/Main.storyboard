@@ -1234,6 +1234,7 @@
                                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                                     <connections>
                                                         <action selector="nameChanged:" destination="Q4B-RI-MsH" eventType="editingDidEnd" id="6Ed-Z2-TBZ"/>
+                                                        <outlet property="delegate" destination="Q4B-RI-MsH" id="Eka-N0-Qst"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>

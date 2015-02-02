@@ -137,10 +137,13 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
 - (IBAction)unitChanged:(id)sender {
     self.location.unit = self.txtUnit.text;
     [self saveLocation];
+    NSLog(@"%@",self.txtUnit.text);
 }
 
 // text field for name was changed
 - (IBAction)nameChanged:(id)sender {
+    [self stopStandardUpdates];
+    [self geocodeAddress];
     self.location.name = self.streetName.text;
     [self saveLocation];
 
@@ -275,6 +278,25 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
                            [self saveLocation];
                        }
                    }];
+}
+
+-(void) geocodeAddress {
+    
+    geocoder = [[CLGeocoder alloc]init];
+    [geocoder geocodeAddressString:self.streetName.text completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (error) {
+            NSLog(@"%@", error);
+        } else {
+            CLPlacemark *placemark = [placemarks lastObject];
+            [NSString stringWithFormat:@"%f", placemark.location.coordinate.latitude];
+            self.location.longitude = [NSString stringWithFormat:@"%f", placemark.location.coordinate.longitude];
+            self.location.latitude = [NSString stringWithFormat:@"%f", placemark.location.coordinate.latitude];
+
+
+            self.lblLatitude.text = self.location.longitude;
+            self.lblLongitude.text = self.location.latitude;
+        }
+    }];
 }
 
 // save the current location in the user defaults

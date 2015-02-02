@@ -348,11 +348,11 @@ NSLog(@"%@",metadataAsMutable);
                       NSString *country = p.location.country;
                       NSString *longitude = p.location.longitude;
                       NSString *latitude = p.location.latitude;
-                      if (tagLocation) {
+                    //  if (tagLocation) {
                           keys = [NSArray
                                   arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
                           objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, name, nil];
-                      } //else {
+                      //} //else {
                          // keys = [NSArray
                           //        arrayWithObjects:@"token", @"filename", @"file-type",nil];
                           //objects = [NSArray arrayWithObjects:appDelegate.account.token, uniqueString, @"movie/mov", nil];
