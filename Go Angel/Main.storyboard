@@ -818,7 +818,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YK9-7x-zPk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-99" y="-1341"/>
+            <point key="canvasLocation" x="-2262" y="-747"/>
         </scene>
         <!--Searching For Box-->
         <scene sceneID="78E-e8-WTB">
@@ -833,12 +833,11 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addServerButton" destination="O5h-jf-3jo" id="XMz-B0-EZ7"/>
-                        <segue destination="6bK-TY-GB0" kind="modal" identifier="deviceSegue" id="gb8-t6-M0R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6iM-Eu-djb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2110" y="-747"/>
+            <point key="canvasLocation" x="-932" y="-535"/>
         </scene>
         <!--First Load View Controller-->
         <scene sceneID="HHo-TG-iaj">
@@ -870,7 +869,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="hB3-Ch-tIc" kind="relationship" relationship="rootViewController" id="5Gm-yo-l9y"/>
+                        <segue destination="vaL-eJ-OMA" kind="relationship" relationship="rootViewController" id="UKk-dw-zaw"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wa0-sL-KLB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -955,11 +954,12 @@
                         <outlet property="lblError" destination="3dP-eR-9tQ" id="jZz-Qp-2gr"/>
                         <outlet property="lblIp" destination="UQ2-tm-DhQ" id="98U-ff-2Om"/>
                         <outlet property="passTextField" destination="egw-bH-unc" id="Kpk-Qp-LWg"/>
+                        <segue destination="6bK-TY-GB0" kind="modal" identifier="deviceSegue" id="OfC-RM-CNH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dwF-T9-A83" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="282" y="-1363"/>
+            <point key="canvasLocation" x="-1802" y="-747"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="4vK-kV-oKS">
@@ -1352,7 +1352,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="9ug-Sj-mVg"/>
+        <segue reference="OfC-RM-CNH"/>
         <segue reference="zan-2D-U28"/>
     </inferredMetricsTieBreakers>
 </document>
