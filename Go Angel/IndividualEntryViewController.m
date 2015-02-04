@@ -20,6 +20,8 @@
 #define CAMERA_TOPVIEW_HEIGHT   44  //title
 #define CAMERA_MENU_VIEW_HEIGH  44  //menu
 
+#define kDoubleColumnProbability 40
+
 @interface IndividualEntryViewController () {
     
     BOOL takingPhoto;
@@ -38,6 +40,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    CellLayout * layout = (id)[self.collectionView collectionViewLayout];
+    layout.delegate = self;
+    
     // Camera vars init
     AVCaptureSession *tmpSession = [[AVCaptureSession alloc] init];
     self.session = tmpSession;
@@ -156,7 +161,8 @@
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     GridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GRID_CELL forIndexPath:indexPath];
-    UIImageView *imageView = (UIImageView *) [cell viewWithTag:IMAGE_VIEW_TAG];
+    //UIImageView *imageView = (UIImageView *) [cell viewWithTag:IMAGE_VIEW_TAG];
+    
 /*
     UITextField *tagTextField = (UITextField *) [cell viewWithTag:TextField_TAG];
     
@@ -165,35 +171,37 @@
     tagTextField.delegate = self;
     tagTextField.enabled = YES;
  */
-    cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selectedbackground.png"]];
+  //  cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selectedbackground.png"]];
 /*
     [tageview addSubview:tagTextField];
     [cell addSubview:tageview];
 */
     CSPhoto *photo = [self.photos objectAtIndex:[indexPath row]];
-    [self.photos objectAtIndex:[indexPath row]];
-/*
+    cell.photo = photo;
+    float randomWhite = (arc4random() % 40 + 10) / 255.0;
+    cell.backgroundColor = [UIColor colorWithWhite:randomWhite alpha:1];
+    /*
     if (![photo.tag isEqualToString:@""]) {
          tagTextField.text = photo.tag;
     }
     
     [tagTextField addTarget:self action:@selector(textfieldChanged:) forControlEvents:UIControlEventEditingChanged];
 */
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+   // AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
-    if ([photo.isVideo isEqualToString:@"1"]) {
-        [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [imageView setImage:image];
-            });
-        }];
-    } else {
-    [appDelegate.mediaLoader loadFullResImage:photo completionHandler:^(UIImage *image) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [imageView setImage:image];
-        });
-    }];
-    }
+    //if ([photo.isVideo isEqualToString:@"1"]) {
+     //   [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
+     //       dispatch_async(dispatch_get_main_queue(), ^{
+      //          [imageView setImage:image];
+     //       });
+      //  }];
+    //} else {
+    //[appDelegate.mediaLoader loadFullResImage:photo completionHandler:^(UIImage *image) {
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    //        [imageView setImage:image];
+     //   });
+    //}];
+    //}
     return cell;
 }
 
@@ -233,6 +241,66 @@
         swipeController.dataWrapper = self.dataWrapper;
     }
 
+}
+
+# pragma mark - Collection View layout delegate
+-(float)collectionView:(UICollectionView *)collectionView relativeHeightForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    //  Base relative height for simple layout type. This is 1.0 (height equals to width, square image)
+    float retVal = 1.0;
+    
+    CSPhoto *photo = [self.photos objectAtIndex:indexPath.row];
+    
+    if (photo.relativeHeight != 0){
+        
+        //  If the relative height was set before, return it
+        retVal = photo.relativeHeight;
+        
+    }else{
+        
+        BOOL isDoubleColumn = [self collectionView:collectionView isDoubleColumnAtIndexPath:indexPath];
+        if (isDoubleColumn){
+            //  Base relative height for double layout type. This is 0.75 (height equals to 75% width)
+            retVal = 0.75;
+        }
+        
+        /*  Relative height random modifier. The max height of relative height is 25% more than
+         *  the base relative height */
+        
+        float extraRandomHeight = arc4random() % 25;
+        retVal = retVal + (extraRandomHeight / 100);
+        
+        /*  Persist the relative height on each photo so the value will be the same every time
+         *  the layout invalidates */
+        photo.relativeHeight = retVal;
+    }
+    return retVal;
+}
+
+-(BOOL)collectionView:(UICollectionView *)collectionView isDoubleColumnAtIndexPath:(NSIndexPath *)indexPath{
+    CSPhoto *photo = [self.photos objectAtIndex:indexPath.row];
+    
+    if (photo.layoutType == cellLayoutTypeUndefined){
+        
+        // random determin if a cell is double column or single column
+        
+        NSUInteger random = arc4random() % 100;
+        if (random < kDoubleColumnProbability){
+            photo.layoutType = cellLayoutTypeDouble;
+        }else{
+            photo.layoutType = cellLayoutTypeSingle;
+        }
+    }
+    
+    BOOL retVal = photo.layoutType == cellLayoutTypeDouble;
+    
+    return retVal;
+    
+}
+
+-(NSUInteger)numberOfColumnsInCollectionView:(UICollectionView *)collectionView{
+    
+    return 2;
 }
 
 # pragma mark - delete button Actions

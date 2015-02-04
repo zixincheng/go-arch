@@ -10,6 +10,11 @@
 #import <CoreData/CoreData.h>
 #import "CSDevice.h"
 
+typedef enum {
+    cellLayoutTypeUndefined,
+    cellLayoutTypeSingle,
+    cellLayoutTypeDouble
+} cellLayoutType;
 // simple photo object class
 @class CSLocation;
 @interface CSPhoto : NSObject
@@ -26,6 +31,8 @@
 @property (nonatomic, strong) NSString *tag;
 @property (nonatomic, strong) NSString *cover;
 @property (nonatomic, strong) CSLocation *location;
+@property (assign) cellLayoutType layoutType;
+@property (assign) float relativeHeight;
 
 // the background upload task id.
 // if this is greater than -1, it means the photo is currently being uploaded

@@ -20,8 +20,10 @@
 #import "AccountDataWrapper.h"
 #import "AppDelegate.h"
 #import "PhotoSwipeViewController.h"
+#import "CellLayoutDelegate.h"
+#import "CellLayout.h"
 
-@interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate>{
+@interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate,CellLayoutDelegate>{
     
     LocalLibrary *localLibrary;
     NSUserDefaults *defaults;

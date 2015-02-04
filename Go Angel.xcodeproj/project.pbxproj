@@ -75,6 +75,7 @@
 		9B4ADCB61A7C168500375C01 /* SearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */; };
 		9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */; };
 		9B555D571A4A32FB00D00025 /* selectedbackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D561A4A32FB00D00025 /* selectedbackground.png */; };
+		9B6C88C61A829EAD00B50A21 /* CellLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C88C51A829EAD00B50A21 /* CellLayout.m */; };
 		9BAF13811A3F6388000B780B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13801A3F6388000B780B /* CoreMotion.framework */; };
 		9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13821A3F63A5000B780B /* QuartzCore.framework */; };
 		9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */; };
@@ -249,6 +250,9 @@
 		9B4C12921A72DCC6004CC973 /* IndividualEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndividualEntryViewController.h; sourceTree = "<group>"; };
 		9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndividualEntryViewController.m; sourceTree = "<group>"; };
 		9B555D561A4A32FB00D00025 /* selectedbackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectedbackground.png; sourceTree = "<group>"; };
+		9B6C88C41A829EAD00B50A21 /* CellLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellLayout.h; sourceTree = "<group>"; };
+		9B6C88C51A829EAD00B50A21 /* CellLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellLayout.m; sourceTree = "<group>"; };
+		9B6C88CC1A829FA500B50A21 /* CellLayoutDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellLayoutDelegate.h; sourceTree = "<group>"; };
 		9BAF13801A3F6388000B780B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		9BAF13821A3F63A5000B780B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9BB0F2091A26A52A00DF40E3 /* StorageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageDetailViewController.h; sourceTree = "<group>"; };
@@ -345,8 +349,11 @@
 		2053971D1991924B00B1D9AD /* Go Angel */ = {
 			isa = PBXGroup;
 			children = (
+				9B6C88CC1A829FA500B50A21 /* CellLayoutDelegate.h */,
 				2061D1C4199193B5001C7E08 /* AccountDataWrapper.h */,
 				2061D1C5199193B5001C7E08 /* AccountDataWrapper.m */,
+				9B6C88C41A829EAD00B50A21 /* CellLayout.h */,
+				9B6C88C51A829EAD00B50A21 /* CellLayout.m */,
 				D518B3391A42046700E249E4 /* ActivityHistory.h */,
 				D518B33A1A42046700E249E4 /* ActivityHistory.m */,
 				2053974A199192FE00B1D9AD /* AppDelegate.h */,
@@ -716,6 +723,7 @@
 				2061D1DA199193CE001C7E08 /* CoreDataWrapper.m in Sources */,
 				2061D1FE19919440001C7E08 /* UploadPhotosTask.m in Sources */,
 				9BEA5B571A1EB26100CC14FF /* StorageViewController.m in Sources */,
+				9B6C88C61A829EAD00B50A21 /* CellLayout.m in Sources */,
 				2061D1D9199193CE001C7E08 /* CoreDataStore.m in Sources */,
 				D510B9641A364A8A00307184 /* DashboardViewController.m in Sources */,
 				20931B8519954B8900F57FB0 /* GridCell.m in Sources */,

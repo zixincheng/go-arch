@@ -343,9 +343,12 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
-                                    <textField opaque="NO" clipsSubviews="YES" alpha="0.90000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Add Tag Here..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sn0-XF-C4J">
+                                    <textField opaque="NO" clipsSubviews="YES" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Add Tag Here..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sn0-XF-C4J">
                                         <rect key="frame" x="0.0" y="480" width="320" height="44"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="m7d-NE-lln"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
@@ -359,10 +362,17 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="70O-yS-0as" secondAttribute="bottom" id="5af-pl-1sN"/>
                                     <constraint firstItem="70O-yS-0as" firstAttribute="top" secondItem="2Rh-iA-rmV" secondAttribute="top" id="9PS-6e-T4K"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="sn0-XF-C4J" secondAttribute="bottom" constant="44" id="9Zq-Ux-puF"/>
+                                    <constraint firstItem="sn0-XF-C4J" firstAttribute="trailing" secondItem="70O-yS-0as" secondAttribute="trailing" id="D8T-3T-FSV"/>
+                                    <constraint firstItem="sn0-XF-C4J" firstAttribute="top" secondItem="2Rh-iA-rmV" secondAttribute="top" constant="480" id="Jyr-Jh-lmw"/>
                                     <constraint firstItem="70O-yS-0as" firstAttribute="leading" secondItem="2Rh-iA-rmV" secondAttribute="leading" id="Oam-11-x6q"/>
                                     <constraint firstItem="70O-yS-0as" firstAttribute="centerX" secondItem="2Rh-iA-rmV" secondAttribute="centerX" id="Yrc-AB-hdc"/>
+                                    <constraint firstItem="sn0-XF-C4J" firstAttribute="leading" secondItem="2Rh-iA-rmV" secondAttribute="leading" id="bAZ-XR-g2c"/>
                                     <constraint firstItem="70O-yS-0as" firstAttribute="centerY" secondItem="2Rh-iA-rmV" secondAttribute="centerY" id="bkK-ee-PZv"/>
                                     <constraint firstAttribute="trailing" secondItem="70O-yS-0as" secondAttribute="trailing" id="eb6-dE-Zci"/>
+                                    <constraint firstAttribute="trailing" secondItem="sn0-XF-C4J" secondAttribute="trailing" id="iNc-2C-70u"/>
+                                    <constraint firstAttribute="bottom" secondItem="sn0-XF-C4J" secondAttribute="bottom" constant="44" id="j6K-Cd-mbR"/>
+                                    <constraint firstItem="sn0-XF-C4J" firstAttribute="leading" secondItem="70O-yS-0as" secondAttribute="leading" id="yf3-om-Rdt"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="delegate" destination="79j-fi-mwG" id="NSK-PS-9eu"/>
@@ -546,24 +556,14 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="2GZ-lI-a0c">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="E77-eH-zKN">
-                                    <size key="itemSize" width="252" height="164"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
+                                <collectionViewLayout key="collectionViewLayout" id="9Xq-us-0D1" customClass="CellLayout"/>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="B4U-H0-YIB" customClass="GridCell">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="252" height="164"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bPb-6e-AwZ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="252" height="164"/>
-                                                </imageView>
-                                            </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </collectionViewCell>
@@ -591,7 +591,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j5n-pb-Smf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1218" y="579"/>
+            <point key="canvasLocation" x="-1184" y="579"/>
         </scene>
         <!--Devices-->
         <scene sceneID="69u-OC-JmX">
