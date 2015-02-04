@@ -246,6 +246,14 @@
         individualViewControll.localDevice = self.localDevice;
         individualViewControll.location = self.selectedlocation;
         
+        NSString *title;
+        if (![self.selectedlocation.unit isEqualToString:@""]) {
+            title = [NSString stringWithFormat:@"%@ - %@",self.selectedlocation.unit, self.selectedlocation.name];
+        } else {
+            title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];
+        }
+        individualViewControll.navigationItem.title = title;
+        
 
     } else if ([segue.identifier isEqualToString:@"searchSegue"]) {
         

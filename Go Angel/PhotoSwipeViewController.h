@@ -12,6 +12,7 @@
 #import "CSPhoto.h"
 #import "SinglePhotoViewController.h"
 #import "GridCell.h"
+#import "CoreDataWrapper.h"
 
 
 // controller for swiping between fullscreen images
@@ -26,7 +27,9 @@
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 
 
+
 @property int selected;
+@property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSPhoto *selectedPhoto;
 @property (nonatomic, strong) NSMutableArray *photos;
 

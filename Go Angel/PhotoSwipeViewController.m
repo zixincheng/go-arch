@@ -33,12 +33,13 @@
     // Do any additional setup after loading the view.
   
   bottom_selected = self.selected;
-  
+    
   // Create page view controller
   self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"pageViewController"];
   self.pageViewController.dataSource = self;
   
   SinglePhotoViewController *startingViewController = [self viewControllerAtIndex:self.selected];
+  startingViewController.dataWrapper = self.dataWrapper;
   NSArray *viewControllers = @[startingViewController];
   [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
   
@@ -48,6 +49,8 @@
   [self addChildViewController:_pageViewController];
   [self.containerView addSubview:_pageViewController.view];
   [self.pageViewController didMoveToParentViewController:self];
+    
+  [self.navigationController setToolbarHidden:NO];
 }
 
 - (void)didReceiveMemoryWarning

@@ -47,7 +47,7 @@
     self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     
     //init ui parts
-    self.setCoverPageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 600, 320, 150)];
+    self.setCoverPageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 1600, 320, 150)];
     self.setCoverPageViewContainer.backgroundColor = [UIColor lightGrayColor];
     [self.view addSubview:self.setCoverPageViewContainer];
     
@@ -88,6 +88,7 @@
     
     self.saveInAlbum = [defaults boolForKey:SAVE_INTO_ALBUM];
     selectedPhotos = [NSMutableArray array];
+    self.photoPath = [NSMutableArray array];
     
     
     // setup objects
@@ -109,8 +110,24 @@
     [self clearCellSelections];
 }
 
-# pragma mark - Collection View Delegates/Data Source
+#pragma mark - Collection view layout things
+// Layout: Set cell size
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return 5.0;
+}
 
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return 10.0;
+}
+
+// Layout: Set Edges
+- (UIEdgeInsets)collectionView:
+(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    // return UIEdgeInsetsMake(0,8,0,8);  // top, left, bottom, right
+    return UIEdgeInsetsMake(0,0,0,0);  // top, left, bottom, right
+}
+# pragma mark - Collection View Delegates/Data Source
+/*
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableview = nil;
     
@@ -128,7 +145,7 @@
     
     return reusableview;
 }
-
+*/
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView*)collectionView {
     return 1;
 }
@@ -140,27 +157,28 @@
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     GridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GRID_CELL forIndexPath:indexPath];
     UIImageView *imageView = (UIImageView *) [cell viewWithTag:IMAGE_VIEW_TAG];
-
+/*
     UITextField *tagTextField = (UITextField *) [cell viewWithTag:TextField_TAG];
     
     UIView *tageview = (UIView *) [cell viewWithTag:TAG_VIEW_TAG];
 
     tagTextField.delegate = self;
     tagTextField.enabled = YES;
+ */
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selectedbackground.png"]];
-
+/*
     [tageview addSubview:tagTextField];
     [cell addSubview:tageview];
-    
+*/
     CSPhoto *photo = [self.photos objectAtIndex:[indexPath row]];
     [self.photos objectAtIndex:[indexPath row]];
-    
+/*
     if (![photo.tag isEqualToString:@""]) {
          tagTextField.text = photo.tag;
     }
     
     [tagTextField addTarget:self action:@selector(textfieldChanged:) forControlEvents:UIControlEventEditingChanged];
-    
+*/
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
     if ([photo.isVideo isEqualToString:@"1"]) {
@@ -212,6 +230,7 @@
         PhotoSwipeViewController *swipeController = (PhotoSwipeViewController *) segue.destinationViewController;
         swipeController.selected = selected;
         swipeController.photos = self.photos;
+        swipeController.dataWrapper = self.dataWrapper;
     }
 
 }
@@ -234,7 +253,6 @@
         self.collectionView.allowsMultipleSelection = NO;
         [self clearCellSelections];
         self.toolbarItems = [NSArray arrayWithObjects:self.flexibleSpace, self.mainCameraBtn, self.flexibleSpace, nil];
-
         
     }
 }
@@ -259,6 +277,18 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         [self.collectionView performBatchUpdates:^{
             [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
             [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
+            /*
+            NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+            for (NSIndexPath *itemPath  in selectedIndexPath) {
+                [indexSet addIndex:itemPath.row];
+            }
+            [self.photoPath objectsAtIndexes:indexSet];
+            for (NSString *currentpath in self.photoPath) {
+                NSError *error;
+                [[NSFileManager defaultManager] removeItemAtPath:currentpath error:&error];
+            }
+             */
+
         } completion:^(BOOL finished){
             [self.collectionView reloadData];
         }];
@@ -307,8 +337,27 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
 }
 
-
+/*
 # pragma mark - TextField delegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.5];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    self.collectionView.frame = CGRectMake(self.collectionView.frame.origin.x, (self.collectionView.frame.origin.y - 180.0), self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+    [UIView commitAnimations];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.5];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    self.collectionView.frame = CGRectMake(self.collectionView.frame.origin.x, (self.collectionView.frame.origin.y + 180.0), self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+    [UIView commitAnimations];
+}
+
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     return YES;
 }
@@ -329,7 +378,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     p.tag = text.text;
     [self.dataWrapper addUpdatePhoto:p];
 }
-
+*/
 # pragma mark - long press gesture and set to home image
 
 -(void) longPressRecognizer: (UILongPressGestureRecognizer *) gestureRecognizer {
@@ -364,10 +413,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     self.selectedCoverPhoto.cover = @"1";
     NSLog(@" cover3 %@",self.selectedCoverPhoto.cover);
     [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
-    self.setCoverPageViewContainer.frame = CGRectMake(0, 600, 320, 150);
+    self.setCoverPageViewContainer.frame = CGRectMake(0, 1600, 320, 150);
 }
 -(void) cancelsetCover:(id) sender {
-    self.setCoverPageViewContainer.frame = CGRectMake(0, 600, 320, 150);
+    self.setCoverPageViewContainer.frame = CGRectMake(0, 1600, 320, 150);
 }
 # pragma mark - Camera Button
 
@@ -549,7 +598,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
     NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
     
-    
+    //[self.photoPath addObject:filePath];
     CSPhoto *p = [[CSPhoto alloc] init];
     
     p.dateCreated = [NSDate date];
@@ -729,7 +778,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 // camera cover animation
 - (void)showCameraCover:(BOOL)toShow {
     
-    [UIView animateWithDuration:0.38f animations:^{
+    [UIView animateWithDuration:0.18f animations:^{
         CGRect upFrame = _doneCameraUpView.frame;
         upFrame.size.height = (toShow ? (DEVICE_SIZE.height - CAMERA_MENU_VIEW_HEIGH - 90) / 2:0 );
         _doneCameraUpView.frame = upFrame;
@@ -854,7 +903,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
     [device unlockForConfiguration];
 }
-
 /*
 #pragma mark - Navigation
 

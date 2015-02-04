@@ -73,6 +73,7 @@
           // only use the resolution of the screen instead of the full quality image
           CGFloat width = [UIScreen mainScreen].bounds.size.width;
           CGFloat height = [UIScreen mainScreen].bounds.size.height;
+
           CGSize targetSize = CGSizeMake(width, height);
           
           if (fullRes) {

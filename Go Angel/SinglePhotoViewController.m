@@ -46,8 +46,8 @@
             self.videoController = [[MPMoviePlayerController alloc]init];
 
             NSURL *theURL = [NSURL URLWithString:newUrl];
-            [self.videoController.view setFrame:CGRectMake (0, 0, 320, 510)];
-            
+            [self.videoController.view setFrame:CGRectMake (0, 0, 320, 520)];
+
             [self.videoController setContentURL:theURL];
         
             [self.view insertSubview:self.videoController.view aboveSubview:self.imageView];
@@ -56,6 +56,7 @@
         //[self.videoController play];
             
     }
+    self.tagField.text = self.selectedPhoto.tag;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -70,6 +71,38 @@
       initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                            target:self
                            action:@selector(shareAction)];
+}
+
+# pragma mark - TextField delegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.25];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    self.tagField.frame = CGRectMake(self.tagField.frame.origin.x, (self.tagField.frame.origin.y - 208.0), self.tagField.frame.size.width, self.tagField.frame.size.height);
+    [UIView commitAnimations];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.25];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    self.tagField.frame = CGRectMake(self.tagField.frame.origin.x, (self.tagField.frame.origin.y + 208.0), self.tagField.frame.size.width, self.tagField.frame.size.height);
+    [UIView commitAnimations];
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    
+    return YES;
+}
+
+- (IBAction) textfieldChanged:(id)sender {
+    
+    UITextField *text = sender;
+    self.selectedPhoto.tag = text.text;
+    [self.dataWrapper addUpdatePhoto:self.selectedPhoto];
 }
 
 - (void)shareAction {
