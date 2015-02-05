@@ -401,10 +401,11 @@
         [self updateUploadCountUI];
         
         NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
-        [self.coinsorter uploadPhotos:photos upCallback:^() {
+        [self.coinsorter uploadPhotos:photos upCallback:^(CSPhoto *p) {
             
+            NSLog(@"removete id %@", p.remoteID );
             currentUploaded += 1;
-            
+            [self.coinsorter uploadVideoThumb:p];
             [self removeLocalPhoto];
             
             NSLog(@"%d / %lu", currentUploaded, (unsigned long)photos.count);

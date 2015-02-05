@@ -649,6 +649,77 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
   return nil;
 }
 
+- (void)uploadVideoThumb:(CSPhoto *)photo {
+    
+    NSString *uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    __block UIBackgroundTaskIdentifier background_task; // Create a task object
+    
+    UIApplication *application = [UIApplication sharedApplication];
+    
+    background_task = [application beginBackgroundTaskWithExpirationHandler:^{
+        [application endBackgroundTask:background_task]; // Tell the system that
+        // we are done with the
+        // tasks
+        background_task = UIBackgroundTaskInvalid; // Set the task to be invalid
+        
+        // System will be shutting down the app at any point in time now
+    }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    AppDelegate *appDelegate =
+    [[UIApplication sharedApplication] delegate];
+    NSString *urlString = [NSString
+                           stringWithFormat:@"%@%@%@", @"https://",
+                           appDelegate.account.ip, @"/videos/thumbnail"];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    // TODO: Get these values from photo
+    // eg. filename = actual filename (not unique string)
+    NSArray *objects =
+    [NSArray arrayWithObjects:photo.deviceId, appDelegate.account.token,
+     uniqueString, @"image/jpg",photo.remoteID, nil];
+    
+    // set headers
+    NSArray *keys = [NSArray
+                     arrayWithObjects:@"cid",@"token", @"filename", @"image-type",@"photo_id", nil];
+    NSDictionary *headers =
+    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    
+    [request setURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    
+        // get documents directory
+        NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
+                                                                 NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [pathArray objectAtIndex:0];
+        NSString *textPath = [@"file:/" stringByAppendingPathExtension:photo.thumbURL];
+        
+        // get image data from file path
+        NSURL *thumbPath = [NSURL URLWithString:textPath];
+        NSData *thumbData = [NSData dataWithContentsOfURL:thumbPath];
+        NSString *fileName = [NSString
+                              stringWithFormat:@"%@_%@", photo.fileName, @"thumb.jpg"];
+        
+        NSURL *fileURL =
+        [NSURL fileURLWithPath:[NSTemporaryDirectory()
+                                stringByAppendingString:fileName]];
+        // write the image data to a temp dir
+        [thumbData writeToFile:fileURL atomically:YES];
+    // upload the file from the temp dir
+    NSURLSessionUploadTask *uploadTask =
+    [self.session uploadTaskWithRequest:request fromFile:thumbPath];
+    
+    // start upload
+    [uploadTask resume];
+    });
+    
+}
+
 // custom url task delegates
 - (void)URLSessionDidFinishEventsForBackgroundURLSession:
             (NSURLSession *)session {
@@ -735,7 +806,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
       [self.uploadingPhotos removeObject:p];
 
       if (self.upCallback != nil) {
-        self.upCallback();
+        self.upCallback(p);
       }
     }
   }

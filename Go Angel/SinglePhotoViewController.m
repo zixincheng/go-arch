@@ -25,7 +25,8 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  // Do any additional setup after loading the view.
+  [self.container addSubview:self.tagField];
+    // Do any additional setup after loading the view.
    NSLog(@"is video %@",self.selectedPhoto.isVideo);
 
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -46,7 +47,7 @@
             self.videoController = [[MPMoviePlayerController alloc]init];
 
             NSURL *theURL = [NSURL URLWithString:newUrl];
-            [self.videoController.view setFrame:CGRectMake (0, 0, 320, 520)];
+            [self.videoController.view setFrame:CGRectMake (0, 0, 320, 480)];
 
             [self.videoController setContentURL:theURL];
         
@@ -80,7 +81,7 @@
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDuration:0.25];
     [UIView setAnimationBeginsFromCurrentState:YES];
-    self.tagField.frame = CGRectMake(self.tagField.frame.origin.x, (self.tagField.frame.origin.y - 208.0), self.tagField.frame.size.width, self.tagField.frame.size.height);
+    self.tagField.frame = CGRectMake(self.tagField.frame.origin.x, self.tagField.frame.origin.y - 208.0, self.tagField.frame.size.width, self.tagField.frame.size.height);
     [UIView commitAnimations];
 }
 

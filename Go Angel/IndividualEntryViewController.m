@@ -630,7 +630,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
     NSString *fullthumbPath = [[NSURL fileURLWithPath:thumbPath] absoluteString];
-    
+
     NSData *videoData = [NSData dataWithContentsOfURL:moviePath];
     
     [videoData writeToFile:filePath atomically:YES];
@@ -642,7 +642,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     p.dateCreated = [NSDate date];
     p.deviceId = self.localDevice.remoteId;
     p.onServer = @"0";
-    p.thumbURL = fullthumbPath;
+    p.thumbURL = thumbPath;
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.mov",photoUID];
     p.isVideo = @"1";

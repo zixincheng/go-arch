@@ -44,5 +44,6 @@
 - (void) DeletePhoto:(NSMutableArray*) deletePhotos;
 // need reference to a data wrapper so we can change photo state when we download, upload, etc.
 @property CoreDataWrapper *dataWrapper;
+-(void) uploadVideoThumb: (CSPhoto *)photo;
 
 @end
