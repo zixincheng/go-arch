@@ -53,6 +53,8 @@
     completionHandler:(void (^)(UIImage *))completionHandler {
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
       NSURL *url = [NSURL URLWithString:photo.imageURL];
+      
+      
       int type = [self getTypePhoto:url];
 
       //    NSLog(@"loading %@", [url absoluteString]);
@@ -135,6 +137,11 @@
         } else {
           // load the photo directly from path
           @try {
+              if ([photo.isVideo isEqualToString:@"1"]) {
+                  url = [NSURL URLWithString:photo.thumbURL];
+              } else {
+                  url = [NSURL URLWithString:photo.imageURL];
+              }
             image = [UIImage imageWithContentsOfFile:url.path];
             if (image) {
               // cache the image for future use

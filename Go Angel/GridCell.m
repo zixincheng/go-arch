@@ -109,8 +109,9 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
     [appDelegate.mediaLoader loadFullScreenImage:photo completionHandler:^(UIImage *Currentimage) {
-        
-            self.image = Currentimage;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.image = Currentimage;
+            });
     }];
     _titleLabel.text = _photo.tag;
 }
