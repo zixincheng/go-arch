@@ -30,5 +30,6 @@
 @property (strong, nonatomic) MPMoviePlayerController *videoController;
 @property (weak, nonatomic) IBOutlet UITextField *tagField;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
+@property (weak, nonatomic) IBOutlet UIView *container;
 
 @end
