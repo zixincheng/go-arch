@@ -612,6 +612,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     // generate thumbnail for video
     AVAsset *asset = [AVAsset assetWithURL:moviePath];
     AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
+    imageGenerator.appliesPreferredTrackTransform = YES;
     CMTime time = [asset duration];
     time.value = 0;
     CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
@@ -771,11 +772,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 //buttons on the bottom of camera view
 - (void)addMenuViewButtons {
     
-    NSMutableArray *normalArr = [[NSMutableArray alloc] initWithObjects:@"close_cha.png", @"camera_line.png", @"switch_camera.png", @"flashing_auto.png", nil];
+    NSMutableArray *normalArr = [[NSMutableArray alloc] initWithObjects:@"close_cha.png", @"camera_line.png", @"flashing_auto.png", nil];
     NSMutableArray *highlightArr = [[NSMutableArray alloc] initWithObjects:@"close_cha_h.png", @"", @"", @"", nil];
-    NSMutableArray *selectedArr = [[NSMutableArray alloc] initWithObjects:@"", @"camera_line_h.png", @"switch_camera_h.png", @"", nil];
+    NSMutableArray *selectedArr = [[NSMutableArray alloc] initWithObjects:@"", @"camera_line_h.png", @"", nil];
     
-    NSMutableArray *actionArr = [[NSMutableArray alloc] initWithObjects:@"dismissBtnPressed:", @"VideoBtnPressed:", @"switchCameraBtnPressed:", @"flashBtnPressed:", nil];
+    NSMutableArray *actionArr = [[NSMutableArray alloc] initWithObjects:@"dismissBtnPressed:", @"VideoBtnPressed:", @"flashBtnPressed:", nil];
     
     CGFloat eachW = APP_SIZE.width / actionArr.count;
     
