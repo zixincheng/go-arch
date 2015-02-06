@@ -24,6 +24,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *thumbURL;
 @property (nonatomic, strong) NSString *remoteID;
 @property (nonatomic, strong) NSString *fileName;
+@property (nonatomic, strong) NSString *thumbnailName;
 @property (nonatomic, strong) NSString *onServer;
 @property (nonatomic, strong) NSDate *dateCreated;
 @property (nonatomic, strong) NSDate *dateUploaded;
