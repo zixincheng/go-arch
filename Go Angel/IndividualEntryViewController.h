@@ -64,5 +64,8 @@
 
 @property (nonatomic) UIButton *caremaBtn;
 
+@property (nonatomic, strong) NSMutableArray *tmpPhotos;
+@property (nonatomic, strong) NSMutableArray *tmpMeta;
+@property (nonatomic, strong) NSMutableArray *videoUrl;
 
 @end
