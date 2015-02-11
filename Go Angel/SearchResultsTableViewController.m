@@ -16,7 +16,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -79,8 +78,15 @@
         individualViewControll.dataWrapper = self.dataWrapper;
         individualViewControll.localDevice = self.localDevice;
         individualViewControll.location = self.selectedlocation;
-        [self.presentingViewController.navigationController pushViewController:individualViewControll animated:YES];
+        NSString *title;
+        if (![self.selectedlocation.unit isEqualToString:@""]) {
+            title = [NSString stringWithFormat:@"%@ - %@",self.selectedlocation.unit, self.selectedlocation.name];
+        } else {
+            title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];
+        }
+        individualViewControll.navigationItem.title = title;
 
+        [self.presentingViewController.navigationController pushViewController:individualViewControll animated:YES];
     }
 }
 

@@ -455,6 +455,9 @@
         
         SearchResultsTableViewController *vc = (SearchResultsTableViewController *)navController.topViewController;
         vc.searchResults = self.searchResults;
+        vc.localDevice = self.localDevice;
+        vc.dataWrapper = self.dataWrapper;
+        vc.selectedlocation = self.selectedlocation;
         
         [vc.tableView reloadData];
     }
