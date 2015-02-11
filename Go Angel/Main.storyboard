@@ -737,9 +737,6 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="iIk-Pr-CaD" kind="push" id="ypf-lN-abL"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -756,6 +753,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addServerButton" destination="PFD-Dl-gg1" id="BN7-VG-1V9"/>
+                        <segue destination="6bK-TY-GB0" kind="modal" identifier="deviceSegue" id="awA-RH-qQR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YK9-7x-zPk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1294,7 +1292,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="OfC-RM-CNH"/>
+        <segue reference="awA-RH-qQR"/>
         <segue reference="zan-2D-U28"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -108,6 +108,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   
+    Server *s = self.servers[[indexPath row]];
+    self.ip = s.ip;
+    self.sid = s.serverId;
+    self.name = s.hostname;
+    [self authDevice:@"a"];
   // Deselect
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -141,7 +146,7 @@
     }
   }
 }
-
+/*
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
   //    UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
   //    ConnectViewController *connectController = (ConnectViewController *)navController.topViewController;
@@ -154,7 +159,7 @@
   connectController.sid = s.serverId;
   connectController.name = s.hostname;
 }
-
+*/
 - (void) sendUDPMessage {
   NSData *data = [[NSString stringWithFormat:@"hello server - no connect"] dataUsingEncoding:NSUTF8StringEncoding];
   
@@ -225,6 +230,54 @@
       }
     }];
   }
+}
+
+// make api call with password to register device
+- (void) authDevice: (NSString *) pass {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    AccountDataWrapper *account = appDelegate.account;
+    
+    [self.coinsorter getToken:self.ip pass:pass callback:^(NSDictionary *authData) {
+        if (authData == nil || authData == NULL) {
+            // we could not connect to server
+            NSLog(@"could not connect to server");
+            return;
+        }
+        
+        NSString *token = [authData objectForKey:@"token"];
+        if (token == nil || token == NULL) {
+            // if we get here we assume the password is incorrect
+            NSLog(@"password incorrect");
+            return;
+        }
+        
+        NSString *cid = [authData objectForKey: @"_id"];
+        
+        NSLog(@"token: %@", token);
+        NSLog(@"cid: %@", cid);
+        
+        account.ip = self.ip;
+        account.token = token;
+        account.cid = cid;
+        account.sid = self.sid;
+        account.name = self.name;
+        
+        [account saveSettings];
+        
+        CSDevice *device = [[CSDevice alloc] init];
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        device.deviceName = [defaults valueForKey:@"deviceName"];
+        device.remoteId = cid;
+        
+        CoreDataWrapper *dataWrapper = [[CoreDataWrapper alloc] init];
+        [dataWrapper addUpdateDevice:device];
+        
+        dispatch_async(dispatch_get_main_queue(), ^ {
+            [self performSegueWithIdentifier:@"deviceSegue" sender:self];
+        });
+    }];
 }
 
 /*

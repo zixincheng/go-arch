@@ -24,6 +24,9 @@
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) NSTimer *udpTimer;
 
+@property (nonatomic, strong) NSString *ip;
+@property (nonatomic, strong) NSString *sid;
+@property (nonatomic, strong) NSString *name;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addServerButton;
 
