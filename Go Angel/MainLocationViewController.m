@@ -407,6 +407,8 @@
             currentUploaded += 1;
             if ([p.isVideo isEqualToString:@"1"]) {
                 [self.coinsorter uploadVideoThumb:p];
+            } else {
+                [self.coinsorter uploadPhotoThumb:p];
             }
             [self removeLocalPhoto];
             

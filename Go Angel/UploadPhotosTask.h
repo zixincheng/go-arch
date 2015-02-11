@@ -40,5 +40,6 @@
 @property CoreDataWrapper *dataWrapper;
 
 - (void)uploadVideoThumb:(CSPhoto *)photo;
+- (void)uploadPhotoThumb:(CSPhoto *)photo;
 
 @end

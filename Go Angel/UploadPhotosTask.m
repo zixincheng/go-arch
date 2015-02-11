@@ -673,7 +673,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 [[UIApplication sharedApplication] delegate];
                 NSString *urlString = [NSString
                                        stringWithFormat:@"%@%@%@", @"https://",
-                                       appDelegate.account.ip, @"/videos/thumbs"];
+                                       appDelegate.account.ip, @"/videos/thumbnail"];
                 NSURL *url = [NSURL URLWithString:urlString];
                 
                 // TODO: Get these values from photo
@@ -704,7 +704,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 [[UIApplication sharedApplication] delegate];
                 NSString *urlString = [NSString
                                        stringWithFormat:@"%@%@%@", @"https://",
-                                       appDelegate.account.ip, @"/videos/thumbs"];
+                                       appDelegate.account.ip, @"/videos/thumbnail"];
                 
                 NSURL *url = [NSURL URLWithString:urlString];
                 
@@ -774,6 +774,149 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
     });
     
 }
+
+- (void)uploadPhotoThumb:(CSPhoto *)photo {
+    
+    NSString *uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    __block UIBackgroundTaskIdentifier background_task; // Create a task object
+    
+    UIApplication *application = [UIApplication sharedApplication];
+    
+    background_task = [application beginBackgroundTaskWithExpirationHandler:^{
+        [application endBackgroundTask:background_task]; // Tell the system that
+        // we are done with the
+        // tasks
+        background_task = UIBackgroundTaskInvalid; // Set the task to be invalid
+        
+        // System will be shutting down the app at any point in time now
+    }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+        readLock = [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
+        
+        ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
+            ALAssetRepresentation *rep = [asset defaultRepresentation];
+            CGImageRef iref = [asset thumbnail];
+            if (iref) {
+                
+                UIImage *image = [UIImage imageWithCGImage:iref];
+                
+                // add the metadata to image before we upload
+                NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(image, 1.0)];
+                
+                NSString *fileName = [NSString
+                                      stringWithFormat:@"%@_%@", uniqueString, @"image.jpg"];
+                NSURL *fileURL = [NSURL
+                                  fileURLWithPath:[NSTemporaryDirectory()
+                                                   stringByAppendingPathComponent:fileName]];
+                
+                [imageData writeToURL:fileURL
+                              options:NSDataWritingAtomic
+                                error:nil];
+                
+                AppDelegate *appDelegate =
+                [[UIApplication sharedApplication] delegate];
+                NSString *urlString = [NSString
+                                       stringWithFormat:@"%@%@%@", @"https://",
+                                       appDelegate.account.ip, @"/photos/thumbnail"];
+                NSURL *url = [NSURL URLWithString:urlString];
+                
+                // TODO: Get these values from photo
+                // eg. filename = actual filename (not unique string)
+                NSArray *objects =
+                [NSArray arrayWithObjects:photo.deviceId, appDelegate.account.token,
+                 uniqueString, @"image/jpeg",photo.remoteID, nil];
+                NSArray *keys = [NSArray
+                                 arrayWithObjects:@"cid",@"token", @"filename", @"image-type",@"photo_id", nil];
+                NSDictionary *headers =
+                [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+                
+                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+                [request setURL:url];
+                [request setHTTPMethod:@"POST"];
+                [request setAllHTTPHeaderFields:headers];
+                
+                NSURLSessionUploadTask *uploadTask =
+                [self.session uploadTaskWithRequest:request fromFile:fileURL];
+                
+                [uploadTask resume];
+                NSLog(@"making post request to %@", urlString);
+                [readLock lock];
+                [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
+                
+            }else {
+                AppDelegate *appDelegate =
+                [[UIApplication sharedApplication] delegate];
+                NSString *urlString = [NSString
+                                       stringWithFormat:@"%@%@%@", @"https://",
+                                       appDelegate.account.ip, @"/photos/thumbnail"];
+                
+                NSURL *url = [NSURL URLWithString:urlString];
+                
+                // TODO: Get these values from photo
+                // eg. filename = actual filename (not unique string)
+                NSArray *objects =
+                [NSArray arrayWithObjects:photo.deviceId, appDelegate.account.token,
+                 uniqueString, @"image/jpg",photo.remoteID, nil];
+                
+                // set headers
+                NSArray *keys = [NSArray
+                                 arrayWithObjects:@"cid",@"token", @"filename", @"image-type",@"photo_id", nil];
+                NSDictionary *headers =
+                [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+                
+                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+                
+                [request setURL:url];
+                [request setHTTPMethod:@"POST"];
+                [request setAllHTTPHeaderFields:headers];
+                
+                // get documents directory
+                NSURL * thumbUrl = [NSURL URLWithString:photo.thumbURL];
+                // get image data from file path
+                NSData *imageData = [NSData dataWithContentsOfURL:thumbUrl];
+                NSString *fileName = [NSString
+                                      stringWithFormat:@"%@_%@", photo.thumbnailName, @"image.jpg"];
+                NSURL *fileURL =
+                [NSURL fileURLWithPath:[NSTemporaryDirectory()
+                                        stringByAppendingString:fileName]];
+                NSLog(@"file url %@",fileURL);
+                // write the image data to a temp dir
+                [imageData writeToURL:fileURL
+                              options:NSDataWritingAtomic
+                                error:nil];
+                
+                
+                // upload the file from the temp dir
+                NSURLSessionUploadTask *uploadTask =
+                [self.session uploadTaskWithRequest:request fromFile:fileURL];
+                
+                // start upload
+                [uploadTask resume];
+                
+                [readLock lock];
+                [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
+            }
+        };
+        ALAssetsLibraryAccessFailureBlock failureBlock = ^(NSError *err) {
+            NSLog(@"can't get image - %@", [err localizedDescription]);
+            
+            [readLock lock];
+            [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
+        };
+        
+        NSURL *asseturl = [NSURL URLWithString:photo.thumbURL];
+        ALAssetsLibrary *assetslibrary = [[ALAssetsLibrary alloc] init];
+        [assetslibrary assetForURL:asseturl
+                       resultBlock:resultBlock
+                      failureBlock:failureBlock];
+    });
+    
+}
+
 
 // custom url task delegates
 - (void)URLSessionDidFinishEventsForBackgroundURLSession:
@@ -849,19 +992,21 @@ didCompleteWithError:(NSError *)error {
     
     //  NSLog(@"PHOTO COUNT %d", self.uploadingPhotos.count);
     if (p != nil) {
-        NSLog(@"Finsished uploading %@", p.imageURL);
+        if (p.remoteID !=nil) {
+            NSLog(@"Finsished uploading %@", p.imageURL);
         
-        [p onServerSet:YES];
-        p.dateUploaded = [NSDate date];
+            [p onServerSet:YES];
+            p.dateUploaded = [NSDate date];
         
-        [self.dataWrapper addUpdatePhoto:p];
+            [self.dataWrapper addUpdatePhoto:p];
         
-        @synchronized(self.uploadingPhotos) {
-            p.taskIdentifier = -1;
-            [self.uploadingPhotos removeObject:p];
+            @synchronized(self.uploadingPhotos) {
+                p.taskIdentifier = -1;
+                [self.uploadingPhotos removeObject:p];
             
-            if (self.upCallback != nil) {
-                self.upCallback(p);
+                if (self.upCallback != nil) {
+                    self.upCallback(p);
+                }
             }
         }
     }

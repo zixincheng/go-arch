@@ -473,6 +473,11 @@
     [uploadTask uploadVideoThumb:photo];
 }
 
+-(void) uploadPhotoThumb: (CSPhoto *)photo {
+    
+    [uploadTask uploadPhotoThumb:photo];
+}
+
 // This the old way of uploading photos and thumbnails using data task
 - (void) uploadOnePhoto: (NSMutableArray *) photos index: (int) index {
   CSPhoto *p = [photos objectAtIndex:index];

@@ -759,6 +759,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     p.thumbURL = fullPath;
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];
+    p.thumbnailName = [NSString stringWithFormat:@"thumb_%@.jpg", photoUID];
     p.isVideo = @"0";
     p.cover = @"0";
     p.location = self.location;
