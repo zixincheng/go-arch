@@ -792,7 +792,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 //create custom camera overlay
 -(UIView *) creatCaremaOverlay {
     
-    [self addTopViewWithText:@"Taking Photo"];
+    //[self addTopViewWithText:@"Taking Photo"];
     [self addCameraMenuView];
     
     return self.overlay;

@@ -405,7 +405,9 @@
             
             NSLog(@"removete id %@", p.remoteID );
             currentUploaded += 1;
-            [self.coinsorter uploadVideoThumb:p];
+            if ([p.isVideo isEqualToString:@"1"]) {
+                [self.coinsorter uploadVideoThumb:p];
+            }
             [self removeLocalPhoto];
             
             NSLog(@"%d / %lu", currentUploaded, (unsigned long)photos.count);
