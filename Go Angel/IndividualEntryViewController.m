@@ -349,17 +349,18 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         [self.collectionView performBatchUpdates:^{
             [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
             [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
-            
+            /*
             NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
             for (NSIndexPath *itemPath  in selectedIndexPath) {
                 [indexSet addIndex:itemPath.row];
             }
-            [self.photoPath objectsAtIndexes:indexSet];
-            for (NSString *currentpath in self.photoPath) {
+           NSArray *pathArray = [self.photoPath objectsAtIndexes:indexSet];
+            [self.photoPath removeObjectsAtIndexes:indexSet];
+            for (NSString *currentpath in pathArray) {
                 NSError *error;
                 [[NSFileManager defaultManager] removeItemAtPath:currentpath error:&error];
             }
-
+*/
         } completion:^(BOOL finished){
             [self.collectionView reloadData];
         }];
@@ -716,7 +717,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [videoData writeToFile:filePath atomically:YES];
     NSData *thumbData = [NSData dataWithData:UIImageJPEGRepresentation(thumbnail, 1.0)];
     [thumbData writeToFile:thumbPath atomically:YES];
-    [self.photoPath addObject:filePath];
+    //[self.photoPath addObject:filePath];
     CSPhoto *p = [[CSPhoto alloc] init];
     
     p.dateCreated = [NSDate date];
@@ -748,7 +749,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
     NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
     
-    [self.photoPath addObject:filePath];
+    //[self.photoPath addObject:filePath];
     CSPhoto *p = [[CSPhoto alloc] init];
     
     p.dateCreated = [NSDate date];
