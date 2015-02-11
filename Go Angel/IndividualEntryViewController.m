@@ -272,6 +272,7 @@
          *  the base relative height */
         
         float extraRandomHeight = arc4random() % 25;
+        NSLog(@"random %f",extraRandomHeight);
         retVal = retVal + (extraRandomHeight / 100);
         
         /*  Persist the relative height on each photo so the value will be the same every time
@@ -298,7 +299,7 @@
     
     BOOL retVal = photo.layoutType == cellLayoutTypeDouble;
     
-    return retVal;
+    return NO;
     
 }
 
