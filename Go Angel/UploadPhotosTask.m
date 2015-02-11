@@ -46,7 +46,7 @@
 // function to strip away gps photo metadata if user does not want uploaded
 // also, if location tagging is enabled, the IPTC metadata of the photo is
 // is edited to included all location properites
-- (NSMutableDictionary *)manipulateMetadata:(NSDictionary *)metadata {
+- (NSMutableDictionary *)manipulateMetadata:(NSDictionary *)metadata photo:(CSPhoto *)photo{
     NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
     
     NSMutableDictionary *EXIFDictionary = [metadataAsMutable
@@ -72,14 +72,14 @@
     
     // if the user wants to tag the photo with location
     if (tagLocation) {
-        NSString *name = [defaults objectForKey:CURR_LOC_NAME];
-        NSString *unit = [defaults objectForKey:(CURR_LOC_UNIT)];
-        NSString *city = [defaults objectForKey:CURR_LOC_CITY];
-        NSString *state = [defaults objectForKey:CURR_LOC_PROV];
-        NSString *countryCode = [defaults objectForKey:CURR_LOC_COUN_CODE];
-        NSString *country = [defaults objectForKey:CURR_LOC_COUNTRY];
-        NSString *longitude = [defaults objectForKey:CURR_LOC_LONG];
-        NSString *latitude = [defaults objectForKey:CURR_LOC_LAT];
+        NSString *name = photo.location.name;
+        NSString *unit = photo.location.unit;
+        NSString *city = photo.location.city;
+        NSString *state = photo.location.province;
+        NSString *countryCode = photo.location.countryCode;
+        NSString *country = photo.location.country;
+        NSString *longitude = photo.location.longitude;
+        NSString *latitude = photo.location.latitude;
         NSString *sublocation = name;
         
         // if there is a unit to the location, then change the sublocation to be UNIT - ADDRESS
@@ -147,7 +147,7 @@
 
 // get NSData with correct metadata from an UIImage and ALAsset
 - (NSData *)getPhotoWithMetaDataFromAsset:(UIImage *)image
-                                    asset:(ALAsset *)asset {
+                                    asset:(ALAsset *)asset photo:(CSPhoto *)photo{
     
     // convert UIImage to NSData (100% quality)
     NSData *jpeg = [NSData dataWithData:UIImageJPEGRepresentation(image, 1.0)];
@@ -159,7 +159,7 @@
     NSDictionary *metadata = [[asset defaultRepresentation] metadata];
     
     // edit the metadata according to the user settings
-    NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata];
+    NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata photo:photo];
     NSLog(@"%@",metadataAsMutable);
     CFStringRef UTI = CGImageSourceGetType(source);
     
@@ -181,7 +181,7 @@
 }
 
 // get NSData with correc tmetadata from local filepath
-- (NSData *)getPhotoWithMetaDataFromFile:(NSString *)textPath {
+- (NSData *)getPhotoWithMetaDataFromFile:(NSString *)textPath photo: (CSPhoto *) photo {
     
     NSData *imageData = [NSData dataWithContentsOfFile:textPath];
     CGImageSourceRef source =
@@ -191,7 +191,7 @@
                                                                CGImageSourceCopyPropertiesAtIndex(source, 0, NULL));
     
     // edit the metadata according to the user settings
-    NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata];
+    NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata photo:photo];
     NSLog(@"%@",metadataAsMutable);
     
     CFStringRef UTI = CGImageSourceGetType(source);
@@ -226,39 +226,6 @@
     
     return movieData;
     
-}
-
-// get NSData with correc tmetadata from local filepath
-- (NSData *)getVideoWithMetaDataFromFile:(NSString *)textPath {
-    
-    NSData *VideoData = [NSData dataWithContentsOfFile:textPath];
-    CGImageSourceRef source =
-    CGImageSourceCreateWithData((CFMutableDataRef)VideoData, NULL);
-    
-    NSDictionary *metadata = (NSDictionary *)CFBridgingRelease(
-                                                               CGImageSourceCopyPropertiesAtIndex(source, 0, NULL));
-    
-    // edit the metadata according to the user settings
-    NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata];
-    NSLog(@"%@",metadataAsMutable);
-    
-    CFStringRef UTI = CGImageSourceGetType(source);
-    
-    NSMutableData *dest_data = [NSMutableData data];
-    
-    CGImageDestinationRef destination = CGImageDestinationCreateWithData(
-                                                                         (__bridge CFMutableDataRef)dest_data, UTI, 1, NULL);
-    
-    CGImageDestinationAddImageFromSource(
-                                         destination, source, 0, (__bridge CFDictionaryRef)metadataAsMutable);
-    
-    BOOL success = NO;
-    success = CGImageDestinationFinalize(destination);
-    
-    CFRelease(destination);
-    CFRelease(source);
-    
-    return dest_data;
 }
 
 // upload an array of CSPhotos to the server
@@ -489,7 +456,7 @@
                         
                         // add the metadata to image before we upload
                         NSData *imageData =
-                        [self getPhotoWithMetaDataFromAsset:image asset:asset];
+                        [self getPhotoWithMetaDataFromAsset:image asset:asset photo:p];
                         
                         NSString *fileName = [NSString
                                               stringWithFormat:@"%@_%@", uniqueString, @"image.jpg"];
@@ -573,7 +540,7 @@
                                               stringByAppendingPathComponent:p.fileName];
                         
                         // get image data from file path
-                        NSData *imageData = [self getPhotoWithMetaDataFromFile:textPath];
+                        NSData *imageData = [self getPhotoWithMetaDataFromFile:textPath photo:p];
                         NSString *fileName = [NSString
                                               stringWithFormat:@"%@_%@", p.fileName, @"image.jpg"];
                         NSURL *fileURL =
