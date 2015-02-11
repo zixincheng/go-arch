@@ -94,6 +94,9 @@
     self.saveInAlbum = [defaults boolForKey:SAVE_INTO_ALBUM];
     selectedPhotos = [NSMutableArray array];
     self.photoPath = [NSMutableArray array];
+    self.videoUrl = [NSMutableArray array];
+    self.tmpMeta = [NSMutableArray array];
+    self.tmpPhotos = [NSMutableArray array];
     
     
     // setup objects
@@ -101,6 +104,7 @@
     account = appDelegate.account;
     
     self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    NSLog(@"count total photos %lu",(unsigned long)self.photos.count);
     // Do any additional setup after loading the view.
 }
 
@@ -345,7 +349,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         [self.collectionView performBatchUpdates:^{
             [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
             [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
-            /*
+            
             NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
             for (NSIndexPath *itemPath  in selectedIndexPath) {
                 [indexSet addIndex:itemPath.row];
@@ -355,7 +359,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                 NSError *error;
                 [[NSFileManager defaultManager] removeItemAtPath:currentpath error:&error];
             }
-             */
 
         } completion:^(BOOL finished){
             [self.collectionView reloadData];
@@ -364,7 +367,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 }
 
 - (void)clearCellSelections {
-    int collectonViewCount = [self.collectionView numberOfItemsInSection:0];
+    int collectonViewCount = (int)[self.collectionView numberOfItemsInSection:0];
     for (int i=0; i<=collectonViewCount; i++) {
         [self.collectionView deselectItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0] animated:YES];
     }
@@ -469,7 +472,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 }
 
 -(void) donesetCover:(id) sender {
-    
     CSPhoto *oldCover = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
     if (oldCover == nil) {
         
@@ -477,9 +479,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         oldCover.cover = @"0";
         [self.dataWrapper addUpdatePhoto:oldCover];
     }
-    NSLog(@" cover2 %@",self.selectedCoverPhoto.cover);
     self.selectedCoverPhoto.cover = @"1";
-    NSLog(@" cover3 %@",self.selectedCoverPhoto.cover);
     [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
     self.setCoverPageViewContainer.frame = CGRectMake(0, 1600, 320, 150);
 }
@@ -496,16 +496,33 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     self.picker.showsCameraControls = NO;
     takingPhoto = YES;
 
-
     [self presentViewController:self.picker animated:YES completion:^{
         [self addCameraCover];
-        NSLog(@"session %@",self.session);
     }];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     //[picker dismissViewControllerAnimated:NO completion:^{
     // picker disappeared
+    if (takingPhoto) {
+        UIImage *image = info[UIImagePickerControllerOriginalImage];
+        NSDictionary *metadata = info[UIImagePickerControllerMediaMetadata];
+        
+        [self.tmpPhotos addObject:image];
+        [self.tmpMeta addObject:metadata];
+        NSLog(@"number of photo taken count %lu",(unsigned long)self.tmpPhotos.count);
+    } else {
+        NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+        // Handle a movie capture
+        if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
+            NSURL *moviePath = [info objectForKey:UIImagePickerControllerMediaURL];
+            [self.videoUrl addObject:moviePath];
+            NSLog(@"number of video taken count %lu",(unsigned long)self.videoUrl.count);
+        }
+
+        
+    }
+/*
     if (takingPhoto) {
         UIImage *image = info[UIImagePickerControllerOriginalImage];
         NSDictionary *metadata = info[UIImagePickerControllerMediaMetadata];
@@ -559,26 +576,87 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             
         }
     }
-    
+*/
 }
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
+- (void) savingPhotoFromImagePicker: (NSMutableArray *)tmpPhotos tmpMeta: (NSMutableArray *)tempMeta moviePath: (NSMutableArray *) moviePath{
+    //NSMutableArray *readyPhoto = [NSMutableArray array];
+    
+
+        for (int count = 0; count < self.tmpPhotos.count; count++) {
+            UIImage *image = [self.tmpPhotos objectAtIndex:count];
+            NSDictionary *metadata = [self.tmpMeta objectAtIndex:count];
+            if (self.saveInAlbum) {
+                NSLog(@"save photos into album");
+                
+                [localLibrary saveImage:image metadata:metadata location:self.location callback: ^(CSPhoto *photo){
+                       // [readyPhoto addObject:photo];
+                }];
+            }else{
+                NSLog(@"save photos into application folder");
+                [self saveImageIntoDocument:image metadata:metadata callback: ^(CSPhoto *photo){
+                   // [readyPhoto addObject:photo];
+                }];
+            }
+
+        }
+    
+        for (int count = 0; count<self.videoUrl.count; count++) {
+            
+            if (self.saveInAlbum) {
+                NSLog(@"save video into album");
+                for (int count = 0; count < self.videoUrl.count; count++) {
+                    NSURL *moviePath = [self.videoUrl objectAtIndex:count];
+                    [localLibrary saveVideo:moviePath location:self.location callback:^(CSPhoto *photo) {
+                        dispatch_async(dispatch_get_main_queue(), ^ {
+                            //[readyPhoto addObject:photo];
+                        });
+                    }];
+                }
+            } else {
+                NSLog(@"save video into application folder");
+                    NSURL *moviePath = [self.videoUrl objectAtIndex:count];
+                    
+                    [self saveVideoIntoDocument:moviePath callback:^(CSPhoto *photo) {
+                        dispatch_async(dispatch_get_main_queue(), ^ {
+                            //[readyPhoto addObject:photo];
+                        });
+                    }];
+            }
+
+    }
+    
+     dispatch_async(dispatch_get_main_queue(), ^ {
+         //for (CSPhoto *photo in readyPhoto) {
+             [self addNewcell];
+         //}
+    });
+    
+}
+
 # pragma mark - Save and Update photo
 
 //update the collection view cell
--(void) addNewcell: (CSPhoto *)photos{
+-(void) addNewcell{
     
     int Size = (int)self.photos.count;
     [self.collectionView performBatchUpdates:^{
-        
-        [self.photos addObject:photos];
+        NSLog(@"total photo %d",Size);
+       // [self.photos addObject:photos];
+        int total = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
+        NSLog(@"need to upload  %d",total);
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
         
         self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
-        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
+        NSLog(@"after total photo %d",(int)self.photos.count);
+        for (int count= 0; count <total; count++) {
+            [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+
+        }
         [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
         
         if (Size != 0) {
@@ -586,7 +664,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         }
     }completion:^(BOOL finished) {
         if (finished) {
-            self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+            [self.tmpPhotos removeAllObjects];
+            [self.tmpMeta removeAllObjects];
+            [self.videoUrl removeAllObjects];
         }
     }];
 }
@@ -624,7 +704,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSString *documentsPath = [paths objectAtIndex:0];
     
     
-    NSString *photoUID = [self getCurrentDateTime];
+    NSString *photoUID = [[NSProcessInfo processInfo] globallyUniqueString];
     NSString *thumbPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
     NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.mov", photoUID]];
     
@@ -636,7 +716,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [videoData writeToFile:filePath atomically:YES];
     NSData *thumbData = [NSData dataWithData:UIImageJPEGRepresentation(thumbnail, 1.0)];
     [thumbData writeToFile:thumbPath atomically:YES];
-    
+    [self.photoPath addObject:filePath];
     CSPhoto *p = [[CSPhoto alloc] init];
     
     p.dateCreated = [NSDate date];
@@ -645,6 +725,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     p.thumbURL = thumbPath;
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.mov",photoUID];
+    p.thumbnailName = [NSString stringWithFormat:@"thumb_%@.jpg", photoUID];
     p.isVideo = @"1";
     p.cover = @"0";
     p.location = self.location;
@@ -662,12 +743,12 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsPath = [paths objectAtIndex:0];
     
-    NSString *photoUID = [self getCurrentDateTime];
+    NSString *photoUID = [[NSProcessInfo processInfo] globallyUniqueString];
     
     NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
     NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
     
-    //[self.photoPath addObject:filePath];
+    [self.photoPath addObject:filePath];
     CSPhoto *p = [[CSPhoto alloc] init];
     
     p.dateCreated = [NSDate date];
@@ -928,9 +1009,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 //button "X"
 - (void)dismissBtnPressed:(id)sender {
-    
     [self.picker dismissViewControllerAnimated:YES completion:^{
         [timer invalidate];
+        NSLog(@"self.tmpphotocount %lu",(unsigned long)self.tmpPhotos.count);
+        [self savingPhotoFromImagePicker:self.tmpPhotos tmpMeta:self.tmpMeta moviePath:self.videoUrl];
     }];
     
 }

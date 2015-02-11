@@ -123,6 +123,7 @@
   [object setValue:photo.isVideo forKey:@"isVideo"];
   [object setValue:photo.tag forKey:@"tag"];
   [object setValue:photo.cover forKey:@"cover"];
+  [object setValue:photo.thumbnailName forKey:@"thumbnailName"];
     
   //object = [self relationLocation:photo.location object:object];
    // NSLog(@"obj %@",object);
@@ -245,7 +246,7 @@
   p.cover        = [object valueForKey:@"cover"];
   NSManagedObject *locationObj = [object valueForKey:@"location"];
   p.location =  [self getLocationFromObject:locationObj];
-    NSLog(@"%@",p.location.name);
+  p.thumbnailName = [object valueForKey:@"thumbnailName"];
   return p;
 }
 
