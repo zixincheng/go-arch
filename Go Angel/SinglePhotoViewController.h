@@ -11,6 +11,7 @@
 #import "CSPhoto.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "CoreDataWrapper.h"
+#import "Coinsorter.h"
 
 
 // controller to display the fullscreen photo
@@ -31,5 +32,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *tagField;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (weak, nonatomic) IBOutlet UIView *container;
+@property (nonatomic, strong) Coinsorter *coinsorter;
 
 @end

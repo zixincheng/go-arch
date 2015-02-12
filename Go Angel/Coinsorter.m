@@ -298,6 +298,66 @@
     [dataTask resume];
 }
 
+// update the device information on server
+- (void) updateMeta: (CSPhoto *) photo entity:(NSString *)entity value:(NSString *)value  {
+    NSString *query = [NSString stringWithFormat:@"?photo_id=%@&entity=%@&value=%@",photo.remoteID,entity,value];
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
+    NSMutableURLRequest *request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/update/photos/metadata/%@",query]];
+    NSArray *objects =
+    [NSArray arrayWithObjects:photo.deviceId, account.token, nil];
+    
+    // set headers
+    NSArray *keys = [NSArray
+                     arrayWithObjects:@"cid",@"token", nil];
+    NSDictionary *headers =
+    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    [request setAllHTTPHeaderFields:headers];
+    
+    NSURLSessionDataTask *postDataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSError *jsonError;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        NSLog(@"update meta stat %@",jsonData);
+        // TODO: check to see if metadata update worked
+        // by reading json response
+    }];
+    
+    [postDataTask resume];
+}
+
+- (void) getMeta: (NSMutableArray *)photos callback:(void (^)(CSPhoto *))callback {
+    NSOperationQueue *background = [[NSOperationQueue alloc] init];
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
+    for (CSPhoto *photo in photos) {
+        NSString *query = [NSString stringWithFormat:@"?photo_id=%@",photo.remoteID];
+        NSMutableURLRequest *request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/photos/metadata/%@",query]];
+        NSArray *objects =
+        [NSArray arrayWithObjects:photo.deviceId, account.token, nil];
+        
+        // set headers
+        NSArray *keys = [NSArray
+                         arrayWithObjects:@"cid",@"token", nil];
+        NSDictionary *headers =
+        [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+        [request setAllHTTPHeaderFields:headers];
+        
+        NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error == nil) {
+                NSError *jsonError;
+                NSArray *photoArr = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+                
+                for (NSDictionary *p in photoArr) {
+                    NSString *tag = [p objectForKey:@"tag"];
+                    photo.tag = tag;
+                    callback(photo);
+                }
+            }
+        }];
+        [dataTask resume];
+    }
+}
+
 -(NSData *)dataFromBase64EncodedString:(NSString *)string{
   if (string.length > 0) {
     

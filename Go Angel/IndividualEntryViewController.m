@@ -105,6 +105,16 @@
     
     self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     NSLog(@"count total photos %lu",(unsigned long)self.photos.count);
+    [self.coinsorter getMeta:self.photos callback:^(CSPhoto *p) {
+         [self.dataWrapper addUpdatePhoto:p];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSUInteger index = [self.photos indexOfObject:p];
+                NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+                 [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+                [self.collectionView reloadItemsAtIndexPaths:arrayWithIndexPaths];
+               });
+    }];
+    //self.photos = [self.coinsorter getMeta:self.photos];
     // Do any additional setup after loading the view.
 }
 
@@ -243,6 +253,7 @@
         swipeController.selected = selected;
         swipeController.photos = self.photos;
         swipeController.dataWrapper = self.dataWrapper;
+        swipeController.coinsorter = self.coinsorter;
     }
 
 }
@@ -272,7 +283,6 @@
          *  the base relative height */
         
         float extraRandomHeight = arc4random() % 25;
-        NSLog(@"random %f",extraRandomHeight);
         retVal = retVal + (extraRandomHeight / 100);
         
         /*  Persist the relative height on each photo so the value will be the same every time

@@ -13,6 +13,7 @@
 #import "SinglePhotoViewController.h"
 #import "GridCell.h"
 #import "CoreDataWrapper.h"
+#import "Coinsorter.h"
 
 
 // controller for swiping between fullscreen images
@@ -25,6 +26,7 @@
 
 @property (nonatomic, strong) UIPageViewController *pageViewController;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (nonatomic, strong) Coinsorter *coinsorter;
 
 
 

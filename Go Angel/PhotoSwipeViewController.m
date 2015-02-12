@@ -40,6 +40,7 @@
   
   SinglePhotoViewController *startingViewController = [self viewControllerAtIndex:self.selected];
   startingViewController.dataWrapper = self.dataWrapper;
+  startingViewController.coinsorter = self.coinsorter;
   NSArray *viewControllers = @[startingViewController];
   [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
   

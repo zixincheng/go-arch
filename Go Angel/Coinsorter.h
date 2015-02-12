@@ -46,5 +46,6 @@
 @property CoreDataWrapper *dataWrapper;
 -(void) uploadVideoThumb: (CSPhoto *)photo;
 -(void) uploadPhotoThumb: (CSPhoto *)photo;
-
+- (void) updateMeta: (CSPhoto *) photo entity:(NSString *)entity value:(NSString *)value;
+- (void) getMeta: (NSMutableArray *)photos callback:(void (^) (CSPhoto *photo)) callback ;
 @end

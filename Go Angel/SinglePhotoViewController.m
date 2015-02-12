@@ -104,6 +104,11 @@
     UITextField *text = sender;
     self.selectedPhoto.tag = text.text;
     [self.dataWrapper addUpdatePhoto:self.selectedPhoto];
+    if (self.selectedPhoto.remoteID != nil) {
+        [self.coinsorter updateMeta:self.selectedPhoto entity:@"tag" value:self.selectedPhoto.tag];
+    } else {
+        NSLog(@"could not update tag at this moment because the photo is not upload yet, tag will be update when uploading the photo");
+    }
 }
 
 - (void)shareAction {
