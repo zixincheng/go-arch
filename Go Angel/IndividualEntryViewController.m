@@ -114,6 +114,15 @@
                 [self.collectionView reloadItemsAtIndexPaths:arrayWithIndexPaths];
                });
     }];
+    if (self.photos.count != 0) {
+        CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+        if (coverPhoto == nil) {
+            coverPhoto = [self.photos objectAtIndex:0];
+            [self.coinsorter updateMeta:coverPhoto entity:@"homePhoto" value:@"1"];
+        } else {
+            [self.coinsorter updateMeta:coverPhoto entity:@"homePhoto" value:@"1"];
+        }
+    }
     //self.photos = [self.coinsorter getMeta:self.photos];
     // Do any additional setup after loading the view.
 }
@@ -486,13 +495,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 -(void) donesetCover:(id) sender {
     CSPhoto *oldCover = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
     if (oldCover == nil) {
-        
+
     } else {
         oldCover.cover = @"0";
         [self.dataWrapper addUpdatePhoto:oldCover];
     }
     self.selectedCoverPhoto.cover = @"1";
     [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
+    [self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"homePhoto" value:@"1"];
     self.setCoverPageViewContainer.frame = CGRectMake(0, 1600, 320, 150);
 }
 -(void) cancelsetCover:(id) sender {

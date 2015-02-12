@@ -187,7 +187,7 @@
     }
     
     photoObj = [self setObjectValues:photo object:photoObj];
-      NSLog(@"%@",photo.tag);
+
     [context save:nil];
   }];
 }
