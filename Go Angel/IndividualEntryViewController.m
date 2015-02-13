@@ -118,9 +118,9 @@
         CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
         if (coverPhoto == nil) {
             coverPhoto = [self.photos objectAtIndex:0];
-            [self.coinsorter updateMeta:coverPhoto entity:@"homePhoto" value:@"1"];
+            [self.coinsorter updateMeta:coverPhoto entity:@"home" value:@"1"];
         } else {
-            [self.coinsorter updateMeta:coverPhoto entity:@"homePhoto" value:@"1"];
+            [self.coinsorter updateMeta:coverPhoto entity:@"home" value:@"1"];
         }
     }
     //self.photos = [self.coinsorter getMeta:self.photos];
@@ -502,7 +502,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
     self.selectedCoverPhoto.cover = @"1";
     [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
-    [self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"homePhoto" value:@"1"];
+    [self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"home" value:@"1"];
     self.setCoverPageViewContainer.frame = CGRectMake(0, 1600, 320, 150);
 }
 -(void) cancelsetCover:(id) sender {
@@ -607,8 +607,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 - (void) savingPhotoFromImagePicker: (NSMutableArray *)tmpPhotos tmpMeta: (NSMutableArray *)tempMeta moviePath: (NSMutableArray *) moviePath{
     //NSMutableArray *readyPhoto = [NSMutableArray array];
-    
 
+    
         for (int count = 0; count < self.tmpPhotos.count; count++) {
             UIImage *image = [self.tmpPhotos objectAtIndex:count];
             NSDictionary *metadata = [self.tmpMeta objectAtIndex:count];
@@ -651,7 +651,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             }
 
     }
-    
+
      dispatch_async(dispatch_get_main_queue(), ^ {
          //for (CSPhoto *photo in readyPhoto) {
              [self addNewcell];

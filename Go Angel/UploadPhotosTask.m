@@ -160,7 +160,6 @@
     
     // edit the metadata according to the user settings
     NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata photo:photo];
-    NSLog(@"%@",metadataAsMutable);
     CFStringRef UTI = CGImageSourceGetType(source);
     
     NSMutableData *dest_data = [NSMutableData data];
@@ -192,7 +191,6 @@
     
     // edit the metadata according to the user settings
     NSMutableDictionary *metadataAsMutable = [self manipulateMetadata:metadata photo:photo];
-    NSLog(@"%@",metadataAsMutable);
     
     CFStringRef UTI = CGImageSourceGetType(source);
     
@@ -219,11 +217,7 @@
     
     NSData *movieData = [NSData dataWithContentsOfFile:videPath];
     
-    
-    
-    CLLocation *location = [asset valueForProperty:ALAssetPropertyLocation];
-    NSLog(@"Location Meta: %@", location);
-    
+
     return movieData;
     
 }
@@ -268,8 +262,8 @@
         [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
         
         for (CSPhoto *p in photos) {
-            readLock =
-            [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
+            //readLock =
+           // [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
             
             ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
                 ALAssetRepresentation *rep = [asset defaultRepresentation];
@@ -292,7 +286,6 @@
                                       options:NSDataWritingAtomic
                                         error:nil];
                         CLLocation *location = [asset valueForProperty:ALAssetPropertyLocation];
-                        NSLog(@"Location Meta: %@", location);
                         AppDelegate *appDelegate =
                         [[UIApplication sharedApplication] delegate];
                         NSString *urlString = [NSString
@@ -364,9 +357,7 @@
                         // set headers
                         // NSArray *keys = [NSArray
                         //arrayWithObjects:@"token", @"filename", @"file-type", nil];
-                        
-                        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                        BOOL tagLocation = [[NSUserDefaults standardUserDefaults] boolForKey:CURR_LOC_ON];
+        
                         NSArray * keys;
                         NSArray *objects;
                         
@@ -391,7 +382,6 @@
                         [NSDictionary dictionaryWithObjects:objects forKeys:keys];
                         
                         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-                        NSLog(@"%@",headers);
                         [request setURL:url];
                         [request setHTTPMethod:@"POST"];
                         [request setAllHTTPHeaderFields:headers];
@@ -438,7 +428,8 @@
                     CGImageRef iref = [rep fullResolutionImage];
                     
                     // if the asset exists
-                    if (iref) { // photos found in album
+                    if (iref) {
+                        // photos found in album
                         // Retrieve the image orientation from the ALAsset
                         UIImageOrientation orientation = UIImageOrientationUp;
                         NSNumber *orientationValue =
@@ -503,7 +494,8 @@
                         
                         [readLock lock];
                         [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
-                    } else { // if photos not found in album, try to find in application
+                    } else {
+                        // if photos not found in album, try to find in application
                         // folder
                         AppDelegate *appDelegate =
                         [[UIApplication sharedApplication] delegate];
@@ -524,7 +516,6 @@
                                          arrayWithObjects:@"cid",@"token", @"filename", @"image-type", nil];
                         NSDictionary *headers =
                         [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-                        NSLog(@"%@", p);
                         
                         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
                         
@@ -546,9 +537,6 @@
                         NSURL *fileURL =
                         [NSURL fileURLWithPath:[NSTemporaryDirectory()
                                                 stringByAppendingString:fileName]];
-                        NSLog(@"text path %@",textPath);
-                        NSLog(@"p,url %@",p.imageURL);
-                        NSLog(@"file url %@",fileURL);
                         // write the image data to a temp dir
                         [imageData writeToURL:fileURL
                                       options:NSDataWritingAtomic
@@ -566,9 +554,8 @@
                         
                         // start upload
                         [uploadTask resume];
-                        
-                        [readLock lock];
-                        [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
+                       // [readLock lock];
+                        //[readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
                     }
                 }
             };
@@ -588,11 +575,11 @@
             
             // non-busy wait for the asset read to finish (specifically until the
             // condition is "all finished")
-            [readLock lockWhenCondition:WDASSETURL_ALLFINISHED];
-            [readLock unlock];
+            //[readLock lockWhenCondition:WDASSETURL_ALLFINISHED];
+            //[readLock unlock];
             
             // cleanup
-            readLock = nil;
+            //readLock = nil;
         }
         
         [application endBackgroundTask:background_task]; // End the task so the
@@ -633,7 +620,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
         // System will be shutting down the app at any point in time now
     }];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
         [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
         readLock = [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
@@ -740,8 +727,6 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSURL *fileURL =
                 [NSURL fileURLWithPath:[NSTemporaryDirectory()
                                         stringByAppendingString:fileName]];
-                NSLog(@"text path %@",textPath);
-                NSLog(@"file url %@",fileURL);
                 // write the image data to a temp dir
                 [imageData writeToURL:fileURL
                               options:NSDataWritingAtomic
@@ -795,7 +780,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
         [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-        readLock = [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
+        //readLock2 = [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
         
         ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
             ALAssetRepresentation *rep = [asset defaultRepresentation];
@@ -883,7 +868,6 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSURL *fileURL =
                 [NSURL fileURLWithPath:[NSTemporaryDirectory()
                                         stringByAppendingString:fileName]];
-                NSLog(@"file url %@",fileURL);
                 // write the image data to a temp dir
                 [imageData writeToURL:fileURL
                               options:NSDataWritingAtomic
@@ -897,15 +881,17 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 // start upload
                 [uploadTask resume];
                 
-                [readLock lock];
-                [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
+               // [readLock2 lock];
+                //NSLog(@"lock 2%@",readLock2);
+                //[readLock2 unlockWithCondition:WDASSETURL_ALLFINISHED];
+                //NSLog(@"lock 2%@",readLock2);
             }
         };
         ALAssetsLibraryAccessFailureBlock failureBlock = ^(NSError *err) {
             NSLog(@"can't get image - %@", [err localizedDescription]);
             
-            [readLock lock];
-            [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
+            //[readLock2 lock];
+            //[readLock2 unlockWithCondition:WDASSETURL_ALLFINISHED];
         };
         
         NSURL *asseturl = [NSURL URLWithString:photo.thumbURL];
@@ -913,6 +899,18 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
         [assetslibrary assetForURL:asseturl
                        resultBlock:resultBlock
                       failureBlock:failureBlock];
+        
+        //[readLock2 lockWhenCondition:WDASSETURL_ALLFINISHED];
+        //[readLock2 unlock];
+        
+        // cleanup
+        readLock = nil;
+        [application endBackgroundTask:background_task]; // End the task so the
+        // system knows that you
+        // are done with what you
+        // need to perform
+        background_task =
+        UIBackgroundTaskInvalid;
     });
     
 }
@@ -983,7 +981,7 @@ didCompleteWithError:(NSError *)error {
     if ([task.response respondsToSelector:@selector(allHeaderFields)]) {
         NSDictionary *dictionary = [httpResponse allHeaderFields];
         p.remoteID = [dictionary valueForKey:@"photo_id"];
-        NSLog(@"%@",dictionary);
+        NSLog(@"upload status %@",dictionary);
     }
     
     //  NSData * data = [NSJSONSerialization dataWithJSONObject:task.response
@@ -999,6 +997,13 @@ didCompleteWithError:(NSError *)error {
             p.dateUploaded = [NSDate date];
         
             [self.dataWrapper addUpdatePhoto:p];
+            if ([p.isVideo isEqualToString:@"1"]) {
+                [self uploadVideoThumb:p];
+                NSLog(@"uploading the video thumbnails");
+            } else {
+                [self uploadPhotoThumb:p];
+                NSLog(@"uploading the photo thumbnails");
+            }
         
             @synchronized(self.uploadingPhotos) {
                 p.taskIdentifier = -1;

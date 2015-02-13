@@ -405,14 +405,14 @@
             
             NSLog(@"removete id %@", p.remoteID );
             currentUploaded += 1;
-            if ([p.isVideo isEqualToString:@"1"]) {
+/*            if ([p.isVideo isEqualToString:@"1"]) {
                 [self.coinsorter uploadVideoThumb:p];
                 NSLog(@"uploading the video thumbnails");
             } else {
                 [self.coinsorter uploadPhotoThumb:p];
                 NSLog(@"uploading the photo thumbnails");
             }
-            
+  */
             if (p.tag != nil) {
                 [self.coinsorter updateMeta:p entity:@"tag" value:p.tag];
                 NSLog(@"updating the tags");
