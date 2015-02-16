@@ -325,7 +325,7 @@
     [postDataTask resume];
 }
 
-- (void) getMeta: (NSMutableArray *)photos callback:(void (^)(CSPhoto *))callback {
+- (void) getMeta: (NSMutableArray *)photos{
     NSOperationQueue *background = [[NSOperationQueue alloc] init];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
@@ -349,8 +349,12 @@
                 
                 for (NSDictionary *p in photoArr) {
                     NSString *tag = [p objectForKey:@"tag"];
-                    photo.tag = tag;
-                    callback(photo);
+                    if (![photo.tag isEqualToString:tag]) {
+                        photo.tag = tag;
+
+                        [self.dataWrapper addUpdatePhoto:photo];
+                    }
+
                 }
             }
         }];

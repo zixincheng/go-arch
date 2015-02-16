@@ -317,7 +317,7 @@
     NSLog(@"finished loading local photos");
   });
 }
-- (void) saveVideo: (NSURL *)moviePath location: (CSLocation *)location callback:(void(^) (CSPhoto *video)) callback{
+- (void) saveVideo: (NSURL *)moviePath location: (CSLocation *)location {
     
     __weak LocalLibrary *se = self;
     __block BOOL found = NO;
@@ -341,7 +341,6 @@
                                            // add image to core data after saving into album
                                            if (didPhotoAddIntoAlbum) {
                                                CSPhoto *p = [self addAsset:asset videoFlag:YES location:location];
-                                               callback(p);
                                            }
                                        } failureBlock:^(NSError *error) {
                                            NSLog(@"%@", error);
@@ -361,8 +360,7 @@
                 self.didAlbumCreated = YES;
             }
             //recall saveImage function after new album exist
-            [self saveVideo: (NSURL *)moviePath location:location callback: ^(CSPhoto *photo){
-            }];
+            [self saveVideo: (NSURL *)moviePath location:location];
         }
     };
     
@@ -373,7 +371,7 @@
                                    }];
 
 }
-- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata location: (CSLocation *)location callback:(void (^) (CSPhoto *photo)) callback {
+- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata location: (CSLocation *)location {
     __weak LocalLibrary *se = self;
     __block BOOL found = NO;
 
@@ -397,7 +395,6 @@
                                                                      // add image to core data after saving into album
                                                                      if (didPhotoAddIntoAlbum) {
                                                                          CSPhoto *p = [self addAsset:asset videoFlag:NO location:location];
-                                                                         callback(p);
                                                                      }
                                                                  } failureBlock:^(NSError *error) {
                                                                      NSLog(@"%@", error);
@@ -417,8 +414,7 @@
                 self.didAlbumCreated = YES;
             }
             //recall saveImage function after new album exist
-            [self saveImage:image metadata:metadata location: (CSLocation *)location callback: ^(CSPhoto *photo){
-                }];
+            [self saveImage:image metadata:metadata location: (CSLocation *)location];
         }
     };
     

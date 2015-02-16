@@ -105,15 +105,7 @@
     
     self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     NSLog(@"count total photos %lu",(unsigned long)self.photos.count);
-    [self.coinsorter getMeta:self.photos callback:^(CSPhoto *p) {
-         [self.dataWrapper addUpdatePhoto:p];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSUInteger index = [self.photos indexOfObject:p];
-                NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
-                 [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
-                [self.collectionView reloadItemsAtIndexPaths:arrayWithIndexPaths];
-               });
-    }];
+    [self.coinsorter getMeta:self.photos];
     if (self.photos.count != 0) {
         CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
         if (coverPhoto == nil) {
@@ -123,10 +115,27 @@
             [self.coinsorter updateMeta:coverPhoto entity:@"home" value:@"1"];
         }
     }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagUpdated) name:@"tagUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewcell) name:@"addNewPhoto" object:nil];
     //self.photos = [self.coinsorter getMeta:self.photos];
     // Do any additional setup after loading the view.
+    if (self.photos.count != 0) {
+        [self scrollToBottom];
+    }
+
 }
 
+- (void) dealloc {
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"tagUpdated" object:nil];
+}
+-(void) tagUpdated {
+    self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.collectionView reloadData];
+    });
+
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -325,6 +334,18 @@
 -(NSUInteger)numberOfColumnsInCollectionView:(UICollectionView *)collectionView{
     
     return 2;
+}
+
+-(void)scrollToBottom
+{//Scrolls to bottom of scroller
+    /*
+    NSInteger section = [self numberOfSectionsInCollectionView:self.collectionView] - 1;
+    NSInteger item = [self collectionView:self.collectionView numberOfItemsInSection:section] - 1;
+    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
+    [self.collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
+     */
+    CGPoint bottomOffset = CGPointMake(0, 1500);
+    [self.collectionView setContentOffset:bottomOffset animated:YES];
 }
 
 # pragma mark - delete button Actions
@@ -608,21 +629,17 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 - (void) savingPhotoFromImagePicker: (NSMutableArray *)tmpPhotos tmpMeta: (NSMutableArray *)tempMeta moviePath: (NSMutableArray *) moviePath{
     //NSMutableArray *readyPhoto = [NSMutableArray array];
 
-    
+    NSLog(@"photo count %lu",(unsigned long)self.tmpPhotos.count);
         for (int count = 0; count < self.tmpPhotos.count; count++) {
             UIImage *image = [self.tmpPhotos objectAtIndex:count];
             NSDictionary *metadata = [self.tmpMeta objectAtIndex:count];
             if (self.saveInAlbum) {
                 NSLog(@"save photos into album");
                 
-                [localLibrary saveImage:image metadata:metadata location:self.location callback: ^(CSPhoto *photo){
-                       // [readyPhoto addObject:photo];
-                }];
+                [localLibrary saveImage:image metadata:metadata location:self.location];
             }else{
                 NSLog(@"save photos into application folder");
-                [self saveImageIntoDocument:image metadata:metadata callback: ^(CSPhoto *photo){
-                   // [readyPhoto addObject:photo];
-                }];
+                [self saveImageIntoDocument:image metadata:metadata];
             }
 
         }
@@ -633,64 +650,52 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                 NSLog(@"save video into album");
                 for (int count = 0; count < self.videoUrl.count; count++) {
                     NSURL *moviePath = [self.videoUrl objectAtIndex:count];
-                    [localLibrary saveVideo:moviePath location:self.location callback:^(CSPhoto *photo) {
-                        dispatch_async(dispatch_get_main_queue(), ^ {
-                            //[readyPhoto addObject:photo];
-                        });
-                    }];
+                    [localLibrary saveVideo:moviePath location:self.location];
                 }
             } else {
                 NSLog(@"save video into application folder");
                     NSURL *moviePath = [self.videoUrl objectAtIndex:count];
                     
-                    [self saveVideoIntoDocument:moviePath callback:^(CSPhoto *photo) {
-                        dispatch_async(dispatch_get_main_queue(), ^ {
-                            //[readyPhoto addObject:photo];
-                        });
-                    }];
+                    [self saveVideoIntoDocument:moviePath];
             }
 
     }
-
-     dispatch_async(dispatch_get_main_queue(), ^ {
-         //for (CSPhoto *photo in readyPhoto) {
-             [self addNewcell];
-         //}
-    });
-    
+    [self.tmpPhotos removeAllObjects];
+    [self.tmpMeta removeAllObjects];
+    [self.videoUrl removeAllObjects];
 }
 
 # pragma mark - Save and Update photo
-
+-(void) addNewPhoto {
+    dispatch_async(dispatch_get_main_queue(), ^ {
+        //for (CSPhoto *photo in readyPhoto) {
+        [self addNewcell];
+        //}
+    });
+}
 //update the collection view cell
 -(void) addNewcell{
-    
     int Size = (int)self.photos.count;
+    dispatch_async(dispatch_get_main_queue(), ^ {
     [self.collectionView performBatchUpdates:^{
         NSLog(@"total photo %d",Size);
-       // [self.photos addObject:photos];
+
         int total = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
         NSLog(@"need to upload  %d",total);
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
         
         self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
         NSLog(@"after total photo %d",(int)self.photos.count);
-        for (int count= 0; count <total; count++) {
-            [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
-
-        }
+        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:Size inSection:0]];
         [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
-        
-        if (Size != 0) {
-            [self.collectionView reloadItemsAtIndexPaths:arrayWithIndexPaths];
-        }
     }completion:^(BOOL finished) {
         if (finished) {
-            [self.tmpPhotos removeAllObjects];
-            [self.tmpMeta removeAllObjects];
-            [self.videoUrl removeAllObjects];
+      //      [self.tmpPhotos removeAllObjects];
+        //    [self.tmpMeta removeAllObjects];
+          //  [self.videoUrl removeAllObjects];
         }
     }];
+    });
 }
 
 // save photos to the document directory
@@ -708,7 +713,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     return retStr;
 }
 
--(void) saveVideoIntoDocument:(NSURL *)moviePath callback:(void (^) (CSPhoto *photo)) callback{
+-(void) saveVideoIntoDocument:(NSURL *)moviePath {
     
     
     // generate thumbnail for video
@@ -755,12 +760,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [self.dataWrapper addPhoto:p];
     
     //self.unUploadedPhotos++;
-    callback(p);
     
 }
 
 // save photos to the document directory and save to core data
-- (void) saveImageIntoDocument:(UIImage *)image metadata:(NSDictionary *)metadata callback: (void (^) (CSPhoto *photo)) callback {
+- (void) saveImageIntoDocument:(UIImage *)image metadata:(NSDictionary *)metadata {
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsPath = [paths objectAtIndex:0];
@@ -805,7 +809,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [self.dataWrapper addPhoto:p];
     
     //self.unUploadedPhotos++;
-    callback(p);
 }
 
 
@@ -1035,7 +1038,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [self.picker dismissViewControllerAnimated:YES completion:^{
         [timer invalidate];
         NSLog(@"self.tmpphotocount %lu",(unsigned long)self.tmpPhotos.count);
-        [self savingPhotoFromImagePicker:self.tmpPhotos tmpMeta:self.tmpMeta moviePath:self.videoUrl];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [self savingPhotoFromImagePicker:self.tmpPhotos tmpMeta:self.tmpMeta moviePath:self.videoUrl];
+        });
     }];
     
 }

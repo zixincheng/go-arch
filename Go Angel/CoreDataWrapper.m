@@ -189,6 +189,7 @@
     photoObj = [self setObjectValues:photo object:photoObj];
 
     [context save:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"tagUpdated" object:nil];
   }];
 }
 
@@ -223,6 +224,7 @@
       [context save:nil];
       
       NSLog(@"added new photo to core data");
+     [[NSNotificationCenter defaultCenter] postNotificationName:@"addNewPhoto" object:nil];
 
       added = YES;
     }else {
@@ -264,7 +266,7 @@
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.name, PHOTO_CITY, location.city];
     [request setPredicate:pred];
     // set sort
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:NO];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:YES];
     NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
     [request setSortDescriptors: descriptors];
     
@@ -299,7 +301,7 @@
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", DEVICE_ID, deviceId];
         [request setPredicate:pred];
         // set sort
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:NO];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:YES];
         NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
         [request setSortDescriptors: descriptors];
         

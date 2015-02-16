@@ -38,8 +38,8 @@
 - (void) loadLocalImages: (BOOL) parseAll;
 - (void) loadLocalImages: (BOOL) parseAll addCallback: (void (^) ()) addCallback;
 - (void) loadAllowedAlbums;
-- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata location: (CSLocation *)location callback:(void (^) (CSPhoto *photo)) callback;
-- (void) saveVideo: (NSURL *)moviePath location: (CSLocation *)location callback:(void (^) (CSPhoto *photo)) callback;
+- (void) saveImage:(UIImage *)image metadata:(NSDictionary *)metadata location: (CSLocation *)location;
+- (void) saveVideo: (NSURL *)moviePath location: (CSLocation *)location ;
 - (void) registerForNotifications;
 - (void) unRegisterForNotifications;
 
