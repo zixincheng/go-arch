@@ -112,7 +112,10 @@
     self.ip = s.ip;
     self.sid = s.serverId;
     self.name = s.hostname;
-    [self authDevice:@"a"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:@"" forKey:@"password"];
+    
+    [self authDevice:@""];
   // Deselect
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -213,7 +216,7 @@
         s.ip = host;
         s.hostname = hostname;
         s.serverId = sid;
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
           @synchronized (self.servers) {
               
@@ -250,6 +253,7 @@
             NSLog(@"password incorrect");
             return;
         }
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
         NSString *cid = [authData objectForKey: @"_id"];
         
@@ -265,8 +269,6 @@
         [account saveSettings];
         
         CSDevice *device = [[CSDevice alloc] init];
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
         device.deviceName = [defaults valueForKey:@"deviceName"];
         device.remoteId = cid;

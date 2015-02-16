@@ -303,7 +303,12 @@
     NSString *query = [NSString stringWithFormat:@"?photo_id=%@&entity=%@&value=%@",photo.remoteID,entity,value];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
-    NSMutableURLRequest *request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/update/photos/metadata/%@",query]];
+    NSMutableURLRequest *request;
+    if ([photo.isVideo isEqualToString:@"1"]) {
+        request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/update/videos/metadata/%@",query]];
+    } else{
+        request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/update/photos/metadata/%@",query]];
+    }
     NSArray *objects =
     [NSArray arrayWithObjects:photo.deviceId, account.token, nil];
     
@@ -329,9 +334,14 @@
     NSOperationQueue *background = [[NSOperationQueue alloc] init];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
+    NSMutableURLRequest *request;
     for (CSPhoto *photo in photos) {
         NSString *query = [NSString stringWithFormat:@"?photo_id=%@",photo.remoteID];
-        NSMutableURLRequest *request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/photos/metadata/%@",query]];
+        if ([photo.isVideo isEqualToString:@"1"]) {
+            request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/videos/metadata/%@",query]];
+        } else{
+            request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/photos/metadata/%@",query]];
+        }
         NSArray *objects =
         [NSArray arrayWithObjects:photo.deviceId, account.token, nil];
         
@@ -671,7 +681,7 @@
   NSString *uid = [self uniqueAppId];
   
   NSDictionary *headers = @{
-                            @"pass" : pass,
+                            @"password" : pass,
                             @"uid"  : uid
                             };
   
@@ -693,7 +703,6 @@
   NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
     NSError *jsonError;
     NSDictionary *authData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-    
     callback(authData);
   }];
   

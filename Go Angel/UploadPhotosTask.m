@@ -314,8 +314,8 @@
                         }
                         //  if (tagLocation) {
                         keys = [NSArray
-                                arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
-                        objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, sublocation, nil];
+                                arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
+                        objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation, nil];
                         //} //else {
                         // keys = [NSArray
                         //        arrayWithObjects:@"token", @"filename", @"file-type",nil];
@@ -379,8 +379,8 @@
                         }
                         //if (tagLocation) {
                         keys = [NSArray
-                                arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
-                        objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, sublocation, nil];
+                                arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
+                        objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation, nil];
                         // } //else {
                         //  keys = [NSArray
                         //         arrayWithObjects:@"token", @"filename", @"file-type",nil];
