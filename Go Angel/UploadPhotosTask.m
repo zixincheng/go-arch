@@ -308,10 +308,14 @@
                         NSString *country = p.location.country;
                         NSString *longitude = p.location.longitude;
                         NSString *latitude = p.location.latitude;
+                        NSString *sublocation = name;
+                        if (![unit isEqualToString:@""]) {
+                            sublocation = [NSString stringWithFormat:@"Unit %@ - %@", unit, name];
+                        }
                         //  if (tagLocation) {
                         keys = [NSArray
                                 arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
-                        objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, name, nil];
+                        objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, sublocation, nil];
                         //} //else {
                         // keys = [NSArray
                         //        arrayWithObjects:@"token", @"filename", @"file-type",nil];
@@ -369,10 +373,14 @@
                         NSString *country = p.location.country;
                         NSString *longitude = p.location.longitude;
                         NSString *latitude = p.location.latitude;
+                        NSString *sublocation = name;
+                        if (![unit isEqualToString:@""]) {
+                            sublocation = [NSString stringWithFormat:@"Unit %@ - %@", unit, name];
+                        }
                         //if (tagLocation) {
                         keys = [NSArray
                                 arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"unit", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
-                        objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, name, nil];
+                        objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, unit, city, state, countryCode, country, sublocation, nil];
                         // } //else {
                         //  keys = [NSArray
                         //         arrayWithObjects:@"token", @"filename", @"file-type",nil];
