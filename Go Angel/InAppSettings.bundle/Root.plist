@@ -28,13 +28,13 @@
 		</dict>
 		<dict>
 			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
+			<string>PSChildPaneSpecifier</string>
 			<key>Title</key>
-			<string>Save Photo in Album</string>
-			<key>Key</key>
-			<string>saveInAlbum</string>
-			<key>DefaultValue</key>
-			<false/>
+			<string>Set Password</string>
+			<key>IASKViewControllerStoryBoardFile</key>
+			<string>Main</string>
+			<key>IASKViewControllerStoryBoardId</key>
+			<string>passwordView</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>

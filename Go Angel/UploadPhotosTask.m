@@ -991,37 +991,45 @@ didCompleteWithError:(NSError *)error {
         p.remoteID = [dictionary valueForKey:@"photo_id"];
         NSLog(@"upload status %@",dictionary);
     }
+    NSInteger responseStatusCode = [httpResponse statusCode];
+    NSLog(@"code %ld",(long)responseStatusCode);
     
+    if (responseStatusCode == 403) {
+        NSLog(@"asdf");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"passwordChanged" object:nil];
+    } else if (responseStatusCode == 200) {
+        if (p != nil) {
+            if (p.remoteID !=nil) {
+                NSLog(@"Finsished uploading %@", p.imageURL);
+                
+                [p onServerSet:YES];
+                p.dateUploaded = [NSDate date];
+                
+                [self.dataWrapper addUpdatePhoto:p];
+                if ([p.isVideo isEqualToString:@"1"]) {
+                    [self uploadVideoThumb:p];
+                    NSLog(@"uploading the video thumbnails");
+                } else {
+                    [self uploadPhotoThumb:p];
+                    NSLog(@"uploading the photo thumbnails");
+                }
+
+                @synchronized(self.uploadingPhotos) {
+                    p.taskIdentifier = -1;
+                    [self.uploadingPhotos removeObject:p];
+                    
+                    if (self.upCallback != nil) {
+                        self.upCallback(p);
+                    }
+                }
+            }
+        }
     //  NSData * data = [NSJSONSerialization dataWithJSONObject:task.response
     //  options:0 error:nil];
     //  NSLog(@"%@", data);
     
     //  NSLog(@"PHOTO COUNT %d", self.uploadingPhotos.count);
-    if (p != nil) {
-        if (p.remoteID !=nil) {
-            NSLog(@"Finsished uploading %@", p.imageURL);
-        
-            [p onServerSet:YES];
-            p.dateUploaded = [NSDate date];
-        
-            [self.dataWrapper addUpdatePhoto:p];
-            if ([p.isVideo isEqualToString:@"1"]) {
-                [self uploadVideoThumb:p];
-                NSLog(@"uploading the video thumbnails");
-            } else {
-                [self uploadPhotoThumb:p];
-                NSLog(@"uploading the photo thumbnails");
-            }
-        
-            @synchronized(self.uploadingPhotos) {
-                p.taskIdentifier = -1;
-                [self.uploadingPhotos removeObject:p];
-            
-                if (self.upCallback != nil) {
-                    self.upCallback(p);
-                }
-            }
-        }
+    
     }
 }
 

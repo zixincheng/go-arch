@@ -80,6 +80,10 @@
 		9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13821A3F63A5000B780B /* QuartzCore.framework */; };
 		9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */; };
 		9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */; };
+		9BC7B9541A93F15300164F0E /* SetPasswordTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9531A93F15300164F0E /* SetPasswordTableViewController.m */; };
+		9BC7B9571A94084300164F0E /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9561A94084300164F0E /* TWMessageBarManager.m */; };
+		9BC7B95A1A940F4E00164F0E /* icon-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC7B9581A940F4E00164F0E /* icon-error.png */; };
+		9BC7B95B1A940F4E00164F0E /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC7B9591A940F4E00164F0E /* icon-success.png */; };
 		9BCDE8B61A8035110017FD7A /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCDE8B51A8035110017FD7A /* video.png */; };
 		9BCDE8BC1A803C940017FD7A /* videoFinish.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCDE8BB1A803C940017FD7A /* videoFinish.png */; };
 		9BDDBAF51A70827900697C25 /* CSLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDDBAF41A70827900697C25 /* CSLocation.m */; };
@@ -259,6 +263,12 @@
 		9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageDetailViewController.m; sourceTree = "<group>"; };
 		9BB0F20C1A27A91900DF40E3 /* StorageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageTableViewCell.h; sourceTree = "<group>"; };
 		9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageTableViewCell.m; sourceTree = "<group>"; };
+		9BC7B9521A93F15300164F0E /* SetPasswordTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetPasswordTableViewController.h; sourceTree = "<group>"; };
+		9BC7B9531A93F15300164F0E /* SetPasswordTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetPasswordTableViewController.m; sourceTree = "<group>"; };
+		9BC7B9551A94084300164F0E /* TWMessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWMessageBarManager.h; sourceTree = "<group>"; };
+		9BC7B9561A94084300164F0E /* TWMessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWMessageBarManager.m; sourceTree = "<group>"; };
+		9BC7B9581A940F4E00164F0E /* icon-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error.png"; sourceTree = "<group>"; };
+		9BC7B9591A940F4E00164F0E /* icon-success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success.png"; sourceTree = "<group>"; };
 		9BCDE8B51A8035110017FD7A /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		9BCDE8BB1A803C940017FD7A /* videoFinish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoFinish.png; sourceTree = "<group>"; };
 		9BDDBAF31A70827900697C25 /* CSLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSLocation.h; sourceTree = "<group>"; };
@@ -437,6 +447,10 @@
 				2053971E1991924B00B1D9AD /* Supporting Files */,
 				2061D1F819919440001C7E08 /* UploadPhotosTask.h */,
 				2061D1F919919440001C7E08 /* UploadPhotosTask.m */,
+				9BC7B9521A93F15300164F0E /* SetPasswordTableViewController.h */,
+				9BC7B9531A93F15300164F0E /* SetPasswordTableViewController.m */,
+				9BC7B9551A94084300164F0E /* TWMessageBarManager.h */,
+				9BC7B9561A94084300164F0E /* TWMessageBarManager.m */,
 			);
 			path = "Go Angel";
 			sourceTree = "<group>";
@@ -444,6 +458,8 @@
 		2053971E1991924B00B1D9AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9BC7B9581A940F4E00164F0E /* icon-error.png */,
+				9BC7B9591A940F4E00164F0E /* icon-success.png */,
 				20C3BBA31A687EFA0019DE40 /* box.png */,
 				20C3BBA41A687EFA0019DE40 /* camera_line_h.png */,
 				20C3BBA51A687EFA0019DE40 /* camera_line_h@2x.png */,
@@ -632,6 +648,7 @@
 			files = (
 				20C3BBCB1A687EFA0019DE40 /* camera_line@2x.png in Resources */,
 				D553C3A51A44DC85004076B4 /* unupload.png in Resources */,
+				9BC7B95B1A940F4E00164F0E /* icon-success.png in Resources */,
 				9B555D571A4A32FB00D00025 /* selectedbackground.png in Resources */,
 				2061D1E819919428001C7E08 /* InAppSettings.bundle in Resources */,
 				20C3BBD41A687EFA0019DE40 /* flashing_on.png in Resources */,
@@ -644,6 +661,7 @@
 				20C3BBD21A687EFA0019DE40 /* flashing_off.png in Resources */,
 				2061D2021991947D001C7E08 /* Images.xcassets in Resources */,
 				20C3BBCC1A687EFA0019DE40 /* close_cha_h.png in Resources */,
+				9BC7B95A1A940F4E00164F0E /* icon-error.png in Resources */,
 				20C3BBD91A687EFA0019DE40 /* shot_h@2x.png in Resources */,
 				20C3BBD11A687EFA0019DE40 /* flashing_auto@2x.png in Resources */,
 				20C3BBDA1A687EFA0019DE40 /* shot.png in Resources */,
@@ -726,6 +744,7 @@
 				9B6C88C61A829EAD00B50A21 /* CellLayout.m in Sources */,
 				2061D1D9199193CE001C7E08 /* CoreDataStore.m in Sources */,
 				D510B9641A364A8A00307184 /* DashboardViewController.m in Sources */,
+				9BC7B9571A94084300164F0E /* TWMessageBarManager.m in Sources */,
 				20931B8519954B8900F57FB0 /* GridCell.m in Sources */,
 				2061D1D8199193CE001C7E08 /* ConnectViewController.m in Sources */,
 				9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */,
@@ -754,6 +773,7 @@
 				2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */,
 				2061D1DC199193CE001C7E08 /* CSPhoto.m in Sources */,
 				2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */,
+				9BC7B9541A93F15300164F0E /* SetPasswordTableViewController.m in Sources */,
 				20F74D161992B56B00E0546D /* Constants.m in Sources */,
 				9B1211431A79B13B0088CD3A /* SearchMapViewController.m in Sources */,
 				2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */,

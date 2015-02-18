@@ -87,10 +87,11 @@
         NSLog(@"cannot connect to server");
     }
 
-
+    NSLog(@"Cid %@",account.cid);
     
     // Uncomment the following line to preserve selection between presentations.
      self.clearsSelectionOnViewWillAppear = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePass) name:@"passwordChanged" object:nil];
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
      //self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -105,7 +106,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSLog(@"view did appear");
     
     // Attempt to upload all the time
     if (self.canConnect) {
@@ -126,7 +126,49 @@
     
 }
 
+-(void) changePass {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Upload Failed" message:@"Password Has been changed, Please Enter New Password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Confirm", nil];
+        
+        alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        [[alertView textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeURL];
+        [[alertView textFieldAtIndex:0] becomeFirstResponder];
+        
+        [alertView show];
+    });
+    
+}
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSString *buttonTitle=[alertView buttonTitleAtIndex:buttonIndex];
+    if([buttonTitle isEqualToString:@"Cancel"]) {
+        return;
+    }
+    else if([buttonTitle isEqualToString:@"Confirm"]) {
+        NSString *text = [alertView textFieldAtIndex:0].text;
+        
+        if (![text isEqualToString:@""]) {
+            [self.coinsorter getToken:account.ip pass:text callback:^(NSDictionary *authData) {
+                if (authData == nil || authData == NULL) {
+                    // we could not connect to server
+                    NSLog(@"could not connect to server");
+                    return;
+                }
+                
+                NSString *token = [authData objectForKey:@"token"];
+                if (token == nil || token == NULL) {
+                    // if we get here we assume the password is incorrect
+                    NSLog(@"password incorrect");
+                    return;
+                }
+                account.token = token;
+                [account saveSettings];
+                [self uploadPhotosToApi];
+                [defaults setObject:text forKey:@"password"];
+            }];
+        }
+    }
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

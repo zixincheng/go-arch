@@ -372,6 +372,37 @@
     }
 }
 
+-(void) setPassword: (NSString *)oldPass newPass:(NSString *)newPass callback: (void (^) (NSDictionary *)) callback{
+
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
+    NSMutableURLRequest *request;
+
+    request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/settings/password"]];
+
+    NSArray *objects =
+    [NSArray arrayWithObjects:account.cid, account.token,oldPass,newPass, nil];
+    NSLog(@"account cid %@",account.cid);
+    // set headers
+    NSArray *keys = [NSArray
+                     arrayWithObjects:@"cid",@"token",@"password",@"newpassword", nil];
+    NSDictionary *headers =
+    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    [request setAllHTTPHeaderFields:headers];
+    
+    NSURLSessionDataTask *postDataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSError *jsonError;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+
+        // TODO: check to see if metadata update worked
+        // by reading json response
+        callback(jsonData);
+    }];
+    
+    [postDataTask resume];
+    
+}
+
 -(NSData *)dataFromBase64EncodedString:(NSString *)string{
   if (string.length > 0) {
     
@@ -679,7 +710,7 @@
   NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   
   NSString *uid = [self uniqueAppId];
-  
+    NSLog(@"uid %@",uid);
   NSDictionary *headers = @{
                             @"password" : pass,
                             @"uid"  : uid
