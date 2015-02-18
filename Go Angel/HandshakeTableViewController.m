@@ -115,7 +115,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:@"" forKey:@"password"];
     
-    [self authDevice:@""];
+    [self authDevice:@"a"];
   // Deselect
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

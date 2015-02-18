@@ -775,13 +775,15 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
     NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
     
+    NSString *thumbPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
+    
     //[self.photoPath addObject:filePath];
     CSPhoto *p = [[CSPhoto alloc] init];
     
     p.dateCreated = [NSDate date];
     p.deviceId = self.localDevice.remoteId;
     p.onServer = @"0";
-    p.thumbURL = fullPath;
+    p.thumbURL = thumbPath;
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];
     p.thumbnailName = [NSString stringWithFormat:@"thumb_%@.jpg", photoUID];
@@ -803,6 +805,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     CGImageDestinationFinalize(destination);
     
     [dest_data writeToFile:filePath atomically:YES];
+    
+    NSData *thumbdata = UIImageJPEGRepresentation(image, 0.1);
+    [thumbdata writeToFile:thumbPath atomically:YES];
     
     CFRelease(destination);
     NSLog(@"saving photo to %@ with filename %@", filePath, p.fileName);

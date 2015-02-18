@@ -868,9 +868,17 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 [request setAllHTTPHeaderFields:headers];
                 
                 // get documents directory
-                NSURL * thumbUrl = [NSURL URLWithString:photo.thumbURL];
+                NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
+                                                                         NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *documentsDirectory = [pathArray objectAtIndex:0];
+
+                NSString *textPath = [documentsDirectory
+                                      stringByAppendingPathComponent:photo.thumbnailName];
+                
                 // get image data from file path
-                NSData *imageData = [NSData dataWithContentsOfURL:thumbUrl];
+                NSData *imageData = [NSData dataWithContentsOfFile:textPath];
+                
+
                 NSString *fileName = [NSString
                                       stringWithFormat:@"%@_%@", photo.thumbnailName, @"image.jpg"];
                 NSURL *fileURL =

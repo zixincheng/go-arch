@@ -237,14 +237,14 @@
               if ([photo.isVideo isEqualToString:@"1"]) {
                   url = [NSURL URLWithString:photo.thumbURL];
               } else {
-                  url = [NSURL URLWithString:photo.imageURL];
+                  url = [NSURL URLWithString:photo.thumbURL];
               }
 
             UIImage *image = [UIImage imageWithContentsOfFile:url.path];
             if (image) {
 
               // save image to cache
-              NSData *data = UIImageJPEGRepresentation(image, 1.0);
+              NSData *data = UIImageJPEGRepresentation(image, 0.1);
               [_imageCache setObject:data forKey:url.path];
 
               completionHandler(image);
