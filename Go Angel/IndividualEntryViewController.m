@@ -105,7 +105,8 @@
     
     self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     NSLog(@"count total photos %lu",(unsigned long)self.photos.count);
-    [self.coinsorter getMeta:self.photos];
+    //[self.coinsorter getMeta:self.photos];
+    /*
     if (self.photos.count != 0) {
         CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
         if (coverPhoto == nil) {
@@ -114,20 +115,26 @@
         } else {
             [self.coinsorter updateMeta:coverPhoto entity:@"home" value:@"1"];
         }
-    }
+    }*/
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagUpdated) name:@"tagUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewcell) name:@"addNewPhoto" object:nil];
     //self.photos = [self.coinsorter getMeta:self.photos];
     // Do any additional setup after loading the view.
+
+
+}
+/*
+- (void)viewDidLayoutSubviews
+{
     if (self.photos.count != 0) {
         [self scrollToBottom];
     }
-
 }
-
+*/
 - (void) dealloc {
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"tagUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"addNewPhoto" object:nil];
 }
 -(void) tagUpdated {
     self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
@@ -142,8 +149,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    
-    [self.collectionView reloadData];
+    //[self.collectionView reloadData];
     [self clearCellSelections];
 }
 
@@ -344,8 +350,9 @@
     NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
     [self.collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
      */
-    CGPoint bottomOffset = CGPointMake(0, 1500);
-    [self.collectionView setContentOffset:bottomOffset animated:YES];
+    CGPoint bottomOffset = CGPointMake(0, self.collectionView.contentSize.height - self.collectionView.bounds.size.height);
+
+    [self.collectionView setContentOffset:bottomOffset animated:NO];
 }
 
 # pragma mark - delete button Actions
@@ -538,7 +545,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     self.picker.cameraOverlayView = self.overlay;
     self.picker.showsCameraControls = NO;
     takingPhoto = YES;
-
+    
     [self presentViewController:self.picker animated:YES completion:^{
         [self addCameraCover];
     }];
@@ -688,13 +695,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         NSLog(@"after total photo %d",(int)self.photos.count);
         [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:Size inSection:0]];
         [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
-    }completion:^(BOOL finished) {
-        if (finished) {
-      //      [self.tmpPhotos removeAllObjects];
-        //    [self.tmpMeta removeAllObjects];
-          //  [self.videoUrl removeAllObjects];
-        }
-    }];
+    }completion:nil];
     });
 }
 
