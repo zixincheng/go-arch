@@ -93,7 +93,6 @@
     
     self.saveInAlbum = [defaults boolForKey:SAVE_INTO_ALBUM];
     selectedPhotos = [NSMutableArray array];
-    self.photoPath = [NSMutableArray array];
     self.videoUrl = [NSMutableArray array];
     self.tmpMeta = [NSMutableArray array];
     self.tmpPhotos = [NSMutableArray array];
@@ -393,25 +392,28 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         [self clearCellSelections];
     } else if (buttonIndex == 1){
+        NSMutableArray *photoPath = [NSMutableArray array];
+
         NSArray *selectedIndexPath = [self.collectionView indexPathsForSelectedItems];
+        NSArray *deletedPhoto = [self selectedDeletedPhoto:selectedIndexPath];
         [self.collectionView performBatchUpdates:^{
+
             [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
             [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
-            /*
-            NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
-            for (NSIndexPath *itemPath  in selectedIndexPath) {
-                [indexSet addIndex:itemPath.row];
+            
+            for (CSPhoto *p in deletedPhoto) {
+                // get documents directory
+
+                NSURL *imageUrl = [NSURL URLWithString:p.imageURL];
+                NSURL *thumUrl = [NSURL URLWithString:p.thumbURL];
+                [photoPath addObject:imageUrl.path];
+                [photoPath addObject:thumUrl.path];
             }
-           NSArray *pathArray = [self.photoPath objectsAtIndexes:indexSet];
-            [self.photoPath removeObjectsAtIndexes:indexSet];
-            for (NSString *currentpath in pathArray) {
+            for (NSString *currentpath in photoPath) {
                 NSError *error;
                 [[NSFileManager defaultManager] removeItemAtPath:currentpath error:&error];
             }
-*/
-        } completion:^(BOOL finished){
-            [self.collectionView reloadData];
-        }];
+        } completion:nil];
     }
 }
 
@@ -431,6 +433,17 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [self.photos removeObjectsAtIndexes:indexSet];
     
     [self.dataWrapper deletePhotos:itemPaths];
+}
+
+-(NSArray *) selectedDeletedPhoto: (NSArray *)itemPaths {
+    NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+    for (NSIndexPath *itemPath  in itemPaths) {
+        [indexSet addIndex:itemPath.row];
+    }
+    NSArray *deletedPhoto = [self.photos objectsAtIndexes:indexSet];
+
+    return deletedPhoto;
+    
 }
 
 # pragma mark - share actions

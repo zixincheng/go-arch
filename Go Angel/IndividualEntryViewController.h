@@ -44,7 +44,6 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, assign) BOOL saveInAlbum;
 @property (nonatomic, strong) NSMutableArray *photos;
-@property (nonatomic, strong) NSMutableArray *photoPath;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editBtn;
 @property (nonatomic, strong) UIBarButtonItem *deleteBtn;
