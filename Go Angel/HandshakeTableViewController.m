@@ -66,6 +66,7 @@
     
   // Setup the receiver and immediately send a UPD broadcast
   [self setupReciveUDPMessage];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePass) name:@"passwordChanged" object:nil];
 }
 
 -(void)periodicallySendUDP{
@@ -115,10 +116,25 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:@"" forKey:@"password"];
     
-    [self authDevice:@"a"];
+    [self authDevice:@""];
   // Deselect
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
+-(void) changePass {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"Password Has been changed, Please Enter New Password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Confirm", nil];
+        
+        alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        [[alertView textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeURL];
+        [[alertView textFieldAtIndex:0] becomeFirstResponder];
+        
+        alertView.tag = 1;
+        [alertView show];
+    });
+    
+}
+
 
 - (IBAction)buttonPressed:(id)sender {
   if (sender == self.addServerButton) {
@@ -127,27 +143,44 @@
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[alertView textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeURL];
     [[alertView textFieldAtIndex:0] becomeFirstResponder];
-    
+      
+    alertView.tag = 0;
     [alertView show];
   }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   NSString *buttonTitle=[alertView buttonTitleAtIndex:buttonIndex];
-  if([buttonTitle isEqualToString:@"Cancel"]) {
-    return;
-  }
-  else if([buttonTitle isEqualToString:@"Add"]) {
-    NSString *text = [alertView textFieldAtIndex:0].text;
-    
-    if (![text isEqualToString:@""]) {
-      Server *s = [[Server alloc] init];
-      s.ip = text;
-      [self.servers addObject:s];
-      
-      [self.tableView reloadData];
+    if (alertView.tag == 0) {
+        if([buttonTitle isEqualToString:@"Cancel"]) {
+            return;
+        }
+        else if([buttonTitle isEqualToString:@"Add"]) {
+            NSString *text = [alertView textFieldAtIndex:0].text;
+            
+            if (![text isEqualToString:@""]) {
+                Server *s = [[Server alloc] init];
+                s.ip = text;
+                [self.servers addObject:s];
+                
+                [self.tableView reloadData];
+            }
+        }
+    } else if (alertView.tag == 1) {
+        if([buttonTitle isEqualToString:@"Cancel"]) {
+            return;
+        }
+        else if([buttonTitle isEqualToString:@"Confirm"]) {
+            NSString *text = [alertView textFieldAtIndex:0].text;
+            
+            if (![text isEqualToString:@""]) {
+                [self authDevice:text];
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setObject:text forKey:@"password"];
+            }
+        }
+
     }
-  }
 }
 /*
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -250,6 +283,7 @@
         NSString *token = [authData objectForKey:@"token"];
         if (token == nil || token == NULL) {
             // if we get here we assume the password is incorrect
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"passwordChanged" object:nil];
             NSLog(@"password incorrect");
             return;
         }

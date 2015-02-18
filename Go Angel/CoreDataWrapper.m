@@ -143,7 +143,7 @@
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
 
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated"
-                                                                       ascending:NO];
+                                                                       ascending:YES];
         [request setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
 
         NSError *err;

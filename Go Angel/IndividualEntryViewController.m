@@ -392,27 +392,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         [self clearCellSelections];
     } else if (buttonIndex == 1){
-        NSMutableArray *photoPath = [NSMutableArray array];
 
         NSArray *selectedIndexPath = [self.collectionView indexPathsForSelectedItems];
         NSArray *deletedPhoto = [self selectedDeletedPhoto:selectedIndexPath];
         [self.collectionView performBatchUpdates:^{
-
+            [self deletePhotoFromFile:deletedPhoto];
             [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
             [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
             
-            for (CSPhoto *p in deletedPhoto) {
-                // get documents directory
-
-                NSURL *imageUrl = [NSURL URLWithString:p.imageURL];
-                NSURL *thumUrl = [NSURL URLWithString:p.thumbURL];
-                [photoPath addObject:imageUrl.path];
-                [photoPath addObject:thumUrl.path];
-            }
-            for (NSString *currentpath in photoPath) {
-                NSError *error;
-                [[NSFileManager defaultManager] removeItemAtPath:currentpath error:&error];
-            }
         } completion:nil];
     }
 }
@@ -443,6 +430,24 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSArray *deletedPhoto = [self.photos objectsAtIndexes:indexSet];
 
     return deletedPhoto;
+    
+}
+
+- (void) deletePhotoFromFile: (NSArray *) deletedPhoto {
+    NSMutableArray *photoPath = [NSMutableArray array];
+    for (CSPhoto *p in deletedPhoto) {
+        // get documents directory
+        
+        NSURL *imageUrl = [NSURL URLWithString:p.imageURL];
+        NSURL *thumUrl = [NSURL URLWithString:p.thumbURL];
+        [photoPath addObject:imageUrl.path];
+        [photoPath addObject:thumUrl.path];
+    }
+    for (NSString *currentpath in photoPath) {
+        NSError *error;
+        [[NSFileManager defaultManager] removeItemAtPath:currentpath error:&error];
+    }
+
     
 }
 
@@ -803,7 +808,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     p.isVideo = @"0";
     p.cover = @"0";
     p.location = self.location;
-    
+
     // save the metada information into image
     NSData *data = UIImageJPEGRepresentation(image, 100);
     CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);

@@ -234,13 +234,10 @@
 
           // load the photo directly from path
           @try {
-              if ([photo.isVideo isEqualToString:@"1"]) {
-                  url = [NSURL URLWithString:photo.thumbURL];
-              } else {
-                  url = [NSURL URLWithString:photo.thumbURL];
-              }
+            url = [NSURL URLWithString:photo.thumbURL];
 
             UIImage *image = [UIImage imageWithContentsOfFile:url.path];
+
             if (image) {
 
               // save image to cache
