@@ -63,15 +63,7 @@
 - (IBAction)SaveBtnPressed:(id)sender {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     AccountDataWrapper *account = appDelegate.account;
-    if ([self.oldPassTextField.text isEqualToString:@""]) {
-            NSLog(@"password you enter is not same as old one");
-            [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Failed"
-                                                           description:@"Old Password Can't Be Empty"
-                                                                  type:TWMessageBarMessageTypeError
-                                                        statusBarStyle:UIStatusBarStyleLightContent
-                                                              callback:nil];
-            return;
-    } else if (![self.PassText.text isEqualToString:self.confirmPass.text]) {
+    if (![self.PassText.text isEqualToString:self.confirmPass.text]) {
         NSLog(@"password is not equal");
         NSLog(@"password you enter is not same as old one");
         [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Failed"
@@ -79,7 +71,15 @@
                                                               type:TWMessageBarMessageTypeError
                                                     statusBarStyle:UIStatusBarStyleLightContent
                                                           callback:nil];
-    } else {
+    } else if ([self.PassText.text isEqualToString:@""] || [self.confirmPass.text isEqualToString:@""]){
+        NSLog(@"password cannot be");
+        [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Failed"
+                                                       description:@"Password Can Not Be Empty"
+                                                              type:TWMessageBarMessageTypeError
+                                                    statusBarStyle:UIStatusBarStyleLightContent
+                                                          callback:nil];
+        
+    }else {
         
         [self.coinsorter setPassword:self.oldPassTextField.text newPass:self.PassText.text callback:^(NSDictionary *authData) {
             NSLog(@"data %@",authData);
