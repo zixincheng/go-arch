@@ -148,6 +148,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     //[self.collectionView reloadData];
     [self clearCellSelections];
 }
@@ -329,8 +330,6 @@
             photo.layoutType = cellLayoutTypeSingle;
         }
     }
-    
-    BOOL retVal = photo.layoutType == cellLayoutTypeDouble;
     
     return NO;
     
@@ -587,64 +586,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             [self.videoUrl addObject:moviePath];
             NSLog(@"number of video taken count %lu",(unsigned long)self.videoUrl.count);
         }
-
-        
+        CFRelease((__bridge CFTypeRef)(mediaType));
     }
-/*
-    if (takingPhoto) {
-        UIImage *image = info[UIImagePickerControllerOriginalImage];
-        NSDictionary *metadata = info[UIImagePickerControllerMediaMetadata];
-        
-        if (self.saveInAlbum) {
-            NSLog(@"save photos into album");
-            
-            [localLibrary saveImage:image metadata:metadata location:self.location callback: ^(CSPhoto *photo){
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    [self addNewcell:photo];
-                });
-            }];
-        }else{
-            NSLog(@"save photos into application folder");
-            [self saveImageIntoDocument:image metadata:metadata callback: ^(CSPhoto *photo){
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    [self addNewcell:photo];
-                });
-            }];
-            
-        }
-    } else {
-        if (self.saveInAlbum) {
-            NSLog(@"save video into album");
-            NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
-            // Handle a movie capture
-            if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
-                NSURL *moviePath = [info objectForKey:UIImagePickerControllerMediaURL];
-                NSLog(@"%@",moviePath);
-                
-                [localLibrary saveVideo:moviePath location:self.location callback:^(CSPhoto *photo) {
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                        [self addNewcell:photo];
-                    });
-                }];
-            }
-        } else {
-            NSLog(@"save video into application folder");
-            NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
-            // Handle a movie capture
-            if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
-                NSURL *moviePath = [info objectForKey:UIImagePickerControllerMediaURL];
-                NSLog(@"%@",moviePath);
-                
-                [self saveVideoIntoDocument:moviePath callback:^(CSPhoto *photo) {
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                        [self addNewcell:photo];
-                    });
-                }];
-            }
-            
-        }
-    }
-*/
 }
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -755,7 +698,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.mov", photoUID]];
     
     NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
-    NSString *fullthumbPath = [[NSURL fileURLWithPath:thumbPath] absoluteString];
 
     NSData *videoData = [NSData dataWithContentsOfURL:moviePath];
     
@@ -822,12 +764,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     CGImageDestinationFinalize(destination);
     
+    
     [dest_data writeToFile:filePath atomically:YES];
     
     NSData *thumbdata = UIImageJPEGRepresentation(image, 0.1);
     [thumbdata writeToFile:thumbPath atomically:YES];
     
     CFRelease(destination);
+    CFRelease(source);
     NSLog(@"saving photo to %@ with filename %@", filePath, p.fileName);
     
     [self.dataWrapper addPhoto:p];

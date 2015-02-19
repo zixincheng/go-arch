@@ -98,6 +98,7 @@
 }
 
 -(void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     self.locations = [self.dataWrapper getLocations];
     [self.tableView reloadData];
     self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
@@ -412,7 +413,7 @@
         if (self.canConnect) {
             //[self.progressUpload setTintColor:nil];
         }else {
-            UIColor * color = [UIColor colorWithRed:212/255.0f green:1/255.0f blue:0/255.0f alpha:1.0f];
+            //UIColor * color = [UIColor colorWithRed:212/255.0f green:1/255.0f blue:0/255.0f alpha:1.0f];
             //[self.progressUpload setTintColor:color];
         }
         

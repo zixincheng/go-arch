@@ -218,8 +218,6 @@
       newPhoto = [self setObjectValues:photo object:newPhoto];
 
       newPhoto = [self relationLocation:photo.location object:newPhoto];
-
-        NSLog(@"obj %@",newPhoto);
       // save context to updated other threads
       [context save:nil];
       
@@ -552,7 +550,7 @@
         NSManagedObject *logObj;
         
         logObj = [NSEntityDescription insertNewObjectForEntityForName:LOG inManagedObjectContext:context];
-        logObj = [self setLogValues:log object:logObj];
+        //logObj = [self setLogValues:log object:logObj];
         
         [context save:nil];
         

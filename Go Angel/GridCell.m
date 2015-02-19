@@ -103,16 +103,21 @@
     return self.photo;
 }
 -(void)setPhoto:(CSPhoto *)photo {
-    
-    _photo = photo;
-    
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    _photo = photo;
+    NSURL *url = [NSURL URLWithString:photo.thumbURL];
+    NSData *data = [appDelegate.mediaLoader.imageCache objectForKey:url.path];
+    
+    if (data !=nil) {
+        self.image = [UIImage imageWithData:data];
+    } else {
     
     [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *Currentimage) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.image = Currentimage;
             });
     }];
+    }
     _titleLabel.text = _photo.tag;
 }
 
@@ -140,6 +145,7 @@
     _imageView.layer.shadowColor = [UIColor redColor].CGColor;
     _imageView.layer.shadowOpacity = 1;
 }
+
 
 -(void)prepareForReuse{
     [super prepareForReuse];
