@@ -92,9 +92,17 @@
     // Uncomment the following line to preserve selection between presentations.
      self.clearsSelectionOnViewWillAppear = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePass) name:@"passwordChanged" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPhotoChanged) name:@"coredataDone" object:nil];
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
      //self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void) uploadPhotoChanged {
+    
+    self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
+    [self uploadPhotosToApi];
+    [self updateUploadCountUI];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -110,7 +118,7 @@
     
     // Attempt to upload all the time
     if (self.canConnect) {
-        [self uploadPhotosToApi];
+        //[self uploadPhotosToApi];
     }
 }
 
@@ -345,7 +353,7 @@
         //sent a notification to dashboard when network is not reachable
         //[[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerDisconnected" object:nil];
         self.canConnect = NO;
-        //[self updateUploadCountUI];
+        [self updateUploadCountUI];
     }else if (remoteHostStatus == ReachableViaWiFi) {
         // if we are connected to wifi
         // and we have a blackbox ip we have connected to before
@@ -354,7 +362,7 @@
                 self.canConnect = connected;
                 //sent a notification to dashboard when network connects with home server
                 //[[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerConnected" object:nil];
-                //[self updateUploadCountUI];
+                [self updateUploadCountUI];
             }];
         }
     }else if (remoteHostStatus == ReachableViaWWAN) {
@@ -362,7 +370,7 @@
         //sent a notification to dashboard when network connects with WIFI not home server
         //[[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerDisconnected" object:nil];
         self.canConnect = NO;
-        //[self updateUploadCountUI];
+        [self updateUploadCountUI];
     }
 }
 
@@ -432,6 +440,7 @@
 
 - (void) uploadPhotosToApi {
     NSMutableArray *photos = [self.dataWrapper getPhotosToUpload];
+    self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
     __block int currentUploaded = 0;
     if (photos.count > 0) {
         //sent a notification when start uploading photos

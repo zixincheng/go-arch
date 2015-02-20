@@ -589,6 +589,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         }
         CFRelease((__bridge CFTypeRef)(mediaType));
     }
+    totalAssets = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
 }
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -629,9 +630,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             }
 
     }
+    
     [self.tmpPhotos removeAllObjects];
     [self.tmpMeta removeAllObjects];
     [self.videoUrl removeAllObjects];
+
 }
 
 # pragma mark - Save and Update photo
@@ -645,18 +648,22 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 //update the collection view cell
 -(void) addNewcell{
     int Size = (int)self.photos.count;
+    totalAssets--;
+    if (totalAssets == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"coredataDone" object:nil];
+    }
+    //__block int total = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
     dispatch_async(dispatch_get_main_queue(), ^ {
     [self.collectionView performBatchUpdates:^{
         NSLog(@"total photo %d",Size);
-
-        int total = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
-        NSLog(@"need to upload  %d",total);
+        
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
         
         self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
         NSLog(@"after total photo %d",(int)self.photos.count);
         [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:Size inSection:0]];
         [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
+        
     }completion:nil];
     });
 }

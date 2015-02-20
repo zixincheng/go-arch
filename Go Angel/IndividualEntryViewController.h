@@ -28,6 +28,7 @@
     LocalLibrary *localLibrary;
     NSUserDefaults *defaults;
     AccountDataWrapper *account;
+    int totalAssets;
 }
 
 @property (nonatomic, strong) CSLocation *location;
