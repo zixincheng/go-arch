@@ -65,6 +65,8 @@
     self.layer.borderWidth = 1;
     self.layer.borderColor = [UIColor blackColor].CGColor;
     self.clipsToBounds = YES;
+    self.layer.shouldRasterize = YES;
+    self.layer.rasterizationScale = [UIScreen mainScreen].scale;
     
     //  UILabel for title
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -86,7 +88,7 @@
 
 -(void)setImage:(UIImage *)newImage{
     _imageView.image = newImage;
-        
+        /*
         _imageView.alpha = 0.0;
         
           //Random delay to avoid all animations happen at once
@@ -96,7 +98,7 @@
             [UIView animateWithDuration:0.3 animations:^{
                 _imageView.alpha = 1.0;
             }];
-        });
+        });*/
 }
 
 -(CSPhoto *)photo{

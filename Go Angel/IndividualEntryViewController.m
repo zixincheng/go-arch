@@ -767,7 +767,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     [dest_data writeToFile:filePath atomically:YES];
     
-    NSData *thumbdata = UIImageJPEGRepresentation(image, 0.1);
+    
+    UIImage *thumImage = [self resizeImage:(UIImage *)image];
+    
+    NSData *thumbdata = UIImageJPEGRepresentation(thumImage, 0.6);
     [thumbdata writeToFile:thumbPath atomically:YES];
     
     CFRelease(destination);
@@ -779,7 +782,17 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     //self.unUploadedPhotos++;
 }
 
-
+- (UIImage *) resizeImage: (UIImage *)image {
+    UIImage *tempImage = nil;
+    CGSize targetSize = CGSizeMake(360,480);
+    UIGraphicsBeginImageContext(targetSize);
+    [image drawInRect:CGRectMake(0, 0, 360, 480)];
+    tempImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    image = tempImage;
+    
+    return image;
+}
 
 # pragma mark - Custom Camera View
 //create custom camera overlay

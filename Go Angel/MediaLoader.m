@@ -241,7 +241,7 @@
             if (image) {
 
               // save image to cache
-              NSData *data = UIImageJPEGRepresentation(image, 0.1);
+              NSData *data = UIImageJPEGRepresentation(image, 0.6);
               [_imageCache setObject:data forKey:url.path];
 
               completionHandler(image);
