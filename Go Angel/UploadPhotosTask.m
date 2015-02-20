@@ -265,12 +265,12 @@
             //readLock =
            // [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
             
-            ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
-                ALAssetRepresentation *rep = [asset defaultRepresentation];
+        //    ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
+         //       ALAssetRepresentation *rep = [asset defaultRepresentation];
                 if ([p.isVideo isEqualToString:@"1"]) {
-                    CGImageRef iref = [rep fullResolutionImage];
+                    //CGImageRef iref = [rep fullResolutionImage];
                     // if the asset exists
-                    if (iref) {
+                    /*if (iref) {
                         NSLog(@"uploading from album");
                         Byte *buffer = (Byte*)malloc(rep.size);
                         NSUInteger buffered = [rep getBytes:buffer fromOffset:0.0 length:rep.size error:nil];
@@ -343,7 +343,7 @@
                         
                         [readLock lock];
                         [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
-                    } else {
+                    } else {*/
                         NSLog(@"uploading from device folder");
                         AppDelegate *appDelegate =
                         [[UIApplication sharedApplication] delegate];
@@ -430,13 +430,13 @@
                         [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
                         
                     }
-                }
+               // }
                 else {
                     
-                    CGImageRef iref = [rep fullResolutionImage];
+                   // CGImageRef iref = [rep fullResolutionImage];
                     
                     // if the asset exists
-                    if (iref) {
+                    /*if (iref) {
                         // photos found in album
                         // Retrieve the image orientation from the ALAsset
                         UIImageOrientation orientation = UIImageOrientationUp;
@@ -502,7 +502,7 @@
                         
                         [readLock lock];
                         [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
-                    } else {
+                    } else {*/
                         // if photos not found in album, try to find in application
                         // folder
                         AppDelegate *appDelegate =
@@ -565,9 +565,9 @@
                        // [readLock lock];
                         //[readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
                     }
-                }
-            };
-            
+                //}
+            //};
+            /*
             ALAssetsLibraryAccessFailureBlock failureBlock = ^(NSError *err) {
                 NSLog(@"can't get image - %@", [err localizedDescription]);
                 
@@ -580,7 +580,7 @@
             [assetslibrary assetForURL:asseturl
                            resultBlock:resultBlock
                           failureBlock:failureBlock];
-            
+            */
             // non-busy wait for the asset read to finish (specifically until the
             // condition is "all finished")
             //[readLock lockWhenCondition:WDASSETURL_ALLFINISHED];

@@ -104,7 +104,7 @@
     
     self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     NSLog(@"count total photos %lu",(unsigned long)self.photos.count);
-    //[self.coinsorter getMeta:self.photos];
+    [self.coinsorter getMeta:self.photos];
     /*
     if (self.photos.count != 0) {
         CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
