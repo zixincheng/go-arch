@@ -137,10 +137,12 @@
   return object;
 }
 
-- (void) deletePhotos:(NSArray *) itemPaths {
+- (void) deletePhotos:(CSPhoto *) photo {
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     [context performBlock: ^{
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", IMAGE_URL, photo.imageURL];
+        [request setPredicate:pred];
 
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated"
                                                                        ascending:YES];
@@ -153,9 +155,9 @@
             NSLog(@"error with core data request");
             abort();
         }
-        for (NSIndexPath *itemPath  in itemPaths) {
-            [context deleteObject:[result objectAtIndex:itemPath.row]];
-        }
+        //for (NSIndexPath *itemPath  in itemPaths) {
+        [context deleteObject:result[0]];
+        //}
         [context save:nil];
     }];
 

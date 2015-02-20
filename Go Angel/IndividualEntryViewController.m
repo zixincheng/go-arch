@@ -396,7 +396,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         NSArray *deletedPhoto = [self selectedDeletedPhoto:selectedIndexPath];
         [self.collectionView performBatchUpdates:^{
             [self deletePhotoFromFile:deletedPhoto];
-            [self deleteItemsFromDataSourceAtIndexPaths: selectedIndexPath];
+            [self deleteItemsFromDataSourceAtIndexPaths: deletedPhoto itemPath:selectedIndexPath];
             [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
             
         } completion:nil];
@@ -410,15 +410,16 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
 }
 
--(void) deleteItemsFromDataSourceAtIndexPaths :(NSArray *)itemPaths{
-    
+-(void) deleteItemsFromDataSourceAtIndexPaths :(NSArray *)deletedPhoto itemPath: (NSArray *) itemPaths{
+
     NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
     for (NSIndexPath *itemPath  in itemPaths) {
         [indexSet addIndex:itemPath.row];
     }
     [self.photos removeObjectsAtIndexes:indexSet];
-    
-    [self.dataWrapper deletePhotos:itemPaths];
+    for (CSPhoto *p in deletedPhoto) {
+        [self.dataWrapper deletePhotos:p];
+    }
 }
 
 -(NSArray *) selectedDeletedPhoto: (NSArray *)itemPaths {

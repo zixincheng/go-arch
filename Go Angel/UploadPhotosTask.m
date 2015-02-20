@@ -628,7 +628,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
         // System will be shutting down the app at any point in time now
     }];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
         [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
         readLock = [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];

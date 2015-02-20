@@ -38,7 +38,7 @@
 - (CSDevice *) getDevice: (NSString *) cid;
 - (NSString *) getLatestId;
 - (NSString *) getCurrentPhotoOnServerVaule: (NSString *) deviceId CurrentIndex:(int)index;
-- (void) deletePhotos:(NSArray *) itemPaths;
+- (void) deletePhotos:(CSPhoto *) photo;
 - (void) addLocation:(CSLocation *)location;
 - (void) deleteLocation:(CSLocation *) location;
 - (NSMutableArray *) searchLocation: (NSString *) location;
