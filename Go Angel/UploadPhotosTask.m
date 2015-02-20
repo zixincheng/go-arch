@@ -789,7 +789,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
         
         [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
         //readLock2 = [[NSConditionLock alloc] initWithCondition:WDASSETURL_PENDINGREADS];
-        
+        /*
         ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *asset) {
             ALAssetRepresentation *rep = [asset defaultRepresentation];
             CGImageRef iref = [asset thumbnail];
@@ -840,7 +840,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 [readLock lock];
                 [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
                 
-            }else {
+            }else {*/
                 AppDelegate *appDelegate =
                 [[UIApplication sharedApplication] delegate];
                 NSString *urlString = [NSString
@@ -900,7 +900,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                // [readLock2 lock];
                 //NSLog(@"lock 2%@",readLock2);
                 //[readLock2 unlockWithCondition:WDASSETURL_ALLFINISHED];
-                //NSLog(@"lock 2%@",readLock2);
+           /*     //NSLog(@"lock 2%@",readLock2);
             }
         };
         ALAssetsLibraryAccessFailureBlock failureBlock = ^(NSError *err) {
@@ -920,7 +920,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
         //[readLock2 unlock];
         
         // cleanup
-        readLock = nil;
+        readLock = nil;*/
         [application endBackgroundTask:background_task]; // End the task so the
         // system knows that you
         // are done with what you
