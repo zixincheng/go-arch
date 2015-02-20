@@ -300,7 +300,8 @@
 
 // update the device information on server
 - (void) updateMeta: (CSPhoto *) photo entity:(NSString *)entity value:(NSString *)value  {
-    NSString *query = [NSString stringWithFormat:@"?photo_id=%@&entity=%@&value=%@",photo.remoteID,entity,value];
+    NSString* TextEscaped = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *query = [NSString stringWithFormat:@"?photo_id=%@&entity=%@&value=%@",photo.remoteID,entity,TextEscaped];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
     NSMutableURLRequest *request;
