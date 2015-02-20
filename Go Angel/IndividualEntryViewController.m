@@ -982,7 +982,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             _topLbl.text = [NSString stringWithFormat:@"%d:%d:%d",hour,min,sec];
             [timer invalidate];
         } else {
-            [self.caremaBtn setImage:[UIImage imageNamed:@"videoDone.png"] forState:UIControlStateNormal];
+            [self.caremaBtn setImage:[UIImage imageNamed:@"videoFinish.png"] forState:UIControlStateNormal];
             [self.picker startVideoCapture];
             timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(videotimer) userInfo:nil repeats:YES];
             recording = YES;
