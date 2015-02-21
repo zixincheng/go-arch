@@ -163,6 +163,38 @@
 
 }
 
+-(void) updatePhotoTag: (NSString *) tag photoId: (NSString *) photoid {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+    [context performBlock: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+        
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", REMOTE_ID, photoid];
+        [request setPredicate:pred];
+        
+        NSError *err;
+        NSArray *result = [context executeFetchRequest:request error:&err];
+        
+        if (result == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        NSManagedObject *photoObj;
+        if (result.count == 0) {
+            photoObj = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
+        }else {
+            photoObj = result[0];
+        }
+        [photoObj setValue:tag forKey:@"tag"];
+        
+        [context save:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"tagUpdated" object:nil];
+    }];
+
+    
+}
+
 - (void) addUpdatePhoto:(CSPhoto *)photo {
   
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
@@ -191,7 +223,6 @@
     photoObj = [self setObjectValues:photo object:photoObj];
 
     [context save:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"tagUpdated" object:nil];
   }];
 }
 

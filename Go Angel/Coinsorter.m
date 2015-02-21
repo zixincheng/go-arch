@@ -331,20 +331,66 @@
     [postDataTask resume];
 }
 
-- (void) getMeta: (NSMutableArray *)photos{
+- (void) getMetaVideo: (NSMutableArray *)photos{
     NSOperationQueue *background = [[NSOperationQueue alloc] init];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
     NSMutableURLRequest *request;
-    for (CSPhoto *photo in photos) {
-        NSString *query = [NSString stringWithFormat:@"?photo_id=%@",photo.remoteID];
-        if ([photo.isVideo isEqualToString:@"1"]) {
-            request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/videos/metadata/%@",query]];
-        } else{
-            request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/photos/metadata/%@",query]];
+    
+    //for (CSPhoto *photo in photos) {
+    NSString *query = [NSString stringWithFormat:@"?photo_id=0"];
+    request = [self getHTTPGetRequest:[NSString     stringWithFormat:@"/videos/metadata/%@",query]];
+    
+    
+    NSArray *objects =
+    [NSArray arrayWithObjects:account.cid, account.token, nil];
+    
+    // set headers
+    NSArray *keys = [NSArray
+                     arrayWithObjects:@"cid",@"token", nil];
+    NSDictionary *headers =
+    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    [request setAllHTTPHeaderFields:headers];
+    
+    NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error == nil) {
+            NSError *jsonError;
+            NSArray *photoArr = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            /*
+             for (NSDictionary *p in photoArr) {
+             NSString *tag = [p objectForKey:@"tag"];
+             if (![photo.tag isEqualToString:tag]) {
+             photo.tag = tag;
+             
+             [self.dataWrapper addUpdatePhoto:photo];
+             }
+             */
+            //}
+            for (NSDictionary *p in photoArr) {
+                NSString *tag = [p objectForKey:@"tag"];
+                NSString *photoid = [p objectForKey:@"_id"];
+                
+                [self.dataWrapper updatePhotoTag:tag photoId:photoid];
+            }
         }
+    }];
+    [dataTask resume];
+    //}
+}
+
+- (void) getMetaPhoto: (NSMutableArray *)photos{
+    NSOperationQueue *background = [[NSOperationQueue alloc] init];
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
+    NSMutableURLRequest *request;
+    
+    //for (CSPhoto *photo in photos) {
+    NSString *query = [NSString stringWithFormat:@"?photo_id=0"];
+    request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/photos/metadata/%@",query]];
+
+
         NSArray *objects =
-        [NSArray arrayWithObjects:photo.deviceId, account.token, nil];
+        [NSArray arrayWithObjects:account.cid, account.token, nil];
         
         // set headers
         NSArray *keys = [NSArray
@@ -357,7 +403,7 @@
             if (error == nil) {
                 NSError *jsonError;
                 NSArray *photoArr = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-                
+                /*
                 for (NSDictionary *p in photoArr) {
                     NSString *tag = [p objectForKey:@"tag"];
                     if (![photo.tag isEqualToString:tag]) {
@@ -365,12 +411,18 @@
 
                         [self.dataWrapper addUpdatePhoto:photo];
                     }
-
+*/
+                //}
+                for (NSDictionary *p in photoArr) {
+                    NSString *tag = [p objectForKey:@"tag"];
+                    NSString *photoid = [p objectForKey:@"_id"];
+                    
+                    [self.dataWrapper updatePhotoTag:tag photoId:photoid];
                 }
             }
         }];
         [dataTask resume];
-    }
+    //}
 }
 
 -(void) setPassword: (NSString *)oldPass newPass:(NSString *)newPass callback: (void (^) (NSDictionary *)) callback{

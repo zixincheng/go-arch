@@ -47,6 +47,7 @@
 -(void) uploadVideoThumb: (CSPhoto *)photo;
 -(void) uploadPhotoThumb: (CSPhoto *)photo;
 - (void) updateMeta: (CSPhoto *) photo entity:(NSString *)entity value:(NSString *)value;
-- (void) getMeta: (NSMutableArray *)photos;
+- (void) getMetaPhoto: (NSMutableArray *)photos;
+- (void) getMetaVideo: (NSMutableArray *)photos;
 -(void) setPassword: (NSString *)oldPass newPass:(NSString *)newPass callback: (void (^) (NSDictionary *)) callback;
 @end
