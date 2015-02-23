@@ -649,7 +649,7 @@
 
 - (NSManagedObject *) relationLocation: (CSLocation *) location object:(NSManagedObject *) object {
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
-    //[context performBlock: ^{
+
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
         
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",UNIT,location.unit,CITY,location.city,NAME,location.name];
@@ -664,10 +664,7 @@
         }
         
         NSManagedObject* resultObj = result[0];
-        NSLog(@"result loaction %@",resultObj);
         [object setValue:resultObj forKey:@"location"];
-   // }];
-    NSLog(@"object loaction %@",object);
     return object;
 }
 
