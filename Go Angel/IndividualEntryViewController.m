@@ -566,7 +566,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     takingPhoto = YES;
     
     [self presentViewController:self.picker animated:YES completion:^{
-        [self addCameraCover];
+        //[self addCameraCover];
     }];
 }
 
@@ -955,6 +955,19 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         _doneCameraDownView.frame = downFrame;
     }];
 }
+
+-(void) flashScreen {
+    CGFloat height = DEVICE_SIZE.height - CAMERA_MENU_VIEW_HEIGH - 95;
+    UIWindow* wnd = [UIApplication sharedApplication].keyWindow;
+    UIView* v = [[UIView alloc] initWithFrame: CGRectMake(0, 0, DEVICE_SIZE.width, height)];
+    [wnd addSubview: v];
+    v.backgroundColor = [UIColor whiteColor];
+    [UIView beginAnimations: nil context: nil];
+    [UIView setAnimationDuration: 1.0];
+    v.alpha = 0.0f;
+    [UIView commitAnimations];
+}
+
 #pragma mark Camera buttons actions
 
 //button taking picture
@@ -962,13 +975,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     // if the camera is under photo model
     if (takingPhoto) {
         [self.picker takePicture];
-        [self showCameraCover:YES];
-        double delayInSeconds = 0.5f;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        //[self showCameraCover:YES];
+        [self flashScreen];
+       // double delayInSeconds = 0.5f;
+       // dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        //dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             //sender.userInteractionEnabled = YES;
-            [self showCameraCover:NO];
-        });
+            //[self showCameraCover:NO];
+        //});
     }
     // if the camera is under video model
     else {
@@ -983,7 +997,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             _topLbl.text = [NSString stringWithFormat:@"%d:%d:%d",hour,min,sec];
             [timer invalidate];
         } else {
-            [self.caremaBtn setImage:[UIImage imageNamed:@"videoFinish.png"] forState:UIControlStateNormal];
+            //[self.caremaBtn setImage:[UIImage imageNamed:@"videoFinish.png"] forState:UIControlStateNormal];
             [self.picker startVideoCapture];
             timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(videotimer) userInfo:nil repeats:YES];
             recording = YES;
@@ -1000,6 +1014,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         self.picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
         takingPhoto = NO;
         [self.caremaBtn setImage:[UIImage imageNamed:@"video.png"] forState:UIControlStateNormal];
+
         _topLbl.text = @"Taking Video";
         NSLog(@"media type %@",self.picker.mediaTypes );
     } else {
@@ -1010,7 +1025,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
 }
 
-// set a timer when video starts, to display t#import <AVFoundation/AVFoundation.h>he time of a video has been taken
+// set a timer when video starts, to display the time of a video has been taken
 -(void)videotimer {
     NSLog(@"timer");
     sec = sec % 60;

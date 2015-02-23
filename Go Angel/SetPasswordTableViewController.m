@@ -93,32 +93,32 @@
                                                                       callback:nil];
                 });
                 return;
-            }
-
-            if ([[authData objectForKey:@"stat"] isEqualToString:@"success"]) {
-                account.token = [authData objectForKey:@"token"];
-                [account saveSettings];
-
-                [defaults setObject:self.PassText.text forKey:@"password"];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Success!!!"
-                                                                   description:@"New Password Set Success"
-                                                                          type:TWMessageBarMessageTypeSuccess
-                                                                statusBarStyle:UIStatusBarStyleLightContent
-                                                                      callback:nil];
-                });
-                NSLog(@"set password successfuly ");
-
             } else {
-                NSLog(@"error %@",[authData objectForKey:@"message"]);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Failed"
-                                                               description:[NSString stringWithFormat:@"%@",[authData objectForKey:@"message"]]
-                                                                      type:TWMessageBarMessageTypeError
-                                                            statusBarStyle:UIStatusBarStyleLightContent
-                                                                  callback:nil];
-                });
-
+                
+                if ([[authData objectForKey:@"stat"] isEqualToString:@"success"]) {
+                    account.token = [authData objectForKey:@"token"];
+                    [account saveSettings];
+                    
+                    [defaults setObject:self.PassText.text forKey:@"password"];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Success!!!"
+                                                                       description:@"New Password Set Success"
+                                                                              type:TWMessageBarMessageTypeSuccess
+                                                                    statusBarStyle:UIStatusBarStyleLightContent
+                                                                          callback:nil];
+                    });
+                    NSLog(@"set password successfuly ");
+                    
+                } else {
+                    NSLog(@"error %@",[authData objectForKey:@"message"]);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Failed"
+                                                                       description:[NSString stringWithFormat:@"%@",[authData objectForKey:@"message"]]
+                                                                              type:TWMessageBarMessageTypeError
+                                                                    statusBarStyle:UIStatusBarStyleLightContent
+                                                                          callback:nil];
+                    });
+                }
             }
         }];
     }
