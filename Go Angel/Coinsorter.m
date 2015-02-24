@@ -339,7 +339,7 @@
     
     //for (CSPhoto *photo in photos) {
     NSString *query = [NSString stringWithFormat:@"?photo_id=0"];
-    request = [self getHTTPGetRequest:[NSString     stringWithFormat:@"/videos/metadata/%@",query]];
+    request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/videos/metadata/%@",query]];
     
     
     NSArray *objects =
@@ -370,7 +370,7 @@
                 NSString *tag = [p objectForKey:@"tag"];
                 NSString *photoid = [p objectForKey:@"_id"];
                 
-                [self.dataWrapper updatePhotoTag:tag photoId:photoid];
+                [self.dataWrapper updatePhotoTag:tag photoId:photoid photo:nil];
             }
         }
     }];
@@ -417,7 +417,7 @@
                     NSString *tag = [p objectForKey:@"tag"];
                     NSString *photoid = [p objectForKey:@"_id"];
                     
-                    [self.dataWrapper updatePhotoTag:tag photoId:photoid];
+                    [self.dataWrapper updatePhotoTag:tag photoId:photoid photo:nil];
                 }
             }
         }];

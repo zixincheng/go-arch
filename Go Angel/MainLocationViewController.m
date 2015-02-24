@@ -101,7 +101,9 @@
 -(void) uploadPhotoChanged {
     
     self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
-    [self uploadPhotosToApi];
+    if (self.canConnect) {
+        [self uploadPhotosToApi];
+    }
     [self updateUploadCountUI];
 }
 
@@ -204,7 +206,6 @@
     cell.imageView.image = defaultImage;
     if (self.photos.count != 0) {
         photo = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:l];
-        NSLog(@"%@",photo);
         if (photo == nil) {
             photo = [self.photos objectAtIndex:0];
         }
@@ -360,6 +361,9 @@
         if (account.ip != nil) {
             [self.coinsorter pingServer:^(BOOL connected) {
                 self.canConnect = connected;
+                if (self.canConnect && self.unUploadedPhotos !=0) {
+                    [self uploadPhotosToApi];
+                }
                 //sent a notification to dashboard when network connects with home server
                 //[[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerConnected" object:nil];
                 [self updateUploadCountUI];

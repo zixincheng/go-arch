@@ -64,8 +64,8 @@
 
   // set nav bar title
   [self.navBar
-      setTitle:[NSString stringWithFormat:@"%d / %d", self.selected + 1,
-                                          self.photos.count]];
+      setTitle:[NSString stringWithFormat:@"%d / %lu", self.selected + 1,
+                                          (unsigned long)self.photos.count]];
 
   // add share button to top nav bar
   self.navBar.rightBarButtonItem = [[UIBarButtonItem alloc]
@@ -103,11 +103,13 @@
     
     UITextField *text = sender;
     self.selectedPhoto.tag = text.text;
-    [self.dataWrapper addUpdatePhoto:self.selectedPhoto];
     if (self.selectedPhoto.remoteID != nil) {
-        [self.coinsorter updateMeta:self.selectedPhoto entity:@"tag" value:self.selectedPhoto.tag];
+        [self.dataWrapper updatePhotoTag:self.selectedPhoto.tag photoId:self.selectedPhoto.remoteID photo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"tagUpdated" object:nil];
     } else {
+        [self.dataWrapper updatePhotoTag:self.selectedPhoto.tag photoId:nil photo:self.selectedPhoto];
         NSLog(@"could not update tag at this moment because the photo is not upload yet, tag will be update when uploading the photo");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"tagUpdated" object:nil];
     }
 }
 

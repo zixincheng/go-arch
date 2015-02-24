@@ -42,5 +42,5 @@
 - (void) addLocation:(CSLocation *)location;
 - (void) deleteLocation:(CSLocation *) location;
 - (NSMutableArray *) searchLocation: (NSString *) location;
--(void) updatePhotoTag: (NSString *) tag photoId: (NSString *) photoid;
+-(void) updatePhotoTag: (NSString *) tag photoId: (NSString *) photoid photo: (CSPhoto *) photo;
 @end

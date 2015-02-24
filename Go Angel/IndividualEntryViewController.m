@@ -103,8 +103,10 @@
     account = appDelegate.account;
     
     self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     [self.coinsorter getMetaPhoto:self.photos];
     [self.coinsorter getMetaVideo:self.photos];
+    });
     /*
     if (self.photos.count != 0) {
         CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
@@ -115,28 +117,35 @@
             [self.coinsorter updateMeta:coverPhoto entity:@"home" value:@"1"];
         }
     }*/
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagUpdated) name:@"tagUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagStored) name:@"tagStored" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewcell) name:@"addNewPhoto" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagUpdated) name:@"tagUpdated" object:nil];
     //self.photos = [self.coinsorter getMeta:self.photos];
     // Do any additional setup after loading the view.
 
 
 }
-/*
-- (void)viewDidLayoutSubviews
-{
-    if (self.photos.count != 0) {
-        [self scrollToBottom];
-    }
-}
-*/
-- (void) dealloc {
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"tagUpdated" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"addNewPhoto" object:nil];
-}
 -(void) tagUpdated {
     self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    CSPhoto * selectedPhoto = [self.photos objectAtIndex:selected];
+    NSLog(@"selecet tag %@",selectedPhoto.tag);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self.coinsorter updateMeta:selectedPhoto entity:@"tag" value:selectedPhoto.tag];
+    });
+    
+}
+
+- (void) dealloc {
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"tagStored" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"addNewPhoto" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"tagUpdated" object:nil];
+
+}
+-(void) tagStored {
+    self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.collectionView reloadData];
     });
