@@ -992,6 +992,7 @@ didCompleteWithError:(NSError *)error {
     }
     
     CSPhoto *p = [self getPhotoWithTaskIdentifier:task.taskIdentifier];
+    p = [self.dataWrapper getPhoto:p.imageURL];
     
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
     if ([task.response respondsToSelector:@selector(allHeaderFields)]) {

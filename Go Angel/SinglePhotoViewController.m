@@ -105,11 +105,12 @@
     self.selectedPhoto.tag = text.text;
     if (self.selectedPhoto.remoteID != nil) {
         [self.dataWrapper updatePhotoTag:self.selectedPhoto.tag photoId:self.selectedPhoto.remoteID photo:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"tagUpdated" object:nil];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [self.coinsorter updateMeta:self.selectedPhoto entity:@"tag" value:self.selectedPhoto.tag];
+        });
     } else {
         [self.dataWrapper updatePhotoTag:self.selectedPhoto.tag photoId:nil photo:self.selectedPhoto];
         NSLog(@"could not update tag at this moment because the photo is not upload yet, tag will be update when uploading the photo");
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"tagUpdated" object:nil];
     }
 }
 

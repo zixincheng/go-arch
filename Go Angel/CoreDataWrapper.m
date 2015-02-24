@@ -382,6 +382,43 @@
     return arr;
 }
 
+- (CSPhoto *)getPhoto: (NSString *) imageURL{
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    __block CSPhoto *photo = [[CSPhoto alloc] init];
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+        
+        // set query
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)",IMAGE_URL,imageURL];
+        [request setPredicate:pred];
+        // set sort
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:NO];
+        NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
+        [request setSortDescriptors: descriptors];
+        
+        NSArray *phs = [context executeFetchRequest:request error:nil];
+        
+        
+        
+        if (phs == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        // add all of the photo objects to the local photo list
+        if (phs.count == 0) {
+            photo = nil;
+        } else {
+            NSManagedObject *p = phs[0];
+            photo = [self getPhotoFromObject:p];
+        }
+    }];
+    
+    return photo;
+}
+
+
 - (CSPhoto *)getCoverPhoto: (NSString *) deviceId location:(CSLocation *)location{
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     __block CSPhoto *coverPhoto = [[CSPhoto alloc] init];

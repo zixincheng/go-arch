@@ -118,28 +118,15 @@
     }*/
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagStored) name:@"tagStored" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewcell) name:@"addNewPhoto" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagUpdated) name:@"tagUpdated" object:nil];
     //self.photos = [self.coinsorter getMeta:self.photos];
     // Do any additional setup after loading the view.
 
-
-}
-
--(void) tagUpdated {
-    self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
-    CSPhoto * selectedPhoto = [self.photos objectAtIndex:selected];
-    NSLog(@"selecet tag %@",selectedPhoto.tag);
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [self.coinsorter updateMeta:selectedPhoto entity:@"tag" value:selectedPhoto.tag];
-    });
-    
 }
 
 - (void) dealloc {
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"tagStored" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"addNewPhoto" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"tagUpdated" object:nil];
 
 }
 -(void) tagStored {

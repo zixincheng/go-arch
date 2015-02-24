@@ -43,4 +43,5 @@
 - (void) deleteLocation:(CSLocation *) location;
 - (NSMutableArray *) searchLocation: (NSString *) location;
 -(void) updatePhotoTag: (NSString *) tag photoId: (NSString *) photoid photo: (CSPhoto *) photo;
+- (CSPhoto *)getPhoto: (NSString *) imageURL;
 @end
