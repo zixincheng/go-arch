@@ -297,6 +297,7 @@
         individualViewControll.dataWrapper = self.dataWrapper;
         individualViewControll.localDevice = self.localDevice;
         individualViewControll.location = self.selectedlocation;
+        individualViewControll.coinsorter = self.coinsorter;
         
         NSString *title;
         if (![self.selectedlocation.unit isEqualToString:@""]) {

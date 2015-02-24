@@ -88,7 +88,6 @@
 
     //init vars
     localLibrary = [[LocalLibrary alloc] init];
-    self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
     defaults = [NSUserDefaults standardUserDefaults];
     
     self.saveInAlbum = [defaults boolForKey:SAVE_INTO_ALBUM];
