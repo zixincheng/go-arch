@@ -142,11 +142,15 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
 
 // text field for name was changed
 - (IBAction)nameChanged:(id)sender {
-    [self stopStandardUpdates];
     [self geocodeAddress];
     self.location.name = self.streetName.text;
     [self saveLocation];
 
+}
+
+-(void) textFieldDidBeginEditing:(UITextField *)textField {
+    
+    [self stopStandardUpdates];
 }
 
 // when return button pressed, hide keyboard
