@@ -118,9 +118,23 @@
     }*/
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagStored) name:@"tagStored" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewcell) name:@"addNewPhoto" object:nil];
-    //self.photos = [self.coinsorter getMeta:self.photos];
-    // Do any additional setup after loading the view.
 
+    // Do any additional setup after loading the view.
+    if ([self.loadCamera isEqualToString:@"Yes"]) {
+        [self cameraButtonPressed:self.mainCameraBtn];
+    }
+    
+    self.navigationItem.leftBarButtonItem =
+    [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                     style:UIBarButtonItemStylePlain
+                                    target:self
+                                    action:@selector(handleBack:)];
+
+}
+
+-(void)handleBack:(id)sender
+{
+    [self.navigationController popToRootViewControllerAnimated:TRUE];
 }
 
 - (void) dealloc {

@@ -344,6 +344,15 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
 }
 - (IBAction)AddBtn:(id)sender {
     [self saveLocationToCoredata];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+        NSArray *objects =
+    [NSArray arrayWithObjects:self.location,nil];
+    NSArray *keys = [NSArray
+                     arrayWithObjects:LOCATION, nil];
+    NSDictionary *locationDic =
+    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"AddLocationSegue" object:nil userInfo:locationDic];
 }
+
+
+
 @end

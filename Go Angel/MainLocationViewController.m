@@ -93,10 +93,21 @@
      self.clearsSelectionOnViewWillAppear = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePass) name:@"passwordChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPhotoChanged:) name:@"addNewPhoto"object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewLocation:) name:@"AddLocationSegue"object:nil];
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
      //self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+
+-(void) addNewLocation: (NSNotification *)notification{
+    
+    self.locations = [self.dataWrapper getLocations];
+    self.selectedlocation = [notification.userInfo objectForKey:LOCATION];
+    loadCamera = 1;
+    [self performSegueWithIdentifier:@"individualSegue" sender:self];
+    loadCamera = 0;
+}
+
 
 -(void) uploadPhotoChanged: (NSNotification *)notification{
     
@@ -104,6 +115,13 @@
     if (self.canConnect) {
         [self onePhotoToApi:p];
     }
+}
+
+- (void) dealloc {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"passwordChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"addNewPhoto" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AddLocationSegue" object:nil];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -297,6 +315,10 @@
         individualViewControll.localDevice = self.localDevice;
         individualViewControll.location = self.selectedlocation;
         individualViewControll.coinsorter = self.coinsorter;
+        
+        if (loadCamera == 1) {
+            individualViewControll.loadCamera = @"Yes";
+        }
         
         NSString *title;
         if (![self.selectedlocation.unit isEqualToString:@""]) {

@@ -72,7 +72,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nmk-Ng-SXQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1326" y="1425"/>
+            <point key="canvasLocation" x="-1044" y="1385"/>
         </scene>
         <!--Settings-->
         <scene sceneID="znn-DK-S4H">
@@ -495,7 +495,7 @@
         <!--Main Location View Controller-->
         <scene sceneID="5ok-t0-M5u">
             <objects>
-                <tableViewController autoresizesArchivedViewToFullSize="NO" id="m5v-K9-jHG" customClass="MainLocationViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="mainLocationViewController" autoresizesArchivedViewToFullSize="NO" id="m5v-K9-jHG" customClass="MainLocationViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Kp9-oH-3JH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1352,7 +1352,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Lj-LQ-t8X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2445" y="1433"/>
+            <point key="canvasLocation" x="-2273" y="1311"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RIn-fk-WNf">
@@ -1370,7 +1370,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4zt-2n-cs0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1793" y="1425"/>
+            <point key="canvasLocation" x="-1511" y="1385"/>
         </scene>
     </scenes>
     <resources>

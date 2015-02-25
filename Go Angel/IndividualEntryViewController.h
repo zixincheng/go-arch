@@ -68,4 +68,6 @@
 @property (nonatomic, strong) NSMutableArray *tmpMeta;
 @property (nonatomic, strong) NSMutableArray *videoUrl;
 
+@property (nonatomic, assign) NSString *loadCamera;
+
 @end

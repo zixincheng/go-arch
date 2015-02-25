@@ -24,6 +24,7 @@
     LocalLibrary *localLibrary;
     AccountDataWrapper *account;
     NSUserDefaults *defaults;
+    int loadCamera;
     
 }
 @property (nonatomic, strong) UISearchController *searchController;
