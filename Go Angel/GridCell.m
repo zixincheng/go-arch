@@ -116,11 +116,32 @@
     
     [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *Currentimage) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.image = Currentimage;
+                __block UIImage *newimage;
+                if ([photo.isVideo isEqualToString:@"1"]) {
+                   newimage = [self addVideoIcon:Currentimage];
+                } else {
+                    newimage = Currentimage;
+                }
+
+                self.image = newimage;
             });
     }];
     }
     _titleLabel.text = _photo.tag;
+}
+
+-(UIImage *)addVideoIcon: (UIImage *) VideoImage{
+    UIGraphicsBeginImageContext(VideoImage.size);
+    [VideoImage drawInRect:CGRectMake(0, 0, VideoImage.size.width, VideoImage.size.height)];
+    UIImage *iconImage = [UIImage imageNamed:@"play-circle.png"];
+    [iconImage drawInRect:CGRectMake((VideoImage.size.width-140)/2, (VideoImage.size.height-140)/2, 140, 140)];
+    
+    VideoImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // free the context
+    UIGraphicsEndImageContext();
+    return VideoImage;
+    
 }
 
 - (id)initWithFrame:(CGRect)frame{

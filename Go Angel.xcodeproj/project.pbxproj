@@ -72,6 +72,7 @@
 		9B12113C1A79B0FD0088CD3A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B12113B1A79B0FD0088CD3A /* MapKit.framework */; };
 		9B1211431A79B13B0088CD3A /* SearchMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1211421A79B13B0088CD3A /* SearchMapViewController.m */; };
 		9B3445CD1A410772004BA746 /* RadarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3445CC1A410772004BA746 /* RadarViewController.m */; };
+		9B3A65CD1A9E65EA00D77CD3 /* play-circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B3A65CC1A9E65EA00D77CD3 /* play-circle.png */; };
 		9B4ADCB61A7C168500375C01 /* SearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */; };
 		9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */; };
 		9B555D571A4A32FB00D00025 /* selectedbackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B555D561A4A32FB00D00025 /* selectedbackground.png */; };
@@ -249,6 +250,7 @@
 		9B1211421A79B13B0088CD3A /* SearchMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchMapViewController.m; sourceTree = "<group>"; };
 		9B3445CB1A410772004BA746 /* RadarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarViewController.h; sourceTree = "<group>"; };
 		9B3445CC1A410772004BA746 /* RadarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadarViewController.m; sourceTree = "<group>"; };
+		9B3A65CC1A9E65EA00D77CD3 /* play-circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play-circle.png"; sourceTree = "<group>"; };
 		9B4ADCB41A7C168500375C01 /* SearchResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewController.h; sourceTree = "<group>"; };
 		9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewController.m; sourceTree = "<group>"; };
 		9B4C12921A72DCC6004CC973 /* IndividualEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndividualEntryViewController.h; sourceTree = "<group>"; };
@@ -458,6 +460,7 @@
 		2053971E1991924B00B1D9AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9B3A65CC1A9E65EA00D77CD3 /* play-circle.png */,
 				9BC7B9581A940F4E00164F0E /* icon-error.png */,
 				9BC7B9591A940F4E00164F0E /* icon-success.png */,
 				20C3BBA31A687EFA0019DE40 /* box.png */,
@@ -659,6 +662,7 @@
 				20C3BBC91A687EFA0019DE40 /* camera_line_h@2x.png in Resources */,
 				20C3BBE71A687EFA0019DE40 /* uploading.png in Resources */,
 				20C3BBD21A687EFA0019DE40 /* flashing_off.png in Resources */,
+				9B3A65CD1A9E65EA00D77CD3 /* play-circle.png in Resources */,
 				2061D2021991947D001C7E08 /* Images.xcassets in Resources */,
 				20C3BBCC1A687EFA0019DE40 /* close_cha_h.png in Resources */,
 				9BC7B95A1A940F4E00164F0E /* icon-error.png in Resources */,
