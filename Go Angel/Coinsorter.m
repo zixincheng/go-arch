@@ -612,6 +612,12 @@
   [dataTask resume];
 }
 
+//upload one photo to the server
+- (void) uploadOnePhoto:(CSPhoto *)photo upCallback:(void (^)())upCallback {
+    
+    [uploadTask uploadOnePhoto:photo upCallback:upCallback];
+}
+
 // upload photos from array
 // the callback is what we want to do after each photo is uploaded
 - (void) uploadPhotos:(NSMutableArray *)photos upCallback:(void (^)())upCallback {

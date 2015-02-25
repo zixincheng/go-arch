@@ -50,4 +50,6 @@
 - (void) getMetaPhoto: (NSMutableArray *)photos;
 - (void) getMetaVideo: (NSMutableArray *)photos;
 -(void) setPassword: (NSString *)oldPass newPass:(NSString *)newPass callback: (void (^) (NSDictionary *)) callback;
+
+- (void) uploadOnePhoto:(CSPhoto *)photo upCallback:(void (^)())upCallback;
 @end

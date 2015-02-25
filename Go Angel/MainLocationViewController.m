@@ -92,19 +92,18 @@
     // Uncomment the following line to preserve selection between presentations.
      self.clearsSelectionOnViewWillAppear = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePass) name:@"passwordChanged" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPhotoChanged) name:@"coredataDone" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPhotoChanged:) name:@"addNewPhoto"object:nil];
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
      //self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
--(void) uploadPhotoChanged {
+-(void) uploadPhotoChanged: (NSNotification *)notification{
     
-    self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
+    CSPhoto *p = [self.dataWrapper getPhoto:[notification.userInfo objectForKey:IMAGE_URL]];
     if (self.canConnect) {
-        [self uploadPhotosToApi];
+        [self onePhotoToApi:p];
     }
-    [self updateUploadCountUI];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -443,6 +442,17 @@
     [self updateUploadCountUI];
 }
 
+
+- (void) onePhotoToApi:(CSPhoto *)photo {
+    
+    [self.coinsorter uploadOnePhoto:photo upCallback:^(CSPhoto *p){
+        NSLog(@"removete id %@", p.remoteID );
+        if (p.tag != nil) {
+            [self.coinsorter updateMeta:p entity:@"tag" value:p.tag];
+            NSLog(@"updating the tags");
+        }
+    }];
+}
 - (void) uploadPhotosToApi {
     NSMutableArray *photos = [self.dataWrapper getPhotosToUpload];
     self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
@@ -462,14 +472,7 @@
             
             NSLog(@"removete id %@", p.remoteID );
             currentUploaded += 1;
-/*            if ([p.isVideo isEqualToString:@"1"]) {
-                [self.coinsorter uploadVideoThumb:p];
-                NSLog(@"uploading the video thumbnails");
-            } else {
-                [self.coinsorter uploadPhotoThumb:p];
-                NSLog(@"uploading the photo thumbnails");
-            }
-  */
+
             if (p.tag != nil) {
                 [self.coinsorter updateMeta:p entity:@"tag" value:p.tag];
                 NSLog(@"updating the tags");

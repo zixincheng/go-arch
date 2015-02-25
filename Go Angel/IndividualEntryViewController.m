@@ -1047,10 +1047,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 - (void)dismissBtnPressed:(id)sender {
     [self.picker dismissViewControllerAnimated:YES completion:^{
         [timer invalidate];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"coredataDone" object:nil];
-      //  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-          //  [self savingPhotoFromImagePicker:self.tmpPhotos tmpMeta:self.tmpMeta moviePath:self.videoUrl];
-        //});
     }];
     
 }

@@ -42,4 +42,6 @@
 - (void)uploadVideoThumb:(CSPhoto *)photo;
 - (void)uploadPhotoThumb:(CSPhoto *)photo;
 
+-(void)uploadOnePhoto:(CSPhoto *)p upCallback:(void (^)())upCallback;
+
 @end

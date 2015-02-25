@@ -270,24 +270,30 @@
       NSLog(@"error with core data request");
       abort();
     }
-    
-    if (results.count == 0) {
-      NSManagedObject *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
-       // NSManagedObject *location = [self relationLocation:photo.location];
-      //  NSLog(@"obj %@",location);
-      newPhoto = [self setObjectValues:photo object:newPhoto];
-
-      newPhoto = [self relationLocation:photo.location object:newPhoto];
-      // save context to updated other threads
-      [context save:nil];
       
-      NSLog(@"added new photo to core data");
-     [[NSNotificationCenter defaultCenter] postNotificationName:@"addNewPhoto" object:nil];
-
-      added = YES;
-    }else {
-      NSLog(@"photo already in core data");
-    }
+      if (results.count == 0) {
+          NSManagedObject *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
+          // NSManagedObject *location = [self relationLocation:photo.location];
+          //  NSLog(@"obj %@",location);
+          newPhoto = [self setObjectValues:photo object:newPhoto];
+          
+          newPhoto = [self relationLocation:photo.location object:newPhoto];
+          // save context to updated other threads
+          [context save:nil];
+          NSArray *objects =
+          [NSArray arrayWithObjects:photo.imageURL, nil];
+          NSArray *keys = [NSArray
+                           arrayWithObjects:IMAGE_URL, nil];
+          NSDictionary *photoDic =
+          [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+          
+          NSLog(@"added new photo to core data");
+          [[NSNotificationCenter defaultCenter] postNotificationName:@"addNewPhoto" object:nil userInfo:photoDic];
+          
+          added = YES;
+      }else {
+          NSLog(@"photo already in core data");
+      }
   }];
   return added;
 }
@@ -678,7 +684,7 @@
         
         if (result.count == 0) {
             locationObj = [NSEntityDescription insertNewObjectForEntityForName:LOCATION inManagedObjectContext:context];
-            NSLog(@"created new device");
+            NSLog(@"created new Location");
         }else {
             locationObj = result[0];
             NSLog(@"updated Location - %@", location.name);

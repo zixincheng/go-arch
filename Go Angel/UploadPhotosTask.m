@@ -229,7 +229,174 @@
 /*
  *
  */
+-(void)uploadOnePhoto:(CSPhoto *)p upCallback:(void (^)())upCallback {
+    // set the upload callback
+    self.upCallback = upCallback;
+    
+    // This generates a guranteed unique string
+    NSString *uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    __block UIBackgroundTaskIdentifier background_task; // Create a task object
+    
+    UIApplication *application = [UIApplication sharedApplication];
+    
+    background_task = [application beginBackgroundTaskWithExpirationHandler:^{
+        [application endBackgroundTask:background_task]; // Tell the system that
+        // we are done with the
+        // tasks
+        background_task = UIBackgroundTaskInvalid; // Set the task to be invalid
+        
+        // System will be shutting down the app at any point in time now
+    }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        // Perform your tasks that your application requires
+        
+        // prevent app from going to sleep when uploading
+        [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+        if ([p.isVideo isEqualToString:@"1"]) {
+            NSLog(@"uploading from device folder");
+            AppDelegate *appDelegate =
+            [[UIApplication sharedApplication] delegate];
+            NSString *urlString = [NSString
+                                   stringWithFormat:@"%@%@%@", @"https://",
+                                   appDelegate.account.ip, @"/videos"];
+            
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            NSArray * keys;
+            NSArray *objects;
+            
+            NSString *name = p.location.name;
+            NSString *unit = p.location.unit;
+            NSString *city = p.location.city;
+            NSString *state = p.location.province;
+            NSString *countryCode = p.location.countryCode;
+            NSString *country = p.location.country;
+            NSString *longitude = p.location.longitude;
+            NSString *latitude = p.location.latitude;
+            NSString *sublocation = name;
+            if (![unit isEqualToString:@""]) {
+                sublocation = [NSString stringWithFormat:@"Unit %@ - %@", unit, name];
+            }
+            //if (tagLocation) {
+            keys = [NSArray
+                    arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
+            objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation, nil];
+            NSDictionary *headers =
+            [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            [request setURL:url];
+            [request setHTTPMethod:@"POST"];
+            [request setAllHTTPHeaderFields:headers];
+            
+            // get documents directory
+            NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
+                                                                     NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [pathArray objectAtIndex:0];
+            NSString *textPath = [documentsDirectory
+                                  stringByAppendingPathComponent:p.fileName];
+            
+            // get movie data from file path
+            NSData *movieData = [NSData dataWithContentsOfFile:textPath];
+            NSString *fileName = [NSString
+                                  stringWithFormat:@"%@_%@", p.fileName, @"movie.mov"];
+            NSURL *fileURL =
+            [NSURL fileURLWithPath:[NSTemporaryDirectory()
+                                    stringByAppendingString:fileName]];
+            // write the image data to a temp dir
+            [movieData writeToURL:fileURL
+                          options:NSDataWritingAtomic
+                            error:nil];
+            
+            // upload the file from the temp dir
+            NSURLSessionUploadTask *uploadTask =
+            [self.session uploadTaskWithRequest:request fromFile:fileURL];
+            
+            p.taskIdentifier = uploadTask.taskIdentifier;
+            
+            @synchronized(self.uploadingPhotos) {
+                [self.uploadingPhotos addObject:p];
+            }
+            
+            // start upload
+            [uploadTask resume];
+            
+            [readLock lock];
+            [readLock unlockWithCondition:WDASSETURL_ALLFINISHED];
+            
+        } else {
+            AppDelegate *appDelegate =
+            [[UIApplication sharedApplication] delegate];
+            NSString *urlString = [NSString
+                                   stringWithFormat:@"%@%@%@", @"https://",
+                                   appDelegate.account.ip, @"/photos"];
+            
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            // TODO: Get these values from photo
+            // eg. filename = actual filename (not unique string)
+            NSArray *objects =
+            [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token,
+             uniqueString, @"image/jpg", nil];
+            
+            // set headers
+            NSArray *keys = [NSArray
+                             arrayWithObjects:@"cid",@"token", @"filename", @"image-type", nil];
+            NSDictionary *headers =
+            [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            
+            [request setURL:url];
+            [request setHTTPMethod:@"POST"];
+            [request setAllHTTPHeaderFields:headers];
+            
+            // get documents directory
+            NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
+                                                                     NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [pathArray objectAtIndex:0];
+            NSString *textPath = [documentsDirectory
+                                  stringByAppendingPathComponent:p.fileName];
+            
+            // get image data from file path
+            NSData *imageData = [self getPhotoWithMetaDataFromFile:textPath photo:p];
+            NSString *fileName = [NSString
+                                  stringWithFormat:@"%@_%@", p.fileName, @"image.jpg"];
+            NSURL *fileURL =
+            [NSURL fileURLWithPath:[NSTemporaryDirectory()
+                                    stringByAppendingString:fileName]];
+            // write the image data to a temp dir
+            [imageData writeToURL:fileURL
+                          options:NSDataWritingAtomic
+                            error:nil];
+            
+            // upload the file from the temp dir
+            NSURLSessionUploadTask *uploadTask =
+            [self.session uploadTaskWithRequest:request fromFile:fileURL];
+            
+            p.taskIdentifier = uploadTask.taskIdentifier;
+            
+            @synchronized(self.uploadingPhotos) {
+                [self.uploadingPhotos addObject:p];
+            }
+            
+            // start upload
+            [uploadTask resume];
 
+        }
+        [application endBackgroundTask:background_task]; // End the task so the
+        // system knows that you
+        // are done with what you
+        // need to perform
+        background_task =
+        UIBackgroundTaskInvalid;
+
+    });
+
+    
+}
 - (void)uploadPhotoArray:(NSMutableArray *)photos
               upCallback:(void (^)())upCallback {
     // set the upload callback
