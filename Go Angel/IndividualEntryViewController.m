@@ -118,7 +118,7 @@
             [self.coinsorter updateMeta:coverPhoto entity:@"home" value:@"1"];
         }
     }*/
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagStored) name:@"tagStored" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagStored:) name:@"tagStored" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewcell) name:@"addNewPhoto" object:nil];
 
     // Do any additional setup after loading the view.
@@ -145,14 +145,19 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"addNewPhoto" object:nil];
 
 }
--(void) tagStored {
+
+-(void) tagStored: (NSNotification *) notification {
+    NSMutableArray *indexset = [NSMutableArray array];
     self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    CSPhoto *p = [self.dataWrapper getPhoto:[notification.userInfo objectForKey:IMAGE_URL]];
+    NSUInteger index = [self.photos indexOfObject:p];
+    [indexset addObject:[NSIndexPath indexPathForRow:index inSection:0]];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.collectionView reloadData];
+        [self.collectionView reloadItemsAtIndexPaths:indexset];
     });
-
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

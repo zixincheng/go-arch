@@ -192,11 +192,22 @@
             }else {
                 photoObj = result[0];
                 CSPhoto *p = [self getPhotoFromObject:photoObj];
-                if (![p.tag isEqualToString:tag]) {
+
+                if ([p.tag isEqualToString:tag] || (p.tag == nil && tag == nil)) {
+                    NSLog(@"dont update tag");
+                } else {
                     [photoObj setValue:tag forKey:@"tag"];
+                      NSLog(@"update tag");
+                    
+                    NSArray *objects =
+                    [NSArray arrayWithObjects:p.imageURL, nil];
+                    NSArray *keys = [NSArray
+                                     arrayWithObjects:IMAGE_URL, nil];
+                    NSDictionary *photoDic =
+                    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
                 
                     [context save:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"tagStored" object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"tagStored" object:nil userInfo:photoDic];
                 }
             }
         }];
@@ -208,8 +219,7 @@
             [request setPredicate:pred];
             
             
-            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated"
-                                                                           ascending:YES];
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:YES];
             [request setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
 
             
@@ -226,11 +236,25 @@
                 photoObj = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
             }else {
                 photoObj = result[0];
+                CSPhoto *p = [self getPhotoFromObject:photoObj];
+                
+                if ([p.tag isEqualToString:tag] || (p.tag == nil && tag == nil)) {
+                    NSLog(@"dont update tag");
+                } else {
+                    [photoObj setValue:tag forKey:@"tag"];
+                    NSLog(@"update tag");
+                    
+                    NSArray *objects =
+                    [NSArray arrayWithObjects:p.imageURL, nil];
+                    NSArray *keys = [NSArray
+                                     arrayWithObjects:IMAGE_URL, nil];
+                    NSDictionary *photoDic =
+                    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+                    
+                    [context save:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"tagStored" object:nil userInfo:photoDic];
+                }
             }
-            [photoObj setValue:photo.tag forKey:@"tag"];
-            
-            [context save:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"tagStored" object:nil];
         }];
 
     }
@@ -414,7 +438,7 @@
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)",IMAGE_URL,imageURL];
         [request setPredicate:pred];
         // set sort
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:NO];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:YES];
         NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
         [request setSortDescriptors: descriptors];
         
@@ -451,7 +475,7 @@
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@) AND (cover = 1)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.name, PHOTO_CITY, location.city];
         [request setPredicate:pred];
         // set sort
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:NO];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:YES];
         NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
         [request setSortDescriptors: descriptors];
         
@@ -587,7 +611,7 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", ON_SERVER, @"1"];
     [request setPredicate:pred];
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:REMOTE_ID ascending:NO];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:REMOTE_ID ascending:YES];
     NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
     [request setSortDescriptors: descriptors];
     
@@ -762,7 +786,7 @@
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
         
         // set sort
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:NO];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:YES];
         NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
         [request setSortDescriptors: descriptors];
         
@@ -818,7 +842,7 @@
 
         
         // set sort
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:NO];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:YES];
         NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
         [request setSortDescriptors: descriptors];
         
