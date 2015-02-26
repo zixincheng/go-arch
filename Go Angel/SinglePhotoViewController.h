@@ -22,7 +22,7 @@
 
 @interface SinglePhotoViewController : UIViewController <UIScrollViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) UIImageView *imageView;
 
 @property int selected;
 @property (nonatomic, strong) CSPhoto *selectedPhoto;
