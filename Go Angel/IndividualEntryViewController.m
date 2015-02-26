@@ -900,23 +900,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                        selectedImgStr:@""
                                action:@selector(takePictureBtnPressed:)
                            parentView:self.overlay];
-
-  [self buildButton:CGRectMake(250, CAMERA_MENU_VIEW_HEIGH, 48, 30)
-                               normalImgStr:@"box"
-                               highlightImgStr:@""
-                               selectedImgStr:@""
-                               action:@selector(accessCameraRoll:)
-                                parentView:self.overlay];
-  
-//  UIImage *cameraRoll = [UIImage imageNamed:@"cameraroll_icon"];
-//  
-//  UIButton *cameraRollButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//  cameraRollButton.frame = CGRectMake(250, 0, 48, 30);
-//  [cameraRollButton setImage:cameraRoll forState:UIControlStateNormal];
-//  
-//  [cameraRollButton addTarget:self action:@selector(accessCameraRoll:) forControlEvents:UIControlEventTouchUpInside];
-//  
-//  [overlay addSubview:cameraRollButton];
   
     //sub view of list of buttons in camera view
     UIView *menuView = [[UIView alloc] initWithFrame:CGRectMake(0, DEVICE_SIZE.height - CAMERA_MENU_VIEW_HEIGH, self.view.frame.size.width, CAMERA_MENU_VIEW_HEIGH)];
@@ -941,9 +924,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     CGFloat eachW = APP_SIZE.width / actionArr.count;
     
     [self drawALineWithFrame:CGRectMake(eachW, 0, 1, CAMERA_MENU_VIEW_HEIGH) andColor:[UIColor colorWithRed:102 green:102 blue:102 alpha:1.0000] inLayer:_cameraMenuView.layer];
-    
-    
-    
+  
     for (int i = 0; i < actionArr.count; i++) {
         
         UIButton * btn = [self buildButton:CGRectMake(eachW * i, 0, eachW, CAMERA_MENU_VIEW_HEIGH)
@@ -954,7 +935,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                                 parentView:_cameraMenuView];
         
         btn.showsTouchWhenHighlighted = YES;
-        
+      
+      [self buildButton:CGRectMake((APP_SIZE.width - 90) * 0.15, DEVICE_SIZE.height - CAMERA_MENU_VIEW_HEIGH - 60, 32, 32)
+           normalImgStr:@"roll.png"
+        highlightImgStr:@""
+         selectedImgStr:@""
+                 action:@selector(accessCameraRoll:)
+             parentView:self.overlay];
+      
         [_cameraBtnSet addObject:btn];
     }
 }
