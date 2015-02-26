@@ -21,5 +21,7 @@
 }
 @property (strong) UIImage *image;
 @property (strong) CSPhoto *photo;
+@property (strong) UIImageView *imageView;
+
 
 @end

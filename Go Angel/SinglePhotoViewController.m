@@ -24,38 +24,41 @@
 }
 
 - (void)viewDidLoad {
-  [super viewDidLoad];
-  [self.container addSubview:self.tagField];
+    [super viewDidLoad];
+    [self.container addSubview:self.tagField];
     // Do any additional setup after loading the view.
-   NSLog(@"is video %@",self.selectedPhoto.isVideo);
-
-  AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSLog(@"is video %@",self.selectedPhoto.isVideo);
+    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 477)];
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     if (self.selectedPhoto.isVideo == nil || [self.selectedPhoto.isVideo isEqualToString:@"0"]) {
-      NSLog(@"NOT VIDEO, LOAD FULL SCREEN IMAGE");
+        [self.view addSubview:self.imageView];
+        [self.view insertSubview:self.container aboveSubview:self.imageView];
+        NSLog(@"NOT VIDEO, LOAD FULL SCREEN IMAGE");
         [appDelegate.mediaLoader loadFullScreenImage:self.selectedPhoto
-                       completionHandler:^(UIImage *image) {
-
-                           dispatch_async(dispatch_get_main_queue(), ^{
-                               [self.imageView setImage:image];
-                           });
-                       }];
+                                   completionHandler:^(UIImage *image) {
+                                       
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           [self.imageView setImage:image];
+                                       });
+                                   }];
     } else {
         
         NSLog(@"%@",self.selectedPhoto.isVideo);
-            
-            NSString *newUrl = [[NSString alloc] initWithFormat:@"%@",self.selectedPhoto.imageURL];
-            self.videoController = [[MPMoviePlayerController alloc]init];
-
-            NSURL *theURL = [NSURL URLWithString:newUrl];
-            [self.videoController.view setFrame:CGRectMake (0, 0, 320, 480)];
-
-            [self.videoController setContentURL:theURL];
+        [self.view insertSubview:self.container aboveSubview:self.videoController.view];
+        NSString *newUrl = [[NSString alloc] initWithFormat:@"%@",self.selectedPhoto.imageURL];
+        self.videoController = [[MPMoviePlayerController alloc]init];
         
-            [self.view insertSubview:self.videoController.view aboveSubview:self.imageView];
-            self.videoController.shouldAutoplay = NO;
-            [self.videoController prepareToPlay];
+        NSURL *theURL = [NSURL URLWithString:newUrl];
+        [self.videoController.view setFrame:CGRectMake (0, 0, 320, 480)];
+        
+        [self.videoController setContentURL:theURL];
+        
+        [self.view addSubview:self.videoController.view];
+        [self.view insertSubview:self.container aboveSubview:self.videoController.view];
+        self.videoController.shouldAutoplay = NO;
+        [self.videoController prepareToPlay];
         //[self.videoController play];
-            
+        
     }
     self.tagField.text = self.selectedPhoto.tag;
 }

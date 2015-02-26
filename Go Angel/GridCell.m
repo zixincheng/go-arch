@@ -107,12 +107,6 @@
 -(void)setPhoto:(CSPhoto *)photo {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     _photo = photo;
-    NSURL *url = [NSURL URLWithString:photo.thumbURL];
-    NSData *data = [appDelegate.mediaLoader.imageCache objectForKey:url.path];
-    
-    if (data !=nil) {
-        self.image = [UIImage imageWithData:data];
-    } else {
     
     [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *Currentimage) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -126,7 +120,7 @@
                 self.image = newimage;
             });
     }];
-    }
+
     _titleLabel.text = _photo.tag;
 }
 

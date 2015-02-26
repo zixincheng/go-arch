@@ -466,13 +466,36 @@
 
 
 - (void) onePhotoToApi:(CSPhoto *)photo {
-    
+    __block int currentUploaded = 0;
+    [self updateUploadCountUI];
+    self.currentlyUploading = YES;
+    // hide upload button tool bar and show progress on
+    [self.btnUpload setEnabled:NO];
     [self.coinsorter uploadOnePhoto:photo upCallback:^(CSPhoto *p){
         NSLog(@"removete id %@", p.remoteID );
         if (p.tag != nil) {
             [self.coinsorter updateMeta:p entity:@"tag" value:p.tag];
             NSLog(@"updating the tags");
         }
+        currentUploaded += 1;
+        [self removeLocalPhoto];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            float progress = (float) currentUploaded / 1;
+            if (progress == 1.0) {
+                [self.btnUpload setEnabled:YES];
+                self.currentlyUploading = NO;
+                [self updateUploadCountUI];
+                //sent a notification to dashboard when finish uploading all photos
+                // allow app to sleep again
+                [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+                
+                //add uploading message into activity history class
+                // NSString *message = [NSString stringWithFormat: @"App uploads %lu photo to Arch Box",(unsigned long)photos.count];
+                //log.activityLog = message;
+                //log.timeUpdate = [NSDate date];
+                // [self.dataWrapper addUpdateLog:log];
+            }
+        });
     }];
 }
 - (void) uploadPhotosToApi {
