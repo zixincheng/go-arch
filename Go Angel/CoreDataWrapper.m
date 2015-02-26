@@ -185,17 +185,20 @@
                 NSLog(@"error with core data request");
                 abort();
             }
-            
+
             NSManagedObject *photoObj;
             if (result.count == 0) {
-                photoObj = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
+                //photoObj = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
             }else {
                 photoObj = result[0];
+                CSPhoto *p = [self getPhotoFromObject:photoObj];
+                if (![p.tag isEqualToString:tag]) {
+                    [photoObj setValue:tag forKey:@"tag"];
+                
+                    [context save:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"tagStored" object:nil];
+                }
             }
-            [photoObj setValue:tag forKey:@"tag"];
-            
-            [context save:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"tagStored" object:nil];
         }];
     } else {
         [context performBlock: ^{
