@@ -53,6 +53,8 @@
 // Camera vars
 @property (nonatomic, strong) UIBarButtonItem *mainCameraBtn;
 @property (nonatomic) UIImagePickerController *picker;
+@property (nonatomic) UIImagePickerController *imagePicker;
+@property (nonatomic, assign) BOOL isImagePickerUp;
 @property (nonatomic) UIView *overlay;
 @property (nonatomic) AVCaptureSession *session;
 @property (nonatomic, strong) UIView *doneCameraDownView;

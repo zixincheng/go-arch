@@ -42,7 +42,7 @@
     [super viewDidLoad];
     CellLayout * layout = (id)[self.collectionView collectionViewLayout];
     layout.delegate = self;
-    
+  
     // Camera vars init
     AVCaptureSession *tmpSession = [[AVCaptureSession alloc] init];
     self.session = tmpSession;
@@ -96,7 +96,8 @@
     self.tmpMeta = [NSMutableArray array];
     self.tmpPhotos = [NSMutableArray array];
     
-    
+    _isImagePickerUp = NO;
+  
     // setup objects
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
@@ -579,6 +580,12 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    // if the image picker is up, put it down
+  if (_isImagePickerUp) {
+    _isImagePickerUp = NO;
+    [_imagePicker dismissViewControllerAnimated:YES completion:NULL];
+  }
+  
     //[picker dismissViewControllerAnimated:NO completion:^{
     // picker disappeared
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -625,7 +632,12 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 }
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker dismissViewControllerAnimated:YES completion:NULL];
+  if (_isImagePickerUp) {
+    [_imagePicker dismissViewControllerAnimated:YES completion:NULL];
+    _isImagePickerUp = NO;
+  } else {
+   [picker dismissViewControllerAnimated:YES completion:NULL];
+  }
 }
 /*
 - (void) savingPhotoFromImagePicker: (NSMutableArray *)tmpPhotos tmpMeta: (NSMutableArray *)tempMeta moviePath: (NSMutableArray *) moviePath{
@@ -821,6 +833,23 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     return image;
 }
 
+-(IBAction)accessCameraRoll:(id)sender {
+  
+  if ([UIImagePickerController isSourceTypeAvailable:
+       UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
+    _imagePicker = [[UIImagePickerController alloc] init];
+    _imagePicker.delegate = self;
+    _imagePicker.sourceType =
+    UIImagePickerControllerSourceTypePhotoLibrary;
+    _imagePicker.mediaTypes = @[(NSString *) kUTTypeImage];
+    _imagePicker.allowsEditing = NO;
+    [self.picker presentViewController:_imagePicker
+                       animated:YES completion:nil];
+    
+    _isImagePickerUp = YES;
+  }
+}
+
 # pragma mark - Custom Camera View
 //create custom camera overlay
 -(UIView *) creatCaremaOverlay {
@@ -871,15 +900,31 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                        selectedImgStr:@""
                                action:@selector(takePictureBtnPressed:)
                            parentView:self.overlay];
-    
-    
+
+  [self buildButton:CGRectMake(250, CAMERA_MENU_VIEW_HEIGH, 48, 30)
+                               normalImgStr:@"box"
+                               highlightImgStr:@""
+                               selectedImgStr:@""
+                               action:@selector(accessCameraRoll:)
+                                parentView:self.overlay];
+  
+//  UIImage *cameraRoll = [UIImage imageNamed:@"cameraroll_icon"];
+//  
+//  UIButton *cameraRollButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//  cameraRollButton.frame = CGRectMake(250, 0, 48, 30);
+//  [cameraRollButton setImage:cameraRoll forState:UIControlStateNormal];
+//  
+//  [cameraRollButton addTarget:self action:@selector(accessCameraRoll:) forControlEvents:UIControlEventTouchUpInside];
+//  
+//  [overlay addSubview:cameraRollButton];
+  
     //sub view of list of buttons in camera view
     UIView *menuView = [[UIView alloc] initWithFrame:CGRectMake(0, DEVICE_SIZE.height - CAMERA_MENU_VIEW_HEIGH, self.view.frame.size.width, CAMERA_MENU_VIEW_HEIGH)];
     menuView.backgroundColor = [UIColor clearColor];
+  
     [self.overlay addSubview:menuView];
+  
     self.cameraMenuView = menuView;
-    
-    
     
     [self addMenuViewButtons];
 }
