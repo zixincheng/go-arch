@@ -172,6 +172,12 @@
             NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", REMOTE_ID, photoid];
             [request setPredicate:pred];
             
+            
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated"
+                                                                           ascending:YES];
+            [request setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
+
+            
             NSError *err;
             NSArray *result = [context executeFetchRequest:request error:&err];
             
@@ -197,6 +203,12 @@
             
             NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", IMAGE_URL, photo.imageURL];
             [request setPredicate:pred];
+            
+            
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated"
+                                                                           ascending:YES];
+            [request setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
+
             
             NSError *err;
             NSArray *result = [context executeFetchRequest:request error:&err];
