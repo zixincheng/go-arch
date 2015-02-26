@@ -374,7 +374,7 @@
 - (IBAction)editBtnPressed:(id)sender {
     
     UIBarButtonItem *editbtn =  (UIBarButtonItem *)sender;
-    if ([editbtn.title isEqualToString:@"Edit"]) {
+    if ([editbtn.title isEqualToString:@"Select"]) {
         self.collectionView.allowsMultipleSelection = YES;
         enableEdit = YES;
         self.editBtn.title = @"Done";
@@ -383,7 +383,7 @@
         self.shareBtn.enabled = NO;
         self.deleteBtn.enabled = NO;
     } else {
-        self.editBtn.title = @"Edit";
+        self.editBtn.title = @"Select";
         enableEdit = NO;
         self.collectionView.allowsMultipleSelection = NO;
         [self clearCellSelections];
