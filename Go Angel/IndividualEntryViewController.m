@@ -61,12 +61,14 @@
     self.DonesetCover.frame = CGRectMake(0, 0, 320, 50);
     [self.DonesetCover addTarget:self action:@selector(donesetCover:) forControlEvents:UIControlEventTouchUpInside];
     [self.DonesetCover setTitle:@"Set As Cover image" forState:UIControlStateNormal];
+    self.DonesetCover.tintColor = [UIColor blackColor];
     [self.setCoverPageViewContainer addSubview:self.DonesetCover];
     
     self.CancelsetCover = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     self.CancelsetCover.frame = CGRectMake(0, 50, 320, 50);
     [self.CancelsetCover addTarget:self action:@selector(cancelsetCover:) forControlEvents:UIControlEventTouchUpInside];
     [self.CancelsetCover setTitle:@"Cancel" forState:UIControlStateNormal];
+    self.CancelsetCover.tintColor = [UIColor blackColor];
     [self.setCoverPageViewContainer addSubview:self.CancelsetCover];
     
     
