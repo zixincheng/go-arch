@@ -95,7 +95,7 @@
     self.videoUrl = [NSMutableArray array];
     self.tmpMeta = [NSMutableArray array];
     self.tmpPhotos = [NSMutableArray array];
-    
+    self.cellArray = [NSMutableArray array];
     
     // setup objects
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -208,6 +208,7 @@
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     GridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GRID_CELL forIndexPath:indexPath];
+    [self.cellArray addObject:cell];
     //UIImageView *imageView = (UIImageView *) [cell viewWithTag:IMAGE_VIEW_TAG];
     
 /*
@@ -257,6 +258,8 @@
     if (enableEdit) {
         NSString *deSelectedPhoto = [self.photos objectAtIndex:indexPath.row];
         [selectedPhotos removeObject:deSelectedPhoto];
+        GridCell *selectedCell = [self.cellArray objectAtIndex:indexPath.row];
+        [selectedCell.imageView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         if (selectedPhotos.count == 0) {
             self.shareBtn.enabled = NO;
             self.deleteBtn.enabled = NO;
@@ -270,6 +273,11 @@
         CSPhoto *selectedphoto = [self.photos objectAtIndex:indexPath.row];
         // Add the selected item into the array
         [selectedPhotos addObject:selectedphoto];
+        GridCell *selectedCell = [self.cellArray objectAtIndex:indexPath.row];
+        selectOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, selectedCell.frame.size.width, selectedCell.frame.size.height)];
+        [selectOverlay setBackgroundColor:[UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:0.6f]];
+        [selectedCell.imageView addSubview:selectOverlay];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"selectePhoto" object:nil];
         if (selectedPhotos.count != 0) {
             self.shareBtn.enabled = YES;
             self.deleteBtn.enabled = YES;
@@ -416,6 +424,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     int collectonViewCount = (int)[self.collectionView numberOfItemsInSection:0];
     for (int i=0; i<=collectonViewCount; i++) {
         [self.collectionView deselectItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0] animated:YES];
+    };
+    for (int i=0; i<self.cellArray.count; i++) {
+        GridCell *selectedCell = [self.cellArray objectAtIndex:i];
+        [selectedCell.imageView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     }
 }
 

@@ -567,7 +567,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="Aav-pw-WhI">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="zFK-0I-2Yb">
+                        <barButtonItem key="rightBarButtonItem" title="Select" id="zFK-0I-2Yb">
                             <connections>
                                 <action selector="editBtnPressed:" destination="fIS-qb-jvn" id="cxx-Sh-jb0"/>
                             </connections>

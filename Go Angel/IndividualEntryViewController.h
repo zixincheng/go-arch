@@ -29,6 +29,7 @@
     NSUserDefaults *defaults;
     AccountDataWrapper *account;
     int totalAssets;
+    UIView *selectOverlay;
 }
 
 @property (nonatomic, strong) CSLocation *location;
@@ -67,6 +68,7 @@
 @property (nonatomic, strong) NSMutableArray *tmpPhotos;
 @property (nonatomic, strong) NSMutableArray *tmpMeta;
 @property (nonatomic, strong) NSMutableArray *videoUrl;
+@property (nonatomic, strong) NSMutableArray *cellArray;
 
 @property (nonatomic, assign) NSString *loadCamera;
 
