@@ -88,6 +88,8 @@
 		9BCDE8B61A8035110017FD7A /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCDE8B51A8035110017FD7A /* video.png */; };
 		9BCDE8BC1A803C940017FD7A /* videoFinish.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCDE8BB1A803C940017FD7A /* videoFinish.png */; };
 		9BDDBAF51A70827900697C25 /* CSLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDDBAF41A70827900697C25 /* CSLocation.m */; };
+		9BE03EC21A9FD722007ADCDC /* roll.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BE03EC01A9FD722007ADCDC /* roll.png */; };
+		9BE03EC31A9FD722007ADCDC /* roll@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BE03EC11A9FD722007ADCDC /* roll@2x.png */; };
 		9BE4F6FE1A717F1D009FEB3F /* MainLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BE4F6FD1A717F1D009FEB3F /* MainLocationViewController.m */; };
 		9BE4F7051A71AC02009FEB3F /* AddingLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BE4F7041A71AC02009FEB3F /* AddingLocationViewController.m */; };
 		9BEA5B561A1EB26100CC14FF /* CSStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B531A1EB26100CC14FF /* CSStorage.m */; };
@@ -275,6 +277,8 @@
 		9BCDE8BB1A803C940017FD7A /* videoFinish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoFinish.png; sourceTree = "<group>"; };
 		9BDDBAF31A70827900697C25 /* CSLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSLocation.h; sourceTree = "<group>"; };
 		9BDDBAF41A70827900697C25 /* CSLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSLocation.m; sourceTree = "<group>"; };
+		9BE03EC01A9FD722007ADCDC /* roll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roll.png; sourceTree = "<group>"; };
+		9BE03EC11A9FD722007ADCDC /* roll@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "roll@2x.png"; sourceTree = "<group>"; };
 		9BE4F6FC1A717F1D009FEB3F /* MainLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainLocationViewController.h; sourceTree = "<group>"; };
 		9BE4F6FD1A717F1D009FEB3F /* MainLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainLocationViewController.m; sourceTree = "<group>"; };
 		9BE4F7031A71AC02009FEB3F /* AddingLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddingLocationViewController.h; sourceTree = "<group>"; };
@@ -460,6 +464,8 @@
 		2053971E1991924B00B1D9AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9BE03EC01A9FD722007ADCDC /* roll.png */,
+				9BE03EC11A9FD722007ADCDC /* roll@2x.png */,
 				9B3A65CC1A9E65EA00D77CD3 /* play-circle.png */,
 				9BC7B9581A940F4E00164F0E /* icon-error.png */,
 				9BC7B9591A940F4E00164F0E /* icon-success.png */,
@@ -661,6 +667,7 @@
 				D553C3A21A44C806004076B4 /* uploaded.png in Resources */,
 				20C3BBC91A687EFA0019DE40 /* camera_line_h@2x.png in Resources */,
 				20C3BBE71A687EFA0019DE40 /* uploading.png in Resources */,
+				9BE03EC21A9FD722007ADCDC /* roll.png in Resources */,
 				20C3BBD21A687EFA0019DE40 /* flashing_off.png in Resources */,
 				9B3A65CD1A9E65EA00D77CD3 /* play-circle.png in Resources */,
 				2061D2021991947D001C7E08 /* Images.xcassets in Resources */,
@@ -675,6 +682,7 @@
 				9BCDE8BC1A803C940017FD7A /* videoFinish.png in Resources */,
 				20C3BBCD1A687EFA0019DE40 /* close_cha_h@2x.png in Resources */,
 				20C3BBDB1A687EFA0019DE40 /* shot@2x.png in Resources */,
+				9BE03EC31A9FD722007ADCDC /* roll@2x.png in Resources */,
 				20C3BBD31A687EFA0019DE40 /* flashing_off@2x.png in Resources */,
 				20C3BBD01A687EFA0019DE40 /* flashing_auto.png in Resources */,
 				2061D1FC19919440001C7E08 /* settings-25.png in Resources */,

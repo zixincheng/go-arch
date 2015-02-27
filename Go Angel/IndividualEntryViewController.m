@@ -48,8 +48,7 @@
     self.session = tmpSession;
     [self.session setSessionPreset:AVCaptureSessionPresetHigh];
     [self.session startRunning];
-    self.picker = [[UIImagePickerController alloc] init];
-    self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
+    //self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     
     //init ui parts
     self.setCoverPageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 1600, 320, 150)];
@@ -99,7 +98,6 @@
     self.tmpPhotos = [NSMutableArray array];
   
     _isImagePickerUp = NO;
-    self.cellArray = [NSMutableArray array];
 
     // setup objects
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -217,7 +215,6 @@
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     GridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GRID_CELL forIndexPath:indexPath];
-    [self.cellArray addObject:cell];
     //UIImageView *imageView = (UIImageView *) [cell viewWithTag:IMAGE_VIEW_TAG];
     
 /*
@@ -237,6 +234,11 @@
     cell.photo = photo;
     float randomWhite = (arc4random() % 40 + 10) / 255.0;
     cell.backgroundColor = [UIColor colorWithWhite:randomWhite alpha:1];
+    if (cell.selected) {
+        cell.alpha = 0.3;
+    } else {
+        cell.alpha = 1.0;
+    }
     /*
     if (![photo.tag isEqualToString:@""]) {
          tagTextField.text = photo.tag;
@@ -267,8 +269,8 @@
     if (enableEdit) {
         NSString *deSelectedPhoto = [self.photos objectAtIndex:indexPath.row];
         [selectedPhotos removeObject:deSelectedPhoto];
-        GridCell *selectedCell = [self.cellArray objectAtIndex:indexPath.row];
-        [selectedCell.imageView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        GridCell *selectedCell = (GridCell *)[collectionView cellForItemAtIndexPath:indexPath];
+        selectedCell.alpha = 1.0;
         if (selectedPhotos.count == 0) {
             self.shareBtn.enabled = NO;
             self.deleteBtn.enabled = NO;
@@ -282,11 +284,10 @@
         CSPhoto *selectedphoto = [self.photos objectAtIndex:indexPath.row];
         // Add the selected item into the array
         [selectedPhotos addObject:selectedphoto];
-        GridCell *selectedCell = [self.cellArray objectAtIndex:indexPath.row];
-        selectOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, selectedCell.frame.size.width, selectedCell.frame.size.height)];
-        [selectOverlay setBackgroundColor:[UIColor colorWithRed:255/255.0f green:255/255.0f blue:255/255.0f alpha:0.6f]];
-        [selectedCell.imageView addSubview:selectOverlay];
-        //[[NSNotificationCenter defaultCenter] postNotificationName:@"selectePhoto" object:nil];
+       
+        GridCell *selectedCell = (GridCell *)[collectionView cellForItemAtIndexPath:indexPath];
+        selectedCell.alpha = 0.3;
+        
         if (selectedPhotos.count != 0) {
             self.shareBtn.enabled = YES;
             self.deleteBtn.enabled = YES;
@@ -433,11 +434,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     int collectonViewCount = (int)[self.collectionView numberOfItemsInSection:0];
     for (int i=0; i<=collectonViewCount; i++) {
         [self.collectionView deselectItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0] animated:YES];
+        GridCell *selectedCell = (GridCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
+        selectedCell.alpha = 1.0;
     };
-    for (int i=0; i<self.cellArray.count; i++) {
-        GridCell *selectedCell = [self.cellArray objectAtIndex:i];
-        [selectedCell.imageView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    }
 }
 
 -(void) deleteItemsFromDataSourceAtIndexPaths :(NSArray *)deletedPhoto itemPath: (NSArray *) itemPaths{
@@ -587,6 +586,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 # pragma mark - Camera Button
 
 -(void)cameraButtonPressed:(id)sender{
+    self.picker = [[UIImagePickerController alloc] init];
+    self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     self.picker.delegate = self;
     self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     self.overlay = [self creatCaremaOverlay];
@@ -1069,7 +1070,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             _topLbl.text = [NSString stringWithFormat:@"%d:%d:%d",hour,min,sec];
             [timer invalidate];
         } else {
-            //[self.caremaBtn setImage:[UIImage imageNamed:@"videoFinish.png"] forState:UIControlStateNormal];
+            [self.caremaBtn setImage:[UIImage imageNamed:@"videoFinish.png"] forState:UIControlStateNormal];
             [self.picker startVideoCapture];
             timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(videotimer) userInfo:nil repeats:YES];
             recording = YES;
