@@ -29,6 +29,8 @@
     // Do any additional setup after loading the view.
     NSLog(@"is video %@",self.selectedPhoto.isVideo);
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 477)];
+    [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.imageView setClipsToBounds:YES];
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     if (self.selectedPhoto.isVideo == nil || [self.selectedPhoto.isVideo isEqualToString:@"0"]) {
         [self.view addSubview:self.imageView];
