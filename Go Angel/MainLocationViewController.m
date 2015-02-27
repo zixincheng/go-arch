@@ -274,6 +274,9 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        NSMutableArray *deletePhoto =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:[self.locations objectAtIndex:indexPath.row]];
+        NSLog(@"delete count %lu",(unsigned long)deletePhoto.count);
+        [self deletePhotoFromFile:deletePhoto];
         [self.dataWrapper deleteLocation:[self.locations objectAtIndex:indexPath.row]];
         [self.locations removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -282,7 +285,24 @@
     }   
 }
 
-
+- (void) deletePhotoFromFile: (NSArray *) deletedPhoto {
+    NSMutableArray *photoPath = [NSMutableArray array];
+     NSLog(@"delete count agign %lu",(unsigned long)deletedPhoto.count);
+    for (CSPhoto *p in deletedPhoto) {
+        // get documents directory
+        
+        NSURL *imageUrl = [NSURL URLWithString:p.imageURL];
+        NSURL *thumUrl = [NSURL URLWithString:p.thumbURL];
+        [photoPath addObject:imageUrl.path];
+        [photoPath addObject:thumUrl.path];
+    }
+    for (NSString *currentpath in photoPath) {
+        NSError *error;
+        [[NSFileManager defaultManager] removeItemAtPath:currentpath error:&error];
+    }
+    
+    
+}
 /*
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
