@@ -26,7 +26,7 @@
 }
 
 - (id) initWithWrapper: (CoreDataWrapper *) wrap;
-- (void) uploadPhotoArray: (NSMutableArray *) photos upCallback: (void (^) ()) upCallback;
+//- (void) uploadPhotoArray: (NSMutableArray *) photos upCallback: (void (^) ()) upCallback;
 
 // url session
 @property (nonatomic, strong) NSURLSession *session;
@@ -39,9 +39,10 @@
 // need reference to a data wrapper so we can change photo state when we download, upload, etc.
 @property CoreDataWrapper *dataWrapper;
 
-- (void)uploadVideoThumb:(CSPhoto *)photo;
-- (void)uploadPhotoThumb:(CSPhoto *)photo;
+//- (void)uploadVideoThumb:(NSMutableArray *)photo upCallback:(void (^)())upCallback;
+- (void)uploadPhotoThumb:(NSMutableArray *)photo upCallback:(void (^)())upCallback;
 
 -(void)uploadOnePhoto:(CSPhoto *)p upCallback:(void (^)())upCallback;
+- (void)uploadOneThumb:(CSPhoto *)photo upCallback:(void (^)())upCallback;
 
 @end

@@ -612,34 +612,22 @@
   [dataTask resume];
 }
 
-//upload one photo to the server
+//upload one full res photo to the server, this is called after thumbnail upload
 - (void) uploadOnePhoto:(CSPhoto *)photo upCallback:(void (^)())upCallback {
     
     [uploadTask uploadOnePhoto:photo upCallback:upCallback];
 }
 
-// upload photos from array
+// upload one thumbnail, this is called after each photo is taken
+- (void) uploadOneThumb:(CSPhoto *)photo upCallback:(void (^)())upCallback {
+    
+    [uploadTask uploadOneThumb: photo upCallback:upCallback];
+}
+
 // the callback is what we want to do after each photo is uploaded
-- (void) uploadPhotos:(NSMutableArray *)photos upCallback:(void (^)())upCallback {
-  
-  // start the recursive calls
-//  [self uploadOnePhoto:photos index:0];
-//  [self uploadTaskPhoto:photos];
-  
-  // hand off the upload to another class
-  // we do this because it has its custom upload delegates
-  // that can't screw with download ones
-  [uploadTask uploadPhotoArray:photos upCallback:upCallback];
-}
-
--(void) uploadVideoThumb: (CSPhoto *)photo {
+-(void) uploadPhotoThumb: (NSMutableArray *)photos :(void (^)())upCallback{
     
-    [uploadTask uploadVideoThumb:photo];
-}
-
--(void) uploadPhotoThumb: (CSPhoto *)photo {
-    
-    [uploadTask uploadPhotoThumb:photo];
+    [uploadTask uploadPhotoThumb:photos upCallback:upCallback];
 }
 
 // This the old way of uploading photos and thumbnails using data task

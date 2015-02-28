@@ -79,10 +79,26 @@
                 // get all devices and photos from server
                 // only call this when we know we are connected
                 //[self syncAllFromApi];
-                NSLog(@"can connect to server");
+                NSLog(@"connect to server through wifi");
             }
         }];
-    }else {
+    }else if (self.networkStatus == ReachableViaWWAN){
+        
+        [self.coinsorter pingServer:^(BOOL connected) {
+            self.canConnect = connected;
+            
+            [self updateUploadCountUI];
+            
+            if (self.canConnect) {
+                // get all devices and photos from server
+                // only call this when we know we are connected
+                //[self syncAllFromApi];
+                NSLog(@"connect to server through wwan");
+            }
+        }];
+
+        
+    } else{
         self.canConnect = NO;
         NSLog(@"cannot connect to server");
     }
@@ -113,7 +129,7 @@
     
     CSPhoto *p = [self.dataWrapper getPhoto:[notification.userInfo objectForKey:IMAGE_URL]];
     if (self.canConnect) {
-        [self onePhotoToApi:p];
+        [self onePhotoThumbToApi:p];
     }
 }
 
@@ -462,14 +478,18 @@
             title = [NSString stringWithFormat:@"Upload %d Photos", self.unUploadedPhotos];
 
         }
-        [self.btnUpload setTitle:title];
         
         if (self.canConnect) {
-            //[self.progressUpload setTintColor:nil];
+            if (self.networkStatus == ReachableViaWiFi) {
+                title = [NSString stringWithFormat:@"%@ (WIFI)",title];
+            } else {
+                title = [NSString stringWithFormat:@"%@ (WWAN)",title];
+            }
         }else {
             //UIColor * color = [UIColor colorWithRed:212/255.0f green:1/255.0f blue:0/255.0f alpha:1.0f];
             //[self.progressUpload setTintColor:color];
         }
+         [self.btnUpload setTitle:title];
         
         if (self.unUploadedPhotos == 0 || self.currentlyUploading || !self.canConnect) {
             [self.btnUpload setEnabled: NO];
@@ -485,24 +505,30 @@
 }
 
 
-- (void) onePhotoToApi:(CSPhoto *)photo {
+- (void) onePhotoThumbToApi:(CSPhoto *)photo {
     __block int currentUploaded = 0;
     [self updateUploadCountUI];
     self.currentlyUploading = YES;
     // hide upload button tool bar and show progress on
     [self.btnUpload setEnabled:NO];
-    [self.coinsorter uploadOnePhoto:photo upCallback:^(CSPhoto *p){
+    [self.coinsorter uploadOneThumb:photo upCallback:^(CSPhoto *p){
         NSLog(@"removete id %@", p.remoteID );
         if (p.tag != nil) {
             [self.coinsorter updateMeta:p entity:@"tag" value:p.tag];
             NSLog(@"updating the tags");
+        }
+        if (self.networkStatus == ReachableViaWiFi) {
+            [self.coinsorter uploadOnePhoto:p upCallback:^{
+                NSLog(@"upload full res image");
+            }];
+        } else {
+            NSLog(@"dont upload full res because it using 3g");
         }
         currentUploaded += 1;
         [self removeLocalPhoto];
         dispatch_async(dispatch_get_main_queue(), ^{
             float progress = (float) currentUploaded / 1;
             if (progress == 1.0) {
-                [self.btnUpload setEnabled:YES];
                 self.currentlyUploading = NO;
                 [self updateUploadCountUI];
                 //sent a notification to dashboard when finish uploading all photos
@@ -533,7 +559,7 @@
         [self updateUploadCountUI];
         
         NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
-        [self.coinsorter uploadPhotos:photos upCallback:^(CSPhoto *p) {
+        [self.coinsorter uploadPhotoThumb:photos upCallback:^(CSPhoto *p) {
             
             NSLog(@"removete id %@", p.remoteID );
             currentUploaded += 1;
@@ -541,6 +567,13 @@
             if (p.tag != nil) {
                 [self.coinsorter updateMeta:p entity:@"tag" value:p.tag];
                 NSLog(@"updating the tags");
+            }
+            if (self.networkStatus == ReachableViaWiFi) {
+                [self.coinsorter uploadOnePhoto:p upCallback:^{
+                    NSLog(@"upload full res image");
+                }];
+            } else {
+                NSLog(@"dont upload full res because it using 3g");
             }
             [self removeLocalPhoto];
             

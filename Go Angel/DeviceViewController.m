@@ -411,7 +411,7 @@
       [self updateUploadingStatus];
     
     NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
-    [self.coinsorter uploadPhotos:photos upCallback:^() {
+    //[self.coinsorter uploadPhotos:photos upCallback:^() {
 
       currentUploaded += 1;
       
@@ -445,7 +445,7 @@
           [self.dataWrapper addUpdateLog:log];
         }
       });
-    }];
+    //}];
   }else {
     NSLog(@"there are no photos to upload");
   }

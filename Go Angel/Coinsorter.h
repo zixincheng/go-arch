@@ -37,19 +37,21 @@
 - (void) getStorages: (void (^) (NSMutableArray *storages)) callback;
 - (void) getToken: (NSString *) ip pass: (NSString *) pass callback: (void (^) (NSDictionary *authData)) callback;
 - (void) getPhotos: (int) lastId callback: (void (^) (NSMutableArray *devices)) callback;
-- (void) uploadPhotos: (NSMutableArray *) photos upCallback: (void (^) ()) upCallback;
+//- (void) uploadPhotos: (NSMutableArray *) photos upCallback: (void (^) ()) upCallback;
 - (void) updateDevice;
 - (void) pingServer: (void (^) (BOOL connected)) connectCallback;
 - (void) getSid: (NSString *) ip infoCallback: (void (^) (NSData *data)) infoCallback;
 - (void) DeletePhoto:(NSMutableArray*) deletePhotos;
 // need reference to a data wrapper so we can change photo state when we download, upload, etc.
 @property CoreDataWrapper *dataWrapper;
--(void) uploadVideoThumb: (CSPhoto *)photo;
--(void) uploadPhotoThumb: (CSPhoto *)photo;
+-(void) uploadVideoThumb: (NSMutableArray *)photos upCallback:(void (^)())upCallback;
+-(void) uploadPhotoThumb: (NSMutableArray *)photos upCallback:(void (^)())upCallback;
 - (void) updateMeta: (CSPhoto *) photo entity:(NSString *)entity value:(NSString *)value;
 - (void) getMetaPhoto: (NSMutableArray *)photos;
 - (void) getMetaVideo: (NSMutableArray *)photos;
 -(void) setPassword: (NSString *)oldPass newPass:(NSString *)newPass callback: (void (^) (NSDictionary *)) callback;
 
 - (void) uploadOnePhoto:(CSPhoto *)photo upCallback:(void (^)())upCallback;
+- (void) uploadOneThumb:(CSPhoto *)photo upCallback:(void (^)())upCallback;
+
 @end
