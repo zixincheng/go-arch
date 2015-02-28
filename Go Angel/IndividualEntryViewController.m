@@ -604,7 +604,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     // if the image picker is up, put it down
   if (_isImagePickerUp) {
     _isImagePickerUp = NO;
-    [_imagePicker dismissViewControllerAnimated:YES completion:NULL];
+    [_imagePicker dismissViewControllerAnimated:NO completion: ^{
+      [self dismissBtnPressed:nil];
+    }];
   }
   
     //[picker dismissViewControllerAnimated:NO completion:^{
@@ -654,7 +656,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
   if (_isImagePickerUp) {
-    [_imagePicker dismissViewControllerAnimated:YES completion:NULL];
+    [_imagePicker dismissViewControllerAnimated:NO completion:NULL];
     _isImagePickerUp = NO;
   } else {
    [picker dismissViewControllerAnimated:YES completion:NULL];
