@@ -29,11 +29,17 @@
     // Do any additional setup after loading the view.
     NSLog(@"is video %@",self.selectedPhoto.isVideo);
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 477)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 477)];
+    self.scrollView.contentSize = CGSizeMake(320, 477);
+    [self.scrollView setMinimumZoomScale:1];
+    [self.scrollView setMaximumZoomScale:3.5];
+    self.scrollView.delegate = self;
     [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
     [self.imageView setClipsToBounds:YES];
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     if (self.selectedPhoto.isVideo == nil || [self.selectedPhoto.isVideo isEqualToString:@"0"]) {
-        [self.view addSubview:self.imageView];
+        [self.view addSubview:self.scrollView];
+        [self.scrollView addSubview:self.imageView];
         [self.view insertSubview:self.container aboveSubview:self.imageView];
         NSLog(@"NOT VIDEO, LOAD FULL SCREEN IMAGE");
         [appDelegate.mediaLoader loadFullScreenImage:self.selectedPhoto
@@ -77,6 +83,10 @@
       initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                            target:self
                            action:@selector(shareAction)];
+}
+
+-(UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return self.imageView;
 }
 
 # pragma mark - TextField delegate
@@ -140,10 +150,6 @@
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
-}
-
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-  return self.imageView;
 }
 
 /*
