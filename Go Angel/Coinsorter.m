@@ -577,7 +577,7 @@
         
         latestRemote = photoId;
         
-        photo.onServer = @"1";
+        photo.thumbOnServer = @"1";
         
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsPath = [paths objectAtIndex:0];
@@ -625,7 +625,7 @@
 }
 
 // the callback is what we want to do after each photo is uploaded
--(void) uploadPhotoThumb: (NSMutableArray *)photos :(void (^)())upCallback{
+-(void) uploadPhotoThumb: (NSMutableArray *)photos upCallback:(void (^)())upCallback{
     
     [uploadTask uploadPhotoThumb:photos upCallback:upCallback];
 }
@@ -718,7 +718,7 @@
             NSLog(@"the result is null");
           }
           
-          p.onServer = @"1";
+          p.thumbOnServer = @"1";
           [self.dataWrapper addUpdatePhoto:p];
           
           NSLog(@"setting photo to onServer = True");

@@ -40,7 +40,7 @@
 @property CoreDataWrapper *dataWrapper;
 
 //- (void)uploadVideoThumb:(NSMutableArray *)photo upCallback:(void (^)())upCallback;
-- (void)uploadPhotoThumb:(NSMutableArray *)photo upCallback:(void (^)())upCallback;
+- (void)uploadPhotoThumb:(NSMutableArray *)photos upCallback:(void (^)())upCallback;
 
 -(void)uploadOnePhoto:(CSPhoto *)p upCallback:(void (^)())upCallback;
 - (void)uploadOneThumb:(CSPhoto *)photo upCallback:(void (^)())upCallback;

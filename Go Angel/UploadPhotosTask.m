@@ -338,8 +338,8 @@
             // TODO: Get these values from photo
             // eg. filename = actual filename (not unique string)
             NSArray *objects =
-            [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, p.remoteID,
-             uniqueString, @"image/jpg", nil];
+            [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token,
+             uniqueString, p.remoteID, @"image/jpg", nil];
             
             // set headers
             NSArray *keys = [NSArray
@@ -411,6 +411,8 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
 }
 
 - (void)uploadPhotoThumb:(NSMutableArray *)photos upCallback:(void (^)())upCallback{
+    
+    self.upCallback = upCallback;
     
     NSString *uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
     
@@ -493,6 +495,12 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSURLSessionUploadTask *uploadTask =
                 [self.session uploadTaskWithRequest:request fromFile:fileURL];
                 
+                p.taskIdentifier = uploadTask.taskIdentifier;
+                
+                @synchronized(self.uploadingPhotos) {
+                    [self.uploadingPhotos addObject:p];
+                }
+                
                 // start upload
                 [uploadTask resume];
 
@@ -561,6 +569,12 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSURLSessionUploadTask *uploadTask =
                 [self.session uploadTaskWithRequest:request fromFile:fileURL];
                 
+                p.taskIdentifier = uploadTask.taskIdentifier;
+                
+                @synchronized(self.uploadingPhotos) {
+                    [self.uploadingPhotos addObject:p];
+                }
+                
                 // start upload
                 [uploadTask resume];
             }
@@ -576,6 +590,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
 }
 
 - (void)uploadOneThumb:(CSPhoto *)photo upCallback:(void (^)())upCallback{
+    self.upCallback = upCallback;
     
     NSString *uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
     
@@ -657,6 +672,12 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSURLSessionUploadTask *uploadTask =
                 [self.session uploadTaskWithRequest:request fromFile:fileURL];
                 
+                photo.taskIdentifier = uploadTask.taskIdentifier;
+                
+                @synchronized(self.uploadingPhotos) {
+                    [self.uploadingPhotos addObject:photo];
+                }
+                
                 // start upload
                 [uploadTask resume];
                 
@@ -709,7 +730,6 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 // get image data from file path
                 NSData *imageData = [NSData dataWithContentsOfFile:textPath];
                 
-                
                 NSString *fileName = [NSString
                                       stringWithFormat:@"%@_%@", photo.thumbnailName, @"image.jpg"];
                 NSURL *fileURL =
@@ -724,6 +744,13 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 // upload the file from the temp dir
                 NSURLSessionUploadTask *uploadTask =
                 [self.session uploadTaskWithRequest:request fromFile:fileURL];
+                
+                photo.taskIdentifier = uploadTask.taskIdentifier;
+                NSLog(@"photo.task %lu",photo.taskIdentifier);
+                
+                @synchronized(self.uploadingPhotos) {
+                    [self.uploadingPhotos addObject:photo];
+                }
                 
                 // start upload
                 [uploadTask resume];
@@ -797,7 +824,7 @@ didCompleteWithError:(NSError *)error {
         NSLog(@"%@", error);
         return;
     }
-    
+    NSLog(@"task id %lu",task.taskIdentifier);
     CSPhoto *p = [self getPhotoWithTaskIdentifier:task.taskIdentifier];
     p = [self.dataWrapper getPhoto:p.imageURL];
     
@@ -814,6 +841,7 @@ didCompleteWithError:(NSError *)error {
         NSLog(@"asdf");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"passwordChanged" object:nil];
     } else if (responseStatusCode == 200) {
+        NSLog(@"p %@",p);
         if (p != nil) {
             if (p.remoteID !=nil) {
                 NSLog(@"Finsished uploading %@", p.imageURL);
