@@ -25,13 +25,14 @@
         <attribute name="dateUploaded" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="deviceId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fullOnServer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isVideo" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="onServer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remotePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbOnServer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbURL" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Location" inverseName="photo" inverseEntity="Location" syncable="YES"/>
     </entity>
@@ -39,6 +40,6 @@
         <element name="Device" positionX="-153" positionY="-208" width="128" height="73"/>
         <element name="Location" positionX="61" positionY="-58" width="128" height="178"/>
         <element name="Log" positionX="16" positionY="-207" width="128" height="75"/>
-        <element name="Photo" positionX="-162" positionY="-126" width="162" height="253"/>
+        <element name="Photo" positionX="-162" positionY="-126" width="162" height="268"/>
     </elements>
 </model>

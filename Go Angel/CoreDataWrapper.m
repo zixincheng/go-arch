@@ -116,7 +116,8 @@
   [object setValue:photo.imageURL forKey:IMAGE_URL];
   [object setValue:photo.thumbURL forKey:THUMB_URL];
   [object setValue:photo.deviceId forKey:DEVICE_ID];
-  [object setValue:photo.onServer forKey:ON_SERVER];
+  [object setValue:photo.thumbOnServer forKey:@"thumbOnServer"];
+  [object setValue:photo.fullOnServer forKey:@"fullOnServer"];
   [object setValue:photo.dateCreated forKeyPath:DATE_CREATED];
   [object setValue:photo.dateUploaded forKey:DATE_UPLOADED];
   [object setValue:photo.fileName forKey:FILE_NAME];
@@ -341,7 +342,8 @@
   CSPhoto *p     = [[CSPhoto alloc] init];
 
   p.deviceId     = [object valueForKey:DEVICE_ID];
-  p.onServer     = [object valueForKey:ON_SERVER];
+  p.thumbOnServer= [object valueForKey:@"thumbOnServer"];
+  p.fullOnServer= [object valueForKey:@"fullOnServer"];
   p.imageURL     = [object valueForKey:IMAGE_URL];
   p.thumbURL     = [object valueForKey:THUMB_URL];
   p.dateUploaded = [object valueForKey:DATE_UPLOADED];
@@ -524,7 +526,7 @@
         }
         NSManagedObject *p = phs[index];
         photo = [self getPhotoFromObject:p];
-        photoOnServer = photo.onServer;
+        photoOnServer = photo.thumbOnServer;
     }];
     return photoOnServer;
 }
@@ -535,7 +537,7 @@
   
   [context performBlockAndWait: ^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", ON_SERVER, @"0"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)",THUMB_ON_SERVER, @"0"];
     [request setPredicate:pred];
     
     NSArray*phs = [context executeFetchRequest:request error:nil];
@@ -562,7 +564,7 @@
   
   [context performBlockAndWait: ^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", ON_SERVER, @"0"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", THUMB_ON_SERVER, @"0"];
     [request setPredicate:pred];
     
     NSArray*phs = [context executeFetchRequest:request error:nil];
@@ -586,7 +588,7 @@
     
     [context performBlockAndWait: ^{
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@)",DEVICE_ID,deviceId, ON_SERVER, @"1"];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@)",DEVICE_ID,deviceId, THUMB_ON_SERVER, @"1"];
         [request setPredicate:pred];
         
         NSArray*phs = [context executeFetchRequest:request error:nil];
@@ -603,13 +605,87 @@
     return uploaded;
 }
 
+- (int) getFullImageCountUnUploaded {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+    __block int unUploaded = 0;
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", FULL_ON_SERVER, @"0"];
+        [request setPredicate:pred];
+        
+        NSArray*phs = [context executeFetchRequest:request error:nil];
+        
+        if (phs == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        // get count of unuploaded photos
+        unUploaded = phs.count;
+    }];
+    
+    return unUploaded;
+}
+
+- (int) getFullImageCountUploaded:(NSString *) deviceId  {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+    __block int uploaded = 0;
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@)",DEVICE_ID,deviceId, FULL_ON_SERVER, @"1"];
+        [request setPredicate:pred];
+        
+        NSArray*phs = [context executeFetchRequest:request error:nil];
+        
+        if (phs == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        // get count of uploaded photos for specific deviceId on server
+        uploaded = phs.count;
+    }];
+    
+    return uploaded;
+}
+
+- (NSMutableArray *) getFullSizePhotosToUpload {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    __block NSMutableArray *arr = [[NSMutableArray alloc] init];
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)",FULL_ON_SERVER, @"0"];
+        [request setPredicate:pred];
+        
+        NSArray*phs = [context executeFetchRequest:request error:nil];
+        
+        if (phs == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        // add all of the photo objects to the local photo list
+        for (int i =0; i < [phs count]; i++) {
+            NSManagedObject *p = phs[i];
+            [arr addObject:[self getPhotoFromObject:p]];
+        }
+    }];
+    
+    return arr;
+}
+
 - (NSString *) getLatestId {
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
   __block NSString *latestId = @"-1";
   
   [context performBlockAndWait: ^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", ON_SERVER, @"1"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", THUMB_ON_SERVER, @"1"];
     [request setPredicate:pred];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:REMOTE_ID ascending:YES];
     NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];

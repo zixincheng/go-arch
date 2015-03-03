@@ -50,7 +50,8 @@
     
     [refresh addTarget:self action:@selector(PullTorefresh) forControlEvents:UIControlEventValueChanged];
     
-    self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
+    self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
+    self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
     
     // setup objects
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -96,23 +97,24 @@
                 NSLog(@"connect to server through wwan");
             }
         }];
-
+        
         
     } else{
         self.canConnect = NO;
         NSLog(@"cannot connect to server");
     }
-
+    
     NSLog(@"Cid %@",account.cid);
     
     // Uncomment the following line to preserve selection between presentations.
-     self.clearsSelectionOnViewWillAppear = NO;
+    self.clearsSelectionOnViewWillAppear = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePass) name:@"passwordChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPhotoChanged:) name:@"addNewPhoto"object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewLocation:) name:@"AddLocationSegue"object:nil];
+    [defaults addObserver:self forKeyPath:UPLOAD_3G options:NSKeyValueObservingOptionNew context:NULL];
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    //self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 -(void) addNewLocation: (NSNotification *)notification{
@@ -144,7 +146,8 @@
     [super viewWillAppear:animated];
     self.locations = [self.dataWrapper getLocations];
     [self.tableView reloadData];
-    self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
+    self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
+    self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
     [self updateUploadCountUI];
 }
 
@@ -153,7 +156,9 @@
     
     // Attempt to upload all the time
     if (self.canConnect) {
-        //[self uploadPhotosToApi];
+        if (self.unUploadedFullPhotos !=0 || self.unUploadedThumbnail !=0) {
+            [self uploadPhotosToApi];
+        }
     }
 }
 
@@ -166,7 +171,19 @@
     
     [self.tableView reloadData];
     
-   [self.refreshControl endRefreshing];
+    [self.refreshControl endRefreshing];
+    
+}
+
+-(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:UPLOAD_3G]) {
+        BOOL upload3G = [defaults boolForKey:UPLOAD_3G];
+        if (upload3G) {
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Warnning" message:@"Uploading photo through 3G will have addition cost of Data, Are you sure?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            alertView.tag = 2;
+            [alertView show];
+        }
+    }
     
 }
 
@@ -177,7 +194,7 @@
         alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
         [[alertView textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeURL];
         [[alertView textFieldAtIndex:0] becomeFirstResponder];
-        
+        alertView.tag =1;
         [alertView show];
     });
     
@@ -185,44 +202,50 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSString *buttonTitle=[alertView buttonTitleAtIndex:buttonIndex];
-    if([buttonTitle isEqualToString:@"Cancel"]) {
-        return;
-    }
-    else if([buttonTitle isEqualToString:@"Confirm"]) {
-        NSString *text = [alertView textFieldAtIndex:0].text;
-        
-        if (![text isEqualToString:@""]) {
-            [self.coinsorter getToken:account.ip pass:text callback:^(NSDictionary *authData) {
-                if (authData == nil || authData == NULL) {
-                    // we could not connect to server
-                    NSLog(@"could not connect to server");
-                    return;
-                }
-                
-                NSString *token = [authData objectForKey:@"token"];
-                if (token == nil || token == NULL) {
-                    // if we get here we assume the password is incorrect
-                    NSLog(@"password incorrect");
-                    return;
-                }
-                account.token = token;
-                [account saveSettings];
-                [self uploadPhotosToApi];
-                [defaults setObject:text forKey:@"password"];
-            }];
+    if (alertView.tag == 1) {
+        if([buttonTitle isEqualToString:@"Cancel"]) {
+            return;
+        }
+        else if([buttonTitle isEqualToString:@"Confirm"]) {
+            NSString *text = [alertView textFieldAtIndex:0].text;
+            
+            if (![text isEqualToString:@""]) {
+                [self.coinsorter getToken:account.ip pass:text callback:^(NSDictionary *authData) {
+                    if (authData == nil || authData == NULL) {
+                        // we could not connect to server
+                        NSLog(@"could not connect to server");
+                        return;
+                    }
+                    
+                    NSString *token = [authData objectForKey:@"token"];
+                    if (token == nil || token == NULL) {
+                        // if we get here we assume the password is incorrect
+                        NSLog(@"password incorrect");
+                        return;
+                    }
+                    account.token = token;
+                    [account saveSettings];
+                    [self uploadPhotosToApi];
+                    [defaults setObject:text forKey:@"password"];
+                }];
+            }
+        }
+    } else if (alertView.tag ==2) {
+        if (buttonIndex == 0) {
+            [self uploadPhotosToApi];
         }
     }
 }
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-
+    
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
+    
     // Return the number of rows in the section.
     return self.locations.count;
 }
@@ -255,10 +278,10 @@
     } else {
         cell.textLabel.text = l.name;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",l.city,l.province];
-    // Configure the cell...
+        // Configure the cell...
     }
-
-
+    
+    
     return cell;
 }
 
@@ -278,12 +301,12 @@
 
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 
 // Override to support editing the table view.
@@ -298,12 +321,12 @@
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    }
 }
 
 - (void) deletePhotoFromFile: (NSArray *) deletedPhoto {
     NSMutableArray *photoPath = [NSMutableArray array];
-     NSLog(@"delete count agign %lu",(unsigned long)deletedPhoto.count);
+    NSLog(@"delete count agign %lu",(unsigned long)deletedPhoto.count);
     for (CSPhoto *p in deletedPhoto) {
         // get documents directory
         
@@ -320,18 +343,18 @@
     
 }
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 
 #pragma mark - Navigation
@@ -364,7 +387,7 @@
         }
         individualViewControll.navigationItem.title = title;
         
-
+        
     } else if ([segue.identifier isEqualToString:@"searchSegue"]) {
         
         SearchMapViewController *searchVC = (SearchMapViewController *)segue.destinationViewController;
@@ -419,7 +442,7 @@
         if (account.ip != nil) {
             [self.coinsorter pingServer:^(BOOL connected) {
                 self.canConnect = connected;
-                if (self.canConnect && self.unUploadedPhotos !=0) {
+                if (self.canConnect && (self.unUploadedThumbnail !=0 || self.unUploadedFullPhotos !=0)) {
                     [self uploadPhotosToApi];
                 }
                 //sent a notification to dashboard when network connects with home server
@@ -431,8 +454,18 @@
         NSLog(@"wwan");
         //sent a notification to dashboard when network connects with WIFI not home server
         //[[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerDisconnected" object:nil];
-        self.canConnect = NO;
-        [self updateUploadCountUI];
+        if (account.ip != nil) {
+            [self.coinsorter pingServer:^(BOOL connected) {
+                self.canConnect = connected;
+                if (self.canConnect && (self.unUploadedThumbnail !=0 || self.unUploadedFullPhotos !=0)) {
+                    [self uploadPhotosToApi];
+                }
+                //sent a notification to dashboard when network connects with home server
+                //[[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerConnected" object:nil];
+                [self updateUploadCountUI];
+            }];
+        }
+        
     }
 }
 
@@ -458,7 +491,13 @@
 }
 
 - (void)uploadBtnPressed:(id)sender {
+    if (self.networkStatus == ReachableViaWWAN && self.canConnect) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"You Are Connecting Through WWAN, Upload Full Resolution Will Can Addtion Data Cost, Are You Going TO Upload Anyway?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+        alertView.tag = 2;
+        [alertView show];
+    } else {
         [self uploadPhotosToApi];
+    }
 }
 
 #pragma mark - ui
@@ -468,15 +507,18 @@
         
         if (!self.canConnect) {
             title = @"Cannot Connect";
-        }else if (self.unUploadedPhotos == 0) {
+        }else if (self.unUploadedThumbnail == 0 && self.unUploadedFullPhotos ==0) {
             title = @"Nothing to Upload";
-
+            
         }else if (self.currentlyUploading) {
-            title = [NSString stringWithFormat:@"Uploading %d Photos", self.unUploadedPhotos];
-
-        }else {
-            title = [NSString stringWithFormat:@"Upload %d Photos", self.unUploadedPhotos];
-
+            title = [NSString stringWithFormat:@"Uploading %d thumbnials and %d photos", self.unUploadedThumbnail,self.unUploadedFullPhotos];
+            
+        } else if (self.unUploadedThumbnail == 0 && self.unUploadedFullPhotos !=0) {
+            title = [NSString stringWithFormat:@"Upload %d thumbnials and %d photos", self.unUploadedThumbnail,self.unUploadedFullPhotos];
+            [self.btnUpload setEnabled:NO];
+        } else {
+            title = [NSString stringWithFormat:@"Upload %d thumbnials and %d photos", self.unUploadedThumbnail,self.unUploadedFullPhotos];
+            
         }
         
         if (self.canConnect) {
@@ -489,66 +531,104 @@
             //UIColor * color = [UIColor colorWithRed:212/255.0f green:1/255.0f blue:0/255.0f alpha:1.0f];
             //[self.progressUpload setTintColor:color];
         }
-         [self.btnUpload setTitle:title];
+        [self.btnUpload setTitle:title];
         
-        if (self.unUploadedPhotos == 0 || self.currentlyUploading || !self.canConnect) {
+        if ((self.unUploadedThumbnail == 0  && self.unUploadedFullPhotos ==0) || self.currentlyUploading || !self.canConnect ){
             [self.btnUpload setEnabled: NO];
         }else {
-            [self.btnUpload setEnabled: YES];
+            [self.btnUpload setEnabled: NO];
         }
     });
 }
 
-- (void) removeLocalPhoto {
-    self.unUploadedPhotos--;
+
+- (void) removeThumbnail {
+    self.unUploadedThumbnail--;
     [self updateUploadCountUI];
 }
 
+-(void) removeFullPhoto {
+    self.unUploadedFullPhotos--;
+    [self updateUploadCountUI];
+}
+
+#pragma mark - upload function
 
 - (void) onePhotoThumbToApi:(CSPhoto *)photo {
-    __block int currentUploaded = 0;
+    __block int currentthumbnailUploaded = 0;
+    __block int currentFullPhotoUploaded = 0;
     [self updateUploadCountUI];
     self.currentlyUploading = YES;
     // hide upload button tool bar and show progress on
     [self.btnUpload setEnabled:NO];
+    BOOL upload3G = [defaults boolForKey:UPLOAD_3G];
     [self.coinsorter uploadOneThumb:photo upCallback:^(CSPhoto *p){
         NSLog(@"removete id %@", p.remoteID );
         if (p.tag != nil) {
             [self.coinsorter updateMeta:p entity:@"tag" value:p.tag];
             NSLog(@"updating the tags");
         }
-        if (self.networkStatus == ReachableViaWiFi) {
-            [self.coinsorter uploadOnePhoto:p upCallback:^{
-                NSLog(@"upload full res image");
-            }];
-        } else {
-            NSLog(@"dont upload full res because it using 3g");
-        }
-        currentUploaded += 1;
-        [self removeLocalPhoto];
+        currentthumbnailUploaded += 1;
+        [self removeThumbnail];
         dispatch_async(dispatch_get_main_queue(), ^{
-            float progress = (float) currentUploaded / 1;
+            float progress = (float) currentthumbnailUploaded / 1;
             if (progress == 1.0) {
                 self.currentlyUploading = NO;
                 [self updateUploadCountUI];
-                //sent a notification to dashboard when finish uploading all photos
-                // allow app to sleep again
                 [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
                 
-                //add uploading message into activity history class
-                // NSString *message = [NSString stringWithFormat: @"App uploads %lu photo to Arch Box",(unsigned long)photos.count];
-                //log.activityLog = message;
-                //log.timeUpdate = [NSDate date];
-                // [self.dataWrapper addUpdateLog:log];
             }
         });
+        if (self.networkStatus == ReachableViaWiFi) {
+            [self.coinsorter uploadOnePhoto:p upCallback:^{
+                currentFullPhotoUploaded +=1;
+                [self removeFullPhoto];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    float progress = (float) currentFullPhotoUploaded / 1;
+                    if (progress == 1.0) {
+                        self.currentlyUploading = NO;
+                        [self updateUploadCountUI];
+                        [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+                        
+                    }
+                });
+                
+                NSLog(@"upload full res image");
+            }];
+        } else {
+            if (upload3G) {
+                [self.coinsorter uploadOnePhoto:p upCallback:^{
+                    currentFullPhotoUploaded +=1;
+                    [self removeFullPhoto];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        float progress = (float) currentFullPhotoUploaded / 1;
+                        if (progress == 1.0) {
+                            self.currentlyUploading = NO;
+                            [self updateUploadCountUI];
+                            [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+                            
+                        }
+                    });
+                    
+                    NSLog(@"upload full res image using 3G");
+                }];
+                
+            } else {
+                NSLog(@"dont upload full res because it using 3g");
+            }
+        }
     }];
 }
 - (void) uploadPhotosToApi {
-    NSMutableArray *photos = [self.dataWrapper getPhotosToUpload];
-    self.unUploadedPhotos = [self.dataWrapper getCountUnUploaded];
-    __block int currentUploaded = 0;
-    if (photos.count > 0) {
+    NSMutableArray *thumbPhotos = [self.dataWrapper getPhotosToUpload];
+    NSMutableArray *fullPhotos = [self.dataWrapper getFullSizePhotosToUpload];
+    BOOL upload3G = [defaults boolForKey:UPLOAD_3G];
+    NSLog(@"unupload full image %d",self.unUploadedFullPhotos);
+    
+    self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
+    __block int currentthumbnailUploaded = 0;
+    __block int currentFullPhotoUploaded = 0;
+    if (thumbPhotos.count > 0) {
         //sent a notification when start uploading photos
         [[NSNotificationCenter defaultCenter] postNotificationName:@"startUploading" object:nil];
         self.currentlyUploading = YES;
@@ -558,55 +638,86 @@
         
         [self updateUploadCountUI];
         
-        NSLog(@"there are %lu photos to upload", (unsigned long)photos.count);
-        [self.coinsorter uploadPhotoThumb:photos upCallback:^(CSPhoto *p) {
+        NSLog(@"there are %lu thumbnails to upload", (unsigned long)thumbPhotos.count);
+        [self.coinsorter uploadPhotoThumb:thumbPhotos upCallback:^(CSPhoto *p) {
             
             NSLog(@"removete id %@", p.remoteID );
-            currentUploaded += 1;
-
             if (p.tag != nil) {
                 [self.coinsorter updateMeta:p entity:@"tag" value:p.tag];
                 NSLog(@"updating the tags");
             }
+            currentthumbnailUploaded += 1;
+            [self removeThumbnail];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                float progress = (float) currentthumbnailUploaded / 1;
+                if (progress == 1.0) {
+                    self.currentlyUploading = NO;
+                    [self updateUploadCountUI];
+                    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+                    
+                }
+            });
             if (self.networkStatus == ReachableViaWiFi) {
                 [self.coinsorter uploadOnePhoto:p upCallback:^{
+                    currentFullPhotoUploaded +=1;
+                    [self removeFullPhoto];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        float progress = (float) currentFullPhotoUploaded / 1;
+                        if (progress == 1.0) {
+                            self.currentlyUploading = NO;
+                            [self updateUploadCountUI];
+                            [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+                            
+                        }
+                    });
+                    
                     NSLog(@"upload full res image");
                 }];
             } else {
-                NSLog(@"dont upload full res because it using 3g");
-            }
-            [self removeLocalPhoto];
-            
-            NSLog(@"%d / %lu", currentUploaded, (unsigned long)photos.count);
-            
-            // update progress bar on main thread
-            dispatch_async(dispatch_get_main_queue(), ^{
-                float progress = (float) currentUploaded / (float) photos.count;
-                
-                //[self.progressUpload setProgress:progress animated:YES];
-                
-                //sent a notification to dashboard when finish uploading 1 photo
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"onePhotoUploaded" object:nil];
-                
-                // the upload is complete
-                if (progress == 1.0) {
-                    [self.btnUpload setEnabled:YES];
-                    self.currentlyUploading = NO;
-                    [self updateUploadCountUI];
-                    //sent a notification to dashboard when finish uploading all photos
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"endUploading" object:nil];
-                    // allow app to sleep again
-                    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-                    
-                    //add uploading message into activity history class
-                   // NSString *message = [NSString stringWithFormat: @"App uploads %lu photo to Arch Box",(unsigned long)photos.count];
-                    //log.activityLog = message;
-                    //log.timeUpdate = [NSDate date];
-                   // [self.dataWrapper addUpdateLog:log];
+                if (upload3G) {
+                    [self.coinsorter uploadOnePhoto:p upCallback:^{
+                        currentFullPhotoUploaded +=1;
+                        [self removeFullPhoto];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            float progress = (float) currentFullPhotoUploaded / 1;
+                            if (progress == 1.0) {
+                                self.currentlyUploading = NO;
+                                [self updateUploadCountUI];
+                                [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+                                
+                            }
+                        });
+                        
+                        NSLog(@"upload full res image using 3G");
+                    }];
+                } else {
+                    NSLog(@"dont upload full res because it using 3g");
                 }
-            });
+            }
         }];
-    }else {
+    } else if (thumbPhotos.count ==0 && fullPhotos.count >0) {
+        if (self.networkStatus == ReachableViaWiFi || upload3G) {
+            for (CSPhoto *p in fullPhotos) {
+                [self.coinsorter uploadOnePhoto:p upCallback:^{
+                    currentFullPhotoUploaded +=1;
+                    [self removeFullPhoto];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        float progress = (float) currentFullPhotoUploaded / 1;
+                        if (progress == 1.0) {
+                            self.currentlyUploading = NO;
+                            [self updateUploadCountUI];
+                            [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+                            
+                        }
+                    });
+                    NSLog(@"upload full res image");
+                }];
+            }
+        } else {
+            NSLog(@"dont upload full res because it using 3g");
+        }
+    } else {
+        
         NSLog(@"there are no photos to upload");
     }
 }
@@ -637,9 +748,9 @@
 
 - (void)searchForAddress:(NSString *)address {
     
-
+    
     if ((address == nil) || [address length] == 0) {
-
+        
         self.searchResults = [self.locations mutableCopy];
         return;
     } else {

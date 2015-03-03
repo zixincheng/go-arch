@@ -34,6 +34,9 @@
 // callback to call after each photo gets uploaded
 @property (nonatomic, copy) void(^upCallback)();
 
+@property (nonatomic, copy) void(^fullPhotoCallback)();
+
+
 // array of photos currently being uploaded
 @property (nonatomic) NSMutableArray *uploadingPhotos;
 // need reference to a data wrapper so we can change photo state when we download, upload, etc.

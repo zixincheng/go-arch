@@ -36,6 +36,16 @@
 			<key>IASKViewControllerStoryBoardId</key>
 			<string>passwordView</string>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Enable 3G Upload Photo</string>
+			<key>Key</key>
+			<string>3GEnable</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
 	</array>
 	<key>StringsTable</key>
 	<string>Root</string>

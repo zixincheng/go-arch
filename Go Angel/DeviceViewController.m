@@ -806,7 +806,7 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^{
-           __block UIImage *newimage = [self markedImageStatus:image checkImageStatus:photo.onServer uploadingImage:self.currentlyUploading];
+           __block UIImage *newimage = [self markedImageStatus:image checkImageStatus:photo.thumbOnServer uploadingImage:self.currentlyUploading];
             [imageView setImage:newimage];
             
             //      if ([indexPath row] == bottom_selected) {
@@ -949,7 +949,7 @@
 
     p.dateCreated = [NSDate date];
     p.deviceId = self.localDevice.remoteId;
-    p.onServer = @"0";
+    p.thumbOnServer = @"0";
     p.thumbURL = fullthumbPath;
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.mov",photoUID];
@@ -978,7 +978,7 @@
 
     p.dateCreated = [NSDate date];
     p.deviceId = self.localDevice.remoteId;
-    p.onServer = @"0";
+    p.thumbOnServer = @"0";
     p.thumbURL = fullPath;
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];
@@ -1013,9 +1013,9 @@
     if (self.unUploadedPhotos == 0) {
         dispatch_async(dispatch_get_main_queue(), ^ {
             CSPhoto *photo = [self.photos objectAtIndex:0];
-            photo.onServer = [self.dataWrapper getCurrentPhotoOnServerVaule:self.localDevice.remoteId CurrentIndex:0];
+            photo.thumbOnServer = [self.dataWrapper getCurrentPhotoOnServerVaule:self.localDevice.remoteId CurrentIndex:0];
             [self.photos replaceObjectAtIndex:0 withObject:photo];
-            NSLog(@"current photo onServer value is: %@", photo.onServer);
+            NSLog(@"current photo onServer value is: %@", photo.thumbOnServer);
 
             NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
             [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
@@ -1030,9 +1030,9 @@
     int currentPhotoIndex = (int)self.unUploadedPhotos;
     //update current uploaded photo onServer value
     CSPhoto *photo = [self.photos objectAtIndex:currentPhotoIndex];
-    photo.onServer = [self.dataWrapper getCurrentPhotoOnServerVaule:self.localDevice.remoteId CurrentIndex:currentPhotoIndex];
+    photo.thumbOnServer = [self.dataWrapper getCurrentPhotoOnServerVaule:self.localDevice.remoteId CurrentIndex:currentPhotoIndex];
     [self.photos replaceObjectAtIndex:currentPhotoIndex withObject:photo];
-    NSLog(@"current photo onServer value is: %@", photo.onServer);
+    NSLog(@"current photo onServer value is: %@", photo.thumbOnServer);
 
     NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
     [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:currentPhotoIndex inSection:0]];

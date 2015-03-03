@@ -772,7 +772,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     p.dateCreated = [NSDate date];
     p.deviceId = self.localDevice.remoteId;
-    p.onServer = @"0";
+    p.thumbOnServer = @"0";
+    p.fullOnServer = @"0";
     p.thumbURL = thumbPath;
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.mov",photoUID];
@@ -805,7 +806,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     p.dateCreated = [NSDate date];
     p.deviceId = self.localDevice.remoteId;
-    p.onServer = @"0";
+    p.thumbOnServer = @"0";
+    p.fullOnServer = @"0";
     p.thumbURL = thumbPath;
     p.imageURL = fullPath;
     p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];

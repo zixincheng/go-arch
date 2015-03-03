@@ -31,10 +31,13 @@
 - (CSPhoto *)getCoverPhoto: (NSString *) deviceId location:(CSLocation *)location;
 - (NSMutableArray *) getPhotos: (NSString *) deviceId;
 - (NSMutableArray *) getPhotosToUpload;
+- (NSMutableArray *) getFullSizePhotosToUpload;
 - (NSMutableArray *) getLogs;
 - (NSMutableArray *) getLocations;
 - (int) getCountUnUploaded;
 - (int) getCountUploaded:(NSString *) deviceId;
+- (int) getFullImageCountUnUploaded;
+- (int) getFullImageCountUploaded:(NSString *) deviceId;
 - (CSDevice *) getDevice: (NSString *) cid;
 - (NSString *) getLatestId;
 - (NSString *) getCurrentPhotoOnServerVaule: (NSString *) deviceId CurrentIndex:(int)index;
