@@ -46,6 +46,16 @@
 			<key>DefaultValue</key>
 			<false/>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>Show QR Code</string>
+			<key>IASKViewControllerStoryBoardFile</key>
+			<string>Main</string>
+			<key>IASKViewControllerStoryBoardId</key>
+			<string>QRPreview</string>
+		</dict>
 	</array>
 	<key>StringsTable</key>
 	<string>Root</string>

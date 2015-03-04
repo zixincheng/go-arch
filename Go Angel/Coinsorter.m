@@ -32,10 +32,10 @@
 }
 
 - (NSMutableURLRequest *) getHTTPGetRequest: (NSString *) path {
-  NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, account.ip, path];
+  NSString *urlString = [NSString stringWithFormat:@"%@%@:7000%@", FRONT_URL, account.ip, path];
   NSURL *url = [NSURL URLWithString:urlString];
   
-  NSDictionary *headers = @{@"token" : account.token};
+  NSDictionary *headers = @{@"token" : account.token, @"cid" : account.cid};
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
   [request setURL:url];
@@ -53,7 +53,7 @@
   NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, account.ip, path];
   NSURL *url = [NSURL URLWithString:urlString];
   
-  NSDictionary *headers = @{@"token" : account.token};
+  NSDictionary *headers = @{@"token" : account.token, @"cid" : account.cid};
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
   [request setURL:url];
@@ -65,6 +65,26 @@
   NSLog(@"making post request to %@", urlString);
   
   return request;
+}
+
+- (void) getQRCode: (void (^) (NSString *base64Image))callback {
+  NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
+  
+  NSMutableURLRequest *request = [self getHTTPGetRequest:@"/qr/getQR"];
+  [request setTimeoutInterval:2];
+  
+  NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    if (error == nil && data != nil) {
+      NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+      NSString *base64 = [jsonData objectForKey:@"qr"];
+      callback(base64);
+    } else {
+      callback(nil);
+    }
+  }];
+  
+  [dataTask resume];
 }
 
 - (void) pingServer:(void (^) (BOOL connected))connectCallback {

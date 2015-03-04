@@ -506,6 +506,8 @@
                         <segue destination="Q4B-RI-MsH" kind="push" identifier="LocationSettingSegue" id="ryy-5p-KP4"/>
                         <segue destination="fIS-qb-jvn" kind="push" identifier="individualSegue" id="zan-2D-U28"/>
                         <segue destination="hJr-Yz-gfu" kind="push" identifier="searchSegue" id="8Nw-yD-ONd"/>
+                        <segue destination="xU3-1A-ozk" kind="custom" id="JYH-5t-Ubf"/>
+                        <segue destination="xU3-1A-ozk" kind="push" id="sQz-p4-KOG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NxQ-85-5mV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -720,7 +722,47 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="csS-EY-0Lc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2243" y="-1521"/>
+            <point key="canvasLocation" x="-2291" y="-1561"/>
+        </scene>
+        <!--QR Code-->
+        <scene sceneID="pAW-ek-6tF">
+            <objects>
+                <viewController storyboardIdentifier="QRPreview" id="xU3-1A-ozk" customClass="QRPreviewViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jo5-lp-GUt"/>
+                        <viewControllerLayoutGuide type="bottom" id="I0e-dJ-MJh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6QK-Gc-Tfh">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Scan QR Code to Connect with Another Device" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ty-bA-Rt5">
+                                <rect key="frame" x="31" y="405" width="259" height="111"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DkM-Xc-8Kh">
+                                <rect key="frame" x="10" y="103" width="300" height="300"/>
+                            </imageView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Error getting QR code from server" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="paP-eM-ZwQ">
+                                <rect key="frame" x="54" y="215" width="213" height="75"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="0.012163325060000001" blue="0.053623271710000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="QR Code" id="eYw-y6-49H"/>
+                    <connections>
+                        <outlet property="imageView" destination="DkM-Xc-8Kh" id="LCT-9l-sle"/>
+                        <outlet property="lblError" destination="paP-eM-ZwQ" id="rUv-2E-bEf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UfF-vt-hCH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3744" y="591"/>
         </scene>
         <!--Connect to a Server-->
         <scene sceneID="vSK-8H-hWj">
@@ -1415,6 +1457,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="awA-RH-qQR"/>
+        <segue reference="sQz-p4-KOG"/>
         <segue reference="zan-2D-U28"/>
     </inferredMetricsTieBreakers>
 </document>
