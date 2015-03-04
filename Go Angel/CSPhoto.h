@@ -25,7 +25,8 @@ typedef enum {
 @property (nonatomic, strong) NSString *remoteID;
 @property (nonatomic, strong) NSString *fileName;
 @property (nonatomic, strong) NSString *thumbnailName;
-@property (nonatomic, strong) NSString *onServer;
+@property (nonatomic, strong) NSString *thumbOnServer;
+@property (nonatomic, strong) NSString *fullOnServer;
 @property (nonatomic, strong) NSDate *dateCreated;
 @property (nonatomic, strong) NSDate *dateUploaded;
 @property (nonatomic, strong) NSString *isVideo;
@@ -39,6 +40,7 @@ typedef enum {
 // if this is greater than -1, it means the photo is currently being uploaded
 @property (nonatomic) unsigned long taskIdentifier;
 
-- (void) onServerSet: (BOOL)on;
+- (void) thumbOnServerSet: (BOOL)on;
+- (void) fullOnServerSet: (BOOL)on;
 
 @end

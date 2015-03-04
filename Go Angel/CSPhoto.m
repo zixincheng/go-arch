@@ -18,12 +18,20 @@
   return self;
 }
 
-- (void) onServerSet:(BOOL)on {
+- (void) thumbOnServerSet:(BOOL)on {
   if (on) {
-    self.onServer = @"1";
+    self.thumbOnServer = @"1";
   }else {
-    self.onServer = @"0";
+    self.thumbOnServer = @"0";
   }
+}
+
+- (void) fullOnServerSet:(BOOL)on {
+    if (on) {
+        self.fullOnServer = @"1";
+    }else {
+        self.fullOnServer = @"0";
+    }
 }
 
 @end

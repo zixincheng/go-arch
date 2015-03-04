@@ -20,7 +20,7 @@
 #import "SearchMapViewController.h"
 #import "SearchResultsTableViewController.h"
 
-@interface MainLocationViewController : UITableViewController <UISearchResultsUpdating, UISearchBarDelegate> {
+@interface MainLocationViewController : UITableViewController <UIAlertViewDelegate,UISearchResultsUpdating, UISearchBarDelegate> {
     LocalLibrary *localLibrary;
     AccountDataWrapper *account;
     NSUserDefaults *defaults;
@@ -47,7 +47,8 @@
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIBarButtonItem *btnUpload;
 
-@property (nonatomic )int unUploadedPhotos;
+@property (nonatomic )int unUploadedThumbnail;
+@property (nonatomic )int unUploadedFullPhotos;
 @property (nonatomic) BOOL currentlyUploading;
 
 @end

@@ -76,9 +76,9 @@
     
     //update current uploaded photo onServer value
     CSPhoto *photo = [self.photos objectAtIndex:currentPhotoIndex];
-    photo.onServer = [self.dataWrapper getCurrentPhotoOnServerVaule:self.device.remoteId CurrentIndex:currentPhotoIndex];
+    photo.thumbOnServer = [self.dataWrapper getCurrentPhotoOnServerVaule:self.device.remoteId CurrentIndex:currentPhotoIndex];
     [self.photos replaceObjectAtIndex:currentPhotoIndex withObject:photo];
-    NSLog(@"current photo onServer value is: %@", photo.onServer);
+    NSLog(@"current photo onServer value is: %@", photo.thumbOnServer);
     
     NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
     [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:currentPhotoIndex inSection:0]];
@@ -123,7 +123,7 @@
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selectedbackground.png"]];
   [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
     dispatch_async(dispatch_get_main_queue(), ^{
-        __block UIImage *newimage = [self markedImageStatus:image checkImageStatus:photo.onServer uploadingImage:self.currentUploading];
+        __block UIImage *newimage = [self markedImageStatus:image checkImageStatus:photo.thumbOnServer uploadingImage:self.currentUploading];
         [imageView setImage:newimage];
     });
   }];
@@ -233,7 +233,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         NSString *onserver;
 
         for (CSPhoto *p in selectedPhotos) {
-            if ([p.onServer isEqualToString:@"0"]) {
+            if ([p.thumbOnServer isEqualToString:@"0"]) {
                 onserver = @"0";
                 break;
             }

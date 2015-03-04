@@ -34,13 +34,16 @@
 // callback to call after each photo gets uploaded
 @property (nonatomic, copy) void(^upCallback)();
 
+@property (nonatomic, copy) void(^fullPhotoCallback)();
+
+
 // array of photos currently being uploaded
 @property (nonatomic) NSMutableArray *uploadingPhotos;
 // need reference to a data wrapper so we can change photo state when we download, upload, etc.
 @property CoreDataWrapper *dataWrapper;
 
 //- (void)uploadVideoThumb:(NSMutableArray *)photo upCallback:(void (^)())upCallback;
-- (void)uploadPhotoThumb:(NSMutableArray *)photo upCallback:(void (^)())upCallback;
+- (void)uploadPhotoThumb:(NSMutableArray *)photos upCallback:(void (^)())upCallback;
 
 -(void)uploadOnePhoto:(CSPhoto *)p upCallback:(void (^)())upCallback;
 - (void)uploadOneThumb:(CSPhoto *)photo upCallback:(void (^)())upCallback;

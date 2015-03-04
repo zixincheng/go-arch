@@ -85,7 +85,8 @@
   CSPhoto *photo =[[CSPhoto alloc] init];
   photo.imageURL = url.absoluteString;
   photo.deviceId = account.cid;
-  photo.onServer = @"0";
+  photo.thumbOnServer = @"0";
+  photo.fullOnServer = @"0";
     if (videoFlag) {
         photo.isVideo = @"1";
     } else {
@@ -120,7 +121,8 @@
   CSPhoto *photo = [[CSPhoto alloc] init];
   
   photo.deviceId = account.cid;
-  photo.onServer = @"0";
+  photo.thumbOnServer = @"0";
+  photo.fullOnServer = @"0";
   photo.dateCreated = asset.creationDate;
   
   // add photo to core data

@@ -32,6 +32,7 @@
 #define URL_KEY     @"url"
 #define EST_COUNT   @"est_count"
 #define GPS_META    @"gpsMeta"
+#define UPLOAD_3G   @"3GEnable"
 #define DOWN_REMOTE @"downRemote"
 #define SAVE_INTO_ALBUM @"saveInAlbum"
 
@@ -59,7 +60,8 @@
 #define REMOTE_ID @"remoteId"
 #define REMOTE_PATH @"remotePath"
 #define THUMB_URL @"thumbURL"
-#define ON_SERVER @"onServer"
+#define THUMB_ON_SERVER @"thumbOnServer"
+#define FULL_ON_SERVER @"fullOnServer"
 #define FILE_NAME @"fileName"
 #define PHOTO_LOCATION @"location"
 #define PHOTO_COUNTRY @"location.country"
