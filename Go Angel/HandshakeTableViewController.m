@@ -67,6 +67,7 @@
   // Setup the receiver and immediately send a UPD broadcast
   [self setupReciveUDPMessage];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePass) name:@"passwordChanged" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scannedQR:) name:@"scanQRNotification" object:nil];
 }
 
 -(void)periodicallySendUDP{
@@ -292,52 +293,127 @@
   }
 }
 
+- (void) scannedQR: (NSNotification *) notification {
+  NSDictionary *userInfo = [notification userInfo];
+  if (userInfo) {
+    NSString *hash_token = [userInfo objectForKey:@"hash_token"];
+    NSString *cid = [userInfo objectForKey:@"cid"];
+    NSString *host = [userInfo objectForKey:@"host"];
+    
+    NSLog(@"GOT THE INFO %@", userInfo);
+    
+    [self.coinsorter getSid:host infoCallback:^(NSData *data) {
+      if (data) {
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSString *sid = [jsonData objectForKey:@"SID"];
+        NSString *hostname = [jsonData objectForKey:@"HOSTNAME"];
+
+        self.sid = sid;
+        self.name = hostname;
+        self.ip = host;
+        
+       [self authDeviceQR:hash_token fromDeviceID:cid toHost:host];
+      } else {
+        NSLog(@"no data back");
+      }
+    }];
+  }
+}
+
+// make api call with hash_token to auth from scanned qr code
+- (void) authDeviceQR: (NSString *) hash_token fromDeviceID: (NSString *) cid toHost: (NSString *) host {
+  AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+  AccountDataWrapper *account = appDelegate.account;
+  [self.coinsorter getToken:host fromTokenHash:hash_token toDevice:cid callback:^(NSDictionary *authData) {
+    
+    if (authData == nil || authData == NULL) {
+      // we could not connect to server
+      NSLog(@"could not connect to server");
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"failAuthNotification" object:nil];
+      return;
+    }
+    
+    NSString *token = [authData objectForKey:@"token"];
+    if (token == nil || token == NULL) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"failAuthNotification" object:nil];
+      // if we get here we assume the password is incorrect
+      return;
+    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *cid = [authData objectForKey: @"_id"];
+    
+    NSLog(@"token: %@", token);
+    NSLog(@"cid: %@", cid);
+    
+    account.ip = self.ip;
+    account.token = token;
+    account.cid = cid;
+    account.sid = self.sid;
+    account.name = self.name;
+    
+    [account saveSettings];
+    
+    CSDevice *device = [[CSDevice alloc] init];
+    
+    device.deviceName = [defaults valueForKey:@"deviceName"];
+    device.remoteId = cid;
+    
+    CoreDataWrapper *dataWrapper = [[CoreDataWrapper alloc] init];
+    [dataWrapper addUpdateDevice:device];
+    
+    NSLog(@"QR Auth successful");
+    dispatch_async(dispatch_get_main_queue(), ^ {
+      [self performSegueWithIdentifier:@"deviceSegue" sender:self];
+    });
+  }];
+}
+
 // make api call with password to register device
 - (void) authDevice: (NSString *) pass {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    AccountDataWrapper *account = appDelegate.account;
+  AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+  AccountDataWrapper *account = appDelegate.account;
+  [self.coinsorter getToken:self.ip pass:pass callback: ^(NSDictionary *authData) {
+    if (authData == nil || authData == NULL) {
+      // we could not connect to server
+      NSLog(@"could not connect to server");
+      return;
+    }
     
-    [self.coinsorter getToken:self.ip pass:pass callback:^(NSDictionary *authData) {
-        if (authData == nil || authData == NULL) {
-            // we could not connect to server
-            NSLog(@"could not connect to server");
-            return;
-        }
-        
-        NSString *token = [authData objectForKey:@"token"];
-        if (token == nil || token == NULL) {
-            // if we get here we assume the password is incorrect
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"passwordChanged" object:nil];
-            NSLog(@"password incorrect");
-            return;
-        }
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        
-        NSString *cid = [authData objectForKey: @"_id"];
-        
-        NSLog(@"token: %@", token);
-        NSLog(@"cid: %@", cid);
-        
-        account.ip = self.ip;
-        account.token = token;
-        account.cid = cid;
-        account.sid = self.sid;
-        account.name = self.name;
-        
-        [account saveSettings];
-        
-        CSDevice *device = [[CSDevice alloc] init];
-        
-        device.deviceName = [defaults valueForKey:@"deviceName"];
-        device.remoteId = cid;
-        
-        CoreDataWrapper *dataWrapper = [[CoreDataWrapper alloc] init];
-        [dataWrapper addUpdateDevice:device];
-        
-        dispatch_async(dispatch_get_main_queue(), ^ {
-            [self performSegueWithIdentifier:@"deviceSegue" sender:self];
-        });
-    }];
+    NSString *token = [authData objectForKey:@"token"];
+    if (token == nil || token == NULL) {
+      // if we get here we assume the password is incorrect
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"passwordChanged" object:nil];
+      NSLog(@"password incorrect");
+      return;
+    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *cid = [authData objectForKey: @"_id"];
+    
+    NSLog(@"token: %@", token);
+    NSLog(@"cid: %@", cid);
+    
+    account.ip = self.ip;
+    account.token = token;
+    account.cid = cid;
+    account.sid = self.sid;
+    account.name = self.name;
+    
+    [account saveSettings];
+    
+    CSDevice *device = [[CSDevice alloc] init];
+    
+    device.deviceName = [defaults valueForKey:@"deviceName"];
+    device.remoteId = cid;
+    
+    CoreDataWrapper *dataWrapper = [[CoreDataWrapper alloc] init];
+    [dataWrapper addUpdateDevice:device];
+    
+    dispatch_async(dispatch_get_main_queue(), ^ {
+      [self performSegueWithIdentifier:@"deviceSegue" sender:self];
+    });
+  }];
 }
 
 /*

@@ -36,6 +36,7 @@
 - (void) getDevices: (void (^) (NSMutableArray *devices)) callback;
 - (void) getStorages: (void (^) (NSMutableArray *storages)) callback;
 - (void) getToken: (NSString *) ip pass: (NSString *) pass callback: (void (^) (NSDictionary *authData)) callback;
+- (void) getToken: (NSString *) ip fromTokenHash: (NSString *) hash_token toDevice: (NSString *) cid callback: (void (^) (NSDictionary *authData)) callback;
 - (void) getPhotos: (int) lastId callback: (void (^) (NSMutableArray *devices)) callback;
 //- (void) uploadPhotos: (NSMutableArray *) photos upCallback: (void (^) ()) upCallback;
 - (void) updateDevice;

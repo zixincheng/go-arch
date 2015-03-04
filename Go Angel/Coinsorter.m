@@ -751,11 +751,6 @@
   NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, ip, @"/auth"];
   NSURL *url = [NSURL URLWithString:urlString];
   
-  NSError *error;
-  
-  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-  NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-  
   NSString *uid = [self uniqueAppId];
     NSLog(@"uid %@",uid);
   NSDictionary *headers = @{
@@ -763,10 +758,34 @@
                             @"uid"  : uid
                             };
   
+  [self getToken:url headerData:headers callback:callback];
+}
+
+- (void) getToken: (NSString *) ip fromTokenHash: (NSString *) hash_token toDevice: (NSString *) cid callback: (void (^) (NSDictionary *authData)) callback {
+  NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, ip, @"/qr/authQR"];
+  NSURL *url = [NSURL URLWithString:urlString];
+  
+  NSString *uid = [self uniqueAppId];
+  NSLog(@"uid %@",uid);
+  NSDictionary *headers = @{
+                            @"hash_token" : hash_token,
+                            @"sender_cid": cid,
+                            @"uid"  : uid
+                            };
+  
+  [self getToken:url headerData:headers callback:callback];
+}
+
+- (void) getToken: (NSURL *) url headerData: (NSDictionary *) headerData callback: (void (^) (NSDictionary *authData)) callback {
+  NSError *error;
+  
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+  
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
   [request setURL:url];
   [request setHTTPMethod:@"POST"];
-  [request setAllHTTPHeaderFields:headers];
+  [request setAllHTTPHeaderFields:headerData];
   
   NSDictionary *mapData = [self getThisDeviceInformation];
   
@@ -776,7 +795,7 @@
   NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
   [request setHTTPBody:postData];
   
-  NSLog(@"making post request to %@", urlString);
+  NSLog(@"making post request to %@", [url absoluteString]);
   
   NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
     NSError *jsonError;
