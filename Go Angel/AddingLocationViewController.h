@@ -32,8 +32,8 @@
 @property (nonatomic,strong) CoreDataWrapper *datawrapper;
 @property (nonatomic, strong) CLLocation *currentLocation;
 
-@property (weak, nonatomic) IBOutlet UILabel *lblLatitude;
-@property (weak, nonatomic) IBOutlet UILabel *lblLongitude;
+//@property (weak, nonatomic) IBOutlet UILabel *lblLatitude;
+//@property (weak, nonatomic) IBOutlet UILabel *lblLongitude;
 @property (weak, nonatomic) IBOutlet UITextField *txtUnit;
 @property (weak, nonatomic) IBOutlet UITextField *streetName;
 

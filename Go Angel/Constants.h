@@ -77,6 +77,12 @@
 #define TIME_UPDATE @"timeUpdate"
 #define ACTIVITY_LOG @"activityLog"
 
+// network status
+#define WIFILOCAL @"wifiandLocal"
+#define WIFIEXTERNAL @"wifiandExternal"
+#define WWAN @"WWAN"
+#define OFFLINE @"offLine"
+
 // camera
 #define SAVE_PHOTO_ALBUM @"Go Angel"
 

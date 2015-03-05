@@ -9,6 +9,7 @@
 #import "Coinsorter.h"
 
 #define FRONT_URL @"https://"
+#define PORT @":8443"
 #define UUID_ACCOUNT @"UID_ACCOUNT"
 #define PING_TIMEOUT 3
 
@@ -32,10 +33,11 @@
 }
 
 - (NSMutableURLRequest *) getHTTPGetRequest: (NSString *) path {
-  NSString *urlString = [NSString stringWithFormat:@"%@%@:7000%@", FRONT_URL, account.ip, path];
+
+  NSString *urlString = [NSString stringWithFormat:@"%@%@%@%@", FRONT_URL, account.currentIp,PORT, path];
   NSURL *url = [NSURL URLWithString:urlString];
-  
-  NSDictionary *headers = @{@"token" : account.token, @"cid" : account.cid};
+    NSLog(@"token %@",account.token);
+  NSDictionary *headers = @{@"token" : account.token};
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
   [request setURL:url];
@@ -50,7 +52,7 @@
 }
 
 - (NSMutableURLRequest *) getHTTPPostRequest: (NSString *) path {
-  NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, account.ip, path];
+  NSString *urlString = [NSString stringWithFormat:@"%@%@%@%@", FRONT_URL, account.currentIp,PORT, path];
   NSURL *url = [NSURL URLWithString:urlString];
   
   NSDictionary *headers = @{@"token" : account.token, @"cid" : account.cid};
@@ -124,7 +126,7 @@
   NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
   NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
   
-  NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, ip, @"/getSID"];
+  NSString *urlString = [NSString stringWithFormat:@"%@%@%@%@", FRONT_URL, ip,PORT, @"/getSID"];
   NSURL *url = [NSURL URLWithString:urlString];
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
@@ -671,7 +673,7 @@
       
       NSString *boundary = @"--XXXX--";
       
-      // create request
+      // create request g
       NSMutableURLRequest *request = [self getHTTPPostRequest:@"/photos"];
       [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
       [request setHTTPShouldHandleCookies:NO];
@@ -768,7 +770,7 @@
 }
 
 - (void) getToken:(NSString *)ip pass:(NSString *)pass callback: (void (^) (NSDictionary *authData)) callback {
-  NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, ip, @"/auth"];
+  NSString *urlString = [NSString stringWithFormat:@"%@%@%@%@", FRONT_URL, ip,PORT, @"/auth"];
   NSURL *url = [NSURL URLWithString:urlString];
   
   NSString *uid = [self uniqueAppId];

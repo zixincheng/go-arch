@@ -19,8 +19,9 @@
 #import "IndividualEntryViewController.h"
 #import "SearchMapViewController.h"
 #import "SearchResultsTableViewController.h"
+#import "NetWorkCheck.h"
 
-@interface MainLocationViewController : UITableViewController <UIAlertViewDelegate,UISearchResultsUpdating, UISearchBarDelegate> {
+@interface MainLocationViewController : UITableViewController <UIAlertViewDelegate,UISearchResultsUpdating, UISearchBarDelegate,GCDAsyncUdpSocketDelegate> {
     LocalLibrary *localLibrary;
     AccountDataWrapper *account;
     NSUserDefaults *defaults;
@@ -36,13 +37,15 @@
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, retain) Reachability *reach;
+@property (nonatomic, retain) NetWorkCheck *netWorkCheck;
 
 @property (nonatomic, strong) NSMutableArray *devices;
 @property (nonatomic, strong) NSMutableArray *locations;
 @property (nonatomic, strong) NSMutableArray *photos;
 
 @property (nonatomic) NSString *prevBSSID;
-@property (nonatomic) NSInteger networkStatus;
+@property (nonatomic) NSString *networkStatus;
+@property (nonatomic) NSInteger localLanStatus;
 @property (nonatomic, assign) BOOL canConnect;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIBarButtonItem *btnUpload;

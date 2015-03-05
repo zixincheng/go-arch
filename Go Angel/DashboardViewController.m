@@ -51,7 +51,7 @@
 
 -(void) homeServerConnected{
     self.serverName = account.name;
-    self.serverIP = account.ip;
+    self.serverIP = account.currentIp;
     self.homeServer = @"YES";
     dispatch_async(dispatch_get_main_queue(), ^ {
         [self.tableView reloadData];

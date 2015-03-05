@@ -722,7 +722,7 @@
   }else if (remoteHostStatus == ReachableViaWiFi) {
     // if we are connected to wifi
     // and we have a blackbox ip we have connected to before
-    if (account.ip != nil) {
+    if (account.currentIp != nil) {
       [self.coinsorter pingServer:^(BOOL connected) {
         self.canConnect = connected;
         //sent a notification to dashboard when network connects with home server
@@ -773,7 +773,7 @@
     
     if (self.canConnect) {
         self.serverName = account.name;
-        self.serverIP = account.ip;
+        self.serverIP = account.currentIp;
         self.homeServer = @"YES";
     }
     else{

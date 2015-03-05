@@ -42,6 +42,7 @@
     self.dataWrapper = [[CoreDataWrapper alloc] init];
     self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
     localLibrary = [[LocalLibrary alloc] init];
+    self.netWorkCheck = [[NetWorkCheck alloc] init];
     defaults = [NSUserDefaults standardUserDefaults];
     self.devices = [[NSMutableArray alloc] init];
     self.locations = [self.dataWrapper getLocations];
@@ -58,52 +59,18 @@
     account = appDelegate.account;
     self.localDevice = [self.dataWrapper getDevice:account.cid];
     
-    
     // add the refresh control to the table view
     self.refreshControl = refresh;
     
     // Start networking
     self.prevBSSID = [self currentWifiBSSID];
+    NSLog(@"bssid %@",self.prevBSSID);
     
     // setup network notification
-    [self setupNet];
-    
+    [self.netWorkCheck setupNet];
+
     // only ping if we are connected through wifi
-    if (self.networkStatus == ReachableViaWiFi) {
-        // ping the server to see if we are connected to bb
-        [self.coinsorter pingServer:^(BOOL connected) {
-            self.canConnect = connected;
-            
-            [self updateUploadCountUI];
-            
-            if (self.canConnect) {
-                // get all devices and photos from server
-                // only call this when we know we are connected
-                //[self syncAllFromApi];
-                NSLog(@"connect to server through wifi");
-            }
-        }];
-    }else if (self.networkStatus == ReachableViaWWAN){
-        
-        [self.coinsorter pingServer:^(BOOL connected) {
-            self.canConnect = connected;
-            
-            [self updateUploadCountUI];
-            
-            if (self.canConnect) {
-                // get all devices and photos from server
-                // only call this when we know we are connected
-                //[self syncAllFromApi];
-                NSLog(@"connect to server through wwan");
-            }
-        }];
-        
-        
-    } else{
-        self.canConnect = NO;
-        NSLog(@"cannot connect to server");
-    }
-    
+
     NSLog(@"Cid %@",account.cid);
     
     // Uncomment the following line to preserve selection between presentations.
@@ -112,9 +79,24 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPhotoChanged:) name:@"addNewPhoto"object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewLocation:) name:@"AddLocationSegue"object:nil];
     [defaults addObserver:self forKeyPath:UPLOAD_3G options:NSKeyValueObservingOptionNew context:NULL];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetWork:) name:@"networkStatusChanged"object:nil];
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void) updateNetWork: (NSNotification *)notification{
+    
+    NSString *networkstat = [notification.userInfo objectForKey:@"status"];
+     self.networkStatus = networkstat;
+    
+    if (![networkstat isEqualToString:OFFLINE]) {
+        self.canConnect = YES;
+        [self updateUploadCountUI];
+    } else {
+        self.canConnect = NO;
+        [self updateUploadCountUI];
+    }
 }
 
 -(void) addNewLocation: (NSNotification *)notification{
@@ -140,6 +122,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"passwordChanged" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"addNewPhoto" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AddLocationSegue" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"networkStatusChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:nil];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -157,7 +141,7 @@
     // Attempt to upload all the time
     if (self.canConnect) {
         if (self.unUploadedFullPhotos !=0 || self.unUploadedThumbnail !=0) {
-            [self uploadPhotosToApi];
+            //[self uploadPhotosToApi];
         }
     }
 }
@@ -210,7 +194,7 @@
             NSString *text = [alertView textFieldAtIndex:0].text;
             
             if (![text isEqualToString:@""]) {
-                [self.coinsorter getToken:account.ip pass:text callback:^(NSDictionary *authData) {
+                [self.coinsorter getToken:account.currentIp pass:text callback:^(NSDictionary *authData) {
                     if (authData == nil || authData == NULL) {
                         // we could not connect to server
                         NSLog(@"could not connect to server");
@@ -404,72 +388,6 @@
 
 # pragma mark - Network
 
-// get the initial network status
-- (void) setupNet {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
-    
-    self.reach = [Reachability reachabilityForInternetConnection];
-    [self.reach startNotifier];
-    
-    NetworkStatus remoteHostStatus = [self.reach currentReachabilityStatus];
-    self.networkStatus = remoteHostStatus;
-    
-    if (remoteHostStatus == NotReachable) {
-        NSLog(@"not reachable");
-    }else if (remoteHostStatus == ReachableViaWiFi) {
-        NSLog(@"wifi");
-    }else if (remoteHostStatus == ReachableViaWWAN) {
-        NSLog(@"wwan");
-    }
-}
-
-// called whenever network changes
-- (void) checkNetworkStatus: (NSNotification *) notification {
-    NSLog(@"network changed");
-    
-    NetworkStatus remoteHostStatus = [self.reach currentReachabilityStatus];
-    self.networkStatus = remoteHostStatus;
-    
-    if (remoteHostStatus == NotReachable) {
-        NSLog(@"not reachable");
-        //sent a notification to dashboard when network is not reachable
-        //[[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerDisconnected" object:nil];
-        self.canConnect = NO;
-        [self updateUploadCountUI];
-    }else if (remoteHostStatus == ReachableViaWiFi) {
-        // if we are connected to wifi
-        // and we have a blackbox ip we have connected to before
-        if (account.ip != nil) {
-            [self.coinsorter pingServer:^(BOOL connected) {
-                self.canConnect = connected;
-                if (self.canConnect && (self.unUploadedThumbnail !=0 || self.unUploadedFullPhotos !=0)) {
-                    [self uploadPhotosToApi];
-                }
-                //sent a notification to dashboard when network connects with home server
-                //[[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerConnected" object:nil];
-                [self updateUploadCountUI];
-            }];
-        }
-    }else if (remoteHostStatus == ReachableViaWWAN) {
-        NSLog(@"wwan");
-        //sent a notification to dashboard when network connects with WIFI not home server
-        //[[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerDisconnected" object:nil];
-        if (account.ip != nil) {
-            [self.coinsorter pingServer:^(BOOL connected) {
-                self.canConnect = connected;
-                if (self.canConnect && (self.unUploadedThumbnail !=0 || self.unUploadedFullPhotos !=0)) {
-                    [self uploadPhotosToApi];
-                }
-                //sent a notification to dashboard when network connects with home server
-                //[[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerConnected" object:nil];
-                [self updateUploadCountUI];
-            }];
-        }
-        
-    }
-}
-
-
 - (NSString *)currentWifiBSSID {
     // Does not work on the simulator.
     NSString *bssid = nil;
@@ -491,7 +409,7 @@
 }
 
 - (void)uploadBtnPressed:(id)sender {
-    if (self.networkStatus == ReachableViaWWAN && self.canConnect) {
+    if ([self.networkStatus isEqualToString:WWAN]) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"You Are Connecting Through WWAN, Upload Full Resolution Will Can Addtion Data Cost, Are You Going TO Upload Anyway?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
         alertView.tag = 2;
         [alertView show];
@@ -522,9 +440,12 @@
         }
         
         if (self.canConnect) {
-            if (self.networkStatus == ReachableViaWiFi) {
-                title = [NSString stringWithFormat:@"%@ (WIFI)",title];
-            } else {
+            if ([self.networkStatus isEqualToString:WIFIEXTERNAL]) {
+                title = [NSString stringWithFormat:@"%@ (WIFIEXTERNAL)",title];
+            } else if ([self.networkStatus isEqualToString:WIFILOCAL]) {
+                title = [NSString stringWithFormat:@"%@ (WIFILOCAL)",title];
+            }
+            else {
                 title = [NSString stringWithFormat:@"%@ (WWAN)",title];
             }
         }else {
@@ -579,7 +500,7 @@
                 
             }
         });
-        if (self.networkStatus == ReachableViaWiFi) {
+        if ([self.networkStatus isEqualToString:WIFIEXTERNAL] || [self.networkStatus isEqualToString:WIFILOCAL]) {
             [self.coinsorter uploadOnePhoto:p upCallback:^{
                 currentFullPhotoUploaded +=1;
                 [self removeFullPhoto];
@@ -657,7 +578,7 @@
                     
                 }
             });
-            if (self.networkStatus == ReachableViaWiFi) {
+            if ([self.networkStatus isEqualToString:WIFIEXTERNAL] || [self.networkStatus isEqualToString:WIFILOCAL]) {
                 [self.coinsorter uploadOnePhoto:p upCallback:^{
                     currentFullPhotoUploaded +=1;
                     [self removeFullPhoto];
@@ -696,7 +617,7 @@
             }
         }];
     } else if (thumbPhotos.count ==0 && fullPhotos.count >0) {
-        if (self.networkStatus == ReachableViaWiFi || upload3G) {
+        if ([self.networkStatus isEqualToString:WIFIEXTERNAL] || [self.networkStatus isEqualToString:WIFILOCAL] || upload3G) {
             for (CSPhoto *p in fullPhotos) {
                 [self.coinsorter uploadOnePhoto:p upCallback:^{
                     currentFullPhotoUploaded +=1;

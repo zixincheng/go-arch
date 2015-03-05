@@ -15,7 +15,9 @@
 
 @interface AccountDataWrapper : NSObject
 
-@property (nonatomic, strong) NSString *ip;
+@property (nonatomic, strong) NSString *currentIp;
+@property (nonatomic, strong) NSString *localIp;
+@property (nonatomic, strong) NSString *externalIp;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *token;
 @property (nonatomic, strong) NSString *cid;

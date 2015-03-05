@@ -81,6 +81,7 @@
 		9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13821A3F63A5000B780B /* QuartzCore.framework */; };
 		9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */; };
 		9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */; };
+		9BC0ABEF1AA7B6F300F430CB /* NetWorkCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC0ABEE1AA7B6F300F430CB /* NetWorkCheck.m */; };
 		9BC7B9541A93F15300164F0E /* SetPasswordTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9531A93F15300164F0E /* SetPasswordTableViewController.m */; };
 		9BC7B9571A94084300164F0E /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9561A94084300164F0E /* TWMessageBarManager.m */; };
 		9BC7B95A1A940F4E00164F0E /* icon-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC7B9581A940F4E00164F0E /* icon-error.png */; };
@@ -267,6 +268,8 @@
 		9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageDetailViewController.m; sourceTree = "<group>"; };
 		9BB0F20C1A27A91900DF40E3 /* StorageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageTableViewCell.h; sourceTree = "<group>"; };
 		9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageTableViewCell.m; sourceTree = "<group>"; };
+		9BC0ABED1AA7B6F300F430CB /* NetWorkCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkCheck.h; sourceTree = "<group>"; };
+		9BC0ABEE1AA7B6F300F430CB /* NetWorkCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkCheck.m; sourceTree = "<group>"; };
 		9BC7B9521A93F15300164F0E /* SetPasswordTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetPasswordTableViewController.h; sourceTree = "<group>"; };
 		9BC7B9531A93F15300164F0E /* SetPasswordTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetPasswordTableViewController.m; sourceTree = "<group>"; };
 		9BC7B9551A94084300164F0E /* TWMessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWMessageBarManager.h; sourceTree = "<group>"; };
@@ -368,6 +371,8 @@
 				9B6C88CC1A829FA500B50A21 /* CellLayoutDelegate.h */,
 				2061D1C4199193B5001C7E08 /* AccountDataWrapper.h */,
 				2061D1C5199193B5001C7E08 /* AccountDataWrapper.m */,
+				9BC0ABED1AA7B6F300F430CB /* NetWorkCheck.h */,
+				9BC0ABEE1AA7B6F300F430CB /* NetWorkCheck.m */,
 				9B6C88C41A829EAD00B50A21 /* CellLayout.h */,
 				9B6C88C51A829EAD00B50A21 /* CellLayout.m */,
 				D518B3391A42046700E249E4 /* ActivityHistory.h */,
@@ -757,6 +762,7 @@
 				2061D1D9199193CE001C7E08 /* CoreDataStore.m in Sources */,
 				D510B9641A364A8A00307184 /* DashboardViewController.m in Sources */,
 				9BC7B9571A94084300164F0E /* TWMessageBarManager.m in Sources */,
+				9BC0ABEF1AA7B6F300F430CB /* NetWorkCheck.m in Sources */,
 				20931B8519954B8900F57FB0 /* GridCell.m in Sources */,
 				2061D1D8199193CE001C7E08 /* ConnectViewController.m in Sources */,
 				9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */,

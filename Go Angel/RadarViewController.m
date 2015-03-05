@@ -175,7 +175,7 @@
                 NSString *hostname = [jsonData objectForKey:@"HOSTNAME"];
                 
                 Server *s = [[Server alloc] init];
-                s.ip = host;
+                s.currentIp = host;
                 s.hostname = hostname;
                 s.serverId = sid;
                 
@@ -374,11 +374,11 @@
 
     Server *s = self.servers[sender.tag];
     
-    self.selectedServer.ip = s.ip;
+    self.selectedServer.currentIp = s.currentIp;
     self.selectedServer.serverId = s.serverId;
     self.selectedServer.hostname = s.hostname;
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[ NSString stringWithFormat:@"server IP: %@",s.ip] message:[ NSString stringWithFormat:@"Server Name: %@",s.hostname] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[ NSString stringWithFormat:@"server IP: %@",s.currentIp] message:[ NSString stringWithFormat:@"Server Name: %@",s.hostname] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect", nil];
     
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[alertView textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeURL];
@@ -417,7 +417,7 @@
                         NSString *hostname = [jsonData objectForKey:@"HOSTNAME"];
 
                         Server *s = [[Server alloc] init];
-                        s.ip = text;
+                        s.currentIp = text;
                         s.hostname = hostname;
                         s.serverId = sid;
 
@@ -450,7 +450,7 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     AccountDataWrapper *account = appDelegate.account;
     
-    [self.coinsorter getToken:self.selectedServer.ip pass:pass callback:^(NSDictionary *authData) {
+    [self.coinsorter getToken:self.selectedServer.currentIp pass:pass callback:^(NSDictionary *authData) {
         if (authData == nil || authData == NULL) {
             // we could not connect to server
            // [self asyncSetErrorLabel:@"could not connect to server"];
@@ -476,7 +476,7 @@
         NSLog(@"token: %@", token);
         NSLog(@"cid: %@", cid);
         
-        account.ip = self.selectedServer.ip;
+        account.currentIp = self.selectedServer.currentIp;
         account.token = token;
         account.cid = cid;
         account.sid = self.selectedServer.serverId;

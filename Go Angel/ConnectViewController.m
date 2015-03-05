@@ -104,7 +104,7 @@
     NSLog(@"token: %@", token);
     NSLog(@"cid: %@", cid);
     
-    account.ip = self.ip;
+    account.currentIp = self.ip;
     account.token = token;
     account.cid = cid;
     account.sid = self.sid;

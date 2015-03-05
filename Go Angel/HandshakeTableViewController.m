@@ -35,9 +35,11 @@
 {
     NSLog(@"viewDidAppear");
     // Setup a timer to refresh every 10 seconds
-    self.udpTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(periodicallySendUDP) userInfo:nil repeats:YES];
 
-    [self sendUDPMessage];
+    if (self.networkStatus == ReachableViaWiFi) {
+        self.udpTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(periodicallySendUDP) userInfo:nil repeats:YES];
+        [self sendUDPMessage];
+    }
 }
 
 
@@ -53,7 +55,8 @@
   
   self.coinsorter = [[Coinsorter alloc] init];
   self.servers = [[NSMutableArray alloc] init];
-  
+  self.netWorkCheck = [[NetWorkCheck alloc]init];
+  [self setupNet];
   self.sendUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
   self.recieveUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
   
@@ -111,9 +114,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   
     Server *s = self.servers[[indexPath row]];
-    self.ip = s.ip;
+    self.ip = s.currentIp;
     self.sid = s.serverId;
     self.name = s.hostname;
+    self.localIp = s.localIp;
+    self.externalIp = s.externalIp;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:@"" forKey:@"password"];
     
@@ -165,9 +170,12 @@
                         NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                         NSString *sid = [jsonData objectForKey:@"SID"];
                         NSString *hostname = [jsonData objectForKey:@"HOSTNAME"];
-                        
+                        NSString *externalIp = [jsonData objectForKeyedSubscript:@"IP-EXTERNAL"];
+                        NSString *localIp = [jsonData objectForKeyedSubscript:@"IP-INTERNAL"];
                         Server *s = [[Server alloc] init];
-                        s.ip = text;
+                        s.localIp = localIp;
+                        s.externalIp = externalIp;
+                        s.currentIp = text;
                         s.hostname = hostname;
                         s.serverId = sid;
                         
@@ -180,6 +188,7 @@
                                 if (array == nil || [array count] == 0) {
                                     // If nothing exists at all
                                     [self.servers addObject:s];
+                                    [self.tableView reloadData];
                                 }
                             }
                         });
@@ -187,9 +196,6 @@
                         NSLog(@"no server");
                     }
                 }];
-
-                
-                [self.tableView reloadData];
             }
         }
     } else if (alertView.tag == 1) {
@@ -237,7 +243,6 @@
     //    [self.sendUdpSocket sendData:data withTimeout:-1 tag:1];
     [self.sendUdpSocket sendData:data toHost:@"255.255.255.255" port:9999 withTimeout:-1 tag:1];
   });
-  
   [self.refreshControl endRefreshing];
 }
 
@@ -255,6 +260,7 @@
 }
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext {
+
   NSString *msg = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
   
   NSString *host = nil;
@@ -270,11 +276,16 @@
         NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         NSString *sid = [jsonData objectForKey:@"SID"];
         NSString *hostname = [jsonData objectForKey:@"HOSTNAME"];
-        
+        NSString *externalIp = [jsonData objectForKeyedSubscript:@"IP_EXTERNAL"];
+        NSString *localIp = [jsonData objectForKeyedSubscript:@"IP_INTERNAL"];
         Server *s = [[Server alloc] init];
-        s.ip = host;
+        s.localIp = localIp;
+        s.externalIp = externalIp;
+        s.currentIp = host;
         s.hostname = hostname;
         s.serverId = sid;
+
+        
         dispatch_async(dispatch_get_main_queue(), ^{
           @synchronized (self.servers) {
               
@@ -290,6 +301,9 @@
         });
       }
     }];
+  } else {
+      NSLog(@"cannot find server");
+      [self.sendUdpSocket close];
   }
 }
 
@@ -346,11 +360,13 @@
     NSLog(@"token: %@", token);
     NSLog(@"cid: %@", cid);
     
-    account.ip = self.ip;
+    account.currentIp = self.ip;
     account.token = token;
     account.cid = cid;
     account.sid = self.sid;
     account.name = self.name;
+    account.localIp = self.localIp;
+    account.externalIp = self.externalIp;
     
     [account saveSettings];
     
@@ -394,11 +410,13 @@
     NSLog(@"token: %@", token);
     NSLog(@"cid: %@", cid);
     
-    account.ip = self.ip;
+    account.currentIp = self.ip;
     account.token = token;
     account.cid = cid;
     account.sid = self.sid;
     account.name = self.name;
+    account.localIp = self.localIp;
+    account.externalIp = self.externalIp;
     
     [account saveSettings];
     
@@ -414,6 +432,40 @@
       [self performSegueWithIdentifier:@"deviceSegue" sender:self];
     });
   }];
+}
+
+- (void) setupNet {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    
+    self.reach = [Reachability reachabilityForInternetConnection];
+    [self.reach startNotifier];
+    
+    NetworkStatus remoteHostStatus = [self.reach currentReachabilityStatus];
+    self.networkStatus = remoteHostStatus;
+    
+    if (remoteHostStatus == NotReachable) {
+        NSLog(@"not reachable");
+    }else if (remoteHostStatus == ReachableViaWiFi) {
+        NSLog(@"wifi");
+    }else if (remoteHostStatus == ReachableViaWWAN) {
+        NSLog(@"wwan");
+    }
+}
+
+- (void) checkNetworkStatus: (NSNotification *) notification {
+    NSLog(@"network changed");
+    
+    NetworkStatus remoteHostStatus = [self.reach currentReachabilityStatus];
+    self.networkStatus = remoteHostStatus;
+    
+    if (remoteHostStatus == NotReachable) {
+        NSLog(@"not reachable");
+    }else if (remoteHostStatus == ReachableViaWiFi) {
+        [self sendUDPMessage];
+        
+    }else if (remoteHostStatus == ReachableViaWWAN) {
+        NSLog(@"wwan");
+    }
 }
 
 /*

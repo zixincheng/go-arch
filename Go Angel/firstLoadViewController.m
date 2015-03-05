@@ -35,7 +35,7 @@
   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
   AccountDataWrapper *account = appDelegate.account;
   
-  if (account.ip != nil) {
+  if (account.currentIp != nil) {
     [self performSegueWithIdentifier:@"connectedSegue" sender:self];
   }else {
     [self performSegueWithIdentifier:@"handshakeSeque" sender:self];

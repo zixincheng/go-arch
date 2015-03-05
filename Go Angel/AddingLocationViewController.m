@@ -8,7 +8,7 @@
 
 #import "AddingLocationViewController.h"
 
-#define NORMAL_SECTIONS_COUNT 4
+#define NORMAL_SECTIONS_COUNT 2
 
 @interface AddingLocationViewController ()
 
@@ -23,8 +23,6 @@
                                              selector:@selector(intoForeground)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     self.location = [[CSLocation alloc]init];
     self.datawrapper = [[CoreDataWrapper alloc]init];
@@ -223,11 +221,12 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     //        self.currentLocation.coordinate.latitude,
     //        self.currentLocation.coordinate.longitude);
     
-    [self updateLocationLabels];
+    //[self updateLocationLabels];
     [self geocodeLocation:self.currentLocation];
 }
 
 // update the latitude and longitude labels on page
+/*
 - (void)updateLocationLabels {
     [self.lblLatitude
      setText:[NSString stringWithFormat:@"%f", self.currentLocation.coordinate
@@ -239,7 +238,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     [self.lblLatitude setHidden:NO];
     [self.lblLongitude setHidden:NO];
 }
-
+*/
 // update table to use the correct amount of sections
 // depending if location is on
 - (void)updateTable {
@@ -297,8 +296,8 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
             self.location.latitude = [NSString stringWithFormat:@"%f", placemark.location.coordinate.latitude];
 
 
-            self.lblLatitude.text = self.location.longitude;
-            self.lblLongitude.text = self.location.latitude;
+            //self.lblLatitude.text = self.location.longitude;
+            //self.lblLongitude.text = self.location.latitude;
         }
     }];
 }

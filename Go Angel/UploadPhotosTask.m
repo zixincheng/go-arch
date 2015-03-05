@@ -259,8 +259,8 @@
             AppDelegate *appDelegate =
             [[UIApplication sharedApplication] delegate];
             NSString *urlString = [NSString
-                                   stringWithFormat:@"%@%@%@", @"https://",
-                                   appDelegate.account.ip, @"/videos"];
+                                   stringWithFormat:@"%@%@%@%@", @"https://",
+                                   appDelegate.account.currentIp,@":8443", @"/videos"];
             
             NSURL *url = [NSURL URLWithString:urlString];
             
@@ -328,8 +328,8 @@
             AppDelegate *appDelegate =
             [[UIApplication sharedApplication] delegate];
             NSString *urlString = [NSString
-                                   stringWithFormat:@"%@%@%@", @"https://",
-                                   appDelegate.account.ip, @"/photos"];
+                                   stringWithFormat:@"%@%@%@%@", @"https://",
+                                   appDelegate.account.currentIp,@":8443", @"/photos"];
             
             NSURL *url = [NSURL URLWithString:urlString];
             
@@ -435,8 +435,8 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 AppDelegate *appDelegate =
                 [[UIApplication sharedApplication] delegate];
                 NSString *urlString = [NSString
-                                       stringWithFormat:@"%@%@%@", @"https://",
-                                       appDelegate.account.ip, @"/videos/thumbnail"];
+                                       stringWithFormat:@"%@%@%@%@", @"https://",
+                                       appDelegate.account.currentIp, @":8443", @"/videos/thumbnail"];
                 
                 NSURL *url = [NSURL URLWithString:urlString];
                 
@@ -506,8 +506,8 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 AppDelegate *appDelegate =
                 [[UIApplication sharedApplication] delegate];
                 NSString *urlString = [NSString
-                                       stringWithFormat:@"%@%@%@", @"https://",
-                                       appDelegate.account.ip, @"/photos/thumbnail"];
+                                       stringWithFormat:@"%@%@%@%@", @"https://",
+                                       appDelegate.account.currentIp, @":8443", @"/photos/thumbnail"];
                 
                 NSURL *url = [NSURL URLWithString:urlString];
                 
@@ -612,8 +612,8 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             AppDelegate *appDelegate =
             [[UIApplication sharedApplication] delegate];
             NSString *urlString = [NSString
-                                   stringWithFormat:@"%@%@%@", @"https://",
-                                   appDelegate.account.ip, @"/videos/thumbnail"];
+                                   stringWithFormat:@"%@%@%@%@", @"https://",
+                                   appDelegate.account.currentIp, @":8443", @"/videos/thumbnail"];
             
             NSURL *url = [NSURL URLWithString:urlString];
             
@@ -683,8 +683,8 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             AppDelegate *appDelegate =
             [[UIApplication sharedApplication] delegate];
             NSString *urlString = [NSString
-                                   stringWithFormat:@"%@%@%@", @"https://",
-                                   appDelegate.account.ip, @"/photos/thumbnail"];
+                                   stringWithFormat:@"%@%@%@%@", @"https://",
+                                   appDelegate.account.currentIp, @":8443", @"/photos/thumbnail"];
             
             NSURL *url = [NSURL URLWithString:urlString];
             
