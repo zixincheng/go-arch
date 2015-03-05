@@ -314,6 +314,10 @@
     NSString *cid = [userInfo objectForKey:@"cid"];
     NSString *host = [userInfo objectForKey:@"host"];
     
+    if ([host containsString:@":"]) {
+      host = [host substringWithRange:NSMakeRange(0, [host length] - 5)];
+    }
+    
     NSLog(@"GOT THE INFO %@", userInfo);
     
     [self.coinsorter getSid:host infoCallback:^(NSData *data) {
@@ -321,10 +325,14 @@
         NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         NSString *sid = [jsonData objectForKey:@"SID"];
         NSString *hostname = [jsonData objectForKey:@"HOSTNAME"];
-
+        NSString *ip_internal = [jsonData objectForKey:@"IP_INTERNAL"];
+        NSString *ip_external = [jsonData objectForKey:@"IP_EXTERNAL"];
+        
         self.sid = sid;
         self.name = hostname;
         self.ip = host;
+        self.localIp = ip_internal;
+        self.externalIp = ip_external;
         
        [self authDeviceQR:hash_token fromDeviceID:cid toHost:host];
       } else {
@@ -359,6 +367,10 @@
     
     NSLog(@"token: %@", token);
     NSLog(@"cid: %@", cid);
+    
+    NSLog(@"internal IP: %@", self.localIp);
+    NSLog(@"external IP: %@", self.externalIp);
+    NSLog(@"current IP: %@", self.ip);
     
     account.currentIp = self.ip;
     account.token = token;
