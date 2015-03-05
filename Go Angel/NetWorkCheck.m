@@ -26,11 +26,18 @@
     self.recieveUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
     return self;
 }
 
+- (void) dealloc {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+}
+
 - (void) setupNet {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
     
     [self.reach startNotifier];
         
@@ -111,8 +118,9 @@
     
     if (remoteHostStatus == NotReachable) {
         NSLog(@"not reachable");
-        //sent a notification to dashboard when network is not reachable
-        //[[NSNotificationCenter defaultCenter] postNotificationName:@"homeServerDisconnected" object:nil];
+        self.checkNetWorkStat = OFFLINE;
+        NSDictionary *stat = @{@"status" : self.checkNetWorkStat};
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"networkStatusChanged" object:nil userInfo:stat];
     }else if (remoteHostStatus == ReachableViaWiFi) {
         // if we are connected to wifi
         // and we have a blackbox ip we have connected to before
@@ -177,25 +185,13 @@
     // this means we do not hava wifi bssid
     // probably on 3g
     if (bssid == nil) {
-        account.currentIp = account.externalIp;
-        [self.coinsorter pingServer:^(BOOL connected) {
-            if (connected) {
-                self.checkNetWorkStat = WWAN;
-                NSDictionary *stat = @{@"status" : self.checkNetWorkStat};
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"networkStatusChanged" object:nil userInfo:stat];
-            } else {
-                self.checkNetWorkStat = OFFLINE;
-                NSDictionary *stat = @{@"status" : self.checkNetWorkStat};
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"networkStatusChanged" object:nil userInfo:stat];
-            }
-        }];
-
+        self.prevBSSID = nil;
         return;
     }
     
     if (self.prevBSSID == nil) {
         self.prevBSSID = bssid;
-        [self setupNet];
+        //[self setupNet];
     }else {
         if (![self.prevBSSID isEqualToString:bssid]) {
             NSLog(@"network bssid changed");

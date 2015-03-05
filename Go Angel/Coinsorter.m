@@ -36,7 +36,7 @@
 
   NSString *urlString = [NSString stringWithFormat:@"%@%@%@%@", FRONT_URL, account.currentIp,PORT, path];
   NSURL *url = [NSURL URLWithString:urlString];
-    NSLog(@"token %@",account.token);
+
   NSDictionary *headers = @{@"token" : account.token};
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;

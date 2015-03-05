@@ -119,6 +119,7 @@
     self.name = s.hostname;
     self.localIp = s.localIp;
     self.externalIp = s.externalIp;
+    NSLog(@"extranl ip %@",self.externalIp);
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:@"" forKey:@"password"];
     
@@ -170,8 +171,8 @@
                         NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                         NSString *sid = [jsonData objectForKey:@"SID"];
                         NSString *hostname = [jsonData objectForKey:@"HOSTNAME"];
-                        NSString *externalIp = [jsonData objectForKeyedSubscript:@"IP-EXTERNAL"];
-                        NSString *localIp = [jsonData objectForKeyedSubscript:@"IP-INTERNAL"];
+                        NSString *externalIp = [jsonData objectForKeyedSubscript:@"IP_EXTERNAL"];
+                        NSString *localIp = [jsonData objectForKeyedSubscript:@"IP_INTERNAL"];
                         Server *s = [[Server alloc] init];
                         s.localIp = localIp;
                         s.externalIp = externalIp;
@@ -395,7 +396,7 @@
       NSLog(@"could not connect to server");
       return;
     }
-    
+
     NSString *token = [authData objectForKey:@"token"];
     if (token == nil || token == NULL) {
       // if we get here we assume the password is incorrect
@@ -417,7 +418,7 @@
     account.name = self.name;
     account.localIp = self.localIp;
     account.externalIp = self.externalIp;
-    
+      NSLog(@"ex ip %@",account.externalIp);
     [account saveSettings];
     
     CSDevice *device = [[CSDevice alloc] init];

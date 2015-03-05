@@ -63,8 +63,6 @@
     self.refreshControl = refresh;
     
     // Start networking
-    self.prevBSSID = [self currentWifiBSSID];
-    NSLog(@"bssid %@",self.prevBSSID);
     
     // setup network notification
     [self.netWorkCheck setupNet];
@@ -93,9 +91,17 @@
     if (![networkstat isEqualToString:OFFLINE]) {
         self.canConnect = YES;
         [self updateUploadCountUI];
+        if ([networkstat isEqualToString:WIFILOCAL] || [networkstat isEqualToString:WIFIEXTERNAL]) {
+            self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
+            self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
+            if (self.unUploadedThumbnail != 0 || self.unUploadedFullPhotos !=0) {
+                [self uploadPhotosToApi];
+            }
+        }
     } else {
         self.canConnect = NO;
         [self updateUploadCountUI];
+        
     }
 }
 
@@ -123,7 +129,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"addNewPhoto" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AddLocationSegue" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"networkStatusChanged" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:nil];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -384,23 +389,6 @@
 }
 
 
-// get the current wifi bssid (network id)
-
-# pragma mark - Network
-
-- (NSString *)currentWifiBSSID {
-    // Does not work on the simulator.
-    NSString *bssid = nil;
-    NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
-    for (NSString *ifnam in ifs) {
-        NSDictionary *info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
-        if (info[@"BSSID"]) {
-            bssid = info[@"BSSID"];
-        }
-    }
-    return bssid;
-}
-
 #pragma mark - Button Actions
 
 -(void) addLocationbuttonPressed: (id) sender {
@@ -490,7 +478,7 @@
             NSLog(@"updating the tags");
         }
         currentthumbnailUploaded += 1;
-        [self removeThumbnail];
+        self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
         dispatch_async(dispatch_get_main_queue(), ^{
             float progress = (float) currentthumbnailUploaded / 1;
             if (progress == 1.0) {
@@ -503,7 +491,7 @@
         if ([self.networkStatus isEqualToString:WIFIEXTERNAL] || [self.networkStatus isEqualToString:WIFILOCAL]) {
             [self.coinsorter uploadOnePhoto:p upCallback:^{
                 currentFullPhotoUploaded +=1;
-                [self removeFullPhoto];
+                self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     float progress = (float) currentFullPhotoUploaded / 1;
                     if (progress == 1.0) {
