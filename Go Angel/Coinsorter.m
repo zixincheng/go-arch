@@ -37,7 +37,7 @@
   NSString *urlString = [NSString stringWithFormat:@"%@%@%@%@", FRONT_URL, account.currentIp,PORT, path];
   NSURL *url = [NSURL URLWithString:urlString];
 
-  NSDictionary *headers = @{@"token" : account.token};
+  NSDictionary *headers = @{@"token" : account.token ,@"cid" : account.cid};
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
   [request setURL:url];
@@ -74,14 +74,15 @@
   NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
   
   NSMutableURLRequest *request = [self getHTTPGetRequest:@"/qr/getQR"];
-  [request setTimeoutInterval:2];
   
   NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
     if (error == nil && data != nil) {
       NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+      NSLog(@"%@", jsonData);
       NSString *base64 = [jsonData objectForKey:@"qr"];
       callback(base64);
     } else {
+      NSLog(@"could not get qr code");
       callback(nil);
     }
   }];
@@ -110,6 +111,7 @@
         // no server id or it does not equal the server
         // we have connected to before
         connectCallback(NO);
+        NSLog(@"local sid: %@ pinged sid: %@", account.sid, sid);
         NSLog(@"ping failed");
       }
     } else {
