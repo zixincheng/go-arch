@@ -82,6 +82,11 @@
 		9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */; };
 		9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */; };
 		9BC0ABEF1AA7B6F300F430CB /* NetWorkCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC0ABEE1AA7B6F300F430CB /* NetWorkCheck.m */; };
+		9BC1B0FD1AA8E670002FE705 /* QRPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1B0FC1AA8E670002FE705 /* QRPreviewViewController.m */; };
+		9BC1B1051AA8E6CC002FE705 /* qrcode.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC1B1021AA8E6CC002FE705 /* qrcode.png */; };
+		9BC1B1061AA8E6CC002FE705 /* qrcode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC1B1031AA8E6CC002FE705 /* qrcode@2x.png */; };
+		9BC1B1071AA8E6CC002FE705 /* qroverlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC1B1041AA8E6CC002FE705 /* qroverlay.png */; };
+		9BC1B10A1AA8E74D002FE705 /* QRReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1B1091AA8E74D002FE705 /* QRReaderViewController.m */; };
 		9BC7B9541A93F15300164F0E /* SetPasswordTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9531A93F15300164F0E /* SetPasswordTableViewController.m */; };
 		9BC7B9571A94084300164F0E /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9561A94084300164F0E /* TWMessageBarManager.m */; };
 		9BC7B95A1A940F4E00164F0E /* icon-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC7B9581A940F4E00164F0E /* icon-error.png */; };
@@ -270,6 +275,13 @@
 		9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageTableViewCell.m; sourceTree = "<group>"; };
 		9BC0ABED1AA7B6F300F430CB /* NetWorkCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkCheck.h; sourceTree = "<group>"; };
 		9BC0ABEE1AA7B6F300F430CB /* NetWorkCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkCheck.m; sourceTree = "<group>"; };
+		9BC1B0FB1AA8E670002FE705 /* QRPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRPreviewViewController.h; sourceTree = "<group>"; };
+		9BC1B0FC1AA8E670002FE705 /* QRPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRPreviewViewController.m; sourceTree = "<group>"; };
+		9BC1B1021AA8E6CC002FE705 /* qrcode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qrcode.png; sourceTree = "<group>"; };
+		9BC1B1031AA8E6CC002FE705 /* qrcode@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qrcode@2x.png"; sourceTree = "<group>"; };
+		9BC1B1041AA8E6CC002FE705 /* qroverlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qroverlay.png; sourceTree = "<group>"; };
+		9BC1B1081AA8E74D002FE705 /* QRReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRReaderViewController.h; sourceTree = "<group>"; };
+		9BC1B1091AA8E74D002FE705 /* QRReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRReaderViewController.m; sourceTree = "<group>"; };
 		9BC7B9521A93F15300164F0E /* SetPasswordTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetPasswordTableViewController.h; sourceTree = "<group>"; };
 		9BC7B9531A93F15300164F0E /* SetPasswordTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetPasswordTableViewController.m; sourceTree = "<group>"; };
 		9BC7B9551A94084300164F0E /* TWMessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWMessageBarManager.h; sourceTree = "<group>"; };
@@ -455,6 +467,10 @@
 				9BEA5B551A1EB26100CC14FF /* StorageViewController.m */,
 				9B4ADCB41A7C168500375C01 /* SearchResultsTableViewController.h */,
 				9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */,
+				9BC1B0FB1AA8E670002FE705 /* QRPreviewViewController.h */,
+				9BC1B0FC1AA8E670002FE705 /* QRPreviewViewController.m */,
+				9BC1B1081AA8E74D002FE705 /* QRReaderViewController.h */,
+				9BC1B1091AA8E74D002FE705 /* QRReaderViewController.m */,
 				2053971E1991924B00B1D9AD /* Supporting Files */,
 				2061D1F819919440001C7E08 /* UploadPhotosTask.h */,
 				2061D1F919919440001C7E08 /* UploadPhotosTask.m */,
@@ -469,6 +485,9 @@
 		2053971E1991924B00B1D9AD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9BC1B1021AA8E6CC002FE705 /* qrcode.png */,
+				9BC1B1031AA8E6CC002FE705 /* qrcode@2x.png */,
+				9BC1B1041AA8E6CC002FE705 /* qroverlay.png */,
 				9BE03EC01A9FD722007ADCDC /* roll.png */,
 				9BE03EC11A9FD722007ADCDC /* roll@2x.png */,
 				9B3A65CC1A9E65EA00D77CD3 /* play-circle.png */,
@@ -665,6 +684,7 @@
 				9BC7B95B1A940F4E00164F0E /* icon-success.png in Resources */,
 				9B555D571A4A32FB00D00025 /* selectedbackground.png in Resources */,
 				2061D1E819919428001C7E08 /* InAppSettings.bundle in Resources */,
+				9BC1B1071AA8E6CC002FE705 /* qroverlay.png in Resources */,
 				20C3BBD41A687EFA0019DE40 /* flashing_on.png in Resources */,
 				20C3BBC71A687EFA0019DE40 /* box.png in Resources */,
 				20C3BBE51A687EFA0019DE40 /* unupload.png in Resources */,
@@ -682,11 +702,13 @@
 				20C3BBD11A687EFA0019DE40 /* flashing_auto@2x.png in Resources */,
 				20C3BBDA1A687EFA0019DE40 /* shot.png in Resources */,
 				20C3BBC81A687EFA0019DE40 /* camera_line_h.png in Resources */,
+				9BC1B1061AA8E6CC002FE705 /* qrcode@2x.png in Resources */,
 				205397221991924B00B1D9AD /* InfoPlist.strings in Resources */,
 				20C3BBD81A687EFA0019DE40 /* shot_h.png in Resources */,
 				9BCDE8BC1A803C940017FD7A /* videoFinish.png in Resources */,
 				20C3BBCD1A687EFA0019DE40 /* close_cha_h@2x.png in Resources */,
 				20C3BBDB1A687EFA0019DE40 /* shot@2x.png in Resources */,
+				9BC1B1051AA8E6CC002FE705 /* qrcode.png in Resources */,
 				9BE03EC31A9FD722007ADCDC /* roll@2x.png in Resources */,
 				20C3BBD31A687EFA0019DE40 /* flashing_off@2x.png in Resources */,
 				20C3BBD01A687EFA0019DE40 /* flashing_auto.png in Resources */,
@@ -779,6 +801,7 @@
 				9BDDBAF51A70827900697C25 /* CSLocation.m in Sources */,
 				20DD6A44199441C900D76DC3 /* GridViewController.m in Sources */,
 				9B3445CD1A410772004BA746 /* RadarViewController.m in Sources */,
+				9BC1B10A1AA8E74D002FE705 /* QRReaderViewController.m in Sources */,
 				2040D2251A6058EA00E490F3 /* LocationTableViewController.m in Sources */,
 				2061D1DD199193CE001C7E08 /* DeviceViewController.m in Sources */,
 				20931B8E19957EEE00F57FB0 /* PhotoSectionHeaderView.m in Sources */,
@@ -791,6 +814,7 @@
 				2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */,
 				2061D1DC199193CE001C7E08 /* CSPhoto.m in Sources */,
 				2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */,
+				9BC1B0FD1AA8E670002FE705 /* QRPreviewViewController.m in Sources */,
 				9BC7B9541A93F15300164F0E /* SetPasswordTableViewController.m in Sources */,
 				20F74D161992B56B00E0546D /* Constants.m in Sources */,
 				9B1211431A79B13B0088CD3A /* SearchMapViewController.m in Sources */,
