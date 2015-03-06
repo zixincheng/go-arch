@@ -1,6 +1,6 @@
 //
 //  DashboardViewController.h
-//  Go Angel
+//  Go Arch
 //
 //  Created by Xing Qiao on 2014-12-08.
 //  Copyright (c) 2014 acdGO Software Ltd. All rights reserved.

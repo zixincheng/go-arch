@@ -159,14 +159,14 @@
 		2040D2231A6058EA00E490F3 /* LocationTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationTableViewController.h; sourceTree = "<group>"; };
 		2040D2241A6058EA00E490F3 /* LocationTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationTableViewController.m; sourceTree = "<group>"; };
 		2040D2291A6059BE00E490F3 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		205397121991924B00B1D9AD /* Go Angel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Go Angel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		205397121991924B00B1D9AD /* Go Arch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Go Arch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		205397151991924B00B1D9AD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		205397171991924B00B1D9AD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		205397191991924B00B1D9AD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2053971B1991924B00B1D9AD /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		2053971F1991924B00B1D9AD /* Go Angel-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Go Angel-Info.plist"; sourceTree = "<group>"; };
+		2053971F1991924B00B1D9AD /* Go Arch-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Go Arch-Info.plist"; sourceTree = "<group>"; };
 		205397211991924B00B1D9AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		205397251991924B00B1D9AD /* Go Angel-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Go Angel-Prefix.pch"; sourceTree = "<group>"; };
+		205397251991924B00B1D9AD /* Go Arch-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Go Arch-Prefix.pch"; sourceTree = "<group>"; };
 		205397331991924B00B1D9AD /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		2053973C1991924B00B1D9AD /* Go AngelTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Go AngelTests-Info.plist"; sourceTree = "<group>"; };
 		2053973E1991924B00B1D9AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -355,7 +355,7 @@
 		205397131991924B00B1D9AD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				205397121991924B00B1D9AD /* Go Angel.app */,
+				205397121991924B00B1D9AD /* Go Arch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -524,9 +524,9 @@
 				D553C3A41A44DC85004076B4 /* uploading.png */,
 				2061D1F519919440001C7E08 /* settings-25.png */,
 				2061D1FF1991945F001C7E08 /* main.m */,
-				2053971F1991924B00B1D9AD /* Go Angel-Info.plist */,
+				2053971F1991924B00B1D9AD /* Go Arch-Info.plist */,
 				205397201991924B00B1D9AD /* InfoPlist.strings */,
-				205397251991924B00B1D9AD /* Go Angel-Prefix.pch */,
+				205397251991924B00B1D9AD /* Go Arch-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -573,9 +573,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		205397111991924B00B1D9AD /* Go Angel */ = {
+		205397111991924B00B1D9AD /* Go Arch */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 205397441991924B00B1D9AD /* Build configuration list for PBXNativeTarget "Go Angel" */;
+			buildConfigurationList = 205397441991924B00B1D9AD /* Build configuration list for PBXNativeTarget "Go Arch" */;
 			buildPhases = (
 				8999538AEA22D44EC6975D76 /* Check Pods Manifest.lock */,
 				2053970E1991924B00B1D9AD /* Sources */,
@@ -589,9 +589,9 @@
 			dependencies = (
 				A67AD5A819D2295E0055C3A7 /* PBXTargetDependency */,
 			);
-			name = "Go Angel";
+			name = "Go Arch";
 			productName = "Go Angel";
-			productReference = 205397121991924B00B1D9AD /* Go Angel.app */;
+			productReference = 205397121991924B00B1D9AD /* Go Arch.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -613,7 +613,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2053970D1991924B00B1D9AD /* Build configuration list for PBXProject "Go Angel" */;
+			buildConfigurationList = 2053970D1991924B00B1D9AD /* Build configuration list for PBXProject "Go Arch" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -631,7 +631,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				205397111991924B00B1D9AD /* Go Angel */,
+				205397111991924B00B1D9AD /* Go Arch */,
 			);
 		};
 /* End PBXProject section */
@@ -943,10 +943,10 @@
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
-				INFOPLIST_FILE = "Go Angel/Go Angel-Info.plist";
+				GCC_PREFIX_HEADER = "Go Angel/Go Arch-Prefix.pch";
+				INFOPLIST_FILE = "Go Angel/Go Arch-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Go Arch";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -965,10 +965,10 @@
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Go Angel/Go Angel-Prefix.pch";
-				INFOPLIST_FILE = "Go Angel/Go Angel-Info.plist";
+				GCC_PREFIX_HEADER = "Go Angel/Go Arch-Prefix.pch";
+				INFOPLIST_FILE = "Go Angel/Go Arch-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Go Arch";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -977,7 +977,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2053970D1991924B00B1D9AD /* Build configuration list for PBXProject "Go Angel" */ = {
+		2053970D1991924B00B1D9AD /* Build configuration list for PBXProject "Go Arch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				205397421991924B00B1D9AD /* Debug */,
@@ -986,7 +986,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		205397441991924B00B1D9AD /* Build configuration list for PBXNativeTarget "Go Angel" */ = {
+		205397441991924B00B1D9AD /* Build configuration list for PBXNativeTarget "Go Arch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				205397451991924B00B1D9AD /* Debug */,

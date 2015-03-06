@@ -1,6 +1,6 @@
 //
 //  SetPasswordTableViewController.h
-//  Go Angel
+//  Go Arch
 //
 //  Created by zcheng on 2015-02-17.
 //  Copyright (c) 2015 acdGO Software Ltd. All rights reserved.

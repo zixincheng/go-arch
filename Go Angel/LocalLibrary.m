@@ -1,6 +1,6 @@
 //
 //  LocalPhotos.m
-//  Go Angel
+//  Go Arch
 //
 // acdGO data backup and recovery
 // © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
@@ -355,7 +355,7 @@
             if (found)
                 return;
             
-            // not found Go Angel album, create the album
+            // not found Go Arch album, create the album
             if (!self.didAlbumCreated) {
                 NSLog(@"album not found, try making album");
                 [self.defaultAlbum createAlbum];
@@ -409,7 +409,7 @@
             if (found)
                 return;
             
-           // not found Go Angel album, create the album
+           // not found Go Arch album, create the album
             if (!self.didAlbumCreated) {
                  NSLog(@"album not found, try making album");
                 [self.defaultAlbum createAlbum];
