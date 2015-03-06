@@ -83,7 +83,7 @@
     
     //init long press gesture
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressRecognizer:)];
-    lpgr.minimumPressDuration = 2.0;
+    lpgr.minimumPressDuration = 1.0;
     lpgr.delegate = self;
     [self.collectionView addGestureRecognizer:lpgr];
 

@@ -27,4 +27,5 @@
 @property (nonatomic) NSString *prevBSSID;
 
 -(void) setupNet;
+-(id) initWithCoinsorter:(Coinsorter *)coinsorter;
 @end

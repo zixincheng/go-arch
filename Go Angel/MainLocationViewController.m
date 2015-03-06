@@ -42,7 +42,8 @@
     self.dataWrapper = [[CoreDataWrapper alloc] init];
     self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
     localLibrary = [[LocalLibrary alloc] init];
-    self.netWorkCheck = [[NetWorkCheck alloc] init];
+    //self.netWorkCheck = [[NetWorkCheck alloc] init];
+    self.netWorkCheck = [[NetWorkCheck alloc] initWithCoinsorter:self.coinsorter];
     defaults = [NSUserDefaults standardUserDefaults];
     self.devices = [[NSMutableArray alloc] init];
     self.locations = [self.dataWrapper getLocations];
@@ -480,26 +481,20 @@
         currentthumbnailUploaded += 1;
         self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
         dispatch_async(dispatch_get_main_queue(), ^{
-            float progress = (float) currentthumbnailUploaded / 1;
-            if (progress == 1.0) {
-                self.currentlyUploading = NO;
+
                 [self updateUploadCountUI];
                 [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-                
-            }
+            
         });
         if ([self.networkStatus isEqualToString:WIFIEXTERNAL] || [self.networkStatus isEqualToString:WIFILOCAL]) {
             [self.coinsorter uploadOnePhoto:p upCallback:^{
                 currentFullPhotoUploaded +=1;
                 self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    float progress = (float) currentFullPhotoUploaded / 1;
-                    if (progress == 1.0) {
-                        self.currentlyUploading = NO;
+
                         [self updateUploadCountUI];
                         [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-                        
-                    }
+                    
                 });
                 
                 NSLog(@"upload full res image");
@@ -508,7 +503,7 @@
             if (upload3G) {
                 [self.coinsorter uploadOnePhoto:p upCallback:^{
                     currentFullPhotoUploaded +=1;
-                    [self removeFullPhoto];
+                    self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         float progress = (float) currentFullPhotoUploaded / 1;
                         if (progress == 1.0) {
@@ -556,7 +551,7 @@
                 NSLog(@"updating the tags");
             }
             currentthumbnailUploaded += 1;
-            [self removeThumbnail];
+            self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
             dispatch_async(dispatch_get_main_queue(), ^{
                 float progress = (float) currentthumbnailUploaded / 1;
                 if (progress == 1.0) {
@@ -569,7 +564,7 @@
             if ([self.networkStatus isEqualToString:WIFIEXTERNAL] || [self.networkStatus isEqualToString:WIFILOCAL]) {
                 [self.coinsorter uploadOnePhoto:p upCallback:^{
                     currentFullPhotoUploaded +=1;
-                    [self removeFullPhoto];
+                    self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         float progress = (float) currentFullPhotoUploaded / 1;
                         if (progress == 1.0) {
@@ -586,7 +581,7 @@
                 if (upload3G) {
                     [self.coinsorter uploadOnePhoto:p upCallback:^{
                         currentFullPhotoUploaded +=1;
-                        [self removeFullPhoto];
+                        self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             float progress = (float) currentFullPhotoUploaded / 1;
                             if (progress == 1.0) {
@@ -609,7 +604,7 @@
             for (CSPhoto *p in fullPhotos) {
                 [self.coinsorter uploadOnePhoto:p upCallback:^{
                     currentFullPhotoUploaded +=1;
-                    [self removeFullPhoto];
+                    self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         float progress = (float) currentFullPhotoUploaded / 1;
                         if (progress == 1.0) {
