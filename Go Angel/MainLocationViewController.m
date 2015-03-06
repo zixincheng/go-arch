@@ -409,6 +409,8 @@
 
 #pragma mark - ui
 - (void) updateUploadCountUI {
+    self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
+    self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *title;
         
@@ -449,17 +451,6 @@
             [self.btnUpload setEnabled: NO];
         }
     });
-}
-
-
-- (void) removeThumbnail {
-    self.unUploadedThumbnail--;
-    [self updateUploadCountUI];
-}
-
--(void) removeFullPhoto {
-    self.unUploadedFullPhotos--;
-    [self updateUploadCountUI];
 }
 
 #pragma mark - upload function
@@ -505,13 +496,10 @@
                     currentFullPhotoUploaded +=1;
                     self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        float progress = (float) currentFullPhotoUploaded / 1;
-                        if (progress == 1.0) {
                             self.currentlyUploading = NO;
                             [self updateUploadCountUI];
                             [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-                            
-                        }
+                        
                     });
                     
                     NSLog(@"upload full res image using 3G");
@@ -553,26 +541,19 @@
             currentthumbnailUploaded += 1;
             self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
             dispatch_async(dispatch_get_main_queue(), ^{
-                float progress = (float) currentthumbnailUploaded / 1;
-                if (progress == 1.0) {
                     self.currentlyUploading = NO;
                     [self updateUploadCountUI];
                     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-                    
-                }
             });
             if ([self.networkStatus isEqualToString:WIFIEXTERNAL] || [self.networkStatus isEqualToString:WIFILOCAL]) {
                 [self.coinsorter uploadOnePhoto:p upCallback:^{
                     currentFullPhotoUploaded +=1;
                     self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        float progress = (float) currentFullPhotoUploaded / 1;
-                        if (progress == 1.0) {
                             self.currentlyUploading = NO;
                             [self updateUploadCountUI];
                             [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-                            
-                        }
+
                     });
                     
                     NSLog(@"upload full res image");
@@ -583,13 +564,10 @@
                         currentFullPhotoUploaded +=1;
                         self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            float progress = (float) currentFullPhotoUploaded / 1;
-                            if (progress == 1.0) {
                                 self.currentlyUploading = NO;
                                 [self updateUploadCountUI];
                                 [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-                                
-                            }
+
                         });
                         
                         NSLog(@"upload full res image using 3G");
@@ -606,13 +584,9 @@
                     currentFullPhotoUploaded +=1;
                     self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        float progress = (float) currentFullPhotoUploaded / 1;
-                        if (progress == 1.0) {
                             self.currentlyUploading = NO;
                             [self updateUploadCountUI];
                             [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-                            
-                        }
                     });
                     NSLog(@"upload full res image");
                 }];

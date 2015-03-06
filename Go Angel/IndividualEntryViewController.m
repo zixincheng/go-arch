@@ -708,14 +708,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 //update the collection view cell
 -(void) addNewcell{
     int Size = (int)self.photos.count;
-
+    self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     //__block int total = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
     dispatch_async(dispatch_get_main_queue(), ^ {
     [self.collectionView performBatchUpdates:^{
         NSLog(@"total photo %d",Size);
         
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
-        self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+
         [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:Size inSection:0]];
         [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
         
