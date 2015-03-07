@@ -27,6 +27,8 @@
 - (void) getQR {
   [_coinsorter getQRCode:^(NSString *base64) {
     if (base64) {
+      NSLog(@"%@", base64);
+      
       NSData *data = [[NSData alloc] initWithBase64EncodedString:base64 options:NSDataBase64DecodingIgnoreUnknownCharacters];
       UIImage *image = [UIImage imageWithData:data];
       

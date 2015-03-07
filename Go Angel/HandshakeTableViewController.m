@@ -337,7 +337,7 @@
         
        [self authDeviceQR:hash_token fromDeviceID:cid toHost:host];
       } else {
-        NSLog(@"no data back");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"failAuthNotification" object:nil];
       }
     }];
   }

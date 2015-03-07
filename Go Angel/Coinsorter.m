@@ -786,7 +786,7 @@
 }
 
 - (void) getToken: (NSString *) ip fromTokenHash: (NSString *) hash_token toDevice: (NSString *) cid callback: (void (^) (NSDictionary *authData)) callback {
-  NSString *urlString = [NSString stringWithFormat:@"%@%@%@", FRONT_URL, ip, @"/qr/authQR"];
+  NSString *urlString = [NSString stringWithFormat:@"%@%@%@%@", FRONT_URL, ip,PORT, @"/qr/authQR"];
   NSURL *url = [NSURL URLWithString:urlString];
   
   NSString *uid = [self uniqueAppId];

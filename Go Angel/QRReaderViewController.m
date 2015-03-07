@@ -18,6 +18,8 @@
     [super viewDidLoad];
     // Do view setup here.
   
+  [_lblStatus setText:@"Idle"];
+  
   [self startReading];
   _reading = NO;
 }
@@ -58,19 +60,12 @@
   [self addOverlay];
   
   [_captureSession startRunning];
+    [self setStatus:@"Searching..."];
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(failAuthQR) name:@"failAuthNotification" object:nil];
 }
 
 - (void) addOverlay {
-//  CALayer *box = [CALayer layer];
-//  
-//  UIImage *image = [UIImage imageNamed:@"qroverlay"];
-//  [box setContents:image];
-//  
-//  int indent = _viewPreview.frame.size.width * 0.10;
-//  int size = 100;
-  
   UIView *top = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _viewPreview.frame.size.width, _viewPreview.frame.size.height / 5)];
   [top setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.4]];
   [_viewPreview addSubview:top];
@@ -81,6 +76,7 @@
 }
 
 - (void) stopReading {
+  [self setStatus:@"Idle"];
   [_captureSession stopRunning];
   _captureSession = nil;
   
@@ -90,6 +86,7 @@
 // gets called when the qr auth failed
 - (void) failAuthQR {
   NSLog(@"QR Authentication failed");
+  [self setStatus:@"Searching..."];
   
   dispatch_async(dispatch_get_main_queue(), ^{
     CAKeyframeAnimation * anim = [ CAKeyframeAnimation animationWithKeyPath:@"transform" ] ;
@@ -112,6 +109,7 @@
 
 // called when not a valid qr code scanned
 - (void) invalidQRCode {
+  [self setStatus:@"Searhing..."];
   dispatch_async(dispatch_get_main_queue(), ^{
          [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Invalid QR Code" description:@"The scanned QR code does not belong to an Arch server" type:TWMessageBarMessageTypeError duration:2.0];
   });
@@ -142,10 +140,18 @@
   return YES;
 }
 
+- (void) setStatus:(NSString *)status {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [_lblStatus setText:status];
+  });
+}
+
 -(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
   if (metadataObjects != nil && [metadataObjects count] > 0) {
     AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
     if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode] && !_reading) {
+      NSLog(@"read qr data");
+      [self setStatus:@"Reading..."];
       _reading = [self processData:[metadataObj stringValue]];
       
       if (!_reading) {

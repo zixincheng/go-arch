@@ -13,6 +13,7 @@
 @interface QRReaderViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewPreview;
+@property (weak, nonatomic) IBOutlet UILabel *lblStatus;
 
 @property (nonatomic, strong) AVCaptureSession *captureSession;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
