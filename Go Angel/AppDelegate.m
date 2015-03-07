@@ -1,6 +1,6 @@
 //
 //  AppDelegate.m
-//  Go Angel
+//  Go Arch
 //
 // acdGO data backup and recovery
 // © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
@@ -51,8 +51,8 @@
     [[UIApplication sharedApplication] registerForRemoteNotifications];
 
   
-  self.defaultAlbum = [[createDefaultAlbum alloc] init];
-  [self.defaultAlbum setDefaultAlbum];
+  //self.defaultAlbum = [[createDefaultAlbum alloc] init];
+  //[self.defaultAlbum setDefaultAlbum];
 
   return YES;
 }

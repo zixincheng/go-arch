@@ -1,6 +1,6 @@
 //
 //  Coinsorter.m
-//  Go Angel
+//  Go Arch
 //
 // acdGO data backup and recovery
 // © acdGO Softwa:qre, Ltd., 2013-2014, All Rights Reserved.

@@ -1,6 +1,6 @@
 //
 //  Constants.h
-//  Go Angel
+//  Go Arch
 //
 // acdGO data backup and recovery
 // © acdGO Software, Ltd., 2013-2014, All Rights Reserved.
@@ -84,7 +84,7 @@
 #define OFFLINE @"offLine"
 
 // camera
-#define SAVE_PHOTO_ALBUM @"Go Angel"
+#define SAVE_PHOTO_ALBUM @"Go Arch"
 
 // location
 #define CURR_LOC_LAT      @"currentLocationLongitude"

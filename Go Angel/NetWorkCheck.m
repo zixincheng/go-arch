@@ -1,6 +1,6 @@
 //
 //  NetWorkCheck.m
-//  Go Angel
+//  Go Arch
 //
 //  Created by zcheng on 2015-03-04.
 //  Copyright (c) 2015 acdGO Software Ltd. All rights reserved.
@@ -9,17 +9,15 @@
 #import "NetWorkCheck.h"
 
 @implementation NetWorkCheck
-
-
-- (id) init {
+-(id) initWithCoinsorter:(Coinsorter *)coinsorter {
     self = [super init];
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
     
     self.dataWrapper = [[CoreDataWrapper alloc] init];
-
-    self.coinsorter = [[Coinsorter alloc]initWithWrapper:self.dataWrapper];
+    
+    self.coinsorter = coinsorter;
     self.reach = [Reachability reachabilityForInternetConnection];
     
     self.sendUdpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)];

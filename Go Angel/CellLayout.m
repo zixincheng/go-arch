@@ -1,6 +1,6 @@
 //
 //  CellLayout.m
-//  Go Angel
+//  Go Arch
 //
 //  Created by zcheng on 2015-02-04.
 //  Copyright (c) 2015 acdGO Software Ltd. All rights reserved.

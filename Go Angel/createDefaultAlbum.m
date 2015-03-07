@@ -1,6 +1,6 @@
 //
 //  createDefaultAlbum.m
-//  Go Angel
+//  Go Arch
 //
 //  Created by Xing Qiao on 2014-11-27.
 //  Copyright (c) 2014 acdGO Software Ltd. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  IndividualEntryViewController.m
-//  Go Angel
+//  Go Arch
 //
 //  Created by zcheng on 2015-01-23.
 //  Copyright (c) 2015 acdGO Software Ltd. All rights reserved.
@@ -83,7 +83,7 @@
     
     //init long press gesture
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressRecognizer:)];
-    lpgr.minimumPressDuration = 2.0;
+    lpgr.minimumPressDuration = 1.0;
     lpgr.delegate = self;
     [self.collectionView addGestureRecognizer:lpgr];
 
@@ -708,14 +708,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 //update the collection view cell
 -(void) addNewcell{
     int Size = (int)self.photos.count;
-
+    self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     //__block int total = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
     dispatch_async(dispatch_get_main_queue(), ^ {
     [self.collectionView performBatchUpdates:^{
         NSLog(@"total photo %d",Size);
         
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
-        self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+
         [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:Size inSection:0]];
         [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
         

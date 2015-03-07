@@ -1,6 +1,6 @@
 //
 //  QRReaderViewController.h
-//  Go Angel
+//  Go Arch
 //
 //  Created by Jake Runzer on 3/3/15.
 //  Copyright (c) 2015 acdGO Software Ltd. All rights reserved.
