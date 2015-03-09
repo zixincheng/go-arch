@@ -19,11 +19,13 @@
 #import "LocalLibrary.h"
 #import "AccountDataWrapper.h"
 #import "AppDelegate.h"
-#import "PhotoSwipeViewController.h"
+#import "PhotoSwipeViewController.h"    
 #import "CellLayoutDelegate.h"
 #import "CellLayout.h"
+#import "ELCImagePickerHeader.h"
+#import "ELCOverlayImageView.h"
 
-@interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate,CellLayoutDelegate>{
+@interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate,CellLayoutDelegate,ELCImagePickerControllerDelegate>{
     
     LocalLibrary *localLibrary;
     NSUserDefaults *defaults;

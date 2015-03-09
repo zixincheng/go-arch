@@ -859,7 +859,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 }
 
 -(IBAction)accessCameraRoll:(id)sender {
-  
+  /*
   if ([UIImagePickerController isSourceTypeAvailable:
        UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
     _imagePicker = [[UIImagePickerController alloc] init];
@@ -872,7 +872,85 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                        animated:YES completion:nil];
     
     _isImagePickerUp = YES;
-  }
+  }*/
+    ELCImagePickerController *elcpicker = [[ELCImagePickerController alloc]initImagePicker];
+    elcpicker.maximumImagesCount = 100;
+    elcpicker.returnsImage = YES;
+    elcpicker.returnsOriginalImage = YES;
+    elcpicker.onOrder = NO;
+    elcpicker.mediaTypes =@[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+    elcpicker.imagePickerDelegate = self;
+    [self.picker presentViewController:elcpicker animated:YES completion:nil];
+}
+
+#pragma mark ELCImagePickerControllerDelegate Methods
+
+- (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    //NSMutableArray *images = [NSMutableArray arrayWithCapacity:[info count]];
+    for (NSDictionary *dict in info) {
+        if ([dict objectForKey:UIImagePickerControllerMediaType] == ALAssetTypePhoto){
+            if ([dict objectForKey:UIImagePickerControllerOriginalImage]){
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    UIImage* image=[dict objectForKey:UIImagePickerControllerOriginalImage];
+                    NSDictionary *metadata = dict[UIImagePickerControllerMediaMetadata];
+                    
+                    if (self.saveInAlbum) {
+                        NSLog(@"save photos into album");
+                        
+                        [localLibrary saveImage:image metadata:metadata location:self.location];
+                    }else{
+                        NSLog(@"save photos into application folder");
+                        [self saveImageIntoDocument:image metadata:metadata];
+                    }
+                });
+                
+            } else {
+                NSLog(@"UIImagePickerControllerReferenceURL = %@", dict);
+            }
+        } else if ([dict objectForKey:UIImagePickerControllerMediaType] == ALAssetTypeVideo){
+            if ([dict objectForKey:UIImagePickerControllerOriginalImage]){
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    NSString *mediaType = [dict objectForKey: UIImagePickerControllerMediaType];
+                    // Handle a movie capture
+                    if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
+                        NSURL *moviePath = [dict objectForKey:UIImagePickerControllerMediaURL];
+                        // [self.videoUrl addObject:moviePath];
+                        //NSLog(@"number of video taken count %lu",(unsigned long)self.videoUrl.count);
+                        if (self.saveInAlbum) {
+                            NSLog(@"save video into album");
+                            for (int count = 0; count < self.videoUrl.count; count++) {
+                                NSURL *moviePath = [self.videoUrl objectAtIndex:count];
+                                [localLibrary saveVideo:moviePath location:self.location];
+                            }
+                        } else {
+                            NSLog(@"save video into application folder");
+                            // NSURL *moviePath = [self.videoUrl objectAtIndex:count];
+                            
+                            [self saveVideoIntoDocument:moviePath];
+                        }
+                        
+                    }
+                    CFRelease((__bridge CFTypeRef)(mediaType));
+                });
+                
+            } else {
+                NSLog(@"UIImagePickerControllerReferenceURL = %@", dict);
+            }
+        } else {
+            NSLog(@"Uknown asset type");
+        }
+    }
+    
+    
+    //initialize View controller after picking image successfully;
+}
+
+- (void)elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 # pragma mark - Custom Camera View
