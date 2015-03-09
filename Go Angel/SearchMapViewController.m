@@ -58,9 +58,19 @@
     [self.mapView addAnnotations:self.pins];
     
     [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
 
 
     // Do any additional setup after loading the view.
+}
+
+-(void)dismissKeyboard {
+    [self.searchBar resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {

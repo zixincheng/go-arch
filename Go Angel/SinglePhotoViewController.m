@@ -69,6 +69,15 @@
         
     }
     self.tagField.text = self.selectedPhoto.tag;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
+}
+
+-(void)dismissKeyboard {
+    [self.tagField resignFirstResponder];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
