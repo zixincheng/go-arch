@@ -313,34 +313,50 @@
   if (userInfo) {
     NSString *hash_token = [userInfo objectForKey:@"hash_token"];
     NSString *cid = [userInfo objectForKey:@"cid"];
-    NSString *host = [userInfo objectForKey:@"host"];
+    NSString *ip_internal = [userInfo objectForKey:@"IP_INTERNAL"];
+    NSString *ip_external = [userInfo objectForKey:@"IP_EXTERNAL"];
     
-    if ([host containsString:@":"]) {
-      host = [host substringWithRange:NSMakeRange(0, [host length] - 5)];
+    if ([ip_internal containsString:@":"]) {
+      ip_internal = [ip_internal substringWithRange:NSMakeRange(0, [ip_internal length] - 5)];
+    }
+    if ([ip_external containsString:@":"]) {
+      ip_external = [ip_external substringWithRange:NSMakeRange(0, [ip_external length] - 5)];
     }
     
     NSLog(@"GOT THE INFO %@", userInfo);
     
-    [self.coinsorter getSid:host infoCallback:^(NSData *data) {
+    [self.coinsorter getSid:ip_internal infoCallback:^(NSData *data) {
       if (data) {
-        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSString *sid = [jsonData objectForKey:@"SID"];
-        NSString *hostname = [jsonData objectForKey:@"HOSTNAME"];
-        NSString *ip_internal = [jsonData objectForKey:@"IP_INTERNAL"];
-        NSString *ip_external = [jsonData objectForKey:@"IP_EXTERNAL"];
-        
-        self.sid = sid;
-        self.name = hostname;
-        self.ip = host;
-        self.localIp = ip_internal;
-        self.externalIp = ip_external;
-        
-       [self authDeviceQR:hash_token fromDeviceID:cid toHost:host];
+        [self addQRInfo:data];
+        self.ip = ip_internal;
+        [self authDeviceQR:hash_token fromDeviceID:cid toHost:ip_internal];
       } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"failAuthNotification" object:nil];
+        [self.coinsorter getSid:ip_external infoCallback:^(NSData *data) {
+          if (data) {
+            [self addQRInfo: data];
+            self.ip = ip_external;
+            [self authDeviceQR:hash_token fromDeviceID:cid toHost:ip_external];
+          } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"failAuthNotification" object:nil];
+          }
+        }];
       }
     }];
   }
+}
+
+- (void) addQRInfo: (NSData *) data {
+  NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+  NSString *sid = [jsonData objectForKey:@"SID"];
+  NSString *hostname = [jsonData objectForKey:@"HOSTNAME"];
+  NSString *ip_internal = [jsonData objectForKey:@"IP_INTERNAL"];
+  NSString *ip_external = [jsonData objectForKey:@"IP_EXTERNAL"];
+  
+  self.sid = sid;
+  self.name = hostname;
+  self.localIp = ip_internal;
+  self.externalIp = ip_external;
+
 }
 
 // make api call with hash_token to auth from scanned qr code

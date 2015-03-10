@@ -126,13 +126,14 @@
   NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
   id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
   
-  NSString *host = [json objectForKey:@"host"];
+  NSString *ip_internal = [json objectForKey:@"IP_INTERNAL"];
+  NSString *ip_external = [json objectForKey:@"IP_EXTERNAL"];
   NSString *cid = [json objectForKey:@"cid"];
   NSString *hash_token = [json objectForKey:@"hash_token"];
   
-  NSLog(@"%@ - %@ - %@", host, cid, hash_token);
+  NSLog(@"%@ - %@ - %@ - %@", ip_internal, ip_external, cid, hash_token);
   
-  if (!host || !cid || !hash_token) {
+  if (!ip_internal || !cid || !hash_token || !ip_external) {
     return NO;
   }
   
