@@ -9,10 +9,12 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 #import "CSLocation.h"
 #import "CoreDataWrapper.h"
+#import "MyAnnotation.h"
 
-@interface AddingLocationViewController: UITableViewController <CLLocationManagerDelegate, UITextFieldDelegate, UIAlertViewDelegate> {
+@interface AddingLocationViewController: UITableViewController <CLLocationManagerDelegate, UITextFieldDelegate, UIAlertViewDelegate,MKMapViewDelegate> {
     CLLocationManager *locationManager;
     CLGeocoder *geocoder;
     
@@ -39,8 +41,8 @@
 
 - (IBAction)AddBtn:(id)sender;
 
-
-
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (nonatomic, strong) MyAnnotation *point;
 
 @property (nonatomic) BOOL onLocation;
 

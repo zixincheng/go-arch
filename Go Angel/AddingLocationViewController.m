@@ -18,7 +18,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+     self.point = [[MyAnnotation alloc]init];
+    //self.point = [[MyAnnotation alloc] initWithCoordinate:self.mapView.centerCoordinate];
+    [self.navigationController setToolbarHidden:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(intoForeground)
                                                  name:UIApplicationDidBecomeActiveNotification
@@ -26,6 +28,7 @@
     
     self.location = [[CSLocation alloc]init];
     self.datawrapper = [[CoreDataWrapper alloc]init];
+
     
     showingAlertView = NO;
 
@@ -50,6 +53,19 @@
     if (self.onLocation) {
         [self startStandardUpdates];
     }
+    [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
+    
+}
+
+-(void)dismissKeyboard {
+    [self.streetName resignFirstResponder];
+    [self.txtUnit resignFirstResponder];
 }
 
 - (void) intoForeground {
@@ -216,13 +232,13 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
      didUpdateLocations:(NSArray *)locations {
     // If it's a relatively recent event, turn off updates to save power.
     self.currentLocation = [locations lastObject];
-    
     //  NSLog(@"latitude %+.6f, longitude %+.6f\n",
     //        self.currentLocation.coordinate.latitude,
     //        self.currentLocation.coordinate.longitude);
     
     //[self updateLocationLabels];
     [self geocodeLocation:self.currentLocation];
+
 }
 
 // update the latitude and longitude labels on page
@@ -269,16 +285,19 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
                            self.location.city = [p.addressDictionary objectForKey:@"City"];
                            self.location.name = [p.addressDictionary objectForKey:@"Name"];
                            self.location.province = [p.addressDictionary objectForKey:@"State"];
-                           self.location.longitude = [NSString stringWithFormat:@"%f", self.currentLocation.coordinate
+                           self.location.longitude = [NSString stringWithFormat:@"%f", location.coordinate
                                                        .longitude];
-                           self.location.latitude = [NSString stringWithFormat:@"%f", self.currentLocation.coordinate
+                           self.location.latitude = [NSString stringWithFormat:@"%f", location.coordinate
                                                       .latitude];
                            self.location.unit = self.txtUnit.text;
                            
                            [self.streetName setText:self.location.name];
                            [self.streetName setHidden:NO];
-                           
                            [self saveLocation];
+                           //generate pins on map
+                           self.point.coordinate = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude);
+                           self.point.title = self.location.name;
+                           [self.mapView addAnnotation:self.point];
                        }
                    }];
 }
@@ -307,12 +326,10 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     [defaults
-     setObject:[NSString stringWithFormat:@"%f", self.currentLocation
-                .coordinate.latitude]
+     setObject:self.location.latitude
      forKey:CURR_LOC_LAT];
     [defaults
-     setObject:[NSString stringWithFormat:@"%f", self.currentLocation
-                .coordinate.longitude]
+     setObject:self.location.longitude
      forKey:CURR_LOC_LONG];
     [defaults setObject:self.location.name forKey:CURR_LOC_NAME];
     [defaults setObject:self.location.unit forKey:CURR_LOC_UNIT];
@@ -325,7 +342,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     
     // save defaults to disk
     [defaults synchronize];
-    
+    NSLog(@"location %@",self.location.name);
     NSLog(@"saving location settings to defaults");
 }
 
@@ -352,6 +369,60 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"AddLocationSegue" object:nil userInfo:locationDic];
 }
 
+#pragma mark - mapView delegate
+
+-(void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
+    
+    //[self zoomToUserLocation:userLocation];
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    static NSString *identifier = @"Location";
+    if (annotation == mapView.userLocation) return nil;
+    MKPinAnnotationView *pin = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+    if (pin == nil) {
+        pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+    } else {
+        pin.annotation = annotation;
+    }
+    pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    pin.pinColor = MKPinAnnotationColorRed;
+    pin.enabled = YES;
+    pin.canShowCallout = YES;
+    pin.animatesDrop = YES;
+    pin.draggable = YES;
+    
+    return pin;
+    
+}
+
+-(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+    //id <MKAnnotation> annotation = [view annotation];
+    
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)annotationView didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState
+{
+    [self stopStandardUpdates];
+    [self.point setCoordinate:annotationView.annotation.coordinate];
+    CLLocation *newlocation = [[CLLocation alloc] initWithLatitude:annotationView.annotation.coordinate.latitude longitude:annotationView.annotation.coordinate.longitude];
+    [self geocodeLocation:newlocation];
+    self.point.title = self.location.name;
+    [self.streetName setText:self.location.name];
+    if (newState == MKAnnotationViewDragStateEnding)
+    {
+        CLLocationCoordinate2D droppedAt = annotationView.annotation.coordinate;
+        NSLog(@"Pin dropped at %f,%f", droppedAt.latitude, droppedAt.longitude);
+    }
+}
+/*
+-(void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+{
+    MKAnnotationView *ulv = [mapView viewForAnnotation:mapView.userLocation];
+    ulv.hidden = YES;
+}
+
+*/
 
 
 @end

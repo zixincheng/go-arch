@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dEA-XW-XWb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dEA-XW-XWb">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
@@ -1261,10 +1261,17 @@
         <scene sceneID="5Mg-aB-iMh">
             <objects>
                 <tableViewController storyboardIdentifier="LocationTagging" title="Location Settings" id="Q4B-RI-MsH" customClass="AddingLocationViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Bdn-xl-wjp">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Bdn-xl-wjp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <mapView key="tableFooterView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="k0d-WS-NK1">
+                            <rect key="frame" x="0.0" y="299" width="320" height="269"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <connections>
+                                <outlet property="delegate" destination="Q4B-RI-MsH" id="KD4-kO-Swc"/>
+                            </connections>
+                        </mapView>
                         <sections>
                             <tableViewSection headerTitle="Photo taken at" id="Gjc-vl-fZo">
                                 <cells>
@@ -1318,13 +1325,13 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="" id="iZh-ob-nBy">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="67" id="MIh-5h-W4V">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="46" id="MIh-5h-W4V">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MIh-5h-W4V" id="5a5-RP-geg">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="owh-Rm-5LD">
-                                                    <rect key="frame" x="64" y="10" width="193" height="48"/>
+                                                    <rect key="frame" x="65" y="5" width="191" height="35"/>
                                                     <state key="normal" title="Add This Location">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -1344,14 +1351,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Add New Entry" id="zee-dC-eTA"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="mapView" destination="k0d-WS-NK1" id="2ry-KT-nWX"/>
                         <outlet property="streetName" destination="FmK-lV-1LU" id="G5d-pL-R9m"/>
                         <outlet property="txtUnit" destination="KJz-F9-qMA" id="HtW-Z8-LkG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Lj-LQ-t8X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2273" y="1310"/>
+            <point key="canvasLocation" x="-2309" y="1297"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RIn-fk-WNf">
@@ -1400,6 +1409,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="awA-RH-qQR"/>
-        <segue reference="zan-2D-U28"/>
+        <segue reference="rcp-IH-j7u"/>
     </inferredMetricsTieBreakers>
 </document>
