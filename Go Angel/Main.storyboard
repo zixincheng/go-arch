@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
-        <!--LOCATION SEARCH-->
+        <!--SEARCH-->
         <scene sceneID="d0L-Y1-HD0">
             <objects>
                 <viewController id="hJr-Yz-gfu" customClass="SearchMapViewController" sceneMemberID="viewController">
@@ -36,7 +36,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="LOCATION SEARCH" id="Zkl-Cy-Mit"/>
+                    <navigationItem key="navigationItem" title="SEARCH" id="Zkl-Cy-Mit"/>
                     <connections>
                         <outlet property="mapView" destination="oPS-ay-ivG" id="rj5-C8-GcX"/>
                         <outlet property="searchBar" destination="c9D-dA-F5r" id="mBQ-26-H8o"/>
@@ -1409,6 +1409,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="awA-RH-qQR"/>
-        <segue reference="rcp-IH-j7u"/>
+        <segue reference="zan-2D-U28"/>
     </inferredMetricsTieBreakers>
 </document>

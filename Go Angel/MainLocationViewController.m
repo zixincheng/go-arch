@@ -27,8 +27,9 @@
     self.definesPresentationContext = YES;
     
     //init ui navigation buttons parts
-    UIBarButtonItem * searchBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(showSearch:)];
-    UIBarButtonItem * addLocationBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addLocationbuttonPressed:)];
+    UIBarButtonItem *searchBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"earth-america-7.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showSearch:)];
+    
+    UIBarButtonItem *addLocationBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"pencil-7.png"] style:UIBarButtonItemStylePlain target:self action:@selector(addLocationbuttonPressed:)];
     self.navigationItem.rightBarButtonItem = addLocationBtn;
     NSArray *rightButtonItems = [[NSArray alloc]initWithObjects:searchBtn, addLocationBtn, nil];
     [self.navigationItem setRightBarButtonItems:rightButtonItems];
