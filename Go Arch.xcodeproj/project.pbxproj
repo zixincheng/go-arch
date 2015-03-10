@@ -78,6 +78,7 @@
 		9BA18C731AAE421D006CEC25 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA18C721AAE421D006CEC25 /* MyAnnotation.m */; };
 		9BA18C7B1AAF671D006CEC25 /* earth-america-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BA18C7A1AAF671D006CEC25 /* earth-america-7.png */; };
 		9BA18C7D1AAF67A6006CEC25 /* pencil-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BA18C7C1AAF67A6006CEC25 /* pencil-7.png */; };
+		9BA18C821AAF72B9006CEC25 /* PopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA18C811AAF72B9006CEC25 /* PopOverMenu.m */; };
 		9BAF13811A3F6388000B780B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13801A3F6388000B780B /* CoreMotion.framework */; };
 		9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13821A3F63A5000B780B /* QuartzCore.framework */; };
 		9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20A1A26A52A00DF40E3 /* StorageDetailViewController.m */; };
@@ -282,6 +283,8 @@
 		9BA18C721AAE421D006CEC25 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotation.m; sourceTree = "<group>"; };
 		9BA18C7A1AAF671D006CEC25 /* earth-america-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "earth-america-7.png"; sourceTree = "<group>"; };
 		9BA18C7C1AAF67A6006CEC25 /* pencil-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pencil-7.png"; sourceTree = "<group>"; };
+		9BA18C801AAF72B9006CEC25 /* PopOverMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopOverMenu.h; sourceTree = "<group>"; };
+		9BA18C811AAF72B9006CEC25 /* PopOverMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopOverMenu.m; sourceTree = "<group>"; };
 		9BAF13801A3F6388000B780B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		9BAF13821A3F63A5000B780B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9BB0F2091A26A52A00DF40E3 /* StorageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageDetailViewController.h; sourceTree = "<group>"; };
@@ -421,6 +424,8 @@
 				9B6C88CC1A829FA500B50A21 /* CellLayoutDelegate.h */,
 				2061D1C4199193B5001C7E08 /* AccountDataWrapper.h */,
 				2061D1C5199193B5001C7E08 /* AccountDataWrapper.m */,
+				9BA18C801AAF72B9006CEC25 /* PopOverMenu.h */,
+				9BA18C811AAF72B9006CEC25 /* PopOverMenu.m */,
 				9BC0ABED1AA7B6F300F430CB /* NetWorkCheck.h */,
 				9BC0ABEE1AA7B6F300F430CB /* NetWorkCheck.m */,
 				9B6C88C41A829EAD00B50A21 /* CellLayout.h */,
@@ -899,6 +904,7 @@
 				D518B33B1A42046700E249E4 /* ActivityHistory.m in Sources */,
 				D5296F251A27B1D80069555B /* createDefaultAlbum.m in Sources */,
 				9BFDAAAF1AAA72CE00C4E170 /* ELCAssetCell.m in Sources */,
+				9BA18C821AAF72B9006CEC25 /* PopOverMenu.m in Sources */,
 				9BFDAAB21AAA72CE00C4E170 /* ELCImagePickerController.m in Sources */,
 				D5E2672B1A410EDE00611A67 /* HistoryTableViewController.m in Sources */,
 				2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */,

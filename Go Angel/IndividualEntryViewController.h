@@ -24,8 +24,9 @@
 #import "CellLayout.h"
 #import "ELCImagePickerHeader.h"
 #import "ELCOverlayImageView.h"
+#import "PopOverMenu.h"
 
-@interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate,CellLayoutDelegate,ELCImagePickerControllerDelegate>{
+@interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate,CellLayoutDelegate,ELCImagePickerControllerDelegate,CTPopoutMenuDelegate>{
     
     LocalLibrary *localLibrary;
     NSUserDefaults *defaults;
@@ -51,6 +52,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editBtn;
 @property (nonatomic, strong) UIBarButtonItem *deleteBtn;
 @property (nonatomic, strong) UIBarButtonItem *shareBtn;
+@property (nonatomic, strong) UIBarButtonItem *exportBtn;
 @property (nonatomic, strong) UIBarButtonItem *flexibleSpace;
 // Camera vars
 @property (nonatomic, strong) UIBarButtonItem *mainCameraBtn;
@@ -71,7 +73,9 @@
 @property (nonatomic, strong) NSMutableArray *tmpPhotos;
 @property (nonatomic, strong) NSMutableArray *tmpMeta;
 @property (nonatomic, strong) NSMutableArray *videoUrl;
+@property (nonatomic, strong) NSMutableArray *locationArray;
 
 @property (nonatomic, assign) NSString *loadCamera;
+@property (nonatomic) CTPopoutMenu * popMenu;
 
 @end

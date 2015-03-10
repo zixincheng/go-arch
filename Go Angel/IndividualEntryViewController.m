@@ -77,6 +77,7 @@
     self.mainCameraBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed:)];
     self.deleteBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteBtnPressed:)];
     self.shareBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareAction)];
+    self.exportBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(exportAction)];
     self.flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     self.toolbarItems = [NSArray arrayWithObjects:self.flexibleSpace, self.mainCameraBtn, self.flexibleSpace, nil];
@@ -274,6 +275,7 @@
         if (selectedPhotos.count == 0) {
             self.shareBtn.enabled = NO;
             self.deleteBtn.enabled = NO;
+            self.exportBtn.enabled = NO;
         }
     }
 }
@@ -291,6 +293,7 @@
         if (selectedPhotos.count != 0) {
             self.shareBtn.enabled = YES;
             self.deleteBtn.enabled = YES;
+            self.exportBtn.enabled =YES;
         }
     } else {
         selected = [indexPath row];
@@ -389,9 +392,10 @@
         enableEdit = YES;
         self.editBtn.title = @"Done";
         [self clearCellSelections];
-        self.toolbarItems = [NSArray arrayWithObjects:self.shareBtn,self.flexibleSpace, self.deleteBtn, nil];
+        self.toolbarItems = [NSArray arrayWithObjects:self.shareBtn,self.exportBtn, self.flexibleSpace, self.deleteBtn, nil];
         self.shareBtn.enabled = NO;
         self.deleteBtn.enabled = NO;
+        self.exportBtn.enabled = NO;
     } else {
         self.editBtn.title = @"Select";
         enableEdit = NO;
@@ -478,6 +482,42 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
 
     
+}
+
+# pragma mark - export actions
+
+- (void)exportAction {
+    NSMutableArray * items = [NSMutableArray new];
+    self.locationArray = [[NSMutableArray alloc]init];
+    self.locationArray = [self.dataWrapper getLocations];
+   /// NSLog(@"number %lu",(unsigned long)self.locationArray.count);
+    [self.locationArray removeObject:self.location];
+   // NSLog(@"after number %lu",(unsigned long)self.locationArray.count);
+    for (CSLocation *l in self.locationArray) {
+                CTPopoutMenuItem *item = [[CTPopoutMenuItem alloc]initWithTitle:l.name image:nil];
+                [items addObject:item];
+    }
+        self.popMenu = [[CTPopoutMenu alloc]initWithTitle:@"Move the selected photo to location" message:nil items:items];
+        self.popMenu.delegate = self;
+    self.popMenu.menuStyle = MenuStyleList;
+    [self.popMenu showMenuInParentViewController:self withCenter:self.view.center];
+}
+
+-(void)menu:(CTPopoutMenu *)menu willDismissWithSelectedItemAtIndex:(NSUInteger)index{
+    NSLog(@"menu dismiss with index %ld",index);
+    CSLocation *destLocation = [self.locationArray objectAtIndex:index];
+    NSLog(@"dest location %@",destLocation.name);
+    for (CSPhoto *p in selectedPhotos) {
+        p.location = destLocation;
+        [self.dataWrapper addUpdatePhoto:p];
+        [self.photos removeObject:p];
+    }
+
+    [self.collectionView reloadData];
+}
+
+-(void)menuwillDismiss:(CTPopoutMenu *)menu{
+    NSLog(@"menu dismiss");
 }
 
 # pragma mark - share actions

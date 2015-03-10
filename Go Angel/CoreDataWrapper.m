@@ -288,6 +288,7 @@
     }
     
     photoObj = [self setObjectValues:photo object:photoObj];
+    photoObj = [self relationLocation:photo.location object:photoObj];
 
     [context save:nil];
   }];

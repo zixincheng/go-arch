@@ -250,6 +250,8 @@
     CSPhoto *photo;
     self.photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:l];
     UIImage *defaultImage = [UIImage imageNamed:@"box.png"];
+    cell.imageView.contentMode = UIViewContentModeScaleToFill;
+    cell.imageView.clipsToBounds = YES;
     cell.imageView.image = defaultImage;
     if (self.photos.count != 0) {
         photo = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:l];
