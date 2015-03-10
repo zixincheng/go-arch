@@ -60,7 +60,28 @@
                                    action:@selector(dismissKeyboard)];
     
     [self.view addGestureRecognizer:tap];
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(LongPressDropPin:)];
+    lpgr.minimumPressDuration = 1.0;
+    [self.mapView addGestureRecognizer:lpgr];
     
+}
+
+- (void)LongPressDropPin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state != UIGestureRecognizerStateBegan)
+        return;
+    [self stopStandardUpdates];
+    CGPoint touchPoint = [gestureRecognizer locationInView:self.mapView];
+    CLLocationCoordinate2D touchMapCoordinate =
+    [self.mapView convertPoint:touchPoint toCoordinateFromView:self.mapView];
+
+    [self.point setCoordinate:touchMapCoordinate];
+    CLLocation *newlocation = [[CLLocation alloc] initWithLatitude:touchMapCoordinate.latitude longitude:touchMapCoordinate.longitude];
+    [self geocodeLocation:newlocation];
+    self.point.title = self.location.name;
+    [self.streetName setText:self.location.name];
+    [self.mapView addAnnotation:self.point];
 }
 
 -(void)dismissKeyboard {
@@ -385,7 +406,6 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     } else {
         pin.annotation = annotation;
     }
-    pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     pin.pinColor = MKPinAnnotationColorRed;
     pin.enabled = YES;
     pin.canShowCallout = YES;
