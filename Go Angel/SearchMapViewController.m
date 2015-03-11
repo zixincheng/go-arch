@@ -17,9 +17,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // setup objects
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    account = appDelegate.account;
+    self.dataWrapper = appDelegate.dataWrapper;
+    self.localDevice = appDelegate.localDevice;
+
     //init location auto-dectect
-    
-    self.locations = [self.dataWrapper getLocations];
     
     self.locationManager = [[CLLocationManager alloc]init];
     self.locationManager.delegate = self;
@@ -27,7 +31,22 @@
     self.locationManager.distanceFilter = 10;
     
     
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
+
+    // Do any additional setup after loading the view.
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setToolbarHidden:YES animated:NO];
+}
+
+-(void) viewDidAppear:(BOOL)animated {
     // setup pins for each location in map
+    self.locations = [self.dataWrapper getLocations];
     self.points = [[NSMutableArray alloc]init];
     
     for (CSLocation *l in self.locations) {
@@ -50,17 +69,12 @@
         [self.locationManager requestWhenInUseAuthorization];
     }
     [self.mapView addAnnotations:self.pins];
-    
     [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(dismissKeyboard)];
-    
-    [self.view addGestureRecognizer:tap];
-
-
-    // Do any additional setup after loading the view.
+}
+-(void) viewDidDisappear:(BOOL)animated {
+    [self.mapView removeAnnotations:self.pins];
+    [self stopStandardUpdates];
+     NSLog(@"stopped watching location");
 }
 
 -(void)dismissKeyboard {
@@ -82,6 +96,13 @@
     //        self.currentLocation.coordinate.latitude,
     //        self.currentLocation.coordinate.longitude);
     
+}
+
+// stop updating location
+- (void)stopStandardUpdates {
+    if (self.locationManager != nil) {
+        [self.locationManager stopUpdatingLocation];
+    }
 }
 /*
 - (void) zoomToUserLocation : (MKUserLocation *) location {
@@ -120,15 +141,17 @@
     pin.leftCalloutAccessoryView = imageView;
     
     CSPhoto *p = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.selectedLocation];
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    [appDelegate.mediaLoader loadThumbnail:p completionHandler:^(UIImage *image) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIImage *newImage = [self resizeImage:image];
-            UIView *imgView = [[UIImageView alloc]initWithImage:newImage];
-            [imageView addSubview:imgView];
-        });
-    }];
-    
+    if (p !=nil) {
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [appDelegate.mediaLoader loadThumbnail:p completionHandler:^(UIImage *image) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIImage *newImage = [self resizeImage:image];
+                UIView *imgView = [[UIImageView alloc]initWithImage:newImage];
+                [imageView addSubview:imgView];
+            });
+        }];
+        
+    }
     return pin;
 
 }
@@ -189,6 +212,7 @@
         individualViewControll.dataWrapper = self.dataWrapper;
         individualViewControll.localDevice = self.localDevice;
         individualViewControll.location = self.selectedLocation;
+        [individualViewControll setHidesBottomBarWhenPushed:YES];
         
         
     }

@@ -14,13 +14,14 @@
 #import "CSLocation.h"
 #import "IndividualEntryViewController.h"
 
-@interface SearchMapViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate,UISearchBarDelegate,NSFetchedResultsControllerDelegate>
+@interface SearchMapViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate,UISearchBarDelegate,NSFetchedResultsControllerDelegate> {
+    AccountDataWrapper *account;
+}
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLLocation *currentLocation;
-
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSDevice *localDevice;
 @property (nonatomic, strong) CSLocation *selectedLocation;

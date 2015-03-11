@@ -27,21 +27,29 @@
     self.definesPresentationContext = YES;
     
     //init ui navigation buttons parts
+    /*
     UIBarButtonItem *searchBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"earth-america-7.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showSearch:)];
     
     UIBarButtonItem *addLocationBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"pencil-7.png"] style:UIBarButtonItemStylePlain target:self action:@selector(addLocationbuttonPressed:)];
     self.navigationItem.rightBarButtonItem = addLocationBtn;
     NSArray *rightButtonItems = [[NSArray alloc]initWithObjects:searchBtn, addLocationBtn, nil];
     [self.navigationItem setRightBarButtonItems:rightButtonItems];
-    [self.navigationController setToolbarHidden:NO];
+     *//*
+    [self.navigationController setToolbarHidden:YES];
     self.btnUpload = [[UIBarButtonItem alloc]initWithTitle:@"Nothing to upload" style:UIBarButtonItemStylePlain target:self action:@selector(uploadBtnPressed:)];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-    self.toolbarItems = [NSArray arrayWithObjects:flexibleSpace, self.btnUpload, flexibleSpace, nil];
+    self.toolbarItems = [NSArray arrayWithObjects:flexibleSpace, self.btnUpload, flexibleSpace, nil];*/
+    // setup objects
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    account = appDelegate.account;
+    self.dataWrapper = appDelegate.dataWrapper;
+    self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
+    self.localDevice = appDelegate.localDevice;
     
     // init vars
-    self.dataWrapper = [[CoreDataWrapper alloc] init];
-    self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
+    //self.dataWrapper = [[CoreDataWrapper alloc] init];
+    //self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
     localLibrary = [[LocalLibrary alloc] init];
     //self.netWorkCheck = [[NetWorkCheck alloc] init];
     self.netWorkCheck = [[NetWorkCheck alloc] initWithCoinsorter:self.coinsorter];
@@ -55,11 +63,6 @@
     
     self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
     self.unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
-    
-    // setup objects
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    account = appDelegate.account;
-    self.localDevice = [self.dataWrapper getDevice:account.cid];
     
     // add the refresh control to the table view
     self.refreshControl = refresh;
@@ -135,6 +138,7 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:YES animated:NO];
     self.locations = [self.dataWrapper getLocations];
     [self.tableView reloadData];
     self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
@@ -144,7 +148,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
     // Attempt to upload all the time
     if (self.canConnect) {
         if (self.unUploadedFullPhotos !=0 || self.unUploadedThumbnail !=0) {
@@ -362,12 +365,13 @@
     if ([segue.identifier isEqualToString:@"individualSegue"]) {
         
         IndividualEntryViewController *individualViewControll = (IndividualEntryViewController *)segue.destinationViewController;
-        
+       // individualViewControll.hidesBottomBarWhenPushed = YES;
+       // [self.navigationController pushViewController:individualViewControll animated:YES];
         individualViewControll.dataWrapper = self.dataWrapper;
         individualViewControll.localDevice = self.localDevice;
         individualViewControll.location = self.selectedlocation;
         individualViewControll.coinsorter = self.coinsorter;
-        
+        [individualViewControll setHidesBottomBarWhenPushed:YES];
         if (loadCamera == 1) {
             individualViewControll.loadCamera = @"Yes";
         }

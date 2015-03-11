@@ -18,6 +18,8 @@
     
   self.account = [[AccountDataWrapper alloc] init];
   [self.account readSettings];
+  self.dataWrapper = [[CoreDataWrapper alloc]init];
+  self.localDevice = [self.dataWrapper getDevice:self.account.cid];
   NSLog(@"reading settings");
   
   // initialize the image cache

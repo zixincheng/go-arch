@@ -40,6 +40,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     CellLayout * layout = (id)[self.collectionView collectionViewLayout];
     layout.delegate = self;
   
@@ -127,17 +128,32 @@
         [self cameraButtonPressed:self.mainCameraBtn];
     }
     
-    self.navigationItem.leftBarButtonItem =
-    [[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                     style:UIBarButtonItemStylePlain
-                                    target:self
-                                    action:@selector(handleBack:)];
+    //self.navigationItem.leftBarButtonItem =
+    //[[UIBarButtonItem alloc] initWithTitle:@"Back"
+      //                               style:UIBarButtonItemStylePlain
+        //                            target:self
+          //                          action:@selector(handleBack:)];
+    
+    NSString *title;
+    if (![self.location.unit isEqualToString:@""]) {
+        title = [NSString stringWithFormat:@"%@ - %@",self.location.unit, self.location.name];
+    } else {
+        title = [NSString stringWithFormat:@"%@", self.location.name];
+    }
+    self.navigationItem.title = title;
+
 
 }
 
 -(void)handleBack:(id)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:TRUE];
+    //[self.navigationController popToRootViewControllerAnimated:TRUE];
+    if ([self.loadCamera isEqualToString:@"Yes"]) {
+        
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:TRUE];
+    }
+
 }
 
 - (void) dealloc {

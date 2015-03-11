@@ -76,8 +76,6 @@
 		9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */; };
 		9B6C88C61A829EAD00B50A21 /* CellLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C88C51A829EAD00B50A21 /* CellLayout.m */; };
 		9BA18C731AAE421D006CEC25 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA18C721AAE421D006CEC25 /* MyAnnotation.m */; };
-		9BA18C7B1AAF671D006CEC25 /* earth-america-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BA18C7A1AAF671D006CEC25 /* earth-america-7.png */; };
-		9BA18C7D1AAF67A6006CEC25 /* pencil-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BA18C7C1AAF67A6006CEC25 /* pencil-7.png */; };
 		9BA18C821AAF72B9006CEC25 /* PopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA18C811AAF72B9006CEC25 /* PopOverMenu.m */; };
 		9BAF13811A3F6388000B780B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13801A3F6388000B780B /* CoreMotion.framework */; };
 		9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13821A3F63A5000B780B /* QuartzCore.framework */; };
@@ -93,6 +91,9 @@
 		9BC7B9571A94084300164F0E /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9561A94084300164F0E /* TWMessageBarManager.m */; };
 		9BC7B95A1A940F4E00164F0E /* icon-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC7B9581A940F4E00164F0E /* icon-error.png */; };
 		9BC7B95B1A940F4E00164F0E /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC7B9591A940F4E00164F0E /* icon-success.png */; };
+		9BCD5A1A1AB0D38700DEB39E /* earth-america-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A191AB0D38700DEB39E /* earth-america-7.png */; };
+		9BCD5A1C1AB0D39200DEB39E /* house-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A1B1AB0D39200DEB39E /* house-7.png */; };
+		9BCD5A1E1AB0D3A400DEB39E /* pencil-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A1D1AB0D3A400DEB39E /* pencil-7.png */; };
 		9BCDE8B61A8035110017FD7A /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCDE8B51A8035110017FD7A /* video.png */; };
 		9BCDE8BC1A803C940017FD7A /* videoFinish.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCDE8BB1A803C940017FD7A /* videoFinish.png */; };
 		9BDDBAF51A70827900697C25 /* CSLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDDBAF41A70827900697C25 /* CSLocation.m */; };
@@ -281,8 +282,6 @@
 		9B6C88CC1A829FA500B50A21 /* CellLayoutDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellLayoutDelegate.h; sourceTree = "<group>"; };
 		9BA18C711AAE421D006CEC25 /* MyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnnotation.h; sourceTree = "<group>"; };
 		9BA18C721AAE421D006CEC25 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotation.m; sourceTree = "<group>"; };
-		9BA18C7A1AAF671D006CEC25 /* earth-america-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "earth-america-7.png"; sourceTree = "<group>"; };
-		9BA18C7C1AAF67A6006CEC25 /* pencil-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pencil-7.png"; sourceTree = "<group>"; };
 		9BA18C801AAF72B9006CEC25 /* PopOverMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopOverMenu.h; sourceTree = "<group>"; };
 		9BA18C811AAF72B9006CEC25 /* PopOverMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopOverMenu.m; sourceTree = "<group>"; };
 		9BAF13801A3F6388000B780B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -306,6 +305,9 @@
 		9BC7B9561A94084300164F0E /* TWMessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWMessageBarManager.m; sourceTree = "<group>"; };
 		9BC7B9581A940F4E00164F0E /* icon-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error.png"; sourceTree = "<group>"; };
 		9BC7B9591A940F4E00164F0E /* icon-success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success.png"; sourceTree = "<group>"; };
+		9BCD5A191AB0D38700DEB39E /* earth-america-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "earth-america-7.png"; sourceTree = "<group>"; };
+		9BCD5A1B1AB0D39200DEB39E /* house-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house-7.png"; sourceTree = "<group>"; };
+		9BCD5A1D1AB0D3A400DEB39E /* pencil-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pencil-7.png"; sourceTree = "<group>"; };
 		9BCDE8B51A8035110017FD7A /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		9BCDE8BB1A803C940017FD7A /* videoFinish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoFinish.png; sourceTree = "<group>"; };
 		9BDDBAF31A70827900697C25 /* CSLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSLocation.h; sourceTree = "<group>"; };
@@ -566,8 +568,9 @@
 				D553C3A31A44DC85004076B4 /* unupload.png */,
 				D553C3A41A44DC85004076B4 /* uploading.png */,
 				2061D1F519919440001C7E08 /* settings-25.png */,
-				9BA18C7C1AAF67A6006CEC25 /* pencil-7.png */,
-				9BA18C7A1AAF671D006CEC25 /* earth-america-7.png */,
+				9BCD5A1D1AB0D3A400DEB39E /* pencil-7.png */,
+				9BCD5A191AB0D38700DEB39E /* earth-america-7.png */,
+				9BCD5A1B1AB0D39200DEB39E /* house-7.png */,
 				2061D1FF1991945F001C7E08 /* main.m */,
 				2053971F1991924B00B1D9AD /* Go Arch-Info.plist */,
 				205397201991924B00B1D9AD /* InfoPlist.strings */,
@@ -761,6 +764,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BCD5A1A1AB0D38700DEB39E /* earth-america-7.png in Resources */,
 				20C3BBCB1A687EFA0019DE40 /* camera_line@2x.png in Resources */,
 				D553C3A51A44DC85004076B4 /* unupload.png in Resources */,
 				9BC7B95B1A940F4E00164F0E /* icon-success.png in Resources */,
@@ -768,7 +772,6 @@
 				9BC1B1071AA8E6CC002FE705 /* qroverlay.png in Resources */,
 				20C3BBD41A687EFA0019DE40 /* flashing_on.png in Resources */,
 				20C3BBC71A687EFA0019DE40 /* box.png in Resources */,
-				9BA18C7B1AAF671D006CEC25 /* earth-america-7.png in Resources */,
 				20C3BBE51A687EFA0019DE40 /* unupload.png in Resources */,
 				D553C3A61A44DC85004076B4 /* uploading.png in Resources */,
 				D553C3A21A44C806004076B4 /* uploaded.png in Resources */,
@@ -792,13 +795,13 @@
 				20C3BBDB1A687EFA0019DE40 /* shot@2x.png in Resources */,
 				9BC1B1051AA8E6CC002FE705 /* qrcode.png in Resources */,
 				9BE03EC31A9FD722007ADCDC /* roll@2x.png in Resources */,
-				9BA18C7D1AAF67A6006CEC25 /* pencil-7.png in Resources */,
 				20C3BBD31A687EFA0019DE40 /* flashing_off@2x.png in Resources */,
 				20C3BBD01A687EFA0019DE40 /* flashing_auto.png in Resources */,
 				9BFDAAB51AAA72CE00C4E170 /* ELCAssetPicker.xib in Resources */,
 				2061D1FC19919440001C7E08 /* settings-25.png in Resources */,
 				20C3BBD71A687EFA0019DE40 /* settings-25.png in Resources */,
 				9BCDE8B61A8035110017FD7A /* video.png in Resources */,
+				9BCD5A1C1AB0D39200DEB39E /* house-7.png in Resources */,
 				2061D1ED19919430001C7E08 /* Main.storyboard in Resources */,
 				20C3BBCA1A687EFA0019DE40 /* camera_line.png in Resources */,
 				20C3BBCF1A687EFA0019DE40 /* close_cha@2x.png in Resources */,
@@ -807,6 +810,7 @@
 				9BFDAAB61AAA72CE00C4E170 /* ELCAssetTablePicker.xib in Resources */,
 				20C3BBD51A687EFA0019DE40 /* flashing_on@2x.png in Resources */,
 				9BFDAAB81AAA72CE00C4E170 /* Overlay@2x.png in Resources */,
+				9BCD5A1E1AB0D3A400DEB39E /* pencil-7.png in Resources */,
 				9BFDAAB41AAA72CE00C4E170 /* ELCAlbumPickerController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

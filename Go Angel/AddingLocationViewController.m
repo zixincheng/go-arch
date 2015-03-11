@@ -53,7 +53,7 @@
     if (self.onLocation) {
         [self startStandardUpdates];
     }
-    [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+    //[self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
@@ -83,6 +83,11 @@
     [self.streetName setText:self.location.name];
     [self.mapView addAnnotation:self.point];
 }
+-(void) viewDidAppear:(BOOL)animated {
+    [self startStandardUpdates];
+    [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+}
+
 
 -(void)dismissKeyboard {
     [self.streetName resignFirstResponder];
@@ -141,8 +146,8 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+    [self.mapView removeAnnotation:self.point];
     [self stopStandardUpdates];
-    NSLog(@"stopped watching location");
 }
 
 - (void)didReceiveMemoryWarning {
@@ -150,24 +155,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     // Dispose of any resources that can be recreated.
 }
 
-// switch for location tagging was toggled
-/*
-- (IBAction)toggleLocationTagging:(id)sender {
-    self.onLocation = [self.toggleLocation isOn];
-    
-    if (self.onLocation) {
-        // if we haven't started updating location (because it was
-        // first set to false when entering page), then start updating it now
-        if (!hasStartedUpdating) {
-            [self startStandardUpdates];
-        }
-    }
-    
-    [self updateTable];
-    
-    [self saveLocation];
-}
-*/
+
 // text field for unit # was changed
 - (IBAction)unitChanged:(id)sender {
     self.location.unit = self.txtUnit.text;
@@ -381,6 +369,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
 }
 - (IBAction)AddBtn:(id)sender {
     if (self.location.name !=nil) {
+        [self.tabBarController setSelectedIndex:0];
         [self saveLocationToCoredata];
         NSArray *objects =
         [NSArray arrayWithObjects:self.location,nil];
