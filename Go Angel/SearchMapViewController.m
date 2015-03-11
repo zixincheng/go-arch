@@ -21,18 +21,11 @@
     
     self.locations = [self.dataWrapper getLocations];
     
-    
     self.locationManager = [[CLLocationManager alloc]init];
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     self.locationManager.distanceFilter = 10;
     
-    [self.locationManager startUpdatingLocation];
-    
-    if ([self.locationManager
-         respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-        [self.locationManager requestWhenInUseAuthorization];
-    }
     
     // setup pins for each location in map
     self.points = [[NSMutableArray alloc]init];
@@ -48,13 +41,14 @@
         }
         [self.points addObject:point];
     }
-    MKPointAnnotation *point1 = [[MKPointAnnotation alloc]init];
-    point1.coordinate =CLLocationCoordinate2DMake(0, 0);
-    [self.points addObject:point1];
-    
-
     
     self.pins = [[NSArray alloc] initWithArray:self.points];
+    [self.locationManager startUpdatingLocation];
+    
+    if ([self.locationManager
+         respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
     [self.mapView addAnnotations:self.pins];
     
     [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
@@ -119,8 +113,36 @@
     pin.canShowCallout = YES;
     pin.animatesDrop = YES;
     
+    MKPointAnnotation *point  = pin.annotation;
+    NSUInteger index = [self.pins indexOfObject:point];
+    self.selectedLocation = [self.locations objectAtIndex:index];
+    UIView *imageView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
+    pin.leftCalloutAccessoryView = imageView;
+    
+    CSPhoto *p = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.selectedLocation];
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    [appDelegate.mediaLoader loadThumbnail:p completionHandler:^(UIImage *image) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImage *newImage = [self resizeImage:image];
+            UIView *imgView = [[UIImageView alloc]initWithImage:newImage];
+            [imageView addSubview:imgView];
+        });
+    }];
+    
     return pin;
 
+}
+
+-(UIImage *)resizeImage: (UIImage *) image{
+    UIGraphicsBeginImageContext(image.size);
+    [image drawInRect:CGRectMake(0, 0, 30, 30)];
+    
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // free the context
+    UIGraphicsEndImageContext();
+    return image;
+    
 }
 
 -(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {

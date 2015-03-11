@@ -380,14 +380,16 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     return numberSections;
 }
 - (IBAction)AddBtn:(id)sender {
-    [self saveLocationToCoredata];
+    if (self.location.name !=nil) {
+        [self saveLocationToCoredata];
         NSArray *objects =
-    [NSArray arrayWithObjects:self.location,nil];
-    NSArray *keys = [NSArray
-                     arrayWithObjects:LOCATION, nil];
-    NSDictionary *locationDic =
-    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AddLocationSegue" object:nil userInfo:locationDic];
+        [NSArray arrayWithObjects:self.location,nil];
+        NSArray *keys = [NSArray
+                         arrayWithObjects:LOCATION, nil];
+        NSDictionary *locationDic =
+        [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AddLocationSegue" object:nil userInfo:locationDic];
+    }
 }
 
 #pragma mark - mapView delegate

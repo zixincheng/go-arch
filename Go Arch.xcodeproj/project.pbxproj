@@ -1045,7 +1045,7 @@
 				INFOPLIST_FILE = "Go Angel/Go Arch-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "Go Arch";
-				PROVISIONING_PROFILE = "bc5212fa-23d7-4dcd-a3d3-39733734a8cd";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1069,7 +1069,7 @@
 				INFOPLIST_FILE = "Go Angel/Go Arch-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "Go Arch";
-				PROVISIONING_PROFILE = "bc5212fa-23d7-4dcd-a3d3-39733734a8cd";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
