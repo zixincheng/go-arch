@@ -40,13 +40,60 @@
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     self.toolbarItems = [NSArray arrayWithObjects:flexibleSpace, self.btnUpload, flexibleSpace, nil];*/
+    //self.btnUpload = [[UIBarButtonItem alloc]initWithTitle:@"Nothing to upload" style:UIBarButtonItemStylePlain target:self action:@selector(uploadBtnPressed:)];
+    UIView *naviView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 120, 40)];
+
+    self.btnUpload = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 80, 40)];
+    [self.btnUpload setFont:[UIFont fontWithName:@"Arial-BoldMT" size:15]];
+    [self.btnUpload setText:@"Nothing Upload"];
+    self.btnUpload.numberOfLines = 2;
+    self.btnUpload.textAlignment = UITextAlignmentCenter;
+    
+    self.valueSwirly = [[F3Swirly alloc]initWithFrame:CGRectMake(80, 0, 40, 40)];
+    self.valueSwirly.font            = [UIFont fontWithName:@"Futura-Medium" size:8.0];
+    self.valueSwirly.thickness       = 5.0f;
+    self.valueSwirly.shadowOffset    = CGSizeMake(1,1);
+    self.valueSwirly.textColor       = [UIColor whiteColor];
+    self.valueSwirly.shadowColor     = [UIColor blackColor];
+    [self.valueSwirly addThreshold:0
+                         withColor:[UIColor yellowColor]
+                               rpm:0
+                             label:@""
+                          segments:5];
+    [self.valueSwirly addThreshold:1
+                         withColor:[UIColor yellowColor]
+                               rpm:20
+                             label:@""
+                          segments:5];
+    [self.valueSwirly addThreshold:2
+                         withColor:[UIColor greenColor]
+                               rpm:0
+                             label:@""
+                          segments:100];
+    [self.valueSwirly addThreshold:3
+                         withColor:[UIColor redColor]
+                               rpm:0
+                             label:@""
+                          segments:100];
+    self.valueSwirly.value = 2;
     // setup objects
+    [naviView addSubview:self.btnUpload];
+    [naviView addSubview:self.valueSwirly];
+    UIBarButtonItem *btn = [[UIBarButtonItem alloc]initWithCustomView:naviView];
+    self.navigationItem.rightBarButtonItem= btn;
+    
+    self.netWorkstatLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 80, 40)];
+    [self.netWorkstatLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:15]];
+    self.netWorkstatLabel.textAlignment = UITextAlignmentCenter;
+    self.netWorkstatLabel.numberOfLines = 2;
+    self.netWorkstatLabel.textColor = [UIColor lightGrayColor];
+    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc]initWithCustomView:self.netWorkstatLabel];
+    self.navigationItem.leftBarButtonItem = leftBtn;
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
     self.dataWrapper = appDelegate.dataWrapper;
     self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
     self.localDevice = [self.dataWrapper getDevice:account.cid];
-    
     // init vars
     //self.dataWrapper = [[CoreDataWrapper alloc] init];
     //self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
@@ -423,34 +470,36 @@
         
         if (!self.canConnect) {
             title = @"Cannot Connect";
+            self.valueSwirly.value = 3;
         }else if (self.unUploadedThumbnail == 0 && self.unUploadedFullPhotos ==0) {
-            title = @"Nothing to Upload";
+            title = @"Nothing Upload";
+            self.valueSwirly.value = 2;
             
         }else if (self.currentlyUploading) {
-            title = [NSString stringWithFormat:@"Uploading %d thumbnials and %d photos", self.unUploadedThumbnail,self.unUploadedFullPhotos];
-            
-        } else if (self.unUploadedThumbnail == 0 && self.unUploadedFullPhotos !=0) {
-            title = [NSString stringWithFormat:@"Upload %d thumbnials and %d photos", self.unUploadedThumbnail,self.unUploadedFullPhotos];
-            [self.btnUpload setEnabled:NO];
+            title = [NSString stringWithFormat:@"Uploading"];
+            self.valueSwirly.value = 1;
         } else {
-            title = [NSString stringWithFormat:@"Upload %d thumbnials and %d photos", self.unUploadedThumbnail,self.unUploadedFullPhotos];
-            
+            title = [NSString stringWithFormat:@"waiting"];
+            self.valueSwirly.value = 0;
         }
         
         if (self.canConnect) {
             if ([self.networkStatus isEqualToString:WIFIEXTERNAL]) {
-                title = [NSString stringWithFormat:@"%@ (WIFIEXTERNAL)",title];
+                //title = [NSString stringWithFormat:@"%@ (WIFIEXTERNAL)",title];
+                [self.netWorkstatLabel setText:@"WIFI EXTERNAL"];
             } else if ([self.networkStatus isEqualToString:WIFILOCAL]) {
-                title = [NSString stringWithFormat:@"%@ (WIFILOCAL)",title];
+                //title = [NSString stringWithFormat:@"%@ (WIFILOCAL)",title];
+                [self.netWorkstatLabel setText:@"WIFI LOCAL"];
             }
             else {
-                title = [NSString stringWithFormat:@"%@ (WWAN)",title];
+                //title = [NSString stringWithFormat:@"%@ (WWAN)",title];
+                [self.netWorkstatLabel setText:@"WWAN"];
             }
         }else {
             //UIColor * color = [UIColor colorWithRed:212/255.0f green:1/255.0f blue:0/255.0f alpha:1.0f];
             //[self.progressUpload setTintColor:color];
         }
-        [self.btnUpload setTitle:title];
+        [self.btnUpload setText:title];
         
         if ((self.unUploadedThumbnail == 0  && self.unUploadedFullPhotos ==0) || self.currentlyUploading || !self.canConnect ){
             [self.btnUpload setEnabled: NO];

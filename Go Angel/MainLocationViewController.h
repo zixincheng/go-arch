@@ -20,6 +20,7 @@
 #import "SearchMapViewController.h"
 #import "SearchResultsTableViewController.h"
 #import "NetWorkCheck.h"
+#import "F3Swirly.h"
 
 @interface MainLocationViewController : UITableViewController <UIAlertViewDelegate,UISearchResultsUpdating, UISearchBarDelegate,GCDAsyncUdpSocketDelegate> {
     LocalLibrary *localLibrary;
@@ -33,6 +34,7 @@
 
 @property (nonatomic, strong) CSLocation *selectedlocation;
 @property (nonatomic, strong) CSDevice *localDevice;
+@property (retain, nonatomic) F3Swirly *valueSwirly;
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
@@ -48,7 +50,8 @@
 @property (nonatomic) NSInteger localLanStatus;
 @property (nonatomic, assign) BOOL canConnect;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) UIBarButtonItem *btnUpload;
+@property (nonatomic, strong) UILabel *btnUpload;
+@property (nonatomic, strong) UILabel *netWorkstatLabel;
 
 @property (nonatomic )int unUploadedThumbnail;
 @property (nonatomic )int unUploadedFullPhotos;

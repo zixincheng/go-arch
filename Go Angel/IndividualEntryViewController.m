@@ -104,7 +104,7 @@
     // setup objects
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
-    
+    NSLog(@"id %@",self.localDevice.remoteId);
     self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     [self.coinsorter getMetaPhoto:self.photos];

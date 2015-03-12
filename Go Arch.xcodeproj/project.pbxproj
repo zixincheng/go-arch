@@ -94,6 +94,7 @@
 		9BCD5A1A1AB0D38700DEB39E /* earth-america-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A191AB0D38700DEB39E /* earth-america-7.png */; };
 		9BCD5A1C1AB0D39200DEB39E /* house-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A1B1AB0D39200DEB39E /* house-7.png */; };
 		9BCD5A1E1AB0D3A400DEB39E /* pencil-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A1D1AB0D3A400DEB39E /* pencil-7.png */; };
+		9BCD5A251AB105C100DEB39E /* F3Swirly.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCD5A241AB105C100DEB39E /* F3Swirly.m */; };
 		9BCDE8B61A8035110017FD7A /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCDE8B51A8035110017FD7A /* video.png */; };
 		9BCDE8BC1A803C940017FD7A /* videoFinish.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCDE8BB1A803C940017FD7A /* videoFinish.png */; };
 		9BDDBAF51A70827900697C25 /* CSLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDDBAF41A70827900697C25 /* CSLocation.m */; };
@@ -308,6 +309,8 @@
 		9BCD5A191AB0D38700DEB39E /* earth-america-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "earth-america-7.png"; sourceTree = "<group>"; };
 		9BCD5A1B1AB0D39200DEB39E /* house-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house-7.png"; sourceTree = "<group>"; };
 		9BCD5A1D1AB0D3A400DEB39E /* pencil-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pencil-7.png"; sourceTree = "<group>"; };
+		9BCD5A231AB105C100DEB39E /* F3Swirly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = F3Swirly.h; sourceTree = "<group>"; };
+		9BCD5A241AB105C100DEB39E /* F3Swirly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = F3Swirly.m; sourceTree = "<group>"; };
 		9BCDE8B51A8035110017FD7A /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		9BCDE8BB1A803C940017FD7A /* videoFinish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoFinish.png; sourceTree = "<group>"; };
 		9BDDBAF31A70827900697C25 /* CSLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSLocation.h; sourceTree = "<group>"; };
@@ -518,6 +521,8 @@
 				9BC1B0FC1AA8E670002FE705 /* QRPreviewViewController.m */,
 				9BC1B1081AA8E74D002FE705 /* QRReaderViewController.h */,
 				9BC1B1091AA8E74D002FE705 /* QRReaderViewController.m */,
+				9BCD5A231AB105C100DEB39E /* F3Swirly.h */,
+				9BCD5A241AB105C100DEB39E /* F3Swirly.m */,
 				2053971E1991924B00B1D9AD /* Supporting Files */,
 				2061D1F819919440001C7E08 /* UploadPhotosTask.h */,
 				2061D1F919919440001C7E08 /* UploadPhotosTask.m */,
@@ -868,6 +873,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BCD5A251AB105C100DEB39E /* F3Swirly.m in Sources */,
 				2061D1DA199193CE001C7E08 /* CoreDataWrapper.m in Sources */,
 				2061D1FE19919440001C7E08 /* UploadPhotosTask.m in Sources */,
 				9BEA5B571A1EB26100CC14FF /* StorageViewController.m in Sources */,
