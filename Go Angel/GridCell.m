@@ -21,7 +21,7 @@
     //  Set image view
     _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     [_imageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    _imageView.contentMode = UIViewContentModeScaleToFill;
+    _imageView.contentMode = UIViewContentModeScaleAspectFill;
     _imageView.clipsToBounds = YES;
     
     [self addSubview:_imageView];

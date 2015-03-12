@@ -33,8 +33,9 @@
   } else if ([url isFileURL]) {
     return IMAGE_REMOTE;
   } else {
-    NSLog(@"Photo Url is Invalid!");
-    return -1;
+    //NSLog(@"Photo Url is Invalid!");
+    //return -1;
+    return IMAGE_REMOTE;
   }
 }
 
@@ -167,7 +168,7 @@
 - (void)loadThumbnail:(CSPhoto *)photo
     completionHandler:(void (^)(UIImage *))completionHandler {
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-      NSURL *url = [NSURL URLWithString:photo.imageURL];
+      NSURL *url = [NSURL URLWithString:photo.thumbURL];
       int type = [self getTypePhoto:url];
 
       //    NSLog(@"loading %@", [url absoluteString]);

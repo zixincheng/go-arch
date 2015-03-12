@@ -903,15 +903,58 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 }
 
 - (UIImage *) resizeImage: (UIImage *)image {
+    NSLog(@"origin image size height%f",image.size.height);
+    NSLog(@"origin image size width%f",image.size.width);
     UIImage *tempImage = nil;
-    CGSize targetSize = CGSizeMake(360,480);
-    UIGraphicsBeginImageContext(targetSize);
-    [image drawInRect:CGRectMake(0, 0, 360, 480)];
-    tempImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    image = tempImage;
+    CGSize targetSize = CGSizeMake(360,360);
     
-    return image;
+    CGSize size = image.size;
+    CGSize croppedSize;
+    
+    CGFloat offsetX = 0.0;
+    CGFloat offsetY = 0.0;
+    
+    if (size.width > size.height) {
+        offsetX = (size.height - size.width) / 2;
+        croppedSize = CGSizeMake(size.height, size.height);
+    } else {
+        offsetY = (size.width - size.height) / 2;
+        croppedSize = CGSizeMake(size.width, size.width);
+    }
+    
+    CGRect clippedRect = CGRectMake(offsetX * -1, offsetY * -1, croppedSize.width, croppedSize.height);
+    
+    CGAffineTransform rectTransform;
+    switch (image.imageOrientation)
+    {
+        case UIImageOrientationLeft:
+            rectTransform = CGAffineTransformTranslate(CGAffineTransformMakeRotation(M_PI_2), 0, -image.size.height);
+            break;
+        case UIImageOrientationRight:
+            rectTransform = CGAffineTransformTranslate(CGAffineTransformMakeRotation(-M_PI_2), -image.size.width, 0);
+            break;
+        case UIImageOrientationDown:
+            rectTransform = CGAffineTransformTranslate(CGAffineTransformMakeRotation(-M_PI), -image.size.width, -image.size.height);
+            break;
+        default:
+            rectTransform = CGAffineTransformIdentity;
+    };
+    
+    rectTransform = CGAffineTransformScale(rectTransform, image.scale, image.scale);
+    
+    
+    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], CGRectApplyAffineTransform(clippedRect, rectTransform));
+    UIImage *result = [UIImage imageWithCGImage:imageRef scale:image.scale orientation:image.imageOrientation];
+    CGImageRelease(imageRef);
+    
+    UIGraphicsBeginImageContext(targetSize);
+
+   [result drawInRect:CGRectMake(0, 0, 360, 360)];
+    tempImage = UIGraphicsGetImageFromCurrentImageContext();
+    NSLog(@"after image size height%f",tempImage.size.height);
+    NSLog(@"ori %ld",tempImage.imageOrientation);
+    UIGraphicsEndImageContext();
+    return tempImage;
 }
 
 -(IBAction)accessCameraRoll:(id)sender {

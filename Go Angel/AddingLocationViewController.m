@@ -18,7 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.point = [[MyAnnotation alloc]init];
+     //self.point = [[MyAnnotation alloc]init];
     //self.point = [[MyAnnotation alloc] initWithCoordinate:self.mapView.centerCoordinate];
     [self.navigationController setToolbarHidden:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -84,6 +84,7 @@
     [self.mapView addAnnotation:self.point];
 }
 -(void) viewDidAppear:(BOOL)animated {
+    self.point = [[MyAnnotation alloc]init];
     [self startStandardUpdates];
     [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
 }
