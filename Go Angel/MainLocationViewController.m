@@ -45,7 +45,7 @@
     account = appDelegate.account;
     self.dataWrapper = appDelegate.dataWrapper;
     self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
-    self.localDevice = appDelegate.localDevice;
+    self.localDevice = [self.dataWrapper getDevice:account.cid];
     
     // init vars
     //self.dataWrapper = [[CoreDataWrapper alloc] init];

@@ -21,7 +21,7 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
     self.dataWrapper = appDelegate.dataWrapper;
-    self.localDevice = appDelegate.localDevice;
+    self.localDevice = [self.dataWrapper getDevice:account.cid];
 
     //init location auto-dectect
     
