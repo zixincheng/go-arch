@@ -21,8 +21,9 @@
 #import "SearchResultsTableViewController.h"
 #import "NetWorkCheck.h"
 #import "F3Swirly.h"
+#import "SWTableViewCell.h"
 
-@interface MainLocationViewController : UITableViewController <UIAlertViewDelegate,UISearchResultsUpdating, UISearchBarDelegate,GCDAsyncUdpSocketDelegate> {
+@interface MainLocationViewController : UITableViewController <UIAlertViewDelegate,UISearchResultsUpdating, UISearchBarDelegate,GCDAsyncUdpSocketDelegate,SWTableViewCellDelegate> {
     LocalLibrary *localLibrary;
     AccountDataWrapper *account;
     NSUserDefaults *defaults;

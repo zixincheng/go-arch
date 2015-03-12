@@ -41,6 +41,7 @@
     
     self.toolbarItems = [NSArray arrayWithObjects:flexibleSpace, self.btnUpload, flexibleSpace, nil];*/
     //self.btnUpload = [[UIBarButtonItem alloc]initWithTitle:@"Nothing to upload" style:UIBarButtonItemStylePlain target:self action:@selector(uploadBtnPressed:)];
+    /*
     UIView *naviView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 120, 40)];
 
     self.btnUpload = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 80, 40)];
@@ -76,19 +77,20 @@
                              label:@""
                           segments:100];
     self.valueSwirly.value = 2;
+     [naviView addSubview:self.btnUpload];
+     [naviView addSubview:self.valueSwirly];
+     UIBarButtonItem *btn = [[UIBarButtonItem alloc]initWithCustomView:naviView];
+     self.navigationItem.rightBarButtonItem= btn;
+     self.netWorkstatLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 80, 40)];
+     [self.netWorkstatLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:15]];
+     self.netWorkstatLabel.textAlignment = UITextAlignmentCenter;
+     self.netWorkstatLabel.numberOfLines = 2;
+     self.netWorkstatLabel.textColor = [UIColor lightGrayColor];
+     UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc]initWithCustomView:self.netWorkstatLabel];
+     self.navigationItem.leftBarButtonItem = leftBtn;
+     */
     // setup objects
-    [naviView addSubview:self.btnUpload];
-    [naviView addSubview:self.valueSwirly];
-    UIBarButtonItem *btn = [[UIBarButtonItem alloc]initWithCustomView:naviView];
-    self.navigationItem.rightBarButtonItem= btn;
     
-    self.netWorkstatLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 80, 40)];
-    [self.netWorkstatLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:15]];
-    self.netWorkstatLabel.textAlignment = UITextAlignmentCenter;
-    self.netWorkstatLabel.numberOfLines = 2;
-    self.netWorkstatLabel.textColor = [UIColor lightGrayColor];
-    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc]initWithCustomView:self.netWorkstatLabel];
-    self.navigationItem.leftBarButtonItem = leftBtn;
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
     self.dataWrapper = appDelegate.dataWrapper;
@@ -293,9 +295,24 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    //SWTableViewCell *cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"LocationCell"];
     UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"LocationCell"];
-    //[tableView dequeueReusableCellWithIdentifier:@"LocationCell" forIndexPath:indexPath];
-    
+    /*
+    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+    [rightUtilityButtons addUtilityButtonWithColor:
+     [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0]
+                                             title:@"More"];
+    [rightUtilityButtons addUtilityButtonWithColor:
+     [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
+                                             title:@"Delete"];
+    NSLog(@"heigh %f",tableView.rowHeight);
+    cell = [[SWTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                  reuseIdentifier:@"LocationCell"
+                              containingTableView:tableView // Used for row height and selection
+                               leftUtilityButtons:nil
+                              rightUtilityButtons:rightUtilityButtons];
+    cell.delegate = self;
+    */
     CSLocation *l = self.locations[[indexPath row]];
     CSPhoto *photo;
     self.photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:l];
@@ -341,8 +358,6 @@
 {
     return 70;
 }
-
-
 /*
  // Override to support conditional editing of the table view.
  - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -350,7 +365,36 @@
  return YES;
  }
  */
+/*
+- (void)swippableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index {
+    switch (index) {
+        case 0:
+        {
+            UIActionSheet *shareActionSheet = [[UIActionSheet alloc] initWithTitle:@"Share" delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Share on Facebook", @"Share on Twitter", nil];
+            [shareActionSheet showInView:self.view];
 
+            
+            [cell hideUtilityButtonsAnimated:YES];
+            break;
+        }
+        case 1:
+        {
+            // Delete button was pressed
+            NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
+            
+            NSMutableArray *deletePhoto =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:[self.locations objectAtIndex:cellIndexPath.row]];
+            NSLog(@"delete count %lu",(unsigned long)deletePhoto.count);
+            [self deletePhotoFromFile:deletePhoto];
+            [self.dataWrapper deleteLocation:[self.locations objectAtIndex:cellIndexPath.row]];
+            [self.locations removeObjectAtIndex:cellIndexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        }
+        default:
+            break;
+    }
+}
+ */
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
