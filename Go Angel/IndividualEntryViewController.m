@@ -52,6 +52,7 @@
     //self.overlay = [[UIView alloc] initWithFrame:self.view.bounds];
     
     //init ui parts
+    /*
     self.setCoverPageViewContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 1600, 320, 150)];
     self.setCoverPageViewContainer.backgroundColor = [UIColor lightGrayColor];
     [self.view addSubview:self.setCoverPageViewContainer];
@@ -70,7 +71,7 @@
     [self.CancelsetCover setTitle:@"Cancel" forState:UIControlStateNormal];
     self.CancelsetCover.tintColor = [UIColor blackColor];
     [self.setCoverPageViewContainer addSubview:self.CancelsetCover];
-    
+    */
     
     
     //init buttons on tool bar
@@ -614,7 +615,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         } else {
             UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
             if (cell.highlighted) {
-                self.setCoverPageViewContainer.frame = CGRectMake(0, 430, 320, 150);
+                //self.setCoverPageViewContainer.frame = CGRectMake(0, 430, 320, 150);
+                UIActionSheet *shareActionSheet = [[UIActionSheet alloc] initWithTitle:@"Cover Image" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Set As Cover Image", nil];
+                [shareActionSheet showInView:self.view];
+                
                 NSLog(@"long press select at %ld", (long)indexPath.row);
                 self.selectedCoverPhoto = [self.photos objectAtIndex:indexPath.row];
 
@@ -622,7 +626,25 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         }
     }
 }
-
+-(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+        {CSPhoto *oldCover = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+            if (oldCover == nil) {
+                
+            } else {
+                oldCover.cover = @"0";
+                [self.dataWrapper addUpdatePhoto:oldCover];
+            }
+            self.selectedCoverPhoto.cover = @"1";
+            [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
+            [self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"home" value:@"1"];
+            break;
+        }
+        default:
+            break;
+    }
+}
 -(void) donesetCover:(id) sender {
     CSPhoto *oldCover = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
     if (oldCover == nil) {

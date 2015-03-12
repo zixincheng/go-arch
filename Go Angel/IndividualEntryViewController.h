@@ -26,7 +26,7 @@
 #import "ELCOverlayImageView.h"
 #import "PopOverMenu.h"
 
-@interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate,CellLayoutDelegate,ELCImagePickerControllerDelegate,CTPopoutMenuDelegate>{
+@interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate,CellLayoutDelegate,ELCImagePickerControllerDelegate,CTPopoutMenuDelegate,UIActionSheetDelegate>{
     
     LocalLibrary *localLibrary;
     NSUserDefaults *defaults;
