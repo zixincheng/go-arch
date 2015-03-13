@@ -53,10 +53,14 @@
         
         NSLog(@"%@",self.selectedPhoto.isVideo);
         [self.view insertSubview:self.container aboveSubview:self.videoController.view];
-        NSString *newUrl = [[NSString alloc] initWithFormat:@"%@",self.selectedPhoto.imageURL];
+        NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
+        NSString *thumburl = [documentsPath stringByAppendingPathComponent:self.selectedPhoto.imageURL];
+        NSString *newUrl =[ @"file://"stringByAppendingString:thumburl];
+        
         self.videoController = [[MPMoviePlayerController alloc]init];
         
-        NSURL *theURL = [NSURL URLWithString:newUrl];
+        NSURL *theURL = [[NSURL alloc] initWithString:newUrl];
+
         [self.videoController.view setFrame:CGRectMake (0, 0, 320, 480)];
         
         [self.videoController setContentURL:theURL];

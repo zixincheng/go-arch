@@ -53,7 +53,10 @@
 - (void)loadFullImage:(CSPhoto *)photo fullRes:(BOOL) fullRes
     completionHandler:(void (^)(UIImage *))completionHandler {
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-      NSURL *url = [NSURL URLWithString:photo.imageURL];
+      NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
+      NSString *fullPath = [documentsPath stringByAppendingPathComponent:photo.imageURL];
+      NSString *newUrl =[ @"file://"stringByAppendingString:fullPath];
+      NSURL *url = [NSURL URLWithString:newUrl];
       
       
       int type = [self getTypePhoto:url];
@@ -130,7 +133,7 @@
         // try to get image from cache first
 
         UIImage *image;
-        NSData *data = [_imageCache objectForKey:url.path];
+        NSData *data = [_imageCache objectForKey:fullPath];
 
         if (data != nil) {
           image = [UIImage imageWithData:data];
@@ -139,9 +142,9 @@
           // load the photo directly from path
           @try {
               if ([photo.isVideo isEqualToString:@"1"]) {
-                  url = [NSURL URLWithString:photo.thumbURL];
-              } else {
                   url = [NSURL URLWithString:photo.imageURL];
+              } else {
+                  url = [NSURL URLWithString:fullPath];
               }
             image = [UIImage imageWithContentsOfFile:url.path];
             if (image) {
@@ -168,7 +171,10 @@
 - (void)loadThumbnail:(CSPhoto *)photo
     completionHandler:(void (^)(UIImage *))completionHandler {
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-      NSURL *url = [NSURL URLWithString:photo.thumbURL];
+    NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
+      NSString *fullPath = [documentsPath stringByAppendingPathComponent:photo.thumbURL];
+      NSString *newUrl =[ @"file://"stringByAppendingString:fullPath];
+      NSURL *url = [NSURL URLWithString:newUrl];
       int type = [self getTypePhoto:url];
 
       //    NSLog(@"loading %@", [url absoluteString]);
@@ -227,7 +233,6 @@
         // check if image data is in cache
         UIImage *image;
         NSData *data = [_imageCache objectForKey:url.path];
-
         if (data != nil) {
           image = [UIImage imageWithData:data];
           completionHandler(image);
@@ -235,9 +240,9 @@
 
           // load the photo directly from path
           @try {
-            url = [NSURL URLWithString:photo.thumbURL];
+            url = [NSURL URLWithString:fullPath];
 
-            UIImage *image = [UIImage imageWithContentsOfFile:url.path];
+            UIImage *image = [UIImage imageWithContentsOfFile:fullPath];
 
             if (image) {
 

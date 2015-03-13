@@ -818,6 +818,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 -(void) saveVideoIntoDocument:(NSURL *)moviePath {
     
+    NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyVideo"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:documentsPath]){
+        [[NSFileManager defaultManager] createDirectoryAtPath:documentsPath withIntermediateDirectories:NO attributes:nil error:nil];}
     
     // generate thumbnail for video
     AVAsset *asset = [AVAsset assetWithURL:moviePath];
@@ -830,21 +833,23 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     CGImageRelease(imageRef);
     
     // get app document path
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsPath = [paths objectAtIndex:0];
+   // NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    //NSString *documentsPath = [paths objectAtIndex:0];
     
     
     NSString *photoUID = [[NSProcessInfo processInfo] globallyUniqueString];
-    NSString *thumbPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
-    NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.mov", photoUID]];
+    NSString *thumbPath = [@"MyVideo" stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
+    NSString *filePath = [@"MyVideo" stringByAppendingString:[NSString stringWithFormat:@"/%@.mov", photoUID]];
     
-    NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
+    NSString *tmpFullPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.mov", photoUID]];
+    NSString *tmpThumbPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
+    //NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
 
     NSData *videoData = [NSData dataWithContentsOfURL:moviePath];
     
-    [videoData writeToFile:filePath atomically:YES];
+    [videoData writeToFile:tmpFullPath atomically:YES];
     NSData *thumbData = [NSData dataWithData:UIImageJPEGRepresentation(thumbnail, 1.0)];
-    [thumbData writeToFile:thumbPath atomically:YES];
+    [thumbData writeToFile:tmpThumbPath atomically:YES];
     //[self.photoPath addObject:filePath];
     CSPhoto *p = [[CSPhoto alloc] init];
     
@@ -853,7 +858,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     p.thumbOnServer = @"0";
     p.fullOnServer = @"0";
     p.thumbURL = thumbPath;
-    p.imageURL = fullPath;
+    p.imageURL = filePath;
     p.fileName = [NSString stringWithFormat:@"%@.mov",photoUID];
     p.thumbnailName = [NSString stringWithFormat:@"thumb_%@.jpg", photoUID];
     p.isVideo = @"1";
@@ -869,15 +874,19 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 // save photos to the document directory and save to core data
 - (void) saveImageIntoDocument:(UIImage *)image metadata:(NSDictionary *)metadata {
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsPath = [paths objectAtIndex:0];
+    //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    //NSString *documentsPath = [paths objectAtIndex:0];
+    NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyImage"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:documentsPath]){
+        [[NSFileManager defaultManager] createDirectoryAtPath:documentsPath withIntermediateDirectories:NO attributes:nil error:nil];}
     
     NSString *photoUID = [[NSProcessInfo processInfo] globallyUniqueString];
     
-    NSString *filePath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
-    NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
+    NSString *filePath = [@"MyImage" stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
+   // NSString *fullPath = [[NSURL fileURLWithPath:filePath] absoluteString];
     
-    NSString *thumbPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
+    NSString *thumbPath = [@"MyImage" stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
     
     //[self.photoPath addObject:filePath];
     CSPhoto *p = [[CSPhoto alloc] init];
@@ -887,12 +896,15 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     p.thumbOnServer = @"0";
     p.fullOnServer = @"0";
     p.thumbURL = thumbPath;
-    p.imageURL = fullPath;
+    p.imageURL = filePath;
     p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];
     p.thumbnailName = [NSString stringWithFormat:@"thumb_%@.jpg", photoUID];
     p.isVideo = @"0";
     p.cover = @"0";
     p.location = self.location;
+
+    NSString *tmpFullPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
+    NSString *tmpThumbPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
 
     // save the metada information into image
     NSData *data = UIImageJPEGRepresentation(image, 100);
@@ -908,13 +920,13 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     CGImageDestinationFinalize(destination);
     
     
-    [dest_data writeToFile:filePath atomically:YES];
+    [dest_data writeToFile:tmpFullPath atomically:YES];
     
     
     UIImage *thumImage = [self resizeImage:(UIImage *)image];
     
     NSData *thumbdata = UIImageJPEGRepresentation(thumImage, 0.6);
-    [thumbdata writeToFile:thumbPath atomically:YES];
+    [thumbdata writeToFile:tmpThumbPath atomically:YES];
     
     CFRelease(destination);
     CFRelease(source);
@@ -925,8 +937,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 }
 
 - (UIImage *) resizeImage: (UIImage *)image {
-    NSLog(@"origin image size height%f",image.size.height);
-    NSLog(@"origin image size width%f",image.size.width);
+
     UIImage *tempImage = nil;
     CGSize targetSize = CGSizeMake(360,360);
     
@@ -973,8 +984,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
    [result drawInRect:CGRectMake(0, 0, 360, 360)];
     tempImage = UIGraphicsGetImageFromCurrentImageContext();
-    NSLog(@"after image size height%f",tempImage.size.height);
-    NSLog(@"ori %ld",tempImage.imageOrientation);
+
     UIGraphicsEndImageContext();
     return tempImage;
 }

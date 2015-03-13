@@ -294,10 +294,11 @@
             // get documents directory
             NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
                                                                      NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *documentsDirectory = [pathArray objectAtIndex:0];
+            //NSString *documentsDirectory = [pathArray objectAtIndex:0];
+            NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyVideo"];
             NSString *textPath = [documentsDirectory
                                   stringByAppendingPathComponent:p.fileName];
-            
+
             // get movie data from file path
             NSData *movieData = [NSData dataWithContentsOfFile:textPath];
             NSString *fileName = [NSString
@@ -354,7 +355,8 @@
             // get documents directory
             NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
                                                                      NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *documentsDirectory = [pathArray objectAtIndex:0];
+            //NSString *documentsDirectory = [pathArray objectAtIndex:0];
+            NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyImage"];
             NSString *textPath = [documentsDirectory
                                   stringByAppendingPathComponent:p.fileName];
             
@@ -472,7 +474,9 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 // get documents directory
                 NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
                                                                          NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *documentsDirectory = [pathArray objectAtIndex:0];
+                //NSString *documentsDirectory = [pathArray objectAtIndex:0];
+                NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyVideo"];
+                
                 NSString *textPath = [documentsDirectory
                                       stringByAppendingPathComponent:p.thumbnailName];
                 
@@ -543,11 +547,11 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 // get documents directory
                 NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
                                                                          NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *documentsDirectory = [pathArray objectAtIndex:0];
-                
+               // NSString *documentsDirectory = [pathArray objectAtIndex:0];
+                NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyImage"];
                 NSString *textPath = [documentsDirectory
                                       stringByAppendingPathComponent:p.thumbnailName];
-                
+                NSLog(@"text path %@",textPath);
                 // get image data from file path
                 NSData *imageData = [NSData dataWithContentsOfFile:textPath];
                 
@@ -647,9 +651,10 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             [request setAllHTTPHeaderFields:headers];
             
             // get documents directory
-            NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
+           /* NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
                                                                      NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *documentsDirectory = [pathArray objectAtIndex:0];
+            NSString *documentsDirectory = [pathArray objectAtIndex:0];*/
+            NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyVideo"];
             NSString *textPath = [documentsDirectory
                                   stringByAppendingPathComponent:photo.thumbnailName];
             
@@ -720,11 +725,13 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             // get documents directory
             NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
                                                                      NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *documentsDirectory = [pathArray objectAtIndex:0];
+           // NSString *documentsDirectory = [pathArray objectAtIndex:0];
+            
+            NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyImage"];
             
             NSString *textPath = [documentsDirectory
                                   stringByAppendingPathComponent:photo.thumbnailName];
-            
+            NSLog(@"text path %@",textPath);
             // get image data from file path
             NSData *imageData = [NSData dataWithContentsOfFile:textPath];
             
