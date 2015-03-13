@@ -28,6 +28,11 @@
     
     self.location = [[CSLocation alloc]init];
     self.datawrapper = [[CoreDataWrapper alloc]init];
+    
+    locationManager = [[CLLocationManager alloc]init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.distanceFilter = 10;
 
     
     showingAlertView = NO;
@@ -64,9 +69,17 @@
                                           initWithTarget:self action:@selector(LongPressDropPin:)];
     lpgr.minimumPressDuration = 1.0;
     [self.mapView addGestureRecognizer:lpgr];
-    
+    UIButton *userLocationBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 10, 30, 30)];
+    [userLocationBtn setImage:[UIImage imageNamed:@"pin-map-7.png"]
+                     forState:UIControlStateNormal];
+    [userLocationBtn addTarget:self action:@selector(backToUserLocation) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.mapView addSubview:userLocationBtn];
 }
 
+-(void)backToUserLocation {
+    [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+}
 - (void)LongPressDropPin:(UIGestureRecognizer *)gestureRecognizer
 {
     if (gestureRecognizer.state != UIGestureRecognizerStateBegan)
