@@ -504,6 +504,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 # pragma mark - export actions
 
 - (void)exportAction {
+    self.exportBtn.enabled = NO;
     NSMutableArray * items = [NSMutableArray new];
     self.locationArray = [[NSMutableArray alloc]init];
     self.locationArray = [self.dataWrapper getLocations];
@@ -542,10 +543,12 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         [self.tabBarController setSelectedIndex:2];
         [self.navigationController popViewControllerAnimated:NO];
     }
+    self.exportBtn.enabled = YES;
 }
 
 -(void)menuwillDismiss:(CTPopoutMenu *)menu{
     NSLog(@"menu dismiss");
+    self.exportBtn.enabled = YES;
 }
 
 # pragma mark - share actions
