@@ -507,30 +507,41 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSMutableArray * items = [NSMutableArray new];
     self.locationArray = [[NSMutableArray alloc]init];
     self.locationArray = [self.dataWrapper getLocations];
-   /// NSLog(@"number %lu",(unsigned long)self.locationArray.count);
-    [self.locationArray removeObject:self.location];
-   // NSLog(@"after number %lu",(unsigned long)self.locationArray.count);
+ 
+    NSArray *currentLocation = [self.locationArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", self.location.name]];
+    [self.locationArray removeObject:currentLocation[0]];
+    
     for (CSLocation *l in self.locationArray) {
                 CTPopoutMenuItem *item = [[CTPopoutMenuItem alloc]initWithTitle:l.name image:nil];
                 [items addObject:item];
     }
-        self.popMenu = [[CTPopoutMenu alloc]initWithTitle:@"Move the selected photo to location" message:nil items:items];
-        self.popMenu.delegate = self;
+    CTPopoutMenuItem *new = [[CTPopoutMenuItem alloc]initWithTitle:@"Add New Location" image:nil];
+    [items addObject:new];
+    self.popMenu = [[CTPopoutMenu alloc]initWithTitle:@"Move the selected photo to location" message:nil items:items];
+    self.popMenu.delegate = self;
     self.popMenu.menuStyle = MenuStyleList;
     [self.popMenu showMenuInParentViewController:self withCenter:self.view.center];
 }
 
 -(void)menu:(CTPopoutMenu *)menu willDismissWithSelectedItemAtIndex:(NSUInteger)index{
-    NSLog(@"menu dismiss with index %ld",index);
-    CSLocation *destLocation = [self.locationArray objectAtIndex:index];
-    NSLog(@"dest location %@",destLocation.name);
-    for (CSPhoto *p in selectedPhotos) {
-        p.location = destLocation;
-        [self.dataWrapper addUpdatePhoto:p];
-        [self.photos removeObject:p];
-    }
+    NSLog(@"count %lu",(unsigned long)menu.items.count);
+    
+    if (index != menu.items.count-1) {
+        NSLog(@"menu dismiss with index %ld",index);
+        CSLocation *destLocation = [self.locationArray objectAtIndex:index];
+        NSLog(@"dest location %@",destLocation.name);
+        for (CSPhoto *p in selectedPhotos) {
+            p.location = destLocation;
+            [self.dataWrapper addUpdatePhoto:p];
+            [self.photos removeObject:p];
+        }
+        
+        [self.collectionView reloadData];
+    } else {
 
-    [self.collectionView reloadData];
+        [self.tabBarController setSelectedIndex:2];
+        [self.navigationController popViewControllerAnimated:NO];
+    }
 }
 
 -(void)menuwillDismiss:(CTPopoutMenu *)menu{
