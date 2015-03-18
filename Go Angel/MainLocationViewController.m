@@ -94,14 +94,16 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
     self.dataWrapper = appDelegate.dataWrapper;
-    self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
+    //self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
+    self.coinsorter = appDelegate.coinsorter;
     self.localDevice = [self.dataWrapper getDevice:account.cid];
     // init vars
     //self.dataWrapper = [[CoreDataWrapper alloc] init];
     //self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
     localLibrary = [[LocalLibrary alloc] init];
     //self.netWorkCheck = [[NetWorkCheck alloc] init];
-    self.netWorkCheck = [[NetWorkCheck alloc] initWithCoinsorter:self.coinsorter];
+    //self.netWorkCheck = [[NetWorkCheck alloc] initWithCoinsorter:self.coinsorter];
+    self.netWorkCheck = appDelegate.netWorkCheck;
     defaults = [NSUserDefaults standardUserDefaults];
     self.devices = [[NSMutableArray alloc] init];
     self.locations = [self.dataWrapper getLocations];
@@ -553,8 +555,41 @@
     });
 }
 
+#pragma mark - background upload function
+-(void)fetchNewDataWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    account = appDelegate.account;
+    self.coinsorter = appDelegate.coinsorter;
+    //appDelegate.dataWrapper;
+    //appDelegate.coinsorter;
+    NSString *bssid = [self currentWifiBSSID];
+    if (bssid == nil) {
+        return;
+    } else  {
+        int unUploadedThumbnail = [appDelegate.dataWrapper getCountUnUploaded];
+        int unUploadedFullPhotos = [appDelegate.dataWrapper getFullImageCountUnUploaded];
+        NSLog(@"count %d ",unUploadedThumbnail);
+        if (unUploadedFullPhotos != 0 && unUploadedThumbnail != 0) {
+            [self uploadPhotosToApi];
+            completionHandler(UIBackgroundFetchResultNewData);
+        } else {
+            completionHandler(UIBackgroundFetchResultNoData);
+        }
+    }
+}
+- (NSString *)currentWifiBSSID {
+    // Does not work on the simulator.
+    NSString *bssid = nil;
+    NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
+    for (NSString *ifnam in ifs) {
+        NSDictionary *info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
+        if (info[@"BSSID"]) {
+            bssid = info[@"BSSID"];
+        }
+    }
+    return bssid;
+}
 #pragma mark - upload function
-
 - (void) onePhotoThumbToApi:(CSPhoto *)photo {
     __block int currentthumbnailUploaded = 0;
     __block int currentFullPhotoUploaded = 0;
@@ -612,17 +647,37 @@
     }];
 }
 - (void) uploadPhotosToApi {
-    NSMutableArray *thumbPhotos = [self.dataWrapper getPhotosToUpload];
-    NSMutableArray *fullPhotos = [self.dataWrapper getFullSizePhotosToUpload];
-    BOOL upload3G = [defaults boolForKey:UPLOAD_3G];
-    NSLog(@"unupload full image %d",self.unUploadedFullPhotos);
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    account = appDelegate.account;
+    // Always upload thumbnails - maybe turn this into a pref later
+    NSMutableArray *thumbPhotos = [appDelegate.dataWrapper getPhotosToUpload];
+    // Upload all the thumbs
+    // doStuff();
     
-    self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
+    
+    // Are there RAW photos/videos to upload?
+    NSMutableArray *fullPhotos = [appDelegate.dataWrapper getFullSizePhotosToUpload];
+    // doStuffForRAW();
+    //if (yes) {
+        // 1. Get network state
+        //AppDelegate.NetWorkCheck
+        // get bool preference
+      //  if (yes) {
+            // 2. Get preference
+        //    if (yes) {
+          //  }
+        //}
+    //}
+    int unUploadedFullPhotos = [appDelegate.dataWrapper getFullImageCountUnUploaded];
+    
+    BOOL upload3G = [defaults boolForKey:UPLOAD_3G];
+    NSLog(@"unupload full image %d",unUploadedFullPhotos);
+    
     __block int currentthumbnailUploaded = 0;
     __block int currentFullPhotoUploaded = 0;
     if (thumbPhotos.count > 0) {
         //sent a notification when start uploading photos
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"startUploading" object:nil];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"startUploading" object:nil];
         self.currentlyUploading = YES;
         // hide upload button tool bar and show progress on
         [self.btnUpload setEnabled:NO];

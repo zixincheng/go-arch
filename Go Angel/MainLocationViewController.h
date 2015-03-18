@@ -57,5 +57,5 @@
 @property (nonatomic )int unUploadedThumbnail;
 @property (nonatomic )int unUploadedFullPhotos;
 @property (nonatomic) BOOL currentlyUploading;
-
+-(void)fetchNewDataWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
 @end

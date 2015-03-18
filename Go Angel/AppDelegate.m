@@ -9,16 +9,18 @@
 #import "AppDelegate.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import "MainLocationViewController.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [Fabric with:@[CrashlyticsKit]];
-    
   self.account = [[AccountDataWrapper alloc] init];
   [self.account readSettings];
   self.dataWrapper = [[CoreDataWrapper alloc]init];
+  self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
+  self.netWorkCheck = [[NetWorkCheck alloc] initWithCoinsorter:self.coinsorter];
   NSLog(@"reading settings");
   
   // initialize the image cache
@@ -51,11 +53,23 @@
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     [[UIApplication sharedApplication] registerForRemoteNotifications];
 
-  
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
   //self.defaultAlbum = [[createDefaultAlbum alloc] init];
   //[self.defaultAlbum setDefaultAlbum];
 
   return YES;
+}
+
+-(void) application:(UIApplication *)application performFetchWithCompletionHandler:
+(void (^)(UIBackgroundFetchResult))completionHandler {
+       NSLog(@"Background fetch started...");
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    MainLocationViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"mainLocationViewController"];
+    [vc fetchNewDataWithCompletionHandler:^(UIBackgroundFetchResult result) {
+        completionHandler(result);
+    }];
+    
+    NSLog(@"Background fetch completed...");
 }
 
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
@@ -94,6 +108,9 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
   // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+    NSLog(@"enter backgorund ");
+
+    
   // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 

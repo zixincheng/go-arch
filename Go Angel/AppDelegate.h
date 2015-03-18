@@ -11,6 +11,12 @@
 #import "MediaLoader.h"
 #import "createDefaultAlbum.h"
 #import "CoreDataWrapper.h"
+#import "Reachability.h"
+#import "Coinsorter.h"
+#import "NetWorkCheck.h"
+
+@class Coinsorter;
+@class NetWorkCheck;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -19,6 +25,10 @@
 @property (strong, nonatomic) AccountDataWrapper *account;
 
 @property (strong, nonatomic) CoreDataWrapper *dataWrapper;
+
+@property (strong, nonatomic) Coinsorter *coinsorter;
+
+@property (strong, nonatomic) NetWorkCheck *netWorkCheck;
 
 // media loader and image cache
 @property (nonatomic, strong) MediaLoader *mediaLoader;

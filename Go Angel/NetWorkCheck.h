@@ -13,6 +13,8 @@
 #import "CoreDataWrapper.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
 
+@class Coinsorter;
+
 @interface NetWorkCheck : NSObject <GCDAsyncUdpSocketDelegate> {
     AccountDataWrapper *account;
 }

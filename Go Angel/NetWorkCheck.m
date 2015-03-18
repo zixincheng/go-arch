@@ -52,10 +52,12 @@
             account.currentIp = account.externalIp;
             [self.coinsorter pingServer:^(BOOL connected) {
                 if (connected) {
+                    NSLog(@"wwan connected");
                     self.checkNetWorkStat = WWAN;
                     NSDictionary *stat = @{@"status" : self.checkNetWorkStat};
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"networkStatusChanged" object:nil userInfo:stat];
                 } else {
+                    NSLog(@"wwan offline");
                     self.checkNetWorkStat = OFFLINE;
                     NSDictionary *stat = @{@"status" : self.checkNetWorkStat};
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"networkStatusChanged" object:nil userInfo:stat];
@@ -122,6 +124,7 @@
     }else if (remoteHostStatus == ReachableViaWiFi) {
         // if we are connected to wifi
         // and we have a blackbox ip we have connected to before
+         NSLog(@"wifi");
         [self pingLocal];
     } else if (remoteHostStatus == ReachableViaWWAN) {
         NSLog(@"wwan");
@@ -130,10 +133,12 @@
         account.currentIp = account.externalIp;
             [self.coinsorter pingServer:^(BOOL connected) {
                 if (connected) {
+                    NSLog(@"wwan connected");
                     self.checkNetWorkStat = WWAN;
                     NSDictionary *stat = @{@"status" : self.checkNetWorkStat};
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"networkStatusChanged" object:nil userInfo:stat];
                 } else {
+                    NSLog(@"wwan offline");
                     self.checkNetWorkStat = OFFLINE;
                     NSDictionary *stat = @{@"status" : self.checkNetWorkStat};
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"networkStatusChanged" object:nil userInfo:stat];

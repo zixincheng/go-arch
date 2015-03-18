@@ -21,7 +21,7 @@
 // wrapper for calling the api
 // this class makes api calls, parses the responses,
 // and sends back the data in the format we need
-
+@class UploadPhotosTask;
 @interface Coinsorter : NSObject <NSURLSessionDelegate> {
   AccountDataWrapper *account;
   UIBackgroundTaskIdentifier bgTask;
