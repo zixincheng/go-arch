@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //init search controller
+
     UINavigationController *searchResultsController = [[self storyboard] instantiateViewControllerWithIdentifier:@"TableSearchResultsNavController"];
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:searchResultsController];
     self.searchController.searchResultsUpdater = self;
@@ -25,7 +26,7 @@
     self.tableView.tableHeaderView = self.searchController.searchBar;
     
     self.definesPresentationContext = YES;
-    
+    self.tableView.contentOffset = CGPointMake(0, self.searchController.searchBar.frame.size.height);
     //init ui navigation buttons parts
     /*
     UIBarButtonItem *searchBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"earth-america-7.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showSearch:)];
@@ -128,7 +129,7 @@
     NSLog(@"Cid %@",account.cid);
     
     // Uncomment the following line to preserve selection between presentations.
-    self.clearsSelectionOnViewWillAppear = NO;
+    //[self.tableView clearsSelectionOnViewWillAppear] = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePass) name:@"passwordChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPhotoChanged:) name:@"addNewPhoto"object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewLocation:) name:@"AddLocationSegue"object:nil];
@@ -189,7 +190,7 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:YES animated:NO];
+    //[self.navigationController setToolbarHidden:YES animated:NO];
     self.locations = [self.dataWrapper getLocations];
     [self.tableView reloadData];
     self.unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];

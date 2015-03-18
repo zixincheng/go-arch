@@ -74,6 +74,7 @@
 		9B3A65CD1A9E65EA00D77CD3 /* play-circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B3A65CC1A9E65EA00D77CD3 /* play-circle.png */; };
 		9B4ADCB61A7C168500375C01 /* SearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */; };
 		9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */; };
+		9B52EB451ABA10F4002F19A4 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B52EB441ABA10F4002F19A4 /* SegmentedViewController.m */; };
 		9B6C88C61A829EAD00B50A21 /* CellLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C88C51A829EAD00B50A21 /* CellLayout.m */; };
 		9BA18C731AAE421D006CEC25 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA18C721AAE421D006CEC25 /* MyAnnotation.m */; };
 		9BA18C821AAF72B9006CEC25 /* PopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA18C811AAF72B9006CEC25 /* PopOverMenu.m */; };
@@ -280,6 +281,8 @@
 		9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewController.m; sourceTree = "<group>"; };
 		9B4C12921A72DCC6004CC973 /* IndividualEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndividualEntryViewController.h; sourceTree = "<group>"; };
 		9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndividualEntryViewController.m; sourceTree = "<group>"; };
+		9B52EB431ABA10F4002F19A4 /* SegmentedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedViewController.h; sourceTree = "<group>"; };
+		9B52EB441ABA10F4002F19A4 /* SegmentedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedViewController.m; sourceTree = "<group>"; };
 		9B6C88C41A829EAD00B50A21 /* CellLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellLayout.h; sourceTree = "<group>"; };
 		9B6C88C51A829EAD00B50A21 /* CellLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellLayout.m; sourceTree = "<group>"; };
 		9B6C88CC1A829FA500B50A21 /* CellLayoutDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellLayoutDelegate.h; sourceTree = "<group>"; };
@@ -489,6 +492,8 @@
 				2040D2231A6058EA00E490F3 /* LocationTableViewController.h */,
 				2040D2241A6058EA00E490F3 /* LocationTableViewController.m */,
 				2061D1EB19919430001C7E08 /* Main.storyboard */,
+				9B52EB431ABA10F4002F19A4 /* SegmentedViewController.h */,
+				9B52EB441ABA10F4002F19A4 /* SegmentedViewController.m */,
 				9BE4F6FC1A717F1D009FEB3F /* MainLocationViewController.h */,
 				9BE4F6FD1A717F1D009FEB3F /* MainLocationViewController.m */,
 				20931B8619954FF000F57FB0 /* MediaLoader.h */,
@@ -937,6 +942,7 @@
 				2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */,
 				208169691995828500EEC65C /* SinglePhotoViewController.m in Sources */,
 				2061D1C6199193B5001C7E08 /* AccountDataWrapper.m in Sources */,
+				9B52EB451ABA10F4002F19A4 /* SegmentedViewController.m in Sources */,
 				9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */,
 				2061D1FB19919440001C7E08 /* Server.m in Sources */,
 				9BEA5B561A1EB26100CC14FF /* CSStorage.m in Sources */,

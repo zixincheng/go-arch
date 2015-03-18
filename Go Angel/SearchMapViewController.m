@@ -41,7 +41,7 @@
     // Do any additional setup after loading the view.
 }
 - (void)viewWillAppear:(BOOL)animated {
-    [self.navigationController setToolbarHidden:YES animated:NO];
+    //[self.navigationController setToolbarHidden:YES animated:NO];
 }
 
 -(void) viewDidAppear:(BOOL)animated {

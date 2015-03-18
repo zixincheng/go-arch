@@ -23,7 +23,7 @@
 #import "F3Swirly.h"
 #import "SWTableViewCell.h"
 
-@interface MainLocationViewController : UITableViewController <UIAlertViewDelegate,UISearchResultsUpdating, UISearchBarDelegate,GCDAsyncUdpSocketDelegate,SWTableViewCellDelegate> {
+@interface MainLocationViewController : UIViewController <UITableViewDelegate,UITableViewDataSource, UIAlertViewDelegate,UISearchResultsUpdating, UISearchBarDelegate,GCDAsyncUdpSocketDelegate,SWTableViewCellDelegate> {
     LocalLibrary *localLibrary;
     AccountDataWrapper *account;
     NSUserDefaults *defaults;
@@ -36,6 +36,7 @@
 @property (nonatomic, strong) CSLocation *selectedlocation;
 @property (nonatomic, strong) CSDevice *localDevice;
 @property (retain, nonatomic) F3Swirly *valueSwirly;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
