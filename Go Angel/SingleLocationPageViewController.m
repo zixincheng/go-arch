@@ -18,16 +18,16 @@
   self.dataSource = self;
   self.delegate = self;
   
-  UIBarButtonItem *mainCameraBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed:)];
-  
-  self.toolbarItems = [NSArray arrayWithObjects: mainCameraBtn, nil];
-  
   [self setViewControllers:@[[self prepareOverview]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
 - (OverviewViewController *) prepareOverview {
   if (_overviewController == nil) {
     _overviewController = (OverviewViewController *)[self.storyboard instantiateViewControllerWithIdentifier:OVERVIEW];
+    _overviewController.coinsorter = _coinsorter;
+    _overviewController.dataWrapper = _dataWrapper;
+    _overviewController.localDevice = _localDevice;
+    _overviewController.location = _location;
   }
   return _overviewController;
 }
@@ -42,6 +42,10 @@
 - (PhotosViewController *) preparePhotos {
   if (_photosController == nil) {
     _photosController = (PhotosViewController *)[self.storyboard instantiateViewControllerWithIdentifier:PHOTOS];
+    _photosController.coinsorter = _coinsorter;
+    _photosController.dataWrapper = _dataWrapper;
+    _photosController.localDevice = _localDevice;
+    _photosController.location = _location;
   }
   return _photosController;
 }

@@ -7,7 +7,28 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Coinsorter.h"
+#import "CoreDataWrapper.h"
+#import "CSDevice.h"
+#import "CSLocation.h"
+#import "AppDelegate.h"
+#import "CSPhoto.h"
+#import "CellLayout.h"
+#import "GridCell.h"
+#import "PhotoSwipeViewController.h"
 
-@interface PhotosViewController : UIViewController
+@interface PhotosViewController : UIViewController<UICollectionViewDataSource, UICollectionViewDelegate, CellLayoutDelegate> {
+  AppDelegate *appDelegate;
+  NSMutableArray *selectedPhotos;
+}
+
+@property (nonatomic, strong) Coinsorter *coinsorter;
+@property (nonatomic, strong) CoreDataWrapper *dataWrapper;
+@property (nonatomic, strong) CSLocation *location;
+@property (nonatomic, strong) CSDevice *localDevice;
+
+@property (nonatomic, strong) NSMutableArray *photos;
+
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end

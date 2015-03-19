@@ -1487,7 +1487,7 @@
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="naX-1i-Nfp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-441" y="1455.5"/>
+            <point key="canvasLocation" x="-449" y="1456"/>
         </scene>
         <!--Single Location View Controller-->
         <scene sceneID="rwg-rS-dPX">
@@ -1536,9 +1536,15 @@
                     </view>
                     <navigationItem key="navigationItem" id="cD5-kz-qII">
                         <nil key="title"/>
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="S5r-Wn-8AV">
+                            <connections>
+                                <action selector="rightButtonPressed:" destination="3F9-MO-0gI" id="CnZ-sY-DpO"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="containerView" destination="Kxe-IN-6gR" id="TKT-a9-ssG"/>
+                        <outlet property="rightButton" destination="S5r-Wn-8AV" id="0lF-gD-vgW"/>
                         <outlet property="segmentControl" destination="K8P-kP-euZ" id="YGl-8i-UJN"/>
                     </connections>
                 </viewController>
@@ -1557,12 +1563,48 @@
                     <view key="view" contentMode="scaleToFill" id="wZN-Rn-xN2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5CW-0M-I3X">
+                                <rect key="frame" x="0.0" y="97" width="320" height="268"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pct-D3-Vir">
+                                <rect key="frame" x="16" y="20" width="151" height="27"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bKN-2f-z0F">
+                                <rect key="frame" x="16" y="45" width="258" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="City/State" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2AE-eJ-1Mm">
+                                <rect key="frame" x="16" y="68" width="157" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Country" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UiD-YD-S00">
+                                <rect key="frame" x="200" y="68" width="104" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="coverImageView" destination="5CW-0M-I3X" id="aAw-5Y-Cak"/>
+                        <outlet property="lblAddress" destination="bKN-2f-z0F" id="3jG-YH-7om"/>
+                        <outlet property="lblCityState" destination="2AE-eJ-1Mm" id="1Ch-1z-Ypk"/>
+                        <outlet property="lblCountry" destination="UiD-YD-S00" id="lS7-5O-CWd"/>
+                        <outlet property="lblPrice" destination="Pct-D3-Vir" id="zgO-6c-Xfb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9DG-gO-P0D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="15" y="1536"/>
+            <point key="canvasLocation" x="-16" y="1536"/>
         </scene>
         <!--Details View Controller-->
         <scene sceneID="p9r-E1-145">
@@ -1575,7 +1617,20 @@
                     <view key="view" contentMode="scaleToFill" id="qPq-y8-1fy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.0" green="0.96885614809999998" blue="0.056438852659999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kLL-OJ-Kws">
+                                <rect key="frame" x="16" y="57" width="40" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="$1000000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WNR-gr-yQH">
+                                <rect key="frame" x="205" y="57" width="77" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hvn-R4-TYh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1593,12 +1648,34 @@
                     <view key="view" contentMode="scaleToFill" id="qHH-6e-oPU">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="aIe-DR-Qsj">
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewLayout key="collectionViewLayout" id="QxY-rx-mFh" customClass="CellLayout"/>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="M5y-Aj-Mrj" customClass="GridCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="collectionView" destination="aIe-DR-Qsj" id="9ot-a2-xi7"/>
+                        <segue destination="emt-rN-v7D" kind="push" identifier="singleImageSegue" id="Hoo-Hd-Ahm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wkc-Gn-jnj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="685" y="1536"/>
+            <point key="canvasLocation" x="728" y="1536"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="zT3-P2-a6U">
@@ -1633,5 +1710,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="4RR-SE-nq1"/>
+        <segue reference="Hoo-Hd-Ahm"/>
     </inferredMetricsTieBreakers>
 </document>

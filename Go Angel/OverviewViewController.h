@@ -7,7 +7,29 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Coinsorter.h"
+#import "CoreDataWrapper.h"
+#import "CSDevice.h"
+#import "CSLocation.h"
+#import "AppDelegate.h"
+#import "CSPhoto.h"
 
-@interface OverviewViewController : UIViewController
+@interface OverviewViewController : UIViewController {
+  AppDelegate *appDelegate;
+}
+
+@property (nonatomic, strong) Coinsorter *coinsorter;
+@property (nonatomic, strong) CoreDataWrapper *dataWrapper;
+@property (nonatomic, strong) CSLocation *location;
+@property (nonatomic, strong) CSDevice *localDevice;
+
+@property (nonatomic, strong) NSMutableArray *photos;
+
+@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
+@property (weak, nonatomic) IBOutlet UILabel *lblCityState;
+@property (weak, nonatomic) IBOutlet UILabel *lblAddress;
+@property (weak, nonatomic) IBOutlet UILabel *lblPrice;
+@property (weak, nonatomic) IBOutlet UILabel *lblCountry;
+
 
 @end

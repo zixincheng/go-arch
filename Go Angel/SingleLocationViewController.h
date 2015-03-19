@@ -23,6 +23,8 @@
 
 @property (nonatomic, strong) UIBarButtonItem *flexibleSpace;
 @property (nonatomic, strong) UIBarButtonItem *mainCameraBtn;
+@property (nonatomic, strong) UIBarButtonItem *deleteBtn;
+@property (nonatomic, strong) UIBarButtonItem *shareBtn;
 
 @property (nonatomic, assign) BOOL loadCamera;
 @property (nonatomic, assign) BOOL saveInAlbum;
@@ -30,5 +32,6 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 @property (nonatomic, strong) SingleLocationPageViewController *pageController;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightButton;
 
 @end
