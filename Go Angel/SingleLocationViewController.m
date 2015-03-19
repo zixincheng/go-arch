@@ -27,6 +27,10 @@
   if ([segueName isEqualToString: @"location_page_embed"]) {
     _pageController = (SingleLocationPageViewController *) [segue destinationViewController];
     _pageController.segmentControl = _segmentControl;
+    _pageController.coinsorter = _coinsorter;
+    _pageController.dataWrapper = _dataWrapper;
+    _pageController.localDevice = _localDevice;
+    _pageController.location = _location;
   }
 }
 

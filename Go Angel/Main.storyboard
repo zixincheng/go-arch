@@ -1515,28 +1515,27 @@
                                 </items>
                             </toolbar>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kxe-IN-6gR">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <rect key="frame" x="0.0" y="100" width="320" height="468"/>
                                 <connections>
                                     <segue destination="mfk-1k-CMX" kind="embed" identifier="location_page_embed" id="ibi-cU-Oje"/>
                                 </connections>
                             </containerView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="K8P-kP-euZ">
+                                <rect key="frame" x="54" y="68" width="212" height="29"/>
+                                <segments>
+                                    <segment title="Overview"/>
+                                    <segment title="Details"/>
+                                    <segment title="Photos"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentChanged:" destination="3F9-MO-0gI" eventType="valueChanged" id="EgB-ek-dvg"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="cD5-kz-qII">
                         <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="K8P-kP-euZ">
-                            <rect key="frame" x="54" y="6" width="212" height="32"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="Overview"/>
-                                <segment title="Details"/>
-                                <segment title="Photos"/>
-                            </segments>
-                            <connections>
-                                <action selector="segmentChanged:" destination="3F9-MO-0gI" eventType="valueChanged" id="EgB-ek-dvg"/>
-                            </connections>
-                        </segmentedControl>
                     </navigationItem>
                     <connections>
                         <outlet property="containerView" destination="Kxe-IN-6gR" id="TKT-a9-ssG"/>
@@ -1545,7 +1544,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YNX-D4-Giu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-824.5" y="1456"/>
+            <point key="canvasLocation" x="-825" y="1456"/>
         </scene>
         <!--Overview View Controller-->
         <scene sceneID="lMW-Hw-ekA">
