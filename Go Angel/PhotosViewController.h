@@ -17,7 +17,7 @@
 #import "GridCell.h"
 #import "PhotoSwipeViewController.h"
 
-@interface PhotosViewController : UIViewController<UICollectionViewDataSource, UICollectionViewDelegate, CellLayoutDelegate> {
+@interface PhotosViewController : UIViewController<UICollectionViewDataSource, UICollectionViewDelegate, CellLayoutDelegate, UIAlertViewDelegate> {
   AppDelegate *appDelegate;
   NSMutableArray *selectedPhotos;
 }

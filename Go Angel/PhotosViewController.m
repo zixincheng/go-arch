@@ -87,7 +87,73 @@
 - (void) deletePressed {
   if (editEnabled) {
     NSLog(@"delete pressed");
+    if (selectedPhotos.count > 0) {
+      UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete"
+                                                        message:@"Delete Selected Photos?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Yes", nil];
+      [message show];
+    }
   }
+}
+
+-(void)alertView:(UIAlertView *)alertView
+clickedButtonAtIndex:(NSInteger)buttonIndex {
+  if (buttonIndex == 0) {
+    [self clearCellSelections];
+  } else if (buttonIndex == 1){
+    
+    NSArray *selectedIndexPath = [self.collectionView indexPathsForSelectedItems];
+    NSArray *deletedPhoto = [self selectedDeletedPhoto:selectedIndexPath];
+    [self.collectionView performBatchUpdates:^{
+      [self deletePhotoFromFile:deletedPhoto];
+      [self deleteItemsFromDataSourceAtIndexPaths: deletedPhoto itemPath:selectedIndexPath];
+      [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
+      
+    } completion:nil];
+  }
+}
+
+-(void) deleteItemsFromDataSourceAtIndexPaths :(NSArray *)deletedPhoto itemPath: (NSArray *) itemPaths{
+  
+  NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+  for (NSIndexPath *itemPath  in itemPaths) {
+    [indexSet addIndex:itemPath.row];
+  }
+  [self.photos removeObjectsAtIndexes:indexSet];
+  for (CSPhoto *p in deletedPhoto) {
+    [self.dataWrapper deletePhotos:p];
+  }
+}
+
+- (void) deletePhotoFromFile: (NSArray *) deletedPhoto {
+  NSMutableArray *photoPath = [NSMutableArray array];
+  for (CSPhoto *p in deletedPhoto) {
+    // get documents directory
+    
+    NSURL *imageUrl = [NSURL URLWithString:p.imageURL];
+    NSURL *thumUrl = [NSURL URLWithString:p.thumbURL];
+    [photoPath addObject:imageUrl.path];
+    [photoPath addObject:thumUrl.path];
+  }
+  for (NSString *currentpath in photoPath) {
+    NSError *error;
+    [[NSFileManager defaultManager] removeItemAtPath:currentpath error:&error];
+  }
+  
+  
+}
+
+-(NSArray *) selectedDeletedPhoto: (NSArray *)itemPaths {
+  NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+  for (NSIndexPath *itemPath  in itemPaths) {
+    [indexSet addIndex:itemPath.row];
+  }
+  NSArray *deletedPhoto = [self.photos objectsAtIndexes:indexSet];
+  
+  return deletedPhoto;
+  
 }
 
 - (void) sharePressed {
