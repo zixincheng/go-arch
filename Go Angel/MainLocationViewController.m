@@ -456,27 +456,46 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"individualSegue"]) {
-        
-        IndividualEntryViewController *individualViewControll = (IndividualEntryViewController *)segue.destinationViewController;
-       // individualViewControll.hidesBottomBarWhenPushed = YES;
-       // [self.navigationController pushViewController:individualViewControll animated:YES];
-        individualViewControll.dataWrapper = self.dataWrapper;
-        individualViewControll.localDevice = self.localDevice;
-        individualViewControll.location = self.selectedlocation;
-        individualViewControll.coinsorter = self.coinsorter;
-        [individualViewControll setHidesBottomBarWhenPushed:YES];
-        if (loadCamera == 1) {
-            individualViewControll.loadCamera = @"Yes";
-        }
-        
-        NSString *title;
-        if (![self.selectedlocation.unit isEqualToString:@""]) {
-            title = [NSString stringWithFormat:@"%@ - %@",self.selectedlocation.unit, self.selectedlocation.name];
-        } else {
-            title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];
-        }
-        individualViewControll.navigationItem.title = title;
-        
+      UIBarButtonItem *mainCameraBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(cameraButtonPressed:)];
+      
+      self.toolbarItems = [NSArray arrayWithObjects: mainCameraBtn, nil];
+//      SingleLocationViewController *singleLocContoller = (SingleLocationViewController *)segue.destinationViewController;
+//      singleLocContoller.dataWrapper = self.dataWrapper;
+//      singleLocContoller.localDevice = self.localDevice;
+//      singleLocContoller.location = self.selectedlocation;
+//      singleLocContoller.coinsorter = self.coinsorter;
+//      [singleLocContoller setHidesBottomBarWhenPushed:YES];
+//      
+//      NSString *title;
+//      if (![self.selectedlocation.unit isEqualToString:@""]) {
+//        title = [NSString stringWithFormat:@"%@ - %@",self.selectedlocation.unit, self.selectedlocation.name];
+//      } else {
+//        title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];
+//      }
+//      singleLocContoller.title = title;
+      
+      IndividualEntryViewController *individualViewControll = (IndividualEntryViewController *)segue.destinationViewController;
+     // individualViewControll.hidesBottomBarWhenPushed = YES;
+     // [self.navigationController pushViewController:individualViewControll animated:YES];
+      individualViewControll.dataWrapper = self.dataWrapper;
+      individualViewControll.localDevice = self.localDevice;
+      individualViewControll.location = self.selectedlocation;
+      individualViewControll.coinsorter = self.coinsorter;
+      [individualViewControll setHidesBottomBarWhenPushed:YES];
+      if (loadCamera == 1) {
+          individualViewControll.loadCamera = @"Yes";
+      }
+
+      NSString *title;
+      if (![self.selectedlocation.unit isEqualToString:@""]) {
+        title = [NSString stringWithFormat:@"%@ - %@",self.selectedlocation.unit, self.selectedlocation.name];
+      } else {
+        title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];
+      }
+      individualViewControll.title = title;
+      
+      individualViewControll.navigationItem.title = title;
+      
         
     } else if ([segue.identifier isEqualToString:@"searchSegue"]) {
         

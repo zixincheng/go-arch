@@ -17,6 +17,7 @@
 #import "Reachability.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "IndividualEntryViewController.h"
+#import "SingleLocationViewController.h"
 #import "SearchMapViewController.h"
 #import "SearchResultsTableViewController.h"
 #import "NetWorkCheck.h"
