@@ -44,10 +44,12 @@
   
   _rightButton.title = @"";
   
+  // register for notifications from child controllers providing info
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRightButtonText:) name:@"SetRightButtonText" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showShareDelete:) name:@"ShowShareDelete" object:nil];
 }
 
+// show the share and delete buttons in toolbar
 - (void) showShareDelete: (NSNotification *)n {
   if ([n userInfo] && [n.userInfo objectForKey:@"show"]) {
     NSString *show = [n.userInfo objectForKey:@"show"];
@@ -59,12 +61,15 @@
   }
 }
 
+// set the top right bar button text
 - (void) setRightButtonText: (NSNotification *)n {
   if ([n userInfo] && [n.userInfo objectForKey:@"text"]) {
     NSString *text = [n.userInfo objectForKey:@"text"];
     _rightButton.title = text;
   }
 }
+
+// send notification to photo child notification about share and delete button being pressed
 
 - (void) deleteBtnPressed {
   [[NSNotificationCenter defaultCenter] postNotificationName:@"DeleteButtonPressed" object:nil];
@@ -76,6 +81,9 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
   NSString * segueName = segue.identifier;
+  
+  // the segue for embeding a controller into a container view
+  // give the container view controller all needed vars
   if ([segueName isEqualToString: @"location_page_embed"]) {
     _pageController = (SingleLocationPageViewController *) [segue destinationViewController];
     _pageController.segmentControl = _segmentControl;

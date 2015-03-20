@@ -1,3 +1,4 @@
+
 //
 //  DetailsViewController.h
 //  Go Arch
@@ -7,7 +8,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Coinsorter.h"
+#import "CoreDataWrapper.h"
+#import "CSDevice.h"
+#import "CSLocation.h"
+#import "AppDelegate.h"
+#import "CSPhoto.h"
 
 @interface DetailsViewController : UIViewController
+
+@property (nonatomic, strong) Coinsorter *coinsorter;
+@property (nonatomic, strong) CoreDataWrapper *dataWrapper;
+@property (nonatomic, strong) CSLocation *location;
+@property (nonatomic, strong) CSDevice *localDevice;
 
 @end

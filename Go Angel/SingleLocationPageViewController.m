@@ -21,6 +21,8 @@
   [self setViewControllers:@[[self prepareOverview]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
+# pragma mark - prepare and init all custom views
+
 - (OverviewViewController *) prepareOverview {
   if (_overviewController == nil) {
     _overviewController = (OverviewViewController *)[self.storyboard instantiateViewControllerWithIdentifier:OVERVIEW];
@@ -35,6 +37,10 @@
 - (DetailsViewController *) prepareDetails {
   if (_detailsController == nil) {
     _detailsController = (DetailsViewController *)[self.storyboard instantiateViewControllerWithIdentifier:DETAILS];
+    _detailsController.coinsorter = _coinsorter;
+    _detailsController.dataWrapper = _dataWrapper;
+    _detailsController.localDevice = _localDevice;
+    _detailsController.location = _location;
   }
   return _detailsController;
 }

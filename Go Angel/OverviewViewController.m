@@ -28,6 +28,7 @@
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoAdded) name:@"addNewPhoto" object:nil];
 }
 
+//if new photo added and we don't have a cover photo yet, set one
 - (void) photoAdded {
   if (!hasCover) {
     hasCover = YES;
@@ -36,6 +37,7 @@
   }
 }
 
+// set the cover photo that is displayed
 - (void) setCoverPhoto {
   if (self.photos.count != 0) {
     hasCover = YES;
