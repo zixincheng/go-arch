@@ -42,6 +42,8 @@
 
   [self.navigationController setToolbarHidden:NO];
   
+  _rightButton.title = @"";
+  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRightButtonText:) name:@"SetRightButtonText" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showShareDelete:) name:@"ShowShareDelete" object:nil];
 }

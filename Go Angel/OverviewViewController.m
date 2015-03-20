@@ -8,7 +8,9 @@
 
 #import "OverviewViewController.h"
 
-@implementation OverviewViewController
+@implementation OverviewViewController {
+  BOOL hasCover;
+}
 
 - (void) viewDidLoad {
   
@@ -27,7 +29,8 @@
 }
 
 - (void) photoAdded {
-  if (self.photos.count == 0) {
+  if (!hasCover) {
+    hasCover = YES;
     _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     [self setCoverPhoto];
   }
@@ -35,6 +38,7 @@
 
 - (void) setCoverPhoto {
   if (self.photos.count != 0) {
+    hasCover = YES;
     CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
     if (coverPhoto == nil) {
       coverPhoto = [self.photos objectAtIndex:0];
@@ -47,11 +51,13 @@
     }];
     
     [self.coinsorter updateMeta:coverPhoto entity:@"home" value:@"1"];
+  } else {
+    hasCover = NO;
   }
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-  [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Edit", @"text", nil]];
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"", @"text", nil]];
 }
 
 @end
