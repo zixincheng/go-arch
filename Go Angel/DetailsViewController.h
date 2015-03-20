@@ -24,6 +24,8 @@
 @property (nonatomic, strong) CSLocation *location;
 @property (nonatomic, strong) CSDevice *localDevice;
 
+@property (nonatomic, strong) NSMutableArray *photos;
+
 @property (nonatomic, strong) NSMutableArray *sections;
 
 @property (nonatomic, strong) NSMutableArray *locationKeys;

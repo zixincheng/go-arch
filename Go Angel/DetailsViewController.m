@@ -19,8 +19,23 @@
   
   appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
   
-  [self setCoverPhoto];
+  _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
   
+  [self setCoverPhoto];
+  [self setupKeyValues];
+  
+  // register for notifications
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCoverPhoto) name:@"CoverPhotoChange" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePhotos) name:@"addNewPhoto" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePhotos) name:@"PhotoDeleted" object:nil];
+}
+
+- (void) updatePhotos {
+  _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+  [self setupKeyValues];
+}
+
+- (void) setupKeyValues {
   _sections = [[NSMutableArray alloc] initWithObjects:@"Location", @"HEADER 2", @"Building", nil];
   
   // location key/values
@@ -33,29 +48,29 @@
                    nil];
   
   _locationValues = [[NSMutableArray alloc] initWithObjects:
-                   _location.name,
-                   _location.city,
-                   _location.province,
-                   _location.country,
-                   nil];
+                     _location.name,
+                     _location.city,
+                     _location.province,
+                     _location.country,
+                     nil];
   
   // details key/values
   
   _detailsKeys = [[NSMutableArray alloc] initWithObjects:
-                   @"Photos",
-                   @"Price",
-                   @"Type",
-                   @"Neighborhood",
-                   @"Market (sale/rent)",
-                   nil];
+                  @"Photos",
+                  @"Price",
+                  @"Type",
+                  @"Neighborhood",
+                  @"Status",
+                  nil];
   
   _detailsValues = [[NSMutableArray alloc] initWithObjects:
-                    @"Photos",
+                    [NSString stringWithFormat:@"%d", _photos.count],
                     @"1 000 000",
                     @"Residential",
                     @"Family",
                     @"For Sale",
-                     nil];
+                    nil];
   
   // building key/values
   
@@ -73,8 +88,9 @@
                      @"81789175098347690287",
                      nil];
   
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCoverPhoto) name:@"CoverPhotoChange" object:nil];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [_tableView reloadData];
+  });
 }
 
 // set the cover photo that is displayed
