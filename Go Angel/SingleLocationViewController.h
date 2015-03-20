@@ -53,5 +53,7 @@
 @property (nonatomic, strong) UIView *cameraMenuView;
 @property (nonatomic, strong) NSMutableSet *cameraBtnSet;
 
+@property (nonatomic) UIButton *cameraBtn;
+
 
 @end
