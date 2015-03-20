@@ -23,6 +23,14 @@
   [self setCoverPhoto];
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCoverPhoto) name:@"CoverPhotoChange" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoAdded) name:@"addNewPhoto" object:nil];
+}
+
+- (void) photoAdded {
+  if (self.photos.count == 0) {
+    _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    [self setCoverPhoto];
+  }
 }
 
 - (void) setCoverPhoto {
