@@ -8,7 +8,7 @@
 
 #import "CellLayout.h"
 
-#define kHeightModule 40
+#define kHeightModule 50
 
 @interface CellLayout()
 -(NSUInteger)shortestColumnIndex;
