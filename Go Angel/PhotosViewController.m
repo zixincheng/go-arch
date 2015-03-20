@@ -37,6 +37,8 @@
  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePressed) name:@"DeleteButtonPressed" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sharePressed) name:@"ShareButtonPressed" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewcell) name:@"addNewPhoto" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagStored:) name:@"tagStored" object:nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -46,6 +48,40 @@
   editEnabled = NO;
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editPressed) name:@"RightButtonPressed" object:nil];
   [self setRightButtonText:@"Select"];
+  
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    [self.coinsorter getMetaPhoto:self.photos];
+    [self.coinsorter getMetaVideo:self.photos];
+  });
+}
+
+-(void) addNewcell{
+  int Size = (int)self.photos.count;
+  self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+  //__block int total = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
+  dispatch_async(dispatch_get_main_queue(), ^ {
+    [self.collectionView performBatchUpdates:^{
+      NSLog(@"total photo %d",Size);
+      
+      NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+      
+      [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:Size inSection:0]];
+      [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
+      
+    }completion:nil];
+  });
+}
+
+-(void) tagStored: (NSNotification *) notification {
+  NSMutableArray *indexset = [NSMutableArray array];
+  self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+  CSPhoto *p = [self.dataWrapper getPhoto:[notification.userInfo objectForKey:IMAGE_URL]];
+  NSUInteger index = [self.photos indexOfObject:p];
+  [indexset addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+  
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.collectionView reloadItemsAtIndexPaths:indexset];
+  });
 }
 
 - (void) setRightButtonText: (NSString *) text {
