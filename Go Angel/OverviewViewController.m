@@ -19,20 +19,34 @@
   
   [_lblAddress setText:_location.name];
   [_lblCityState setText:[NSString stringWithFormat:@"%@, %@", _location.city, _location.province]];
-  [_lblCountry setText:_location.country];
+  [_lblCountry setText:_location.countryCode];
+  [_lblPrice setText:@"$100 000 000"];
   
-  _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+  [self updateCount];
   [self setCoverPhoto];
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCoverPhoto) name:@"CoverPhotoChange" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoAdded) name:@"addNewPhoto" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoDeleted) name:@"PhotoDeleted" object:nil];
+}
+
+// update photo count labels
+- (void) updateCount {
+  _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [_lblPhotosTotal setText:[NSString stringWithFormat:@"%d Photos", _photos.count]];
+  });
+}
+
+- (void) photoDeleted {
+  [self updateCount];
 }
 
 //if new photo added and we don't have a cover photo yet, set one
 - (void) photoAdded {
+  [self updateCount];
   if (!hasCover) {
     hasCover = YES;
-    _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     [self setCoverPhoto];
   }
 }

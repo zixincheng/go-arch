@@ -199,8 +199,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
       [self deleteItemsFromDataSourceAtIndexPaths: deletedPhoto itemPath:selectedIndexPath];
       [self.collectionView deleteItemsAtIndexPaths:selectedIndexPath];
       
-    } completion:nil];
+    } completion: ^(BOOL finished){
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"PhotoDeleted" object:nil];
+    }];
   }
+
 }
 
 -(void) deleteItemsFromDataSourceAtIndexPaths :(NSArray *)deletedPhoto itemPath: (NSArray *) itemPaths{

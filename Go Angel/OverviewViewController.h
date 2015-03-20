@@ -25,11 +25,16 @@
 
 @property (nonatomic, strong) NSMutableArray *photos;
 
+@property (nonatomic, assign) int totalPhotos;
+@property (nonatomic, assign) int totalUnuploaded;
+@property (nonatomic, assign) int totalUploaded;
+
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 @property (weak, nonatomic) IBOutlet UILabel *lblCityState;
 @property (weak, nonatomic) IBOutlet UILabel *lblAddress;
 @property (weak, nonatomic) IBOutlet UILabel *lblPrice;
 @property (weak, nonatomic) IBOutlet UILabel *lblCountry;
+@property (weak, nonatomic) IBOutlet UILabel *lblPhotosTotal;
 
 
 @end
