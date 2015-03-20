@@ -11,9 +11,17 @@
 #import "CSLocation.h"
 #import "CoreDataWrapper.h"
 #import "CSDevice.h"
+#import "LocalLibrary.h"
+#import "AccountDataWrapper.h"
 #import "SingleLocationPageViewController.h"
+#import "ELCImagePickerHeader.h"
+#import "ELCOverlayImageView.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
-@interface SingleLocationViewController : UIViewController {
+@interface SingleLocationViewController : UIViewController<UIActionSheetDelegate, ELCImagePickerControllerDelegate, UIImagePickerControllerDelegate> {
+  LocalLibrary *localLibrary;
+  NSUserDefaults *defaults;
 }
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
@@ -33,5 +41,17 @@
 @property (nonatomic, strong) SingleLocationPageViewController *pageController;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightButton;
+
+// camera vars
+@property (nonatomic) UIImagePickerController *picker;
+@property (nonatomic) UIView *overlay;
+@property (nonatomic) AVCaptureSession *session;
+@property (nonatomic, strong) UIView *doneCameraDownView;
+@property (nonatomic, strong) UIView *doneCameraUpView;
+@property (nonatomic, strong) UIView *topContainerView;
+@property (nonatomic, strong) UILabel *topLbl;
+@property (nonatomic, strong) UIView *cameraMenuView;
+@property (nonatomic, strong) NSMutableSet *cameraBtnSet;
+
 
 @end
