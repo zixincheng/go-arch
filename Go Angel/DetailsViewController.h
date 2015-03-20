@@ -15,11 +15,16 @@
 #import "AppDelegate.h"
 #import "CSPhoto.h"
 
-@interface DetailsViewController : UIViewController
+@interface DetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
+  AppDelegate *appDelegate;
+}
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSLocation *location;
 @property (nonatomic, strong) CSDevice *localDevice;
+
+@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
