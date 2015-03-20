@@ -24,23 +24,25 @@
   appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
   editEnabled = NO;
 
+  // set the delegate of the custom layout
   CellLayout * layout = (id)[self.collectionView collectionViewLayout];
   layout.delegate = self;
   
+  // set collection view data source and delegate
   [_collectionView setDataSource:self];
   [_collectionView setDelegate:self];
   
+  // get photos for this location from db
   _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
-  
-  UIButton *btn = [UIButton buttonWithType:UIButtonTypeInfoDark];
-  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
  
-  //init long press gesture
+  // init long press gesture
+  // used to set home photo
   UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressRecognizer:)];
   lpgr.minimumPressDuration = 1.0;
   lpgr.delegate = self;
   [self.collectionView addGestureRecognizer:lpgr];
   
+  // register for notifications
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePressed) name:@"DeleteButtonPressed" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sharePressed) name:@"ShareButtonPressed" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewcell) name:@"addNewPhoto" object:nil];
@@ -340,6 +342,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 
 # pragma mark - Collection View layout delegate
+
 -(float)collectionView:(UICollectionView *)collectionView relativeHeightForItemAtIndexPath:(NSIndexPath *)indexPath{
   
   //  Base relative height for simple layout type. This is 1.0 (height equals to width, square image)
