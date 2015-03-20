@@ -20,6 +20,12 @@
   [_lblCountry setText:_location.country];
   
   _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+  [self setCoverPhoto];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCoverPhoto) name:@"CoverPhotoChange" object:nil];
+}
+
+- (void) setCoverPhoto {
   if (self.photos.count != 0) {
     CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
     if (coverPhoto == nil) {

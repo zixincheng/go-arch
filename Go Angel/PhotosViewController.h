@@ -17,7 +17,7 @@
 #import "GridCell.h"
 #import "PhotoSwipeViewController.h"
 
-@interface PhotosViewController : UIViewController<UICollectionViewDataSource, UICollectionViewDelegate, CellLayoutDelegate, UIAlertViewDelegate> {
+@interface PhotosViewController : UIViewController<UICollectionViewDataSource, UICollectionViewDelegate, CellLayoutDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate> {
   AppDelegate *appDelegate;
   NSMutableArray *selectedPhotos;
 }
@@ -27,6 +27,7 @@
 @property (nonatomic, strong) CSLocation *location;
 @property (nonatomic, strong) CSDevice *localDevice;
 
+@property (nonatomic, strong) CSPhoto *selectedCoverPhoto;
 @property (nonatomic, strong) NSMutableArray *photos;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;

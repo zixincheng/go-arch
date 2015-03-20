@@ -35,6 +35,12 @@
   UIButton *btn = [UIButton buttonWithType:UIButtonTypeInfoDark];
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
  
+  //init long press gesture
+  UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressRecognizer:)];
+  lpgr.minimumPressDuration = 1.0;
+  lpgr.delegate = self;
+  [self.collectionView addGestureRecognizer:lpgr];
+  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePressed) name:@"DeleteButtonPressed" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sharePressed) name:@"ShareButtonPressed" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewcell) name:@"addNewPhoto" object:nil];
@@ -53,6 +59,52 @@
     [self.coinsorter getMetaPhoto:self.photos];
     [self.coinsorter getMetaVideo:self.photos];
   });
+}
+
+# pragma mark - long press gesture and set to home image
+
+-(void) longPressRecognizer: (UILongPressGestureRecognizer *) gestureRecognizer {
+  
+  if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+    CGPoint p = [gestureRecognizer locationInView:self.collectionView];
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
+    if (indexPath == nil) {
+      NSLog(@"long press is not in any cell");
+    } else {
+      UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+      if (cell.highlighted) {
+        //self.setCoverPageViewContainer.frame = CGRectMake(0, 430, 320, 150);
+        UIActionSheet *shareActionSheet = [[UIActionSheet alloc] initWithTitle:@"Cover Image" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Set As Cover Image", nil];
+        [shareActionSheet showInView:self.view];
+        
+        NSLog(@"long press select at %ld", (long)indexPath.row);
+        self.selectedCoverPhoto = [self.photos objectAtIndex:indexPath.row];
+      }
+    }
+  }
+}
+
+-(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+  switch (buttonIndex) {
+    case 0:
+    {CSPhoto *oldCover = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+      if (oldCover == nil) {
+        
+      } else {
+        oldCover.cover = @"0";
+        [self.dataWrapper addUpdatePhoto:oldCover];
+        [self.coinsorter updateMeta:oldCover entity:@"home" value:@"0"];
+      }
+      self.selectedCoverPhoto.cover = @"1";
+      [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
+      [self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"home" value:@"1"];
+      
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"CoverPhotoChange" object:nil];
+      break;
+    }
+    default:
+      break;
+  }
 }
 
 -(void) addNewcell{
