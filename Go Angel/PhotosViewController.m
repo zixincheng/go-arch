@@ -114,7 +114,7 @@
   self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
   //__block int total = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
   dispatch_async(dispatch_get_main_queue(), ^ {
-    [self.collectionView performBatchUpdates:^{
+//    [self.collectionView performBatchUpdates:^{
       NSLog(@"total photo %d",Size);
       
       NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
@@ -122,7 +122,7 @@
       [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:Size inSection:0]];
       [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
       
-    }completion:nil];
+//    }completion:nil];
   });
 }
 
