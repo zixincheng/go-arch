@@ -24,6 +24,17 @@
 @property (nonatomic, strong) CSLocation *location;
 @property (nonatomic, strong) CSDevice *localDevice;
 
+@property (nonatomic, strong) NSMutableArray *sections;
+
+@property (nonatomic, strong) NSMutableArray *locationKeys;
+@property (nonatomic, strong) NSMutableArray *locationValues;
+
+@property (nonatomic, strong) NSMutableArray *detailsKeys;
+@property (nonatomic, strong) NSMutableArray *detailsValues;
+
+@property (nonatomic, strong) NSMutableArray *buildingKeys;
+@property (nonatomic, strong) NSMutableArray *buildingValues;
+
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
