@@ -32,6 +32,11 @@
 
 - (void) updatePhotos {
   _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+  
+  if (!hasCover && _photos.count > 0) {
+    [self setCoverPhoto];
+  }
+  
   [self setupKeyValues];
 }
 
@@ -95,11 +100,14 @@
 
 // set the cover photo that is displayed
 - (void) setCoverPhoto {
-    CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
-    if (coverPhoto == nil) {
-      hasCover = NO;
-      return;
-    }
+  if (_photos.count <= 0) {
+    hasCover = NO;
+    return;
+  }
+  CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+  if (coverPhoto == nil) {
+    coverPhoto = [self.photos objectAtIndex:0];
+  }
   
   hasCover = YES;
   [appDelegate.mediaLoader loadFullScreenImage:coverPhoto completionHandler:^(UIImage *image) {
