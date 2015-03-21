@@ -19,6 +19,10 @@
   self.delegate = self;
   
   [self setViewControllers:@[[self prepareOverview]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+  
+  // load other view after first one loaded
+  [self prepareDetails];
+  [self preparePhotos];
 }
 
 # pragma mark - prepare and init all custom views
