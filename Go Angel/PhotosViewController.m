@@ -63,6 +63,11 @@
   });
 }
 
+- (void) scrollToBottom {
+  CGPoint bottomOffset = CGPointMake(0, self.collectionView.contentSize.height - self.collectionView.bounds.size.height);
+  [self.collectionView setContentOffset:bottomOffset animated:NO];
+}
+
 # pragma mark - long press gesture and set to home image
 
 -(void) longPressRecognizer: (UILongPressGestureRecognizer *) gestureRecognizer {
