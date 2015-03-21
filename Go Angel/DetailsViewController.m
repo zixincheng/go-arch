@@ -62,7 +62,7 @@
   // details key/values
   
   _detailsKeys = [[NSMutableArray alloc] initWithObjects:
-                  @"Photos",
+                  @"Assets",
                   @"Price",
                   @"Type",
                   @"Neighborhood",
