@@ -20,7 +20,10 @@
   [_lblAddress setText:_location.name];
   [_lblCityState setText:[NSString stringWithFormat:@"%@, %@", _location.city, _location.province]];
   [_lblCountry setText:_location.countryCode];
-  [_lblPrice setText:@"$1 000 000"];
+  [_lblPrice setText:[_location formatPrice:[NSNumber numberWithInt:1000000]]];
+  [_lblSquare setText:@"20 sq. ft."];
+  [_lblBeds setText:@"2 Beds"];
+  [_lblBaths setText:@"4 Baths"];
   
   [self updateCount];
   [self setCoverPhoto];

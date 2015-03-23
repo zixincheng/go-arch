@@ -41,7 +41,7 @@
 }
 
 - (void) setupKeyValues {
-  _sections = [[NSMutableArray alloc] initWithObjects:@"Location", @"HEADER 2", @"Building", nil];
+  _sections = [[NSMutableArray alloc] initWithObjects:@"Location", @"Stats", @"Building", nil];
   
   // location key/values
   
@@ -70,8 +70,8 @@
                   nil];
   
   _detailsValues = [[NSMutableArray alloc] initWithObjects:
-                    [NSString stringWithFormat:@"%d", _photos.count],
-                    @"1 000 000",
+                    [NSString stringWithFormat:@"%lu", (unsigned long)_photos.count],
+                    [_location formatPrice:[NSNumber numberWithInt:1000000]],
                     @"Residential",
                     @"Family",
                     @"For Sale",
@@ -80,17 +80,21 @@
   // building key/values
   
   _buildingKeys = [[NSMutableArray alloc] initWithObjects:
-                   @"sq/ft",
-                   @"# of Baths",
-                   @"# of Beds",
+                   @"Year Build",
+                   @"Floor Size",
+                   @"Lot Size",
+                   @"Baths",
+                   @"Beds",
                    @"mls #",
                    nil];
   
   _buildingValues = [[NSMutableArray alloc] initWithObjects:
-                     @"20",
+                     @"2006",
+                     @"20 sq. ft.",
+                     @"20 acres",
                      @"1",
                      @"1",
-                     @"81789175098347690287",
+                     @"817891750987",
                      nil];
   
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -126,6 +130,10 @@
 }
 
 # pragma mark - table view methods
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  return 35;
+}
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   switch (section) {

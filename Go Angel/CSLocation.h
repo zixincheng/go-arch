@@ -23,4 +23,6 @@
 @property (nonatomic, strong) NSString *latitude;
 @property (nonatomic, strong) CSPhoto *photo;
 
+- (NSString *) formatPrice:(NSNumber *)price;
+
 @end
