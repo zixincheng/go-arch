@@ -35,9 +35,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblPrice;
 @property (weak, nonatomic) IBOutlet UILabel *lblCountry;
 @property (weak, nonatomic) IBOutlet UILabel *lblPhotosTotal;
-@property (weak, nonatomic) IBOutlet UILabel *lblSquare;
-@property (weak, nonatomic) IBOutlet UILabel *lblBeds;
-@property (weak, nonatomic) IBOutlet UILabel *lblBaths;
+@property (weak, nonatomic) IBOutlet UILabel *lblFloor;
+@property (weak, nonatomic) IBOutlet UILabel *lblLot;
+@property (weak, nonatomic) IBOutlet UILabel *lblBed;
+@property (weak, nonatomic) IBOutlet UILabel *lblBath;
+
 
 
 @end

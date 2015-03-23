@@ -21,13 +21,16 @@
   [_lblCityState setText:[NSString stringWithFormat:@"%@, %@", _location.city, _location.province]];
   [_lblCountry setText:_location.countryCode];
   [_lblPrice setText:[_location formatPrice:[NSNumber numberWithInt:1000000]]];
-  [_lblSquare setText:@"20 sq. ft."];
-  [_lblBeds setText:@"2 Beds"];
-  [_lblBaths setText:@"4 Baths"];
+  [_lblFloor setText:@"20 sq. ft."];
+  [_lblLot setText:@"20 sq. ft."];
+  [_lblBed setText:@"2"];
+  [_lblBath setText:@"2"];
   
+  // set current properties of view
   [self updateCount];
   [self setCoverPhoto];
   
+  // register for notifications from parent controller
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCoverPhoto) name:@"CoverPhotoChange" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoAdded) name:@"addNewPhoto" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoDeleted) name:@"PhotoDeleted" object:nil];
@@ -41,6 +44,7 @@
   });
 }
 
+// when photo is deleted, just update the photo count from db
 - (void) photoDeleted {
   [self updateCount];
 }

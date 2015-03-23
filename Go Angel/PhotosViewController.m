@@ -49,6 +49,7 @@
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tagStored:) name:@"tagStored" object:nil];
 }
 
+// everytime view appears, clear cell selection, set right bar button, and fetchmetadata for photos (update tags)
 - (void) viewWillAppear:(BOOL)animated {
   NSLog(@"photo view appear");
   
