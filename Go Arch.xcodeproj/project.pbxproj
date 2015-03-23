@@ -71,10 +71,13 @@
 		9B12113C1A79B0FD0088CD3A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B12113B1A79B0FD0088CD3A /* MapKit.framework */; };
 		9B1211431A79B13B0088CD3A /* SearchMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1211421A79B13B0088CD3A /* SearchMapViewController.m */; };
 		9B3445CD1A410772004BA746 /* RadarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3445CC1A410772004BA746 /* RadarViewController.m */; };
+		9B3457ED1ABCD9230070DE62 /* sg_pop_images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B3457EA1ABCD9230070DE62 /* sg_pop_images.xcassets */; };
+		9B3457EE1ABCD9230070DE62 /* SGPopSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3457EC1ABCD9230070DE62 /* SGPopSelectView.m */; };
 		9B3A65CD1A9E65EA00D77CD3 /* play-circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B3A65CC1A9E65EA00D77CD3 /* play-circle.png */; };
 		9B4ADCB61A7C168500375C01 /* SearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */; };
 		9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */; };
 		9B52EB451ABA10F4002F19A4 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B52EB441ABA10F4002F19A4 /* SegmentedViewController.m */; };
+		9B568DD21ABB4E9E00D398A9 /* AddNewEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B568DD11ABB4E9E00D398A9 /* AddNewEntryViewController.m */; };
 		9B6C88C61A829EAD00B50A21 /* CellLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C88C51A829EAD00B50A21 /* CellLayout.m */; };
 		9BA18C731AAE421D006CEC25 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA18C721AAE421D006CEC25 /* MyAnnotation.m */; };
 		9BA18C821AAF72B9006CEC25 /* PopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA18C811AAF72B9006CEC25 /* PopOverMenu.m */; };
@@ -93,6 +96,7 @@
 		9BC7B9571A94084300164F0E /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9561A94084300164F0E /* TWMessageBarManager.m */; };
 		9BC7B95A1A940F4E00164F0E /* icon-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC7B9581A940F4E00164F0E /* icon-error.png */; };
 		9BC7B95B1A940F4E00164F0E /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC7B9591A940F4E00164F0E /* icon-success.png */; };
+		9BCA685E1AC082B600982DC9 /* book-cover-plus-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCA685D1AC082B600982DC9 /* book-cover-plus-7.png */; };
 		9BCD5A1A1AB0D38700DEB39E /* earth-america-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A191AB0D38700DEB39E /* earth-america-7.png */; };
 		9BCD5A1C1AB0D39200DEB39E /* house-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A1B1AB0D39200DEB39E /* house-7.png */; };
 		9BCD5A1E1AB0D3A400DEB39E /* pencil-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A1D1AB0D3A400DEB39E /* pencil-7.png */; };
@@ -276,6 +280,9 @@
 		9B1211421A79B13B0088CD3A /* SearchMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchMapViewController.m; sourceTree = "<group>"; };
 		9B3445CB1A410772004BA746 /* RadarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarViewController.h; sourceTree = "<group>"; };
 		9B3445CC1A410772004BA746 /* RadarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadarViewController.m; sourceTree = "<group>"; };
+		9B3457EA1ABCD9230070DE62 /* sg_pop_images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = sg_pop_images.xcassets; sourceTree = "<group>"; };
+		9B3457EB1ABCD9230070DE62 /* SGPopSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPopSelectView.h; sourceTree = "<group>"; };
+		9B3457EC1ABCD9230070DE62 /* SGPopSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPopSelectView.m; sourceTree = "<group>"; };
 		9B3A65CC1A9E65EA00D77CD3 /* play-circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play-circle.png"; sourceTree = "<group>"; };
 		9B4ADCB41A7C168500375C01 /* SearchResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewController.h; sourceTree = "<group>"; };
 		9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewController.m; sourceTree = "<group>"; };
@@ -283,6 +290,8 @@
 		9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndividualEntryViewController.m; sourceTree = "<group>"; };
 		9B52EB431ABA10F4002F19A4 /* SegmentedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedViewController.h; sourceTree = "<group>"; };
 		9B52EB441ABA10F4002F19A4 /* SegmentedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedViewController.m; sourceTree = "<group>"; };
+		9B568DD01ABB4E9E00D398A9 /* AddNewEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewEntryViewController.h; sourceTree = "<group>"; };
+		9B568DD11ABB4E9E00D398A9 /* AddNewEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNewEntryViewController.m; sourceTree = "<group>"; };
 		9B6C88C41A829EAD00B50A21 /* CellLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellLayout.h; sourceTree = "<group>"; };
 		9B6C88C51A829EAD00B50A21 /* CellLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellLayout.m; sourceTree = "<group>"; };
 		9B6C88CC1A829FA500B50A21 /* CellLayoutDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellLayoutDelegate.h; sourceTree = "<group>"; };
@@ -313,6 +322,7 @@
 		9BC7B9561A94084300164F0E /* TWMessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWMessageBarManager.m; sourceTree = "<group>"; };
 		9BC7B9581A940F4E00164F0E /* icon-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error.png"; sourceTree = "<group>"; };
 		9BC7B9591A940F4E00164F0E /* icon-success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success.png"; sourceTree = "<group>"; };
+		9BCA685D1AC082B600982DC9 /* book-cover-plus-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book-cover-plus-7.png"; sourceTree = "<group>"; };
 		9BCD5A191AB0D38700DEB39E /* earth-america-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "earth-america-7.png"; sourceTree = "<group>"; };
 		9BCD5A1B1AB0D39200DEB39E /* house-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house-7.png"; sourceTree = "<group>"; };
 		9BCD5A1D1AB0D3A400DEB39E /* pencil-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pencil-7.png"; sourceTree = "<group>"; };
@@ -491,7 +501,10 @@
 				2061D1EA19919430001C7E08 /* LocalLibrary.m */,
 				2040D2231A6058EA00E490F3 /* LocationTableViewController.h */,
 				2040D2241A6058EA00E490F3 /* LocationTableViewController.m */,
+				9B3457E91ABCD9230070DE62 /* classes */,
 				2061D1EB19919430001C7E08 /* Main.storyboard */,
+				9B568DD01ABB4E9E00D398A9 /* AddNewEntryViewController.h */,
+				9B568DD11ABB4E9E00D398A9 /* AddNewEntryViewController.m */,
 				9B52EB431ABA10F4002F19A4 /* SegmentedViewController.h */,
 				9B52EB441ABA10F4002F19A4 /* SegmentedViewController.m */,
 				9BE4F6FC1A717F1D009FEB3F /* MainLocationViewController.h */,
@@ -588,6 +601,7 @@
 				9BCD5A1D1AB0D3A400DEB39E /* pencil-7.png */,
 				9BCD5A191AB0D38700DEB39E /* earth-america-7.png */,
 				9BD61A7C1AB2665200A11833 /* pin-map-7.png */,
+				9BCA685D1AC082B600982DC9 /* book-cover-plus-7.png */,
 				9BCD5A1B1AB0D39200DEB39E /* house-7.png */,
 				2061D1FF1991945F001C7E08 /* main.m */,
 				2053971F1991924B00B1D9AD /* Go Arch-Info.plist */,
@@ -613,6 +627,17 @@
 				2053973D1991924B00B1D9AD /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9B3457E91ABCD9230070DE62 /* classes */ = {
+			isa = PBXGroup;
+			children = (
+				9B3457EA1ABCD9230070DE62 /* sg_pop_images.xcassets */,
+				9B3457EB1ABCD9230070DE62 /* SGPopSelectView.h */,
+				9B3457EC1ABCD9230070DE62 /* SGPopSelectView.m */,
+			);
+			name = classes;
+			path = "../../../../Downloads/SGPopSelectView-master/classes";
 			sourceTree = "<group>";
 		};
 		9BFDAA951AAA72CD00C4E170 /* ELCImagePicker */ = {
@@ -816,6 +841,7 @@
 				9BE03EC31A9FD722007ADCDC /* roll@2x.png in Resources */,
 				20C3BBD31A687EFA0019DE40 /* flashing_off@2x.png in Resources */,
 				20C3BBD01A687EFA0019DE40 /* flashing_auto.png in Resources */,
+				9BCA685E1AC082B600982DC9 /* book-cover-plus-7.png in Resources */,
 				9BFDAAB51AAA72CE00C4E170 /* ELCAssetPicker.xib in Resources */,
 				2061D1FC19919440001C7E08 /* settings-25.png in Resources */,
 				20C3BBD71A687EFA0019DE40 /* settings-25.png in Resources */,
@@ -831,6 +857,7 @@
 				9BFDAAB81AAA72CE00C4E170 /* Overlay@2x.png in Resources */,
 				9BCD5A1E1AB0D3A400DEB39E /* pencil-7.png in Resources */,
 				9BFDAAB41AAA72CE00C4E170 /* ELCAlbumPickerController.xib in Resources */,
+				9B3457ED1ABCD9230070DE62 /* sg_pop_images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -923,6 +950,7 @@
 				2040D2251A6058EA00E490F3 /* LocationTableViewController.m in Sources */,
 				2061D1DD199193CE001C7E08 /* DeviceViewController.m in Sources */,
 				20931B8E19957EEE00F57FB0 /* PhotoSectionHeaderView.m in Sources */,
+				9B3457EE1ABCD9230070DE62 /* SGPopSelectView.m in Sources */,
 				2061D1FD19919440001C7E08 /* SettingsViewController.m in Sources */,
 				2081697519959CC900EEC65C /* PhotoSwipeViewController.m in Sources */,
 				9BE4F6FE1A717F1D009FEB3F /* MainLocationViewController.m in Sources */,
@@ -941,6 +969,7 @@
 				9B1211431A79B13B0088CD3A /* SearchMapViewController.m in Sources */,
 				2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */,
 				208169691995828500EEC65C /* SinglePhotoViewController.m in Sources */,
+				9B568DD21ABB4E9E00D398A9 /* AddNewEntryViewController.m in Sources */,
 				2061D1C6199193B5001C7E08 /* AccountDataWrapper.m in Sources */,
 				9B52EB451ABA10F4002F19A4 /* SegmentedViewController.m in Sources */,
 				9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */,

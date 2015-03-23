@@ -7,6 +7,7 @@
 //
 
 #import "AddingLocationViewController.h"
+#import "AddNewEntryViewController.h"
 
 #define NORMAL_SECTIONS_COUNT 2
 
@@ -16,11 +17,13 @@
 
 @implementation AddingLocationViewController
 
+@synthesize delegate;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-     //self.point = [[MyAnnotation alloc]init];
-    //self.point = [[MyAnnotation alloc] initWithCoordinate:self.mapView.centerCoordinate];
-    [self.navigationController setToolbarHidden:YES];
+     self.point = [[MyAnnotation alloc]init];
+    self.point = [[MyAnnotation alloc] initWithCoordinate:self.mapView.centerCoordinate];
+    //[self.navigationController setToolbarHidden:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(intoForeground)
                                                  name:UIApplicationDidBecomeActiveNotification
@@ -50,9 +53,9 @@
     
     // set hidden at start so 'home/lat/long' doesn't show
     
-    self.txtUnit.delegate = self;
+   // self.txtUnit.delegate = self;
     
-    [self updateTable];
+    //[self updateTable];
     
     // only start updating location if onLocation is true
     if (self.onLocation) {
@@ -93,7 +96,7 @@
     CLLocation *newlocation = [[CLLocation alloc] initWithLatitude:touchMapCoordinate.latitude longitude:touchMapCoordinate.longitude];
     [self geocodeLocation:newlocation];
     self.point.title = self.location.name;
-    [self.streetName setText:self.location.name];
+    //[self.streetName setText:self.location.name];
     [self.mapView addAnnotation:self.point];
 }
 -(void) viewDidAppear:(BOOL)animated {
@@ -104,8 +107,8 @@
 
 
 -(void)dismissKeyboard {
-    [self.streetName resignFirstResponder];
-    [self.txtUnit resignFirstResponder];
+    //[self.streetName resignFirstResponder];
+    //[self.txtUnit resignFirstResponder];
 }
 
 - (void) intoForeground {
@@ -172,16 +175,16 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
 
 // text field for unit # was changed
 - (IBAction)unitChanged:(id)sender {
-    self.location.unit = self.txtUnit.text;
-    [self saveLocation];
-    NSLog(@"%@",self.txtUnit.text);
+    //self.location.unit = self.txtUnit.text;
+   // [self saveLocation];
+    //NSLog(@"%@",self.txtUnit.text);
 }
 
 // text field for name was changed
 - (IBAction)nameChanged:(id)sender {
-    [self geocodeAddress];
-    self.location.name = self.streetName.text;
-    [self saveLocation];
+    //[self geocodeAddress];
+    //self.location.name = self.streetName.text;
+    //[self saveLocation];
 
 }
 
@@ -287,7 +290,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
         numberSections = 1;
     }
     
-    dispatch_async(dispatch_get_main_queue(), ^{ [self.tableView reloadData]; });
+   // dispatch_async(dispatch_get_main_queue(), ^{ [self.tableView reloadData]; });
 }
 
 // reverse lookup lat/long to get human readable address
@@ -301,6 +304,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
                            
                            // get address properties of location
                            CLPlacemark *p = [placemarks lastObject];
+                           self.location.postCode = [p.addressDictionary objectForKey:@"ZIP"];
                            self.location.country =
                            [p.addressDictionary objectForKey:@"Country"];
                            self.location.countryCode =
@@ -312,19 +316,20 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
                                                        .longitude];
                            self.location.latitude = [NSString stringWithFormat:@"%f", location.coordinate
                                                       .latitude];
-                           self.location.unit = self.txtUnit.text;
+                          // self.location.unit = self.txtUnit.text;
                            
-                           [self.streetName setText:self.location.name];
-                           [self.streetName setHidden:NO];
-                           [self saveLocation];
+                           //[self.streetName setText:self.location.name];
+                           //[self.streetName setHidden:NO];
+                           //[//self saveLocation];
                            //generate pins on map
                            self.point.coordinate = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude);
                            self.point.title = self.location.name;
                            [self.mapView addAnnotation:self.point];
+                           NSLog(@"post %@",self.location.postCode);
                        }
                    }];
 }
-
+/*
 -(void) geocodeAddress {
     
     geocoder = [[CLGeocoder alloc]init];
@@ -343,7 +348,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
         }
     }];
 }
-
+*/
 // save the current location in the user defaults
 - (void)saveLocation {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -383,15 +388,20 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
 }
 - (IBAction)AddBtn:(id)sender {
     if (self.location.name !=nil) {
-        [self.tabBarController setSelectedIndex:0];
-        [self saveLocationToCoredata];
-        NSArray *objects =
-        [NSArray arrayWithObjects:self.location,nil];
-        NSArray *keys = [NSArray
-                         arrayWithObjects:LOCATION, nil];
-        NSDictionary *locationDic =
-        [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"AddLocationSegue" object:nil userInfo:locationDic];
+        if ([delegate respondsToSelector:@selector(dataMapView:)]) {
+            [delegate dataMapView:self.location];
+        }
+        //[[self delegate] done:self.location];
+        //[self.tabBarController setSelectedIndex:0];
+        //[self saveLocationToCoredata];
+        //NSArray *objects =
+        //[NSArray arrayWithObjects:self.location,nil];
+        //NSArray *keys = [NSArray
+                         //arrayWithObjects:LOCATION, nil];
+        //NSDictionary *locationDic =
+        //[NSDictionary dictionaryWithObjects:objects forKeys:keys];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"AddLocationSegue" object:nil userInfo:locationDic];
+        [self.navigationController popViewControllerAnimated:NO];
     }
 }
 
@@ -433,7 +443,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     CLLocation *newlocation = [[CLLocation alloc] initWithLatitude:annotationView.annotation.coordinate.latitude longitude:annotationView.annotation.coordinate.longitude];
     [self geocodeLocation:newlocation];
     self.point.title = self.location.name;
-    [self.streetName setText:self.location.name];
+    //[self.streetName setText:self.location.name];
     if (newState == MKAnnotationViewDragStateEnding)
     {
         CLLocationCoordinate2D droppedAt = annotationView.annotation.coordinate;

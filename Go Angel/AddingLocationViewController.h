@@ -14,7 +14,13 @@
 #import "CoreDataWrapper.h"
 #import "MyAnnotation.h"
 
-@interface AddingLocationViewController: UITableViewController <CLLocationManagerDelegate, UITextFieldDelegate, UIAlertViewDelegate,MKMapViewDelegate> {
+@protocol AddingLocationViewControllerDelegate <NSObject>
+@required
+
+- (void)dataMapView:(CSLocation *)data;
+@end
+
+@interface AddingLocationViewController: UIViewController <CLLocationManagerDelegate, UITextFieldDelegate, UIAlertViewDelegate,MKMapViewDelegate> {
     CLLocationManager *locationManager;
     CLGeocoder *geocoder;
     
@@ -29,15 +35,20 @@
     
     // are you currently showing the alert view dialog box
     BOOL showingAlertView;
+    
+    
 }
-@property (nonatomic,strong) CSLocation *location;
+@property (nonatomic,retain) CSLocation *location;
 @property (nonatomic,strong) CoreDataWrapper *datawrapper;
 @property (nonatomic, strong) CLLocation *currentLocation;
 
+@property (nonatomic, weak) id<AddingLocationViewControllerDelegate> delegate;
+
+
 //@property (weak, nonatomic) IBOutlet UILabel *lblLatitude;
 //@property (weak, nonatomic) IBOutlet UILabel *lblLongitude;
-@property (weak, nonatomic) IBOutlet UITextField *txtUnit;
-@property (weak, nonatomic) IBOutlet UITextField *streetName;
+//@property (weak, nonatomic) IBOutlet UITextField *txtUnit;
+//@property (weak, nonatomic) IBOutlet UITextField *streetName;
 
 - (IBAction)AddBtn:(id)sender;
 

@@ -19,8 +19,10 @@
 @property (nonatomic, strong) NSString *province;
 @property (nonatomic, strong) NSString *unit;
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *postCode;
 @property (nonatomic, strong) NSString *longitude;
 @property (nonatomic, strong) NSString *latitude;
 @property (nonatomic, strong) CSPhoto *photo;
+
 
 @end

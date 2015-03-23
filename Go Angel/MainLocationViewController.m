@@ -335,7 +335,7 @@
             });
         }];
     }
-    if (![l.unit isEqualToString:@""]) {
+    if (l.unit != nil) {
         cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@",l.unit, l.name];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",l.city,l.province];
     } else {
