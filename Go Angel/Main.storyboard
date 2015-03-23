@@ -1625,7 +1625,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pct-D3-Vir">
-                                        <rect key="frame" x="27" y="0.0" width="151" height="27"/>
+                                        <rect key="frame" x="27" y="0.0" width="233" height="27"/>
                                         <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="21"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
