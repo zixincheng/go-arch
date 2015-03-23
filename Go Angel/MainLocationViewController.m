@@ -470,30 +470,6 @@
         title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];
       }
       singleLocContoller.title = title;
-
-      
-//      IndividualEntryViewController *individualViewControll = (IndividualEntryViewController *)segue.destinationViewController;
-//     // individualViewControll.hidesBottomBarWhenPushed = YES;
-//     // [self.navigationController pushViewController:individualViewControll animated:YES];
-//      individualViewControll.dataWrapper = self.dataWrapper;
-//      individualViewControll.localDevice = self.localDevice;
-//      individualViewControll.location = self.selectedlocation;
-//      individualViewControll.coinsorter = self.coinsorter;
-//      [individualViewControll setHidesBottomBarWhenPushed:YES];
-//      if (loadCamera == 1) {
-//          individualViewControll.loadCamera = @"Yes";
-//      }
-//
-//      NSString *title;
-//      if (![self.selectedlocation.unit isEqualToString:@""]) {
-//        title = [NSString stringWithFormat:@"%@ - %@",self.selectedlocation.unit, self.selectedlocation.name];
-//      } else {
-//        title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];
-//      }
-//      individualViewControll.title = title;
-//      
-//      individualViewControll.navigationItem.title = title;
-      
         
     } else if ([segue.identifier isEqualToString:@"searchSegue"]) {
         

@@ -221,15 +221,6 @@
         title = [NSString stringWithFormat:@"%@", self.selectedLocation.name];
       }
       singleLocContoller.title = title;
-      
-//        IndividualEntryViewController *individualViewControll = (IndividualEntryViewController *)segue.destinationViewController;
-//        
-//        individualViewControll.dataWrapper = self.dataWrapper;
-//        individualViewControll.localDevice = self.localDevice;
-//        individualViewControll.location = self.selectedLocation;
-//        [individualViewControll setHidesBottomBarWhenPushed:YES];
-      
-        
     }
 }
 
