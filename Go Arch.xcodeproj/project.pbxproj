@@ -47,6 +47,7 @@
 		2093C9A91ABB3A4900F16948 /* OverviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093C9A81ABB3A4900F16948 /* OverviewViewController.m */; };
 		2093C9AC1ABB3A5500F16948 /* DetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093C9AB1ABB3A5500F16948 /* DetailsViewController.m */; };
 		2093C9AF1ABB3A5F00F16948 /* PhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093C9AE1ABB3A5F00F16948 /* PhotosViewController.m */; };
+		2093C9B61AC0C10100F16948 /* LargePhotoViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093C9B51AC0C10100F16948 /* LargePhotoViewContoller.m */; };
 		20C3BBC71A687EFA0019DE40 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBA31A687EFA0019DE40 /* box.png */; };
 		20C3BBC81A687EFA0019DE40 /* camera_line_h.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBA41A687EFA0019DE40 /* camera_line_h.png */; };
 		20C3BBC91A687EFA0019DE40 /* camera_line_h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBA51A687EFA0019DE40 /* camera_line_h@2x.png */; };
@@ -254,6 +255,8 @@
 		2093C9AB1ABB3A5500F16948 /* DetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsViewController.m; sourceTree = "<group>"; };
 		2093C9AD1ABB3A5F00F16948 /* PhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosViewController.h; sourceTree = "<group>"; };
 		2093C9AE1ABB3A5F00F16948 /* PhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosViewController.m; sourceTree = "<group>"; };
+		2093C9B41AC0C10100F16948 /* LargePhotoViewContoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LargePhotoViewContoller.h; sourceTree = "<group>"; };
+		2093C9B51AC0C10100F16948 /* LargePhotoViewContoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LargePhotoViewContoller.m; sourceTree = "<group>"; };
 		20C3BBA31A687EFA0019DE40 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
 		20C3BBA41A687EFA0019DE40 /* camera_line_h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_line_h.png; sourceTree = "<group>"; };
 		20C3BBA51A687EFA0019DE40 /* camera_line_h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_line_h@2x.png"; sourceTree = "<group>"; };
@@ -562,6 +565,8 @@
 				2093C9AB1ABB3A5500F16948 /* DetailsViewController.m */,
 				2093C9AD1ABB3A5F00F16948 /* PhotosViewController.h */,
 				2093C9AE1ABB3A5F00F16948 /* PhotosViewController.m */,
+				2093C9B41AC0C10100F16948 /* LargePhotoViewContoller.h */,
+				2093C9B51AC0C10100F16948 /* LargePhotoViewContoller.m */,
 			);
 			path = "Go Angel";
 			sourceTree = "<group>";
@@ -943,6 +948,7 @@
 				9BC1B10A1AA8E74D002FE705 /* QRReaderViewController.m in Sources */,
 				2040D2251A6058EA00E490F3 /* LocationTableViewController.m in Sources */,
 				2061D1DD199193CE001C7E08 /* DeviceViewController.m in Sources */,
+				2093C9B61AC0C10100F16948 /* LargePhotoViewContoller.m in Sources */,
 				20931B8E19957EEE00F57FB0 /* PhotoSectionHeaderView.m in Sources */,
 				2061D1FD19919440001C7E08 /* SettingsViewController.m in Sources */,
 				2081697519959CC900EEC65C /* PhotoSwipeViewController.m in Sources */,

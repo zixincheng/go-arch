@@ -65,15 +65,13 @@
                   @"Assets",
                   @"Price",
                   @"Type",
-                  @"Neighborhood",
-                  @"Status",
+                  @"Listing",
                   nil];
   
   _detailsValues = [[NSMutableArray alloc] initWithObjects:
                     [NSString stringWithFormat:@"%lu", (unsigned long)_photos.count],
                     [_location formatPrice:[NSNumber numberWithInt:1000000]],
                     @"Residential",
-                    @"Family",
                     @"For Sale",
                     nil];
   
@@ -83,8 +81,8 @@
                    @"Year Build",
                    @"Floor Size",
                    @"Lot Size",
-                   @"Baths",
-                   @"Beds",
+                   @"Bathrooms",
+                   @"Bedrooms",
                    @"mls #",
                    nil];
   
@@ -132,7 +130,7 @@
 # pragma mark - table view methods
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 35;
+  return 30;
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -192,7 +190,7 @@
   [keyField setText:key];
   [valueField setText:value];
   
-  NSLog(@"key: %@, value: %@", key, value);
+//  NSLog(@"key: %@, value: %@", key, value);
   
   return cell;
 }
