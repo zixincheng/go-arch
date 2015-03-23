@@ -25,7 +25,7 @@
   editEnabled = NO;
 
   // set the delegate of the custom layout
-  CellLayout * layout = (id)[self.collectionView collectionViewLayout];
+//  CellLayout * layout = (id)[self.collectionView collectionViewLayout];
 //  layout.delegate = self;
   
   // set collection view data source and delegate

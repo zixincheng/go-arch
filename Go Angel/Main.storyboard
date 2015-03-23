@@ -40,7 +40,7 @@
                     <connections>
                         <outlet property="mapView" destination="oPS-ay-ivG" id="rj5-C8-GcX"/>
                         <outlet property="searchBar" destination="c9D-dA-F5r" id="mBQ-26-H8o"/>
-                        <segue destination="fIS-qb-jvn" kind="push" identifier="locationSegue" id="rcp-IH-j7u"/>
+                        <segue destination="3F9-MO-0gI" kind="push" identifier="locationSegue" id="tbf-eN-VDi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iCH-cb-P6X" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -516,7 +516,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NxQ-85-5mV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1269" y="1066"/>
+            <point key="canvasLocation" x="-1269" y="1085"/>
         </scene>
         <!--Individual Entry View Controller-->
         <scene sceneID="Tvs-tu-bWN">
@@ -1773,6 +1773,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="4RR-SE-nq1"/>
+        <segue reference="Lby-sC-hxZ"/>
         <segue reference="Hoo-Hd-Ahm"/>
     </inferredMetricsTieBreakers>
 </document>
