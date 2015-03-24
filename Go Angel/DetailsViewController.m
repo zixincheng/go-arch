@@ -14,6 +14,7 @@
 @implementation DetailsViewController {
   BOOL hasCover;
   BOOL isEditing;
+  BOOL atMaps;
 }
 
 - (void) viewDidLoad {
@@ -81,18 +82,33 @@
   }
 }
 
+- (void) goingToMapsAddLocation {
+  atMaps = YES;
+}
+
 - (void) viewWillAppear:(BOOL)animated {
   [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Edit", @"text", nil]];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editPressed) name:@"RightButtonPressed" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goingToMapsAddLocation) name:@"AddNewLocationNotification" object:nil];
   
   isEditing = NO;
   if (!hasCover) {
     [self setCoverPhoto];
   }
+  
+  if (_embedController) {
+    if (atMaps) {
+      atMaps = NO;
+      [_embedController setEditEnabled:YES];
+    } else {
+      [_embedController setEditEnabled:NO];
+    }
+  }
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:@"RightButtonPressed" object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AddNewLocationNotification" object:nil];
 }
 
 - (void) saveLocationDetails {
@@ -103,9 +119,11 @@
   if (!isEditing) {
     isEditing = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Save", @"text", nil]];
+    [_embedController setEditEnabled:YES];
   } else {
     isEditing = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Edit", @"text", nil]];
+    [_embedController setEditEnabled:NO];
     [self saveLocationDetails];
   }
 }

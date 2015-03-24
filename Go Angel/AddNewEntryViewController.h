@@ -22,6 +22,7 @@
 }
 
 - (void) updateCoverPhoto:(CSPhoto *)image;
+- (void) setEditEnabled:(BOOL)enabled;
 
 // IF WE ARE GOING TO USE A LOCATION ALREADY IN DB AND EDIT IT, OR CREATE NEW LOCATION
 @property (nonatomic) BOOL usePreviousLocation;

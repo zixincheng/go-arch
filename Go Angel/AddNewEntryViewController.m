@@ -289,6 +289,9 @@ CGFloat animatedDistance;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"pushSegue"]) {
         
+        // post notification to let details view know not to disable editing
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AddNewLocationNotification" object:nil];
+        
         AddingLocationViewController *vc = (AddingLocationViewController *)segue.destinationViewController;
         vc.delegate = self;
     }
