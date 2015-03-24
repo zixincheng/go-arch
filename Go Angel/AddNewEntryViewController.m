@@ -36,7 +36,8 @@ CGFloat animatedDistance;
   [self createViewContent];
   
   appDelegate = [[UIApplication sharedApplication] delegate];
-  
+    self.saveFunction = [[SaveToDocument alloc]init];
+    
   if (!self.location) {
     self.location = [[CSLocation alloc]init];
     self.coverPhoto = [[CSPhoto alloc]init];
@@ -279,6 +280,7 @@ CGFloat animatedDistance;
     if (self.location.name !=nil && self.location.city !=nil && self.location.province != nil) {
       self.locationMeta.location = self.location;
         [appDelegate.dataWrapper addLocation:self.location locationmeta:self.locationMeta];
+        [self.saveFunction saveImageIntoDocument:self.photoImage metadata:metadata location:self.location];
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Address or City or State Can't be Empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

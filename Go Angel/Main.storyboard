@@ -589,7 +589,7 @@
         <!--Segmented View Controller-->
         <scene sceneID="Wl8-D3-Qtg">
             <objects>
-                <viewController id="k5h-4K-jLN" customClass="SegmentedViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SegmentedViewController" id="k5h-4K-jLN" customClass="SegmentedViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GY5-ap-zTk"/>
                         <viewControllerLayoutGuide type="bottom" id="PzI-c2-EQY"/>
