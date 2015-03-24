@@ -25,6 +25,7 @@
 #import "ELCImagePickerHeader.h"
 #import "ELCOverlayImageView.h"
 #import "PopOverMenu.h"
+#import "SaveToDocument.h"
 
 @interface IndividualEntryViewController : UIViewController< UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate,CellLayoutDelegate,ELCImagePickerControllerDelegate,CTPopoutMenuDelegate,UIActionSheetDelegate>{
     
@@ -40,6 +41,7 @@
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
+@property (nonatomic, strong) SaveToDocument *saveFunction;
 
 
 @property (nonatomic) UIView *setCoverPageViewContainer;

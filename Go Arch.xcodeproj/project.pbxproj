@@ -97,6 +97,7 @@
 		9BC3C6EB1AC1E4B20042E2D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9BC3C6EA1AC1E4B20042E2D5 /* Main.storyboard */; };
 		9BC3C6F21AC1EEEF0042E2D5 /* sg_pop_images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BC3C6EF1AC1EEEF0042E2D5 /* sg_pop_images.xcassets */; };
 		9BC3C6F31AC1EEEF0042E2D5 /* SGPopSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC3C6F11AC1EEEF0042E2D5 /* SGPopSelectView.m */; };
+		9BC3C6F61AC1F58C0042E2D5 /* SaveToDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC3C6F51AC1F58C0042E2D5 /* SaveToDocument.m */; };
 		9BC5E6C41AB21FFA00FE3F42 /* SWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC5E6C31AB21FFA00FE3F42 /* SWTableViewCell.m */; };
 		9BC7B9541A93F15300164F0E /* SetPasswordTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9531A93F15300164F0E /* SetPasswordTableViewController.m */; };
 		9BC7B9571A94084300164F0E /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9561A94084300164F0E /* TWMessageBarManager.m */; };
@@ -334,6 +335,8 @@
 		9BC3C6EF1AC1EEEF0042E2D5 /* sg_pop_images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = sg_pop_images.xcassets; sourceTree = "<group>"; };
 		9BC3C6F01AC1EEEF0042E2D5 /* SGPopSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPopSelectView.h; sourceTree = "<group>"; };
 		9BC3C6F11AC1EEEF0042E2D5 /* SGPopSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPopSelectView.m; sourceTree = "<group>"; };
+		9BC3C6F41AC1F58C0042E2D5 /* SaveToDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveToDocument.h; sourceTree = "<group>"; };
+		9BC3C6F51AC1F58C0042E2D5 /* SaveToDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveToDocument.m; sourceTree = "<group>"; };
 		9BC5E6C21AB21FF900FE3F42 /* SWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWTableViewCell.h; sourceTree = "<group>"; };
 		9BC5E6C31AB21FFA00FE3F42 /* SWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWTableViewCell.m; sourceTree = "<group>"; };
 		9BC7B9521A93F15300164F0E /* SetPasswordTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetPasswordTableViewController.h; sourceTree = "<group>"; };
@@ -531,6 +534,8 @@
 				2093C9B51AC0C10100F16948 /* LargePhotoViewContoller.m */,
 				2061D1E919919430001C7E08 /* LocalLibrary.h */,
 				2061D1EA19919430001C7E08 /* LocalLibrary.m */,
+				9BC3C6F41AC1F58C0042E2D5 /* SaveToDocument.h */,
+				9BC3C6F51AC1F58C0042E2D5 /* SaveToDocument.m */,
 				2040D2231A6058EA00E490F3 /* LocationTableViewController.h */,
 				2040D2241A6058EA00E490F3 /* LocationTableViewController.m */,
 				9BC3C6EA1AC1E4B20042E2D5 /* Main.storyboard */,
@@ -952,6 +957,7 @@
 			files = (
 				9BCD5A251AB105C100DEB39E /* F3Swirly.m in Sources */,
 				2061D1DA199193CE001C7E08 /* CoreDataWrapper.m in Sources */,
+				9BC3C6F61AC1F58C0042E2D5 /* SaveToDocument.m in Sources */,
 				2061D1FE19919440001C7E08 /* UploadPhotosTask.m in Sources */,
 				9BEA5B571A1EB26100CC14FF /* StorageViewController.m in Sources */,
 				9BFDAAAE1AAA72CE00C4E170 /* ELCAsset.m in Sources */,

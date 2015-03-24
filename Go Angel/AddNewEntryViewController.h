@@ -15,6 +15,8 @@
 #import "AddingLocationViewController.h"
 #import "SGPopSelectView.h"
 #import "CSLocationMeta.h"
+#import "SaveToDocument.h"
+
 @interface AddNewEntryViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,AddingLocationViewControllerDelegate,UIGestureRecognizerDelegate>{
 }
 @property (weak, nonatomic) IBOutlet UIImageView *CoverImageView;
@@ -49,6 +51,8 @@
 @property (nonatomic,strong) CSLocation *location;
 @property (nonatomic,strong) CSPhoto *coverPhoto;
 @property (nonatomic,strong) CSLocationMeta *locationMeta;
+@property (nonatomic,strong) SaveToDocument *saveFunction;
+
 @property (nonatomic,strong) UIImage *photoImage;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 

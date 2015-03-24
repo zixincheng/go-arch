@@ -18,6 +18,8 @@
 #import "ELCOverlayImageView.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "SaveToDocument.h"
+
 
 @interface SingleLocationViewController : UIViewController<UIActionSheetDelegate, ELCImagePickerControllerDelegate, UIImagePickerControllerDelegate> {
   LocalLibrary *localLibrary;
@@ -28,6 +30,7 @@
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSLocation *location;
 @property (nonatomic, strong) CSDevice *localDevice;
+@property (nonatomic, strong) SaveToDocument *saveFunction;
 
 @property (nonatomic, strong) UIBarButtonItem *flexibleSpace;
 @property (nonatomic, strong) UIBarButtonItem *mainCameraBtn;
