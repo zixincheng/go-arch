@@ -86,23 +86,39 @@
   atMaps = YES;
 }
 
-- (void) viewWillAppear:(BOOL)animated {
+- (void) enableEditing {
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Save", @"text", nil]];
+  isEditing = YES;
+  atMaps = NO;
+  
+  if (_embedController) {
+    [_embedController setEditEnabled:YES];
+  }
+}
+
+- (void) disableEditing {
   [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Edit", @"text", nil]];
+  isEditing = NO;
+  atMaps = NO;
+  
+  if (_embedController) {
+    [_embedController setEditEnabled:NO];
+  }
+}
+
+- (void) viewWillAppear:(BOOL)animated {
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editPressed) name:@"RightButtonPressed" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goingToMapsAddLocation) name:@"AddNewLocationNotification" object:nil];
   
-  isEditing = NO;
   if (!hasCover) {
     [self setCoverPhoto];
   }
   
-  if (_embedController) {
-    if (atMaps) {
-      atMaps = NO;
-      [_embedController setEditEnabled:YES];
-    } else {
-      [_embedController setEditEnabled:NO];
-    }
+  if (atMaps) {
+    atMaps = NO;
+    [self enableEditing];
+  } else {
+    [self disableEditing];
   }
 }
 
@@ -117,13 +133,9 @@
 
 - (void) editPressed {
   if (!isEditing) {
-    isEditing = YES;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Save", @"text", nil]];
-    [_embedController setEditEnabled:YES];
+    [self enableEditing];
   } else {
-    isEditing = NO;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Edit", @"text", nil]];
-    [_embedController setEditEnabled:NO];
+    [self disableEditing];
     [self saveLocationDetails];
   }
 }
