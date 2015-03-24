@@ -65,7 +65,7 @@
   }
 
   // load the full screen image into the image view
-  [appDelegate.mediaLoader loadFullScreenImage:homePhoto completionHandler:^(UIImage* image) {
+  [appDelegate.mediaLoader loadThumbnail:homePhoto completionHandler:^(UIImage* image) {
     dispatch_async(dispatch_get_main_queue(), ^{
       [imageView setImage:image];
     });
