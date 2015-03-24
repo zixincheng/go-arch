@@ -82,7 +82,6 @@ CGFloat animatedDistance;
     [self.cityTextField setEnabled:enabled];
     [self.stateTextField setEnabled:enabled];
     [self.countryTextField setEnabled:enabled];
-    [self.cityTextField setEnabled:enabled];
     [self.postcodeTextField setEnabled:enabled];
     [self.tagTextField setEnabled:enabled];
     [self.priceTextField setEnabled:enabled];
@@ -97,6 +96,8 @@ CGFloat animatedDistance;
     [self.statusSelectBtn setHidden:hidden];
     [self.bedSelectBtn setHidden:hidden];
     [self.bathSelectBtn setHidden:hidden];
+    
+    [self.priceTextField setText:[self getPriceText]];
 }
 
 - (void) updateCoverPhoto:(CSPhoto *)photo {
@@ -242,6 +243,12 @@ CGFloat animatedDistance;
 }
 
 - (void)textFieldValueChanged:(id)sender {
+    
+    // if using previous location, don't save all edits into location objectbrew up
+    if (_usePreviousLocation) {
+        return;
+    }
+    
     NSNumberFormatter *format = [[NSNumberFormatter alloc]init];
     format.numberStyle = NSNumberFormatterDecimalStyle;
     if (sender == self.addressTextField) {
@@ -364,6 +371,14 @@ CGFloat animatedDistance;
     [self.popView showFromView:self.view atPoint:p animated:YES];
 }
 
+- (NSString *) getPriceText {
+    if (editEnabled) {
+        return [self.locationMeta.price stringValue];
+    } else {
+        return [self.location formatPrice:self.locationMeta.price];
+    }
+}
+
 -(void) fillLocationData {
     self.addressTextField.text = self.location.name;
     self.cityTextField.text = self.location.city;
@@ -371,7 +386,7 @@ CGFloat animatedDistance;
     self.stateTextField.text = self.location.province;
     self.postcodeTextField.text = self.location.postCode;
     self.tagTextField.text = self.locationMeta.tag;
-    self.priceTextField.text = [self.locationMeta.price stringValue];
+    self.priceTextField.text = [self getPriceText];
     self.yearBuiltTextField.text = self.locationMeta.yearBuilt;
     self.buildingSqftTextField.text = [self.locationMeta.buildingSqft stringValue];
     self.landSqftTextField.text = [self.locationMeta.landSqft stringValue];

@@ -129,6 +129,57 @@
 
 - (void) saveLocationDetails {
   
+  NSMutableArray *changedKeys = [[NSMutableArray alloc] init];
+  NSMutableArray *changeValues = [[NSMutableArray alloc] init];
+  
+  
+  NSNumberFormatter *format = [[NSNumberFormatter alloc]init];
+  format.numberStyle = NSNumberFormatterDecimalStyle;
+  
+  // find all of the keys and values of text fields that have changed
+  // then make api calls to update all photos belong to this location
+  // then save data in db
+  
+  if (![_location.name isEqualToString:_embedController.addressTextField.text]) {
+    NSLog(@"address name differetn");
+  }
+  if (![_location.city isEqualToString:_embedController.cityTextField.text]) {
+    
+  }
+  if (![_location.province isEqualToString:_embedController.stateTextField.text]) {
+    
+  }
+  if (![_location.country isEqualToString:_embedController.countryTextField.text]) {
+    
+  }
+  if (![_location.postCode isEqualToString:_embedController.postcodeTextField.text]) {
+    
+  }
+  if (![_location.locationMeta.tag isEqualToString:_embedController.tagTextField.text]) {
+  
+  }
+  if (![_location.locationMeta.price doubleValue] == [[format numberFromString:_embedController.priceTextField.text] doubleValue]) {
+    
+  }
+  if (![_location.locationMeta.yearBuilt isEqualToString:_embedController.yearBuiltTextField.text]) {
+    
+  }
+  if (![[_location.locationMeta.buildingSqft stringValue] isEqualToString:_embedController.buildingSqftTextField.text]) {
+    
+  }
+  if (![_location.locationMeta.mls isEqualToString:_embedController.mlsTextField.text]) {
+    
+  }
+  
+//  if (self.location.name !=nil && self.location.city !=nil && self.location.province != nil) {
+//    self.locationMeta.location = self.location;
+//    [appDelegate.dataWrapper addLocation:self.location locationmeta:self.locationMeta];
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+//  } else {
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Address or City or State Can't be Empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//    
+//    [alert show];
+//  }
 }
 
 - (void) editPressed {
