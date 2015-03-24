@@ -206,15 +206,21 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"locationSegue"]) {
-        
-        IndividualEntryViewController *individualViewControll = (IndividualEntryViewController *)segue.destinationViewController;
-        
-        individualViewControll.dataWrapper = self.dataWrapper;
-        individualViewControll.localDevice = self.localDevice;
-        individualViewControll.location = self.selectedLocation;
-        [individualViewControll setHidesBottomBarWhenPushed:YES];
-        
-        
+
+      SingleLocationViewController *singleLocContoller = (SingleLocationViewController *)segue.destinationViewController;
+      singleLocContoller.dataWrapper = self.dataWrapper;
+      singleLocContoller.localDevice = self.localDevice;
+      singleLocContoller.location = self.selectedLocation;
+      singleLocContoller.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
+      [singleLocContoller setHidesBottomBarWhenPushed:YES];
+      
+      NSString *title;
+      if (![self.selectedLocation.unit isEqualToString:@""]) {
+        title = [NSString stringWithFormat:@"%@ - %@",self.selectedLocation.unit, self.selectedLocation.name];
+      } else {
+        title = [NSString stringWithFormat:@"%@", self.selectedLocation.name];
+      }
+      singleLocContoller.title = title;
     }
 }
 

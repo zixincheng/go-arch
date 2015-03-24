@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2006EF9E1ABA076200690188 /* SingleLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2006EF9D1ABA076200690188 /* SingleLocationViewController.m */; };
 		2040D2251A6058EA00E490F3 /* LocationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2040D2241A6058EA00E490F3 /* LocationTableViewController.m */; };
 		2040D22A1A6059BE00E490F3 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2040D2291A6059BE00E490F3 /* CoreLocation.framework */; };
 		205397161991924B00B1D9AD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205397151991924B00B1D9AD /* Foundation.framework */; };
@@ -28,7 +29,6 @@
 		2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1E3199193DB001C7E08 /* HandshakeTableViewController.m */; };
 		2061D1E819919428001C7E08 /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2061D1E719919428001C7E08 /* InAppSettings.bundle */; };
 		2061D1EC19919430001C7E08 /* LocalLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1EA19919430001C7E08 /* LocalLibrary.m */; };
-		2061D1ED19919430001C7E08 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2061D1EB19919430001C7E08 /* Main.storyboard */; };
 		2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1EE19919436001C7E08 /* Model.xcdatamodeld */; };
 		2061D1FA19919440001C7E08 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1F219919440001C7E08 /* Reachability.m */; };
 		2061D1FB19919440001C7E08 /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1F419919440001C7E08 /* Server.m */; };
@@ -42,6 +42,11 @@
 		20931B8519954B8900F57FB0 /* GridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 20931B8419954B8900F57FB0 /* GridCell.m */; };
 		20931B8819954FF000F57FB0 /* MediaLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 20931B8719954FF000F57FB0 /* MediaLoader.m */; };
 		20931B8E19957EEE00F57FB0 /* PhotoSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20931B8D19957EEE00F57FB0 /* PhotoSectionHeaderView.m */; };
+		2093C9A21ABB37A100F16948 /* SingleLocationPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093C9A11ABB37A100F16948 /* SingleLocationPageViewController.m */; };
+		2093C9A91ABB3A4900F16948 /* OverviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093C9A81ABB3A4900F16948 /* OverviewViewController.m */; };
+		2093C9AC1ABB3A5500F16948 /* DetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093C9AB1ABB3A5500F16948 /* DetailsViewController.m */; };
+		2093C9AF1ABB3A5F00F16948 /* PhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093C9AE1ABB3A5F00F16948 /* PhotosViewController.m */; };
+		2093C9B61AC0C10100F16948 /* LargePhotoViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093C9B51AC0C10100F16948 /* LargePhotoViewContoller.m */; };
 		20C3BBC71A687EFA0019DE40 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBA31A687EFA0019DE40 /* box.png */; };
 		20C3BBC81A687EFA0019DE40 /* camera_line_h.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBA41A687EFA0019DE40 /* camera_line_h.png */; };
 		20C3BBC91A687EFA0019DE40 /* camera_line_h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 20C3BBA51A687EFA0019DE40 /* camera_line_h@2x.png */; };
@@ -91,6 +96,7 @@
 		9BC1B1061AA8E6CC002FE705 /* qrcode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC1B1031AA8E6CC002FE705 /* qrcode@2x.png */; };
 		9BC1B1071AA8E6CC002FE705 /* qroverlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC1B1041AA8E6CC002FE705 /* qroverlay.png */; };
 		9BC1B10A1AA8E74D002FE705 /* QRReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1B1091AA8E74D002FE705 /* QRReaderViewController.m */; };
+		9BC3C6EB1AC1E4B20042E2D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9BC3C6EA1AC1E4B20042E2D5 /* Main.storyboard */; };
 		9BC5E6C41AB21FFA00FE3F42 /* SWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC5E6C31AB21FFA00FE3F42 /* SWTableViewCell.m */; };
 		9BC7B9541A93F15300164F0E /* SetPasswordTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9531A93F15300164F0E /* SetPasswordTableViewController.m */; };
 		9BC7B9571A94084300164F0E /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC7B9561A94084300164F0E /* TWMessageBarManager.m */; };
@@ -180,6 +186,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2006EF9C1ABA076200690188 /* SingleLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleLocationViewController.h; sourceTree = "<group>"; };
+		2006EF9D1ABA076200690188 /* SingleLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleLocationViewController.m; sourceTree = "<group>"; };
 		2040D2231A6058EA00E490F3 /* LocationTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationTableViewController.h; sourceTree = "<group>"; };
 		2040D2241A6058EA00E490F3 /* LocationTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationTableViewController.m; sourceTree = "<group>"; };
 		2040D2291A6059BE00E490F3 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -222,7 +230,6 @@
 		2061D1E719919428001C7E08 /* InAppSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InAppSettings.bundle; sourceTree = "<group>"; };
 		2061D1E919919430001C7E08 /* LocalLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalLibrary.h; sourceTree = "<group>"; };
 		2061D1EA19919430001C7E08 /* LocalLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalLibrary.m; sourceTree = "<group>"; };
-		2061D1EB19919430001C7E08 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		2061D1EF19919436001C7E08 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		2061D1F119919440001C7E08 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		2061D1F219919440001C7E08 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -245,6 +252,16 @@
 		20931B8719954FF000F57FB0 /* MediaLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaLoader.m; sourceTree = "<group>"; };
 		20931B8C19957EEE00F57FB0 /* PhotoSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoSectionHeaderView.h; sourceTree = "<group>"; };
 		20931B8D19957EEE00F57FB0 /* PhotoSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoSectionHeaderView.m; sourceTree = "<group>"; };
+		2093C9A01ABB37A100F16948 /* SingleLocationPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleLocationPageViewController.h; sourceTree = "<group>"; };
+		2093C9A11ABB37A100F16948 /* SingleLocationPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleLocationPageViewController.m; sourceTree = "<group>"; };
+		2093C9A71ABB3A4900F16948 /* OverviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverviewViewController.h; sourceTree = "<group>"; };
+		2093C9A81ABB3A4900F16948 /* OverviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverviewViewController.m; sourceTree = "<group>"; };
+		2093C9AA1ABB3A5500F16948 /* DetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsViewController.h; sourceTree = "<group>"; };
+		2093C9AB1ABB3A5500F16948 /* DetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsViewController.m; sourceTree = "<group>"; };
+		2093C9AD1ABB3A5F00F16948 /* PhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosViewController.h; sourceTree = "<group>"; };
+		2093C9AE1ABB3A5F00F16948 /* PhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosViewController.m; sourceTree = "<group>"; };
+		2093C9B41AC0C10100F16948 /* LargePhotoViewContoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LargePhotoViewContoller.h; sourceTree = "<group>"; };
+		2093C9B51AC0C10100F16948 /* LargePhotoViewContoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LargePhotoViewContoller.m; sourceTree = "<group>"; };
 		20C3BBA31A687EFA0019DE40 /* box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box.png; sourceTree = "<group>"; };
 		20C3BBA41A687EFA0019DE40 /* camera_line_h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_line_h.png; sourceTree = "<group>"; };
 		20C3BBA51A687EFA0019DE40 /* camera_line_h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_line_h@2x.png"; sourceTree = "<group>"; };
@@ -316,6 +333,7 @@
 		9BC1B1081AA8E74D002FE705 /* QRReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRReaderViewController.h; sourceTree = "<group>"; };
 		9BC1B1091AA8E74D002FE705 /* QRReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRReaderViewController.m; sourceTree = "<group>"; };
 		9BC3C6DE1AC1D84B0042E2D5 /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
+		9BC3C6EA1AC1E4B20042E2D5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9BC5E6C21AB21FF900FE3F42 /* SWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWTableViewCell.h; sourceTree = "<group>"; };
 		9BC5E6C31AB21FFA00FE3F42 /* SWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWTableViewCell.m; sourceTree = "<group>"; };
 		9BC7B9521A93F15300164F0E /* SetPasswordTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetPasswordTableViewController.h; sourceTree = "<group>"; };
@@ -454,11 +472,14 @@
 				D518B33A1A42046700E249E4 /* ActivityHistory.m */,
 				9BE4F7031A71AC02009FEB3F /* AddingLocationViewController.h */,
 				9BE4F7041A71AC02009FEB3F /* AddingLocationViewController.m */,
+				9B568DD01ABB4E9E00D398A9 /* AddNewEntryViewController.h */,
+				9B568DD11ABB4E9E00D398A9 /* AddNewEntryViewController.m */,
 				2053974A199192FE00B1D9AD /* AppDelegate.h */,
 				2053974B199192FE00B1D9AD /* AppDelegate.m */,
 				9B6C88C41A829EAD00B50A21 /* CellLayout.h */,
 				9B6C88C51A829EAD00B50A21 /* CellLayout.m */,
 				9B6C88CC1A829FA500B50A21 /* CellLayoutDelegate.h */,
+				9B3457E91ABCD9230070DE62 /* classes */,
 				2061D1C9199193CE001C7E08 /* Coinsorter.h */,
 				2061D1CA199193CE001C7E08 /* Coinsorter.m */,
 				2061D1CB199193CE001C7E08 /* ConnectViewController.h */,
@@ -475,14 +496,16 @@
 				2061D1D2199193CE001C7E08 /* CSDevice.m */,
 				9BDDBAF31A70827900697C25 /* CSLocation.h */,
 				9BDDBAF41A70827900697C25 /* CSLocation.m */,
+				9BCA68631AC0A2DD00982DC9 /* CSLocationMeta.h */,
+				9BCA68641AC0A2DD00982DC9 /* CSLocationMeta.m */,
 				2061D1D3199193CE001C7E08 /* CSPhoto.h */,
 				2061D1D4199193CE001C7E08 /* CSPhoto.m */,
 				9BEA5B521A1EB26100CC14FF /* CSStorage.h */,
 				9BEA5B531A1EB26100CC14FF /* CSStorage.m */,
-				9BCA68631AC0A2DD00982DC9 /* CSLocationMeta.h */,
-				9BCA68641AC0A2DD00982DC9 /* CSLocationMeta.m */,
 				D510B9611A364A8A00307184 /* DashboardViewController.h */,
 				D510B9621A364A8A00307184 /* DashboardViewController.m */,
+				2093C9AA1ABB3A5500F16948 /* DetailsViewController.h */,
+				2093C9AB1ABB3A5500F16948 /* DetailsViewController.m */,
 				2061D1D5199193CE001C7E08 /* DeviceViewController.h */,
 				2061D1D6199193CE001C7E08 /* DeviceViewController.m */,
 				9BFDAA951AAA72CD00C4E170 /* ELCImagePicker */,
@@ -504,16 +527,13 @@
 				2061D1E719919428001C7E08 /* InAppSettings.bundle */,
 				9B4C12921A72DCC6004CC973 /* IndividualEntryViewController.h */,
 				9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */,
+				2093C9B41AC0C10100F16948 /* LargePhotoViewContoller.h */,
+				2093C9B51AC0C10100F16948 /* LargePhotoViewContoller.m */,
 				2061D1E919919430001C7E08 /* LocalLibrary.h */,
 				2061D1EA19919430001C7E08 /* LocalLibrary.m */,
 				2040D2231A6058EA00E490F3 /* LocationTableViewController.h */,
 				2040D2241A6058EA00E490F3 /* LocationTableViewController.m */,
-				9B3457E91ABCD9230070DE62 /* classes */,
-				2061D1EB19919430001C7E08 /* Main.storyboard */,
-				9B568DD01ABB4E9E00D398A9 /* AddNewEntryViewController.h */,
-				9B568DD11ABB4E9E00D398A9 /* AddNewEntryViewController.m */,
-				9B52EB431ABA10F4002F19A4 /* SegmentedViewController.h */,
-				9B52EB441ABA10F4002F19A4 /* SegmentedViewController.m */,
+				9BC3C6EA1AC1E4B20042E2D5 /* Main.storyboard */,
 				9BE4F6FC1A717F1D009FEB3F /* MainLocationViewController.h */,
 				9BE4F6FD1A717F1D009FEB3F /* MainLocationViewController.m */,
 				20931B8619954FF000F57FB0 /* MediaLoader.h */,
@@ -523,8 +543,12 @@
 				9BA18C721AAE421D006CEC25 /* MyAnnotation.m */,
 				9BC0ABED1AA7B6F300F430CB /* NetWorkCheck.h */,
 				9BC0ABEE1AA7B6F300F430CB /* NetWorkCheck.m */,
+				2093C9A71ABB3A4900F16948 /* OverviewViewController.h */,
+				2093C9A81ABB3A4900F16948 /* OverviewViewController.m */,
 				20931B8C19957EEE00F57FB0 /* PhotoSectionHeaderView.h */,
 				20931B8D19957EEE00F57FB0 /* PhotoSectionHeaderView.m */,
+				2093C9AD1ABB3A5F00F16948 /* PhotosViewController.h */,
+				2093C9AE1ABB3A5F00F16948 /* PhotosViewController.m */,
 				2081697319959CC900EEC65C /* PhotoSwipeViewController.h */,
 				2081697419959CC900EEC65C /* PhotoSwipeViewController.m */,
 				9BA18C801AAF72B9006CEC25 /* PopOverMenu.h */,
@@ -541,12 +565,18 @@
 				9B1211421A79B13B0088CD3A /* SearchMapViewController.m */,
 				9B4ADCB41A7C168500375C01 /* SearchResultsTableViewController.h */,
 				9B4ADCB51A7C168500375C01 /* SearchResultsTableViewController.m */,
+				9B52EB431ABA10F4002F19A4 /* SegmentedViewController.h */,
+				9B52EB441ABA10F4002F19A4 /* SegmentedViewController.m */,
 				2061D1F319919440001C7E08 /* Server.h */,
 				2061D1F419919440001C7E08 /* Server.m */,
 				9BC7B9521A93F15300164F0E /* SetPasswordTableViewController.h */,
 				9BC7B9531A93F15300164F0E /* SetPasswordTableViewController.m */,
 				2061D1F619919440001C7E08 /* SettingsViewController.h */,
 				2061D1F719919440001C7E08 /* SettingsViewController.m */,
+				2093C9A01ABB37A100F16948 /* SingleLocationPageViewController.h */,
+				2093C9A11ABB37A100F16948 /* SingleLocationPageViewController.m */,
+				2006EF9C1ABA076200690188 /* SingleLocationViewController.h */,
+				2006EF9D1ABA076200690188 /* SingleLocationViewController.m */,
 				208169671995828500EEC65C /* SinglePhotoViewController.h */,
 				208169681995828500EEC65C /* SinglePhotoViewController.m */,
 				9BB0F2091A26A52A00DF40E3 /* StorageDetailViewController.h */,
@@ -854,12 +884,12 @@
 				20C3BBD71A687EFA0019DE40 /* settings-25.png in Resources */,
 				9BCDE8B61A8035110017FD7A /* video.png in Resources */,
 				9BCD5A1C1AB0D39200DEB39E /* house-7.png in Resources */,
-				2061D1ED19919430001C7E08 /* Main.storyboard in Resources */,
 				20C3BBCA1A687EFA0019DE40 /* camera_line.png in Resources */,
 				20C3BBCF1A687EFA0019DE40 /* close_cha@2x.png in Resources */,
 				20C3BBCE1A687EFA0019DE40 /* close_cha.png in Resources */,
 				9BFDAAB71AAA72CE00C4E170 /* Overlay.png in Resources */,
 				9BFDAAB61AAA72CE00C4E170 /* ELCAssetTablePicker.xib in Resources */,
+				9BC3C6EB1AC1E4B20042E2D5 /* Main.storyboard in Resources */,
 				20C3BBD51A687EFA0019DE40 /* flashing_on@2x.png in Resources */,
 				9BFDAAB81AAA72CE00C4E170 /* Overlay@2x.png in Resources */,
 				9BCD5A1E1AB0D3A400DEB39E /* pencil-7.png in Resources */,
@@ -940,6 +970,7 @@
 				9B4ADCB61A7C168500375C01 /* SearchResultsTableViewController.m in Sources */,
 				2061D1D7199193CE001C7E08 /* Coinsorter.m in Sources */,
 				9BC5E6C41AB21FFA00FE3F42 /* SWTableViewCell.m in Sources */,
+				2093C9A91ABB3A4900F16948 /* OverviewViewController.m in Sources */,
 				9BFDAAAD1AAA72CD00C4E170 /* ELCAlbumPickerController.m in Sources */,
 				9BA18C731AAE421D006CEC25 /* MyAnnotation.m in Sources */,
 				9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */,
@@ -956,6 +987,7 @@
 				9BC1B10A1AA8E74D002FE705 /* QRReaderViewController.m in Sources */,
 				2040D2251A6058EA00E490F3 /* LocationTableViewController.m in Sources */,
 				2061D1DD199193CE001C7E08 /* DeviceViewController.m in Sources */,
+				2093C9B61AC0C10100F16948 /* LargePhotoViewContoller.m in Sources */,
 				20931B8E19957EEE00F57FB0 /* PhotoSectionHeaderView.m in Sources */,
 				9B3457EE1ABCD9230070DE62 /* SGPopSelectView.m in Sources */,
 				2061D1FD19919440001C7E08 /* SettingsViewController.m in Sources */,
@@ -965,6 +997,8 @@
 				D5296F251A27B1D80069555B /* createDefaultAlbum.m in Sources */,
 				9BFDAAAF1AAA72CE00C4E170 /* ELCAssetCell.m in Sources */,
 				9BA18C821AAF72B9006CEC25 /* PopOverMenu.m in Sources */,
+				2006EF9E1ABA076200690188 /* SingleLocationViewController.m in Sources */,
+				2093C9AF1ABB3A5F00F16948 /* PhotosViewController.m in Sources */,
 				9BFDAAB21AAA72CE00C4E170 /* ELCImagePickerController.m in Sources */,
 				D5E2672B1A410EDE00611A67 /* HistoryTableViewController.m in Sources */,
 				2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */,
@@ -978,10 +1012,12 @@
 				2061D1E5199193DB001C7E08 /* GroupTableViewController.m in Sources */,
 				208169691995828500EEC65C /* SinglePhotoViewController.m in Sources */,
 				9B568DD21ABB4E9E00D398A9 /* AddNewEntryViewController.m in Sources */,
+				2093C9A21ABB37A100F16948 /* SingleLocationPageViewController.m in Sources */,
 				2061D1C6199193B5001C7E08 /* AccountDataWrapper.m in Sources */,
 				9B52EB451ABA10F4002F19A4 /* SegmentedViewController.m in Sources */,
 				9B4C12941A72DCC6004CC973 /* IndividualEntryViewController.m in Sources */,
 				2061D1FB19919440001C7E08 /* Server.m in Sources */,
+				2093C9AC1ABB3A5500F16948 /* DetailsViewController.m in Sources */,
 				9BEA5B561A1EB26100CC14FF /* CSStorage.m in Sources */,
 				2061D1FA19919440001C7E08 /* Reachability.m in Sources */,
 			);

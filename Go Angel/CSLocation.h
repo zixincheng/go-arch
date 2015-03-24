@@ -27,4 +27,6 @@
 @property (nonatomic, strong) CSLocationMeta *locationMeta;
 
 
+- (NSString *) formatPrice:(NSNumber *)price;
+
 @end

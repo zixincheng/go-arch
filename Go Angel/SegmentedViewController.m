@@ -56,6 +56,8 @@
         case 1:
             vc = [self.storyboard instantiateViewControllerWithIdentifier:@"MapView"];
             break;
+        case 2:
+            vc = [self.storyboard instantiateViewControllerWithIdentifier:@"LargePhotoViewContoller"];
     }
     return vc;
 }

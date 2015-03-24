@@ -13,6 +13,7 @@
 #import "CSDevice.h"
 #import "CSLocation.h"
 #import "IndividualEntryViewController.h"
+#import "SingleLocationViewController.h"
 
 @interface SearchMapViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate,UISearchBarDelegate,NSFetchedResultsControllerDelegate> {
     AccountDataWrapper *account;

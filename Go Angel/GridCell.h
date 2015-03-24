@@ -23,5 +23,6 @@
 @property (strong) CSPhoto *photo;
 @property (strong) UIImageView *imageView;
 
+- (void) setPhoto:(CSPhoto *)photo;
 
 @end

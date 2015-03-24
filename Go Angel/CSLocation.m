@@ -10,4 +10,17 @@
 
 @implementation CSLocation
 
+- (NSString *) formatPrice:(NSNumber *)price {
+  NSLocale *locale = [NSLocale currentLocale];
+
+  NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+  [formatter setLocale:locale];
+  [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+  [formatter setNegativeFormat:@"-¤#,##0.00"];
+  
+  NSString *formatted = [formatter stringFromNumber:price];
+  
+  return formatted;
+}
+
 @end
