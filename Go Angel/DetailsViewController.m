@@ -13,6 +13,7 @@
 
 @implementation DetailsViewController {
   BOOL hasCover;
+  BOOL isEditing;
 }
 
 - (void) viewDidLoad {
@@ -22,12 +23,32 @@
   _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
   
   [self setCoverPhoto];
-  [self setupKeyValues];
   
   // register for notifications
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCoverPhoto) name:@"CoverPhotoChange" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coverUpdated) name:@"CoverPhotoChange" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePhotos) name:@"addNewPhoto" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePhotos) name:@"PhotoDeleted" object:nil];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+//  detailsEmbedSegue
+  NSString * segueName = segue.identifier;
+  
+  // the segue for embeding a controller into a container view
+  // give the container view controller all needed vars
+  if ([segueName isEqualToString: @"detailsEmbedSegue"]) {
+    _embedController = (AddNewEntryViewController *)[segue destinationViewController];
+    _embedController.usePreviousLocation = YES;
+    _embedController.location = _location;
+    _embedController.localDevice = _localDevice;
+    
+    if (!_photos) {
+      [self updatePhotos];
+    }
+    if (hasCover) {
+      _embedController.coverPhoto = _coverPhoto;
+    }
+  }
 }
 
 - (void) updatePhotos {
@@ -36,94 +57,56 @@
   if (!hasCover && _photos.count > 0) {
     [self setCoverPhoto];
   }
-  
-  [self setupKeyValues];
 }
 
-- (void) setupKeyValues {
-  _sections = [[NSMutableArray alloc] initWithObjects:@"Location", @"Stats", @"Building", nil];
-  
-  // location key/values
-  
-  _locationKeys = [[NSMutableArray alloc] initWithObjects:
-                   @"Address",
-                   @"City",
-                   @"State",
-                   @"Country",
-                   nil];
-  
-  _locationValues = [[NSMutableArray alloc] initWithObjects:
-                     _location.name,
-                     _location.city,
-                     _location.province,
-                     _location.country,
-                     nil];
-  
-  // details key/values
-  
-  _detailsKeys = [[NSMutableArray alloc] initWithObjects:
-                  @"Assets",
-                  @"Price",
-                  @"Type",
-                  @"Listing",
-                  nil];
-  
-  _detailsValues = [[NSMutableArray alloc] initWithObjects:
-                    [NSString stringWithFormat:@"%lu", (unsigned long)_photos.count],
-                    [_location formatPrice:[NSNumber numberWithInt:1000000]],
-                    @"Residential",
-                    @"For Sale",
-                    nil];
-  
-  // building key/values
-  
-  _buildingKeys = [[NSMutableArray alloc] initWithObjects:
-                   @"Year Build",
-                   @"Floor Size",
-                   @"Lot Size",
-                   @"Bathrooms",
-                   @"Bedrooms",
-                   @"mls #",
-                   nil];
-  
-  _buildingValues = [[NSMutableArray alloc] initWithObjects:
-                     @"2006",
-                     @"20 sq. ft.",
-                     @"20 acres",
-                     @"1",
-                     @"1",
-                     @"817891750987",
-                     nil];
-  
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [_tableView reloadData];
-  });
+- (void) coverUpdated {
+  _coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+  if (_embedController) {
+    [_embedController updateCoverPhoto:_coverPhoto];
+  }
 }
 
-// set the cover photo that is displayed
 - (void) setCoverPhoto {
-  if (_photos.count <= 0) {
-    hasCover = NO;
-    return;
+  if (!hasCover) {
+    if (_photos.count <= 0) {
+      hasCover = NO;
+      return;
+    }
+    _coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+    if (_coverPhoto == nil) {
+      _coverPhoto = [self.photos objectAtIndex:0];
+    }
+    
+    hasCover = YES;
   }
-  CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
-  if (coverPhoto == nil) {
-    coverPhoto = [self.photos objectAtIndex:0];
-  }
-  
-  hasCover = YES;
-  [appDelegate.mediaLoader loadFullScreenImage:coverPhoto completionHandler:^(UIImage *image) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      _coverImageView.image = image;
-    });
-  }];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-  [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"", @"text", nil]];
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Edit", @"text", nil]];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editPressed) name:@"RightButtonPressed" object:nil];
   
+  isEditing = NO;
   if (!hasCover) {
     [self setCoverPhoto];
+  }
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:@"RightButtonPressed" object:nil];
+}
+
+- (void) saveLocationDetails {
+  
+}
+
+- (void) editPressed {
+  if (!isEditing) {
+    isEditing = YES;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Save", @"text", nil]];
+  } else {
+    isEditing = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SetRightButtonText" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Edit", @"text", nil]];
+    [self saveLocationDetails];
   }
 }
 

@@ -13,6 +13,7 @@
 #import "CSDevice.h"
 #import "CSLocation.h"
 #import "AppDelegate.h"
+#import "AddNewEntryViewController.h"
 #import "CSPhoto.h"
 
 @interface DetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
@@ -24,6 +25,7 @@
 @property (nonatomic, strong) CSLocation *location;
 @property (nonatomic, strong) CSDevice *localDevice;
 
+@property (nonatomic, strong) CSPhoto *coverPhoto;
 @property (nonatomic, strong) NSMutableArray *photos;
 
 @property (nonatomic, strong) NSMutableArray *sections;
@@ -39,5 +41,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (nonatomic, strong) AddNewEntryViewController *embedController;
 
 @end

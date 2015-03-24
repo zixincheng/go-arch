@@ -15,6 +15,7 @@
 
 @implementation AddNewEntryViewController {
     NSDictionary *metadata;
+    BOOL editEnabled;
 }
 @synthesize location;
 static const CGFloat KEYBOARD_ANIMATION_DURATION = 0.3;
@@ -27,36 +28,89 @@ CGFloat animatedDistance;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self createViewContent];
+  [self setup];
+    // Do any additional setup after loading the view.
+}
+
+- (void) setup {
+  [self createViewContent];
+  
+  appDelegate = [[UIApplication sharedApplication] delegate];
+  
+  if (!self.location) {
     self.location = [[CSLocation alloc]init];
     self.coverPhoto = [[CSPhoto alloc]init];
     self.locationMeta = [[CSLocationMeta alloc]init];
+  } else {
+    self.locationMeta = self.location.locationMeta;
+
+    if (self.coverPhoto) {
+      [self updateCoverPhoto:self.coverPhoto];
+    }
     
-    //self.metadataView = [[UIView alloc]initWithFrame:CGRectMake(0, 490, 320, 500)];
-    
-    self.metadataView.backgroundColor = [UIColor lightGrayColor];
-    [self.scrollView addSubview:self.metadataView];
-    
+    [self setEditEnabled:NO];
+  }
+  //self.metadataView = [[UIView alloc]initWithFrame:CGRectMake(0, 490, 320, 500)];
+  
+  self.metadataView.backgroundColor = [UIColor lightGrayColor];
+  [self.scrollView addSubview:self.metadataView];
+  
+  if (!_usePreviousLocation) {
     UITapGestureRecognizer *tapImageView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTaped:)];
     tapImageView.numberOfTapsRequired = 1;
     tapImageView.numberOfTouchesRequired = 1;
     [self.CoverImageView addGestureRecognizer:tapImageView];
     [self.CoverImageView setUserInteractionEnabled:YES];
-    self.CoverImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.CoverImageView.clipsToBounds = YES;
-    
-    self.scrollView.contentSize = CGSizeMake(320, 1500);
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(dismissKeyboard)];
-    tap.delegate = self;
-    [self.view addGestureRecognizer:tap];
-    // Do any additional setup after loading the view.
+  }
+  self.CoverImageView.contentMode = UIViewContentModeScaleAspectFill;
+  self.CoverImageView.clipsToBounds = YES;
+  
+  self.scrollView.contentSize = CGSizeMake(320, 1500);
+  
+  UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                 initWithTarget:self
+                                 action:@selector(dismissKeyboard)];
+  tap.delegate = self;
+  [self.view addGestureRecognizer:tap];
 }
 
+- (void) setEditEnabled:(BOOL)enabled {
+    editEnabled = enabled;
+    BOOL hidden = !enabled;
+    
+    [self.addressTextField setEnabled:enabled];
+    [self.cityTextField setEnabled:enabled];
+    [self.stateTextField setEnabled:enabled];
+    [self.countryTextField setEnabled:enabled];
+    [self.cityTextField setEnabled:enabled];
+    [self.postcodeTextField setEnabled:enabled];
+    [self.tagTextField setEnabled:enabled];
+    [self.priceTextField setEnabled:enabled];
+    [self.yearBuiltTextField setEnabled:enabled];
+    [self.buildingSqftTextField setEnabled:enabled];
+    [self.landSqftTextField setEnabled:enabled];
+    [self.mlsTextField setEnabled:enabled];
+    
+    [self.mapAddingBtn setHidden:hidden];
+    [self.historySelectBtn setHidden:hidden];
+    [self.typeSelectBtn setHidden:hidden];
+    [self.statusSelectBtn setHidden:hidden];
+    [self.bedSelectBtn setHidden:hidden];
+    [self.bathSelectBtn setHidden:hidden];
+}
+
+- (void) updateCoverPhoto:(CSPhoto *)photo {
+  // set image to cover photo
+  self.coverPhoto = photo;
+  [appDelegate.mediaLoader loadThumbnail:self.coverPhoto completionHandler:^(UIImage *image) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self.CoverImageView setImage:image];
+    });
+  }];
+}
 
 -(void) viewDidAppear:(BOOL)animated {
+  
     [self fillLocationData];
 }
 
@@ -216,8 +270,7 @@ CGFloat animatedDistance;
 }
 - (IBAction)saveData:(id)sender {
     if (self.location.name !=nil && self.location.city !=nil && self.location.province != nil) {
-        self.locationMeta.location = self.location;
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+      self.locationMeta.location = self.location;
         [appDelegate.dataWrapper addLocation:self.location locationmeta:self.locationMeta];
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
@@ -246,7 +299,6 @@ CGFloat animatedDistance;
     }
     self.popView = [[SGPopSelectView alloc] init];
     if (sender == self.historySelectBtn) {
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         NSArray *locationArray =[appDelegate.dataWrapper getLocations];
          NSMutableArray *name = [[NSMutableArray alloc] init];
         for (CSLocation *l in locationArray) {
@@ -409,9 +461,6 @@ CGFloat animatedDistance;
                     self.addressTextField.delegate = self;
                     [cell.contentView addSubview:self.addressTextField];
                     
-                    self.mapAddingBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
-                    [self.mapAddingBtn addTarget:self action:@selector(performSegue) forControlEvents:UIControlEventTouchUpInside];
-                    [self.mapAddingBtn setImage:[UIImage imageNamed:@"earth-america-7.png"] forState:UIControlStateNormal];
                     [cell.contentView addSubview:self.mapAddingBtn];
                 }
                     break;
@@ -425,9 +474,6 @@ CGFloat animatedDistance;
                     self.cityTextField.delegate = self;
                     [cell.contentView addSubview:self.cityTextField];
                     
-                    self.historySelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
-                    [self.historySelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
-                    [self.historySelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
                     [cell.contentView addSubview:self.historySelectBtn];
                 }
                     break;
@@ -513,24 +559,18 @@ CGFloat animatedDistance;
                     
                     [cell.contentView addSubview:self.typeLabel];
                     
-                    self.typeSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
-                    [self.typeSelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
-                    [self.typeSelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
                     [cell.contentView addSubview:self.typeSelectBtn];
                     break;
                 }
                 case 2:
                 {
                     UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 90, 30.0)];
-                    status.text = @"status";
+                    status.text = @"Listing";
                     
                     [cell.contentView addSubview:status];
                     
                     [cell.contentView addSubview:self.statusLabel];
                     
-                    self.statusSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
-                    [self.statusSelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
-                    [self.statusSelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
                     [cell.contentView addSubview:self.statusSelectBtn];
                     break;
                 }
@@ -566,9 +606,6 @@ CGFloat animatedDistance;
                     
                     [cell.contentView addSubview:self.bedLabel];
                     
-                    self.bedSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
-                    [self.bedSelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
-                    [self.bedSelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
                     [cell.contentView addSubview:self.bedSelectBtn];
                     break;
                 }
@@ -581,9 +618,6 @@ CGFloat animatedDistance;
                     
                     [cell.contentView addSubview:self.bathLabel];
                     
-                    self.bathSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
-                    [self.bathSelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
-                    [self.bathSelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
                     [cell.contentView addSubview:self.bathSelectBtn];
                     break;
                 }
@@ -639,7 +673,40 @@ CGFloat animatedDistance;
     // Configure the cell...
 }
 
+- (UILabel *) createLabel: (NSString *) text frame: (CGRect) frame {
+  UILabel *label = [[UILabel alloc] initWithFrame:frame];
+  [label setText:text];
+//  [label setFont:[UIFont]]
+  
+  
+  return label;
+}
+
 -(void) createViewContent {
+    self.mapAddingBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
+    [self.mapAddingBtn addTarget:self action:@selector(performSegue) forControlEvents:UIControlEventTouchUpInside];
+    [self.mapAddingBtn setImage:[UIImage imageNamed:@"earth-america-7.png"] forState:UIControlStateNormal];
+    
+    self.historySelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
+    [self.historySelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
+    [self.historySelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
+    
+    self.typeSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
+    [self.typeSelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
+    [self.typeSelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
+    
+    self.statusSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
+    [self.statusSelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
+    [self.statusSelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
+    
+    self.bedSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
+    [self.bedSelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
+    [self.bedSelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
+    
+    self.bathSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
+    [self.bathSelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
+    [self.bathSelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
+    
     self.addressTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
     [self.addressTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
     

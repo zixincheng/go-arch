@@ -105,13 +105,13 @@
     if (!GPSDictionary || !gpsMeta) {
         GPSDictionary = [NSMutableDictionary dictionary];
     }
-    if (gpsMeta) {
-        
-        NSString *longitude = [defaults objectForKey:CURR_LOC_LONG];
-        NSString *latitude = [defaults objectForKey:CURR_LOC_LAT];
-        [GPSDictionary setObject:longitude forKeyedSubscript:(NSString *) kCGImagePropertyGPSLongitude];
-        [GPSDictionary setObject:latitude forKeyedSubscript:(NSString *) kCGImagePropertyGPSLatitude];
-    }
+//    if (gpsMeta) {
+//        
+//        NSString *longitude = [defaults objectForKey:CURR_LOC_LONG];
+//        NSString *latitude = [defaults objectForKey:CURR_LOC_LAT];
+//        [GPSDictionary setObject:longitude forKeyedSubscript:(NSString *) kCGImagePropertyGPSLongitude];
+//        [GPSDictionary setObject:latitude forKeyedSubscript:(NSString *) kCGImagePropertyGPSLatitude];
+//    }
     if (!TIFFDictionary) {
         TIFFDictionary = [NSMutableDictionary dictionary];
     }

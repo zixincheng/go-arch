@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "CSLocation.h"
+#import "CSDevice.h"
 #import "CSPhoto.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -16,7 +17,15 @@
 #import "SGPopSelectView.h"
 #import "CSLocationMeta.h"
 @interface AddNewEntryViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,AddingLocationViewControllerDelegate,UIGestureRecognizerDelegate>{
+  
+  AppDelegate *appDelegate;
 }
+
+- (void) updateCoverPhoto:(CSPhoto *)image;
+
+// IF WE ARE GOING TO USE A LOCATION ALREADY IN DB AND EDIT IT, OR CREATE NEW LOCATION
+@property (nonatomic) BOOL usePreviousLocation;
+
 @property (weak, nonatomic) IBOutlet UIImageView *CoverImageView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
@@ -45,7 +54,7 @@
 @property (nonatomic,strong)  UIButton *bedSelectBtn;
 @property (nonatomic,strong)  UIButton *bathSelectBtn;
 
-
+@property (nonatomic,strong) CSDevice *localDevice;
 @property (nonatomic,strong) CSLocation *location;
 @property (nonatomic,strong) CSPhoto *coverPhoto;
 @property (nonatomic,strong) CSLocationMeta *locationMeta;
