@@ -465,7 +465,7 @@
       [singleLocContoller setHidesBottomBarWhenPushed:YES];
 
       NSString *title;
-      if (![self.selectedlocation.unit isEqualToString:@""]) {
+      if (self.selectedlocation.unit !=nil) {
         title = [NSString stringWithFormat:@"%@ - %@",self.selectedlocation.unit, self.selectedlocation.name];
       } else {
         title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];

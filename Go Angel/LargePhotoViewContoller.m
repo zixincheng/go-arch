@@ -52,7 +52,7 @@
     [singleLocContoller setHidesBottomBarWhenPushed:YES];
     
     NSString *title;
-    if (![_selectedLocation.unit isEqualToString:@""]) {
+    if (_selectedLocation.unit !=nil) {
       title = [NSString stringWithFormat:@"%@ - %@", _selectedLocation.unit, _selectedLocation.name];
     } else {
       title = [NSString stringWithFormat:@"%@", _selectedLocation.name];
