@@ -12,6 +12,7 @@
 #import "CSDevice.h"
 #import "CSPhoto.h"
 #import "CSLocation.h"
+#import "CSLocationMeta.h"
 #import "ActivityHistory.h"
 
 // the wrapper to manage inserting our objects into the db
@@ -42,7 +43,7 @@
 - (NSString *) getLatestId;
 - (NSString *) getCurrentPhotoOnServerVaule: (NSString *) deviceId CurrentIndex:(int)index;
 - (void) deletePhotos:(CSPhoto *) photo;
-- (void) addLocation:(CSLocation *)location;
+- (void) addLocation:(CSLocation *)location locationmeta :(CSLocationMeta *) locationMeta;
 - (void) deleteLocation:(CSLocation *) location;
 - (NSMutableArray *) searchLocation: (NSString *) location;
 -(void) updatePhotoTag: (NSString *) tag photoId: (NSString *) photoid photo: (CSPhoto *) photo;

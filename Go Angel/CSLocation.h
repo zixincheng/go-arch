@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class CSPhoto;
+@class CSLocationMeta;
 @interface CSLocation : NSObject
 
 
@@ -23,6 +24,7 @@
 @property (nonatomic, strong) NSString *longitude;
 @property (nonatomic, strong) NSString *latitude;
 @property (nonatomic, strong) CSPhoto *photo;
+@property (nonatomic, strong) CSLocationMeta *locationMeta;
 
 
 @end

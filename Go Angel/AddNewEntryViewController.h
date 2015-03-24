@@ -14,6 +14,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "AddingLocationViewController.h"
 #import "SGPopSelectView.h"
+#import "CSLocationMeta.h"
 @interface AddNewEntryViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,AddingLocationViewControllerDelegate,UIGestureRecognizerDelegate>{
 }
 @property (weak, nonatomic) IBOutlet UIImageView *CoverImageView;
@@ -34,7 +35,6 @@
 
 @property (nonatomic,strong) UILabel *typeLabel;
 @property (nonatomic,strong) UILabel *statusLabel;
-@property (nonatomic,strong) UILabel *neighborLabel;
 @property (nonatomic,strong) UILabel *bedLabel;
 @property (nonatomic,strong) UILabel *bathLabel;
 
@@ -42,13 +42,13 @@
 @property (nonatomic,strong)  UIButton *historySelectBtn;
 @property (nonatomic,strong)  UIButton *typeSelectBtn;
 @property (nonatomic,strong)  UIButton *statusSelectBtn;
-@property (nonatomic,strong)  UIButton *neighborSelectBtn;
 @property (nonatomic,strong)  UIButton *bedSelectBtn;
 @property (nonatomic,strong)  UIButton *bathSelectBtn;
 
 
 @property (nonatomic,strong) CSLocation *location;
 @property (nonatomic,strong) CSPhoto *coverPhoto;
+@property (nonatomic,strong) CSLocationMeta *locationMeta;
 @property (nonatomic,strong) UIImage *photoImage;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 

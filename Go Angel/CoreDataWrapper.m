@@ -779,7 +779,7 @@
 #pragma mark -
 #pragma mark Location functions
 
-- (void) addLocation:(CSLocation *)location {
+- (void) addLocation:(CSLocation *)location locationmeta :(CSLocationMeta *) locationMeta{
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     
     [context performBlockAndWait: ^{
@@ -814,6 +814,11 @@
         [locationObj setValue:location.name forKey:NAME];
         [locationObj setValue:location.longitude forKey:LONG];
         [locationObj setValue:location.latitude forKey:LAT];
+        [locationObj setValue:location.postCode forKey:POSTALCODE];
+        
+        NSManagedObject *meta =[self updateLocationMeta:locationObj locationMeta:locationMeta];
+        
+        [locationObj setValue:meta forKey:@"metaData"];
 
         [context save:nil];
         
@@ -829,8 +834,29 @@
     location.name = [object valueForKey:NAME];
     location.longitude = [object valueForKey:LONG];
     location.latitude = [object valueForKey:LAT];
+    location.postCode = [object valueForKey:POSTALCODE];
+    NSManagedObject *locationMetaObj = [object valueForKey:@"metaData"];
+    location.locationMeta =  [self getLocationMetaFromObject:locationMetaObj];
 
     return location;
+}
+
+-(CSLocationMeta *)getLocationMetaFromObject: (NSManagedObject *) object {
+    CSLocationMeta *locationMeta = [[CSLocationMeta alloc]init];
+
+    locationMeta.bed = [object valueForKey:BED];
+    locationMeta.tag = [object valueForKey:TAG];
+    locationMeta.type = [object valueForKey:TYPE];
+    locationMeta.price = [object valueForKey:PRICE];
+    locationMeta.listing = [object valueForKey:LISTING];
+    locationMeta.yearBuilt = [object valueForKey:YEARBUILT];
+    locationMeta.landSqft = [object valueForKey:LANDSQFT];
+    locationMeta.bath = [object valueForKey:BATH];
+    locationMeta.buildingSqft = [object valueForKey:BUILDINGSQFT];
+    locationMeta.mls = [object valueForKey:MLS];
+    
+    return locationMeta;
+    
 }
 
 - (NSManagedObject *) relationLocation: (CSLocation *) location object:(NSManagedObject *) object {
@@ -938,6 +964,29 @@
     }];
     
     return arr;
+}
+
+#pragma location metadata functions
+
+- (NSManagedObject *) updateLocationMeta:(NSManagedObject*) locationObj locationMeta : (CSLocationMeta *)locationMeta  {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+        NSManagedObject *meta = [NSEntityDescription insertNewObjectForEntityForName:LOCATIONMETA inManagedObjectContext:context];
+        
+        [meta setValue:locationMeta.bed forKey:BED];
+        [meta setValue:locationMeta.tag forKey:TAG];
+        [meta setValue:locationMeta.type forKey:TYPE];
+        [meta setValue:locationMeta.price forKey:PRICE];
+        [meta setValue:locationMeta.listing forKey:LISTING];
+        [meta setValue:locationMeta.yearBuilt forKey:YEARBUILT];
+        [meta setValue:locationMeta.landSqft forKey:LANDSQFT];
+        [meta setValue:locationMeta.bath forKey:BATH];
+        [meta setValue:locationMeta.buildingSqft forKey:BUILDINGSQFT];
+        [meta setValue:locationMeta.mls forKey:MLS];
+        
+        
+        [context save:nil];
+        return meta;
 }
 
 

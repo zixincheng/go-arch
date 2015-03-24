@@ -61,7 +61,7 @@
     if (self.onLocation) {
         [self startStandardUpdates];
     }
-    //[self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+    [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
@@ -100,9 +100,9 @@
     [self.mapView addAnnotation:self.point];
 }
 -(void) viewDidAppear:(BOOL)animated {
-    self.point = [[MyAnnotation alloc]init];
-    [self startStandardUpdates];
-    [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+    //self.point = [[MyAnnotation alloc]init];
+    //[self startStandardUpdates];
+    //[self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
 }
 
 
@@ -377,7 +377,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
 //save the current location into coredata
 -(void) saveLocationToCoredata {
     
-    [self.datawrapper addLocation:self.location];
+    //[self.datawrapper addLocation:self.location];
     
 }
 

@@ -24,7 +24,6 @@
         <attribute name="landSqft" optional="YES" attributeType="Decimal" defaultValueString="0.0" syncable="YES"/>
         <attribute name="listing" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mls" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="neighbor" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="price" optional="YES" attributeType="Decimal" defaultValueString="0.0" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
@@ -55,7 +54,7 @@
     <elements>
         <element name="Device" positionX="-153" positionY="-208" width="128" height="73"/>
         <element name="Location" positionX="61" positionY="-58" width="128" height="208"/>
-        <element name="LocationMeta" positionX="250" positionY="-90" width="128" height="225"/>
+        <element name="LocationMeta" positionX="250" positionY="-90" width="128" height="210"/>
         <element name="Log" positionX="16" positionY="-207" width="128" height="75"/>
         <element name="Photo" positionX="-162" positionY="-126" width="162" height="268"/>
     </elements>

@@ -26,17 +26,16 @@ CGFloat animatedDistance;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    [self createViewContent];
     self.location = [[CSLocation alloc]init];
     self.coverPhoto = [[CSPhoto alloc]init];
+    self.locationMeta = [[CSLocationMeta alloc]init];
     
     //self.metadataView = [[UIView alloc]initWithFrame:CGRectMake(0, 490, 320, 500)];
     
     self.metadataView.backgroundColor = [UIColor lightGrayColor];
     [self.scrollView addSubview:self.metadataView];
-    
-    [self createMetaView];
-    
     
     UITapGestureRecognizer *tapImageView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTaped:)];
     tapImageView.numberOfTapsRequired = 1;
@@ -188,7 +187,9 @@ CGFloat animatedDistance;
     return YES;
 }
 
-- (IBAction)textFieldValueChanged:(id)sender {
+- (void)textFieldValueChanged:(id)sender {
+    NSNumberFormatter *format = [[NSNumberFormatter alloc]init];
+    format.numberStyle = NSNumberFormatterDecimalStyle;
     if (sender == self.addressTextField) {
         self.location.name = self.addressTextField.text;
     } else if (sender == self.cityTextField) {
@@ -198,13 +199,32 @@ CGFloat animatedDistance;
     } else if (sender == self.countryTextField) {
         self.location.country = self.countryTextField.text;
     } else if (sender == self.postcodeTextField) {
-        
+        self.location.postCode = self.postcodeTextField.text;
+    } else if (sender == self.tagTextField) {
+        self.locationMeta.tag = self.tagTextField.text;
+    } else if (sender == self.priceTextField) {
+        self.locationMeta.price = [format numberFromString: self.priceTextField.text];
+    } else if (sender == self.yearBuiltTextField) {
+        self.locationMeta.yearBuilt = self.yearBuiltTextField.text;
+    } else if (sender == self.buildingSqftTextField) {
+        self.locationMeta.buildingSqft = [format numberFromString: self.buildingSqftTextField.text];
+    } else if (sender == self.landSqftTextField) {
+        self.locationMeta.landSqft = [format numberFromString: self.landSqftTextField.text];
+    } else if (sender == self.mlsTextField) {
+        self.locationMeta.mls = self.mlsTextField.text;
     }
 }
 - (IBAction)saveData:(id)sender {
-    
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    [appDelegate.dataWrapper addLocation:self.location];
+    if (self.location.name !=nil && self.location.city !=nil && self.location.province != nil) {
+        self.locationMeta.location = self.location;
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [appDelegate.dataWrapper addLocation:self.location locationmeta:self.locationMeta];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Address or City or State Can't be Empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [alert show];
+    }
 }
 
 -(void) dataMapView:(CSLocation *)newlocation {
@@ -238,6 +258,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,locationArray[selectedIndex]);
             weakSelf.location = [locationArray objectAtIndex:selectedIndex];
+            weakSelf.locationMeta = weakSelf.location.locationMeta;
             NSLog(@"self locat %@",weakSelf.location.name);
             [weakSelf fillLocationData];
         };
@@ -249,6 +270,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.typeLabel setText:[type objectAtIndex:selectedIndex]];
+            weakSelf.locationMeta.type = weakSelf.typeLabel.text;
         };
     } else if (sender == self.statusSelectBtn) {
         
@@ -259,16 +281,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.statusLabel setText:[type objectAtIndex:selectedIndex]];
-        };
-    } else if (sender == self.neighborSelectBtn) {
-        
-        NSArray *type = @[@"Urban",@"Pedestrian",@"Historic",@"Ethnic",@"Resort"];
-        [self.view addSubview:self.popView];
-        self.popView.selections = type;
-        typeof(self) __weak weakSelf = self;
-        self.popView.selectedHandle = ^(NSInteger selectedIndex){
-            NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
-            [weakSelf.neighborLabel setText:[type objectAtIndex:selectedIndex]];
+            weakSelf.locationMeta.listing = weakSelf.statusLabel.text;
         };
     } else if (sender == self.bedSelectBtn) {
         NSArray *type = @[@"1",@"2",@"3",@"4",@"5",@"6",@"6+"];
@@ -278,6 +291,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.bedLabel setText:[type objectAtIndex:selectedIndex]];
+            weakSelf.locationMeta.bed = weakSelf.bedLabel.text;
         };
     } else if (sender == self.bathSelectBtn) {
         NSArray *type = @[@"1",@"2",@"3",@"4",@"5",@"5+"];
@@ -287,6 +301,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.bathLabel setText:[type objectAtIndex:selectedIndex]];
+            weakSelf.locationMeta.bath = weakSelf.bathLabel.text;
         };
     }
     CGPoint p = [self.view center];
@@ -300,15 +315,18 @@ CGFloat animatedDistance;
     self.countryTextField.text = self.location.country;
     self.stateTextField.text = self.location.province;
     self.postcodeTextField.text = self.location.postCode;
+    self.tagTextField.text = self.locationMeta.tag;
+    self.priceTextField.text = [self.locationMeta.price stringValue];
+    self.yearBuiltTextField.text = self.locationMeta.yearBuilt;
+    self.buildingSqftTextField.text = [self.locationMeta.buildingSqft stringValue];
+    self.landSqftTextField.text = [self.locationMeta.landSqft stringValue];
+    self.mlsTextField.text = [self.locationMeta.landSqft stringValue];
+    self.typeLabel.text = self.locationMeta.type;
+    self.statusLabel.text = self.locationMeta.listing;
+    self.bedLabel.text = self.locationMeta.bed;
+    self.bathLabel.text = self.locationMeta.bath;
 }
 
-
--(void) createMetaView {
-    
-    //create Lables
-
-    
-}
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     CGPoint p = [gestureRecognizer locationInView:self.view];
@@ -333,7 +351,7 @@ CGFloat animatedDistance;
             return 5;
             break;
         case 1:
-            return 5;
+            return 4;
             break;
         case 2:
             return 6;
@@ -386,7 +404,6 @@ CGFloat animatedDistance;
                     AddressLabel.text = @"Address";
                     [cell.contentView addSubview:AddressLabel];
                     
-                    self.addressTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
                     self.addressTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.addressTextField.adjustsFontSizeToFitWidth = YES;
                     self.addressTextField.delegate = self;
@@ -404,7 +421,6 @@ CGFloat animatedDistance;
                     cityLabel.text = @"City";
                     [cell.contentView addSubview:cityLabel];
                     
-                    self.cityTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
                     self.cityTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.cityTextField.delegate = self;
                     [cell.contentView addSubview:self.cityTextField];
@@ -422,7 +438,7 @@ CGFloat animatedDistance;
                     stateLabel.text = @"State";
                     [cell.contentView addSubview:stateLabel];
                     
-                    self.stateTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+
                     self.stateTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.stateTextField.delegate = self;
                     [cell.contentView addSubview:self.stateTextField];
@@ -435,7 +451,6 @@ CGFloat animatedDistance;
                     
                     [cell.contentView addSubview:countryLabel];
                     
-                    self.countryTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
                     self.countryTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.countryTextField.delegate = self;
                     [cell.contentView addSubview:self.countryTextField];
@@ -444,11 +459,10 @@ CGFloat animatedDistance;
                 case 4:
                 {
                     UILabel *postalLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 90, 30.0)];
-                    postalLabel.text = @"Postalcode";
+                    postalLabel.text = @"ZIP";
                     
                     [cell.contentView addSubview:postalLabel];
                     
-                    self.postcodeTextField = [[UITextField alloc] initWithFrame:CGRectMake(100, 9, 135, 30.0)];
                     self.postcodeTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.postcodeTextField.delegate = self;
                     [cell.contentView addSubview:self.postcodeTextField];
@@ -466,40 +480,37 @@ CGFloat animatedDistance;
                 [subviews removeFromSuperview];
             }
             switch (indexPath.row) {
-                case 0:
+                case 3:
                 {
                     UILabel *tagLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 90, 30.0)];
                     tagLabel.text = @"Tag";
                     
                     [cell.contentView addSubview:tagLabel];
                     
-                    self.tagTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
                     self.tagTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.tagTextField.delegate = self;
                     [cell.contentView addSubview:self.tagTextField];
                     break;
                 }
-                case 1:
+                case 0:
                 {
                     UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 90, 30.0)];
                     priceLabel.text = @"Price";
                     
                     [cell.contentView addSubview:priceLabel];
                     
-                    self.priceTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
                     self.priceTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.priceTextField.delegate = self;
                     [cell.contentView addSubview:self.priceTextField];
                     break;
                 }
-                case 2:
+                case 1:
                 {
                     UILabel *type = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 90, 30.0)];
                     type.text = @"Type";
                     
                     [cell.contentView addSubview:type];
                     
-                    self.typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
                     [cell.contentView addSubview:self.typeLabel];
                     
                     self.typeSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
@@ -508,36 +519,19 @@ CGFloat animatedDistance;
                     [cell.contentView addSubview:self.typeSelectBtn];
                     break;
                 }
-                case 3:
+                case 2:
                 {
                     UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 90, 30.0)];
                     status.text = @"status";
                     
                     [cell.contentView addSubview:status];
                     
-                    self.statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
                     [cell.contentView addSubview:self.statusLabel];
                     
                     self.statusSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
                     [self.statusSelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
                     [self.statusSelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
                     [cell.contentView addSubview:self.statusSelectBtn];
-                    break;
-                }
-                case 4:
-                {
-                    UILabel *neighbor = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 90, 30.0)];
-                    neighbor.text = @"Neighbor";
-                    
-                    [cell.contentView addSubview:neighbor];
-                    
-                    self.neighborLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
-                    [cell.contentView addSubview:self.neighborLabel];
-                    
-                    self.neighborSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
-                    [self.neighborSelectBtn addTarget:self action:@selector(showPop:) forControlEvents:UIControlEventTouchUpInside];
-                    [self.neighborSelectBtn setImage:[UIImage imageNamed:@"book-cover-plus-7.png"] forState:UIControlStateNormal];
-                    [cell.contentView addSubview:self.neighborSelectBtn];
                     break;
                 }
                 default:
@@ -558,7 +552,6 @@ CGFloat animatedDistance;
                     
                     [cell.contentView addSubview:yearBuilt];
                     
-                    self.yearBuiltTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 115, 30.0)];
                     self.yearBuiltTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.yearBuiltTextField.delegate = self;
                     [cell.contentView addSubview:self.yearBuiltTextField];
@@ -571,7 +564,6 @@ CGFloat animatedDistance;
                     
                     [cell.contentView addSubview:bed];
                     
-                    self.bedLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
                     [cell.contentView addSubview:self.bedLabel];
                     
                     self.bedSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
@@ -587,7 +579,6 @@ CGFloat animatedDistance;
                     
                     [cell.contentView addSubview:bath];
                     
-                    self.bathLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
                     [cell.contentView addSubview:self.bathLabel];
                     
                     self.bathSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(252, 9, 60, 30)];
@@ -603,7 +594,6 @@ CGFloat animatedDistance;
                     
                     [cell.contentView addSubview:buildSqft];
                     
-                    self.buildingSqftTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 115, 30.0)];
                     self.buildingSqftTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.buildingSqftTextField.keyboardType = UIKeyboardTypeNumberPad;
                     self.buildingSqftTextField.delegate = self;
@@ -617,7 +607,6 @@ CGFloat animatedDistance;
                     
                     [cell.contentView addSubview:landSqft];
                     
-                    self.landSqftTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 115, 30.0)];
                     self.landSqftTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.landSqftTextField.keyboardType = UIKeyboardTypeNumberPad;
                     self.landSqftTextField.delegate = self;
@@ -631,7 +620,6 @@ CGFloat animatedDistance;
                     
                     [cell.contentView addSubview:mls];
                     
-                    self.mlsTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 115, 30.0)];
                     self.mlsTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.mlsTextField.keyboardType = UIKeyboardTypeNumberPad;
                     self.mlsTextField.delegate = self;
@@ -651,6 +639,44 @@ CGFloat animatedDistance;
     // Configure the cell...
 }
 
+-(void) createViewContent {
+    self.addressTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    [self.addressTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
+    self.cityTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    [self.cityTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
+    self.stateTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    [self.stateTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
+    self.countryTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    [self.countryTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
+    self.postcodeTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    [self.postcodeTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
+    self.tagTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    [self.tagTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
+    self.priceTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    [self.priceTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
+    self.typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    self.statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    self.yearBuiltTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 115, 30.0)];
+    [self.yearBuiltTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
+    self.bedLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    self.bathLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    self.buildingSqftTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 115, 30.0)];
+    [self.buildingSqftTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
+    self.landSqftTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 115, 30.0)];
+    [self.landSqftTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
+    self.mlsTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 115, 30.0)];
+    [self.mlsTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+}
 /*
 #pragma mark - Navigation
 

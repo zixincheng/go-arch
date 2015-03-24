@@ -41,8 +41,23 @@
 #define DEVICE @"Device"
 #define LOG @"Log"
 #define LOCATION @"Location"
+#define LOCATIONMETA @"LocationMeta"
+
+// location metadta attributes
+#define BATH @"bath"
+#define BED @"bed"
+#define BUILDINGSQFT @"buildingSqft"
+#define LANDSQFT @"landSqft"
+#define MLS @"mls"
+#define NEIGHBOR @"neighbor"
+#define PRICE @"price"
+#define LISTING @"listing"
+#define TAG @"tag"
+#define TYPE @"type"
+#define YEARBUILT @"yearBuilt"
 
 // location entity attributes
+#define POSTALCODE @"postalCode"
 #define COUNTRY @"country"
 #define COUNTRYCODE @"countryCode"
 #define CITY @"city"
