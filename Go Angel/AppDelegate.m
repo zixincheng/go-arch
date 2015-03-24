@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
-#import "MainLocationViewController.h"
+#import "SegmentedViewController.h"
 
 @implementation AppDelegate
 
@@ -19,6 +19,7 @@
   self.account = [[AccountDataWrapper alloc] init];
   [self.account readSettings];
   self.dataWrapper = [[CoreDataWrapper alloc]init];
+  self.uploadTask = [[UploadPhotosTask alloc]initWithWrapper:self.dataWrapper];
   self.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
   self.netWorkCheck = [[NetWorkCheck alloc] initWithCoinsorter:self.coinsorter];
   NSLog(@"reading settings");
@@ -64,7 +65,7 @@
 (void (^)(UIBackgroundFetchResult))completionHandler {
        NSLog(@"Background fetch started...");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-    MainLocationViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"mainLocationViewController"];
+    SegmentedViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"SegmentedViewController"];
     [vc fetchNewDataWithCompletionHandler:^(UIBackgroundFetchResult result) {
         completionHandler(result);
     }];

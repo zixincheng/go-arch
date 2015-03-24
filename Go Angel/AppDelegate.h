@@ -17,6 +17,7 @@
 
 @class Coinsorter;
 @class NetWorkCheck;
+@class UploadPhotosTask;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -30,6 +31,7 @@
 
 @property (strong, nonatomic) NetWorkCheck *netWorkCheck;
 
+@property (strong, nonatomic) UploadPhotosTask *uploadTask;
 // media loader and image cache
 @property (nonatomic, strong) MediaLoader *mediaLoader;
 

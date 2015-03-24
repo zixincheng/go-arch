@@ -27,7 +27,7 @@
   
   self.dataWrapper = wrap;
   
-  uploadTask = [[UploadPhotosTask alloc] initWithWrapper:self.dataWrapper];
+  uploadTask = appDelegate.uploadTask;
   
   return self;
 }
