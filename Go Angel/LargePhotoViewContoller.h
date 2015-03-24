@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "CSDevice.h"
 #import "CoreDataWrapper.h"
+#import "Coinsorter.h"
 #import "AppDelegate.h"
 #import "AccountDataWrapper.h"
+#import "SingleLocationViewController.h"
 
 @interface LargePhotoViewContoller : UIViewController<UITableViewDataSource, UITableViewDelegate> {
   AccountDataWrapper *account;
@@ -18,6 +20,7 @@
 }
 
 @property (nonatomic, strong) NSMutableArray *locations;
+@property (nonatomic, strong) CSLocation *selectedLocation;
 
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSDevice *localDevice;

@@ -42,6 +42,28 @@
   });
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+  if ([segue.identifier isEqualToString:@"singleLocationSegue"]) {
+    SingleLocationViewController *singleLocContoller = (SingleLocationViewController *)segue.destinationViewController;
+    singleLocContoller.dataWrapper = self.dataWrapper;
+    singleLocContoller.localDevice = self.localDevice;
+    singleLocContoller.location = _selectedLocation;
+    singleLocContoller.coinsorter = [[Coinsorter alloc] initWithWrapper:_dataWrapper];
+    [singleLocContoller setHidesBottomBarWhenPushed:YES];
+    
+    NSString *title;
+    if (![_selectedLocation.unit isEqualToString:@""]) {
+      title = [NSString stringWithFormat:@"%@ - %@", _selectedLocation.unit, _selectedLocation.name];
+    } else {
+      title = [NSString stringWithFormat:@"%@", _selectedLocation.name];
+    }
+    singleLocContoller.title = title;
+    
+  }
+}
+
+# pragma mark - table view delegate/data source methods
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PHOTO_CELL];
   
@@ -77,6 +99,15 @@
   [lblCityState setText:[NSString stringWithFormat:@"%@, %@", l.city, l.province]];
   
   return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  
+  _selectedLocation = _locations[[indexPath row]];
+  [self performSegueWithIdentifier:@"singleLocationSegue" sender:self];
+  
+  // Deselect
+  [_tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

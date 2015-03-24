@@ -1523,13 +1523,13 @@
                                                     <rect key="frame" x="-12" y="162" width="344" height="35"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="City, State" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="53Z-OX-OcR">
-                                                            <rect key="frame" x="20" y="14" width="143" height="21"/>
+                                                            <rect key="frame" x="20" y="14" width="230" height="21"/>
                                                             <fontDescription key="fontDescription" name="GillSans-Light" family="Gill Sans" pointSize="15"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Address" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S8K-Ki-FXM">
-                                                            <rect key="frame" x="20" y="-4" width="153" height="21"/>
+                                                            <rect key="frame" x="20" y="-4" width="230" height="21"/>
                                                             <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="17"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1557,6 +1557,7 @@
                     <navigationItem key="navigationItem" title="Photos" id="ALF-Ge-PYt"/>
                     <connections>
                         <outlet property="tableView" destination="3MF-7H-6ua" id="Qqf-4l-dfX"/>
+                        <segue destination="3F9-MO-0gI" kind="push" identifier="singleLocationSegue" id="D9B-TV-9V5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C9O-bS-6dn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1874,7 +1875,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="4RR-SE-nq1"/>
-        <segue reference="Lby-sC-hxZ"/>
+        <segue reference="D9B-TV-9V5"/>
         <segue reference="Hoo-Hd-Ahm"/>
     </inferredMetricsTieBreakers>
 </document>

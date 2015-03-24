@@ -348,7 +348,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+  
     self.selectedlocation = self.locations[[indexPath row]];
     [self performSegueWithIdentifier:@"individualSegue" sender:self];
     
@@ -478,8 +478,6 @@
         searchVC.localDevice = self.localDevice;
         
     }
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
 
 
