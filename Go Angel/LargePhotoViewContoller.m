@@ -26,7 +26,7 @@
 }
 
 - (void) viewDidAppear:(BOOL)animated {
-  
+  [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 - (void) loadLocations {
