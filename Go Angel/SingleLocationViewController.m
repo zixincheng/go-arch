@@ -48,6 +48,11 @@
   // register for notifications from child controllers providing info
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRightButtonText:) name:@"SetRightButtonText" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showShareDelete:) name:@"ShowShareDelete" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(metaChanged) name:@"LocationMetadataUpdate" object:nil];
+}
+
+- (void)metaChanged {
+  [self setTitle:_location.name];
 }
 
 // show the share and delete buttons in toolbar

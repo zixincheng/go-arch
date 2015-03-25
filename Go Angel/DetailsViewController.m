@@ -177,10 +177,10 @@
       [alert show];
       [self enableEditing];
   } else {
-//    [appDelegate.dataWrapper addLocation:_location locationmeta:_location.locationMeta];
       [appDelegate.dataWrapper updateLocation:_location locationmeta:_location.locationMeta];
     
       NSLog(@"updated location");
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"LocationMetadataUpdate" object:nil];
   }
 }
 
