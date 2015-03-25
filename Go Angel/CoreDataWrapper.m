@@ -779,6 +779,41 @@
 #pragma mark -
 #pragma mark Location functions
 
+
+// uses the the location.objectUri to lookup object and update to latest values in cslocation
+- (void) updateLocation:(CSLocation *)location locationmeta:(CSLocationMeta *)locationMeta {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+    [context performBlockAndWait:^{
+        NSURL *url = [NSURL URLWithString:location.objectUri];
+        NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:url];
+        NSManagedObject *obj = [context objectWithID:objectID];
+        
+        if (obj == nil) {
+            NSLog(@"there is no object with that id");
+            return;
+        }
+        
+        [obj setValue:location.country forKey:COUNTRY];
+        [obj setValue:location.countryCode forKey:COUNTRYCODE];
+        [obj setValue:location.city forKey:CITY];
+        [obj setValue:location.province forKey:PROVINCE];
+        [obj setValue:location.unit forKey:UNIT];
+        [obj setValue:location.name forKey:NAME];
+        [obj setValue:location.longitude forKey:LONG];
+        [obj setValue:location.latitude forKey:LAT];
+        [obj setValue:location.postCode forKey:POSTALCODE];
+        
+        NSManagedObject *meta = [self updateLocationMeta:obj locationMeta:locationMeta];
+        
+        [obj setValue:meta forKey:@"metaData"];
+        
+        [context save: nil];
+        
+        NSLog(@"updated location object in db");
+    }];
+}
+
 - (void) addLocation:(CSLocation *)location locationmeta :(CSLocationMeta *) locationMeta{
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     
@@ -838,6 +873,9 @@
     NSManagedObject *locationMetaObj = [object valueForKey:@"metaData"];
     location.locationMeta =  [self getLocationMetaFromObject:locationMetaObj];
 
+    // store nsmanagedobject uri into location
+    location.objectUri = [[[object objectID] URIRepresentation] absoluteString];
+  
     return location;
 }
 

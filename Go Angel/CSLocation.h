@@ -26,6 +26,9 @@
 @property (nonatomic, strong) CSPhoto *photo;
 @property (nonatomic, strong) CSLocationMeta *locationMeta;
 
+// the nsmanagedobject uri
+@property (nonatomic, strong) NSString *objectUri;
+
 
 - (NSString *) formatPrice:(NSNumber *)price;
 

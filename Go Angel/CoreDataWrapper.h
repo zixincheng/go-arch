@@ -43,6 +43,7 @@
 - (NSString *) getLatestId;
 - (NSString *) getCurrentPhotoOnServerVaule: (NSString *) deviceId CurrentIndex:(int)index;
 - (void) deletePhotos:(CSPhoto *) photo;
+- (void) updateLocation:(CSLocation *)location locationmeta:(CSLocationMeta *)locationMeta;
 - (void) addLocation:(CSLocation *)location locationmeta :(CSLocationMeta *) locationMeta;
 - (void) deleteLocation:(CSLocation *) location;
 - (NSMutableArray *) searchLocation: (NSString *) location;
