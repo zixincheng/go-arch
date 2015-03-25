@@ -17,14 +17,7 @@
   // init vars
   appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
   
-  [_lblAddress setText:_location.name];
-  [_lblCityState setText:[NSString stringWithFormat:@"%@, %@", _location.city, _location.province]];
-  [_lblCountry setText:_location.countryCode];
-  [_lblPrice setText:[_location formatPrice:[NSNumber numberWithInt:1000000]]];
-  [_lblFloor setText:[NSString stringWithFormat:@"%@ sq. ft.", _location.locationMeta.buildingSqft.stringValue]];
-  [_lblLot setText:[NSString stringWithFormat:@"%@ sq. ft.", _location.locationMeta.landSqft.stringValue]];
-  [_lblBed setText:[NSString stringWithFormat:@"%@", _location.locationMeta.bed]];
-  [_lblBath setText:[NSString stringWithFormat:@"%@", _location.locationMeta.bath]];
+  [self setValues];
   
   // set current properties of view
   [self updateCount];
@@ -34,6 +27,41 @@
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCoverPhoto) name:@"CoverPhotoChange" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoAdded) name:@"addNewPhoto" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoDeleted) name:@"PhotoDeleted" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setValues) name:@"LocationMetadataUpdate" object:nil];
+}
+
+- (void) setValues {
+  NSString *cityState = [NSString stringWithFormat:@"%@, %@", _location.city, _location.province];
+  NSString *price = [_location formatPrice:_location.locationMeta.price];
+  NSString *buildingSqft = [NSString stringWithFormat:@"%@ sq. ft.", _location.locationMeta.buildingSqft.stringValue];
+  NSString *landSqft = [NSString stringWithFormat:@"%@ sq. ft.", _location.locationMeta.landSqft.stringValue];
+  NSString *beds = [NSString stringWithFormat:@"%@", _location.locationMeta.bed];
+  NSString *baths = [NSString stringWithFormat:@"%@", _location.locationMeta.bath];
+  
+  if (!_location.locationMeta.bed) {
+    beds = @"";
+  }
+  if (!_location.locationMeta.bath) {
+    baths = @"";
+  }
+  if (!_location.locationMeta.buildingSqft) {
+    buildingSqft = @"";
+  }
+  if (!_location.locationMeta.landSqft) {
+    landSqft = @"";
+  }
+  
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [_lblAddress setText:_location.name];
+    [_lblCityState setText:cityState];
+    [_lblCountry setText:_location.countryCode];
+    [_lblPrice setText:price];
+    [_lblFloor setText:buildingSqft];
+    [_lblLot setText:landSqft];
+    [_lblBed setText:beds];
+    [_lblBath setText:baths];
+    
+  });
 }
 
 // update photo count labels
