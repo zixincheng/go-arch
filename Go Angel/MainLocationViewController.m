@@ -7,6 +7,13 @@
 //
 
 #import "MainLocationViewController.h"
+#define IMAGE_TAG       1
+#define PRICE_TAG       2
+#define BD_TAG          3
+#define BA_TAG          4
+#define ADDRESS_TAG     5
+#define BUILDING_TAG    6
+#define LAND_TAG        7
 
 @interface MainLocationViewController ()
 
@@ -105,14 +112,22 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"LocationCell"];
+    //UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"LocationCell"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LocationCell"];
+    UIImageView *imageView  = (UIImageView *)[cell viewWithTag:IMAGE_TAG];
+    UILabel *priceLable = (UILabel *)[cell viewWithTag:PRICE_TAG];
+    UILabel *bdLbel = (UILabel *)[cell viewWithTag:BD_TAG];
+    UILabel *baLbel = (UILabel *)[cell viewWithTag:BA_TAG];
+    UILabel *addressLbel = (UILabel *)[cell viewWithTag:ADDRESS_TAG];
+    UILabel *buildingLbel = (UILabel *)[cell viewWithTag:BUILDING_TAG];
+    UILabel *landLbel = (UILabel *)[cell viewWithTag:LAND_TAG];
     CSLocation *l = self.locations[[indexPath row]];
     CSPhoto *photo;
     self.photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:l];
     UIImage *defaultImage = [UIImage imageNamed:@"box.png"];
-    cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    cell.imageView.clipsToBounds = YES;
-    cell.imageView.image = defaultImage;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.clipsToBounds = YES;
+    imageView.image = defaultImage;
     if (self.photos.count != 0) {
         photo = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:l];
         if (photo == nil) {
@@ -121,19 +136,39 @@
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                cell.imageView.image = image;
+                imageView.image = image;
             });
         }];
     }
-    if (l.unit != nil) {
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@",l.unit, l.name];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",l.city,l.province];
-    } else {
-        cell.textLabel.text = l.name;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",l.city,l.province];
-        // Configure the cell...
+    NSNumberFormatter *format = [[NSNumberFormatter alloc] init];
+    [format setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [format setMaximumFractionDigits:0];
+    [format setRoundingMode:NSNumberFormatterRoundHalfUp];
+    NSString *priceString = [format stringFromNumber:l.locationMeta.price];
+    [priceLable setText:priceString];
+    
+    if (l.locationMeta.bed !=nil) {
+        [bdLbel setText:[NSString stringWithFormat:@"%@ BD",l.locationMeta.bed]];
+    }
+    if (l.locationMeta.bed !=nil) {
+        [baLbel setText:[NSString stringWithFormat:@"%@ BA",l.locationMeta.bath]];
+    }
+    [addressLbel setText:[NSString stringWithFormat:@"%@, %@, %@, %@",l.name,l.city,l.province,l.country]];
+    
+    NSNumberFormatter *formatSQFT = [[NSNumberFormatter alloc] init];
+    [formatSQFT setNumberStyle:NSNumberFormatterDecimalStyle];
+    [formatSQFT setMaximumFractionDigits:2];
+    [formatSQFT setRoundingMode:NSNumberFormatterRoundHalfUp];
+    
+    if (l.locationMeta.buildingSqft !=nil) {
+        NSString *buildingString = [formatSQFT stringFromNumber:l.locationMeta.buildingSqft];
+        [buildingLbel setText:[NSString stringWithFormat:@"Fl. %@ sq. ft.",buildingString]];
     }
     
+    if (l.locationMeta.buildingSqft !=nil) {
+        NSString *landString = [formatSQFT stringFromNumber:l.locationMeta.landSqft];
+        [landLbel setText:[NSString stringWithFormat:@"Lt. %@ sq. ft.",landString]];
+    }
     
     return cell;
 }
@@ -146,11 +181,12 @@
     // Deselect
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
+/*
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 70;
 }
+*/
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {

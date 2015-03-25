@@ -99,6 +99,7 @@
     time.value = 0;
     CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
     UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
+    UIImage *thumImage = [self resizeImage:(UIImage *)thumbnail];
     CGImageRelease(imageRef);
     
     // get app document path
@@ -117,7 +118,7 @@
     NSData *videoData = [NSData dataWithContentsOfURL:moviePath];
     
     [videoData writeToFile:tmpFullPath atomically:YES];
-    NSData *thumbData = [NSData dataWithData:UIImageJPEGRepresentation(thumbnail, 1.0)];
+    NSData *thumbData = [NSData dataWithData:UIImageJPEGRepresentation(thumImage, 1.0)];
     [thumbData writeToFile:tmpThumbPath atomically:YES];
     //[self.photoPath addObject:filePath];
     CSPhoto *p = [[CSPhoto alloc] init];
@@ -186,7 +187,7 @@
     
     UIGraphicsBeginImageContext(targetSize);
     
-    [result drawInRect:CGRectMake(0, 0, 360, 360)];
+    [result drawInRect:CGRectMake(0, 0, 380, 380)];
     tempImage = UIGraphicsGetImageFromCurrentImageContext();
     
     UIGraphicsEndImageContext();

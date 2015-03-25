@@ -58,7 +58,7 @@
 - (IBAction)segmentChanged:(UISegmentedControl *)sender {
     UIViewController *vc = [self viewControllerForSegmentIndex:sender.selectedSegmentIndex];
     [self addChildViewController:vc];
-    [self transitionFromViewController:self.currentViewController toViewController:vc duration:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [self transitionFromViewController:self.currentViewController toViewController:vc duration:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         [self.currentViewController.view removeFromSuperview];
         vc.view.frame = self.containerView.bounds;
 
@@ -191,8 +191,7 @@
 #pragma mark - background upload function
 -(void)fetchNewDataWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     appDelegate = [[UIApplication sharedApplication] delegate];
-    self.netWorkCheck = appDelegate.netWorkCheck;
-    [self.netWorkCheck setupNet];
+
     NSString *bssid = [self currentWifiBSSID];
     if (bssid == nil) {
         return;
@@ -201,7 +200,7 @@
         int unUploadedFullPhotos = [appDelegate.dataWrapper getFullImageCountUnUploaded];
         NSLog(@"count %d ",unUploadedThumbnail);
         if (unUploadedFullPhotos != 0 && unUploadedThumbnail != 0) {
-            [self.uploadFunction uploadPhotosToApi:self.networkStatus];
+            [self.uploadFunction uploadPhotosToApi:WIFILOCAL];
             completionHandler(UIBackgroundFetchResultNewData);
         } else {
             completionHandler(UIBackgroundFetchResultNoData);
