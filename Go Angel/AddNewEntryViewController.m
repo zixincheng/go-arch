@@ -246,9 +246,9 @@ CGFloat animatedDistance;
 - (void)textFieldValueChanged:(id)sender {
     
     // if using previous location, don't save all edits into location objectbrew up
-    if (_usePreviousLocation) {
-        return;
-    }
+//    if (_usePreviousLocation) {
+//        return;
+//    }
     
     NSNumberFormatter *format = [[NSNumberFormatter alloc]init];
     format.numberStyle = NSNumberFormatterDecimalStyle;
