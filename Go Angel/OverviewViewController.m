@@ -21,10 +21,10 @@
   [_lblCityState setText:[NSString stringWithFormat:@"%@, %@", _location.city, _location.province]];
   [_lblCountry setText:_location.countryCode];
   [_lblPrice setText:[_location formatPrice:[NSNumber numberWithInt:1000000]]];
-  [_lblFloor setText:@"20 sq. ft."];
-  [_lblLot setText:@"20 sq. ft."];
-  [_lblBed setText:@"2"];
-  [_lblBath setText:@"2"];
+  [_lblFloor setText:[NSString stringWithFormat:@"%@ sq. ft.", _location.locationMeta.buildingSqft.stringValue]];
+  [_lblLot setText:[NSString stringWithFormat:@"%@ sq. ft.", _location.locationMeta.landSqft.stringValue]];
+  [_lblBed setText:[NSString stringWithFormat:@"%@", _location.locationMeta.bed]];
+  [_lblBath setText:[NSString stringWithFormat:@"%@", _location.locationMeta.bath]];
   
   // set current properties of view
   [self updateCount];
