@@ -54,8 +54,10 @@
     completionHandler:(void (^)(UIImage *))completionHandler {
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
       NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
-      NSString *fullPath = [documentsPath stringByAppendingPathComponent:photo.imageURL];
-      NSString *newUrl =[ @"file://"stringByAppendingString:fullPath];
+      NSString *fullPathImage = [documentsPath stringByAppendingPathComponent:photo.imageURL];
+      NSString *fullPathVideo = [documentsPath stringByAppendingPathComponent:photo.thumbURL];
+
+      NSString *newUrl =[ @"file://"stringByAppendingString:fullPathImage];
       NSURL *url = [NSURL URLWithString:newUrl];
       
       
@@ -133,7 +135,7 @@
         // try to get image from cache first
 
         UIImage *image;
-        NSData *data = [_imageCache objectForKey:fullPath];
+        NSData *data = [_imageCache objectForKey:fullPathImage];
 
         if (data != nil) {
           image = [UIImage imageWithData:data];
@@ -142,9 +144,9 @@
           // load the photo directly from path
           @try {
               if ([photo.isVideo isEqualToString:@"1"]) {
-                  url = [NSURL URLWithString:photo.imageURL];
+                  url = [NSURL URLWithString:fullPathVideo];
               } else {
-                  url = [NSURL URLWithString:fullPath];
+                  url = [NSURL URLWithString:fullPathImage];
               }
             image = [UIImage imageWithContentsOfFile:url.path];
             if (image) {
