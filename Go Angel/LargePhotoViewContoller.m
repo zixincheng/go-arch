@@ -14,6 +14,8 @@
 #define CITY_STATE_TAG  3
 #define COUNT_TAG       4
 
+#define ROW_HEIGHT      220
+
 @implementation LargePhotoViewContoller
 
 - (void) viewDidLoad {
@@ -111,7 +113,7 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 200;
+  return ROW_HEIGHT;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
