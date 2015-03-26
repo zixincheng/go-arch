@@ -24,4 +24,14 @@
   return formatted;
 }
 
+- (NSString *) formatArea:(NSNumber *)area {
+  NSNumberFormatter *formatSQFT = [[NSNumberFormatter alloc] init];
+  [formatSQFT setNumberStyle:NSNumberFormatterDecimalStyle];
+  [formatSQFT setMaximumFractionDigits:2];
+  [formatSQFT setRoundingMode:NSNumberFormatterRoundHalfUp];
+  
+  NSString *result = [formatSQFT stringFromNumber:area];
+  return result;
+}
+
 @end

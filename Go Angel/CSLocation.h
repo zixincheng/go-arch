@@ -31,5 +31,6 @@
 
 
 - (NSString *) formatPrice:(NSNumber *)price;
+- (NSString *) formatArea:(NSNumber *)area;
 
 @end

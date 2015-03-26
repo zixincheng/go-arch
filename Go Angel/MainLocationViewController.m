@@ -154,19 +154,14 @@
         [baLbel setText:[NSString stringWithFormat:@"%@ BA",l.locationMeta.bath]];
     }
     [addressLbel setText:[NSString stringWithFormat:@"%@, %@, %@, %@",l.name,l.city,l.province,l.country]];
-    
-    NSNumberFormatter *formatSQFT = [[NSNumberFormatter alloc] init];
-    [formatSQFT setNumberStyle:NSNumberFormatterDecimalStyle];
-    [formatSQFT setMaximumFractionDigits:2];
-    [formatSQFT setRoundingMode:NSNumberFormatterRoundHalfUp];
-    
+  
     if (l.locationMeta.buildingSqft !=nil) {
-        NSString *buildingString = [formatSQFT stringFromNumber:l.locationMeta.buildingSqft];
+        NSString *buildingString = [l formatArea:l.locationMeta.buildingSqft];
         [buildingLbel setText:[NSString stringWithFormat:@"Fl. %@ sq. ft.",buildingString]];
     }
     
     if (l.locationMeta.buildingSqft !=nil) {
-        NSString *landString = [formatSQFT stringFromNumber:l.locationMeta.landSqft];
+        NSString *landString = [l formatArea:l.locationMeta.landSqft];
         [landLbel setText:[NSString stringWithFormat:@"Lt. %@ sq. ft.",landString]];
     }
     
