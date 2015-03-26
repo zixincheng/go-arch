@@ -19,6 +19,7 @@
 
 - (void) viewDidLoad {
   
+    
   appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
   
   _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];

@@ -38,12 +38,11 @@ CGFloat animatedDistance;
     appDelegate = [[UIApplication sharedApplication] delegate];
     self.saveFunction = [[SaveToDocument alloc]init];
     
+    [self.navigationController setToolbarHidden:NO];
     if (!self.location) {
         self.location = [[CSLocation alloc]init];
         self.coverPhoto = [[CSPhoto alloc]init];
         self.locationMeta = [[CSLocationMeta alloc]init];
-        
-        [self.navigationController setToolbarHidden:YES];
     } else {
         self.locationMeta = self.location.locationMeta;
         
