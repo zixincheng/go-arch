@@ -13,6 +13,7 @@
 #define ADDRESS_TAG     2
 #define CITY_STATE_TAG  3
 #define COUNT_TAG       4
+#define SCROLL_VEW      5
 
 #define ROW_HEIGHT      220
 
