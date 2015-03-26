@@ -292,7 +292,17 @@ CGFloat animatedDistance;
 }
 
 -(void) dataMapView:(CSLocation *)newlocation {
-    self.location = newlocation;
+    NSLog(@"%@", newlocation.name);
+//    self.location = newlocation;
+    self.location.name = newlocation.name;
+    self.location.city = newlocation.city;
+    self.location.province = newlocation.province;
+    self.location.latitude = newlocation.latitude;
+    self.location.longitude = newlocation.longitude;
+    self.location.postCode = newlocation.postCode;
+    self.location.countryCode = newlocation.countryCode;
+    
+    [self fillLocationData];
 }
 -(void)performSegue {
     [self performSegueWithIdentifier:@"pushSegue" sender:self];
