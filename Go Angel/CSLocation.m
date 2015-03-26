@@ -17,6 +17,7 @@
   [formatter setLocale:locale];
   [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
   [formatter setNegativeFormat:@"-¤#,##0.00"];
+  [formatter setMaximumFractionDigits:0];
   
   NSString *formatted = [formatter stringFromNumber:price];
   
