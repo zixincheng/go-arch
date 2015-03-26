@@ -27,52 +27,54 @@ CGFloat animatedDistance;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-  [self setup];
+    
+    [self setup];
     // Do any additional setup after loading the view.
 }
 
 - (void) setup {
-  [self createViewContent];
-  
-  appDelegate = [[UIApplication sharedApplication] delegate];
+    [self createViewContent];
+    
+    appDelegate = [[UIApplication sharedApplication] delegate];
     self.saveFunction = [[SaveToDocument alloc]init];
     
-  if (!self.location) {
-    self.location = [[CSLocation alloc]init];
-    self.coverPhoto = [[CSPhoto alloc]init];
-    self.locationMeta = [[CSLocationMeta alloc]init];
-  } else {
-    self.locationMeta = self.location.locationMeta;
-
-    if (self.coverPhoto) {
-      [self updateCoverPhoto:self.coverPhoto];
+    if (!self.location) {
+        self.location = [[CSLocation alloc]init];
+        self.coverPhoto = [[CSPhoto alloc]init];
+        self.locationMeta = [[CSLocationMeta alloc]init];
+        
+        [self.navigationController setToolbarHidden:YES];
+    } else {
+        self.locationMeta = self.location.locationMeta;
+        
+        if (self.coverPhoto) {
+            [self updateCoverPhoto:self.coverPhoto];
+        }
+        
+        [self setEditEnabled:NO];
     }
+    //self.metadataView = [[UIView alloc]initWithFrame:CGRectMake(0, 490, 320, 500)];
     
-    [self setEditEnabled:NO];
-  }
-  //self.metadataView = [[UIView alloc]initWithFrame:CGRectMake(0, 490, 320, 500)];
-  
-  self.metadataView.backgroundColor = [UIColor lightGrayColor];
-  [self.scrollView addSubview:self.metadataView];
-  
-  if (!_usePreviousLocation) {
-    UITapGestureRecognizer *tapImageView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTaped:)];
-    tapImageView.numberOfTapsRequired = 1;
-    tapImageView.numberOfTouchesRequired = 1;
-    [self.CoverImageView addGestureRecognizer:tapImageView];
-    [self.CoverImageView setUserInteractionEnabled:YES];
-  }
-  self.CoverImageView.contentMode = UIViewContentModeScaleAspectFill;
-  self.CoverImageView.clipsToBounds = YES;
-  
-  self.scrollView.contentSize = CGSizeMake(320, 1500);
-  
-  UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                 initWithTarget:self
-                                 action:@selector(dismissKeyboard)];
-  tap.delegate = self;
-  [self.view addGestureRecognizer:tap];
+    self.metadataView.backgroundColor = [UIColor lightGrayColor];
+    [self.scrollView addSubview:self.metadataView];
+    
+    if (!_usePreviousLocation) {
+        UITapGestureRecognizer *tapImageView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTaped:)];
+        tapImageView.numberOfTapsRequired = 1;
+        tapImageView.numberOfTouchesRequired = 1;
+        [self.CoverImageView addGestureRecognizer:tapImageView];
+        [self.CoverImageView setUserInteractionEnabled:YES];
+    }
+    self.CoverImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.CoverImageView.clipsToBounds = YES;
+    
+    self.scrollView.contentSize = CGSizeMake(320, 1500);
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    tap.delegate = self;
+    [self.view addGestureRecognizer:tap];
 }
 
 - (void) setEditEnabled:(BOOL)enabled {
@@ -102,17 +104,17 @@ CGFloat animatedDistance;
 }
 
 - (void) updateCoverPhoto:(CSPhoto *)photo {
-  // set image to cover photo
-  self.coverPhoto = photo;
-  [appDelegate.mediaLoader loadThumbnail:self.coverPhoto completionHandler:^(UIImage *image) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self.CoverImageView setImage:image];
-    });
-  }];
+    // set image to cover photo
+    self.coverPhoto = photo;
+    [appDelegate.mediaLoader loadThumbnail:self.coverPhoto completionHandler:^(UIImage *image) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.CoverImageView setImage:image];
+        });
+    }];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-  
+    
     [self fillLocationData];
 }
 
@@ -139,7 +141,7 @@ CGFloat animatedDistance;
             imagePicker.mediaTypes = @[(NSString *) kUTTypeImage, (NSString *) kUTTypeVideo];
             imagePicker.allowsEditing = NO;
             [self presentViewController:imagePicker animated:YES completion:nil];
-        
+            
             break;
         }
         case 1:
@@ -154,21 +156,21 @@ CGFloat animatedDistance;
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-
-        if ([info objectForKey:UIImagePickerControllerOriginalImage]){
-            self.photoImage=[info objectForKey:UIImagePickerControllerOriginalImage];
-            metadata = info[UIImagePickerControllerMediaMetadata];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.CoverImageView setImage:self.photoImage];
-            });
-        }
-
+    
+    if ([info objectForKey:UIImagePickerControllerOriginalImage]){
+        self.photoImage=[info objectForKey:UIImagePickerControllerOriginalImage];
+        metadata = info[UIImagePickerControllerMediaMetadata];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.CoverImageView setImage:self.photoImage];
+        });
+    }
+    
     [picker dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-
-        [picker dismissViewControllerAnimated:YES completion:NULL];
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark TextField Delegate
@@ -225,16 +227,16 @@ CGFloat animatedDistance;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {/*
-    CGRect viewFrame = self.view.frame;
-    viewFrame.origin.y += animatedDistance;
-    
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];
-    
-    [self.view setFrame:viewFrame];
-    
-    [UIView commitAnimations];*/
+  CGRect viewFrame = self.view.frame;
+  viewFrame.origin.y += animatedDistance;
+  
+  [UIView beginAnimations:nil context:NULL];
+  [UIView setAnimationBeginsFromCurrentState:YES];
+  [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];
+  
+  [self.view setFrame:viewFrame];
+  
+  [UIView commitAnimations];*/
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -246,9 +248,9 @@ CGFloat animatedDistance;
 - (void)textFieldValueChanged:(id)sender {
     
     // if using previous location, don't save all edits into location objectbrew up
-//    if (_usePreviousLocation) {
-//        return;
-//    }
+    //    if (_usePreviousLocation) {
+    //        return;
+    //    }
     
     NSNumberFormatter *format = [[NSNumberFormatter alloc]init];
     format.numberStyle = NSNumberFormatterDecimalStyle;
@@ -278,7 +280,7 @@ CGFloat animatedDistance;
 }
 - (IBAction)saveData:(id)sender {
     if (self.location.name !=nil && self.location.city !=nil && self.location.province != nil) {
-      self.locationMeta.location = self.location;
+        self.locationMeta.location = self.location;
         [appDelegate.dataWrapper addLocation:self.location locationmeta:self.locationMeta];
         if (self.photoImage != nil) {
             [self.saveFunction saveImageIntoDocument:self.photoImage metadata:metadata location:self.location];
@@ -293,7 +295,7 @@ CGFloat animatedDistance;
 
 -(void) dataMapView:(CSLocation *)newlocation {
     NSLog(@"%@", newlocation.name);
-//    self.location = newlocation;
+    //    self.location = newlocation;
     self.location.name = newlocation.name;
     self.location.city = newlocation.city;
     self.location.province = newlocation.province;
@@ -324,7 +326,7 @@ CGFloat animatedDistance;
     self.popView = [[SGPopSelectView alloc] init];
     if (sender == self.historySelectBtn) {
         NSArray *locationArray =[appDelegate.dataWrapper getLocations];
-         NSMutableArray *name = [[NSMutableArray alloc] init];
+        NSMutableArray *name = [[NSMutableArray alloc] init];
         for (CSLocation *l in locationArray) {
             [name addObject:l.name];
         }
@@ -516,7 +518,7 @@ CGFloat animatedDistance;
                     stateLabel.text = @"State";
                     [cell.contentView addSubview:stateLabel];
                     
-
+                    
                     self.stateTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.stateTextField.delegate = self;
                     [cell.contentView addSubview:self.stateTextField];
@@ -532,7 +534,7 @@ CGFloat animatedDistance;
                     self.countryTextField.borderStyle = UITextBorderStyleRoundedRect;
                     self.countryTextField.delegate = self;
                     [cell.contentView addSubview:self.countryTextField];
-                     break;
+                    break;
                 }
                 case 4:
                 {
@@ -706,12 +708,12 @@ CGFloat animatedDistance;
 }
 
 - (UILabel *) createLabel: (NSString *) text frame: (CGRect) frame {
-  UILabel *label = [[UILabel alloc] initWithFrame:frame];
-  [label setText:text];
-//  [label setFont:[UIFont]]
-  
-  
-  return label;
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    [label setText:text];
+    //  [label setFont:[UIFont]]
+    
+    
+    return label;
 }
 
 -(void) createViewContent {
@@ -777,13 +779,13 @@ CGFloat animatedDistance;
     [self.mlsTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
 }
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
