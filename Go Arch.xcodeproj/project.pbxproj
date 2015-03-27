@@ -94,6 +94,9 @@
 		9BC1B1061AA8E6CC002FE705 /* qrcode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC1B1031AA8E6CC002FE705 /* qrcode@2x.png */; };
 		9BC1B1071AA8E6CC002FE705 /* qroverlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC1B1041AA8E6CC002FE705 /* qroverlay.png */; };
 		9BC1B10A1AA8E74D002FE705 /* QRReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1B1091AA8E74D002FE705 /* QRReaderViewController.m */; };
+		9BC390CC1AC48C8200B3351E /* MyAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC390CB1AC48C8200B3351E /* MyAnnotationView.m */; };
+		9BC390D01AC4BA4200B3351E /* CalloutViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9BC390CF1AC4BA4200B3351E /* CalloutViewCell.xib */; };
+		9BC390D71AC4BB2100B3351E /* CalloutViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC390D61AC4BB2000B3351E /* CalloutViewCell.m */; };
 		9BC3C6EB1AC1E4B20042E2D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9BC3C6EA1AC1E4B20042E2D5 /* Main.storyboard */; };
 		9BC3C6F21AC1EEEF0042E2D5 /* sg_pop_images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BC3C6EF1AC1EEEF0042E2D5 /* sg_pop_images.xcassets */; };
 		9BC3C6F31AC1EEEF0042E2D5 /* SGPopSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC3C6F11AC1EEEF0042E2D5 /* SGPopSelectView.m */; };
@@ -331,6 +334,11 @@
 		9BC1B1041AA8E6CC002FE705 /* qroverlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qroverlay.png; sourceTree = "<group>"; };
 		9BC1B1081AA8E74D002FE705 /* QRReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRReaderViewController.h; sourceTree = "<group>"; };
 		9BC1B1091AA8E74D002FE705 /* QRReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRReaderViewController.m; sourceTree = "<group>"; };
+		9BC390CA1AC48C8200B3351E /* MyAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnnotationView.h; sourceTree = "<group>"; };
+		9BC390CB1AC48C8200B3351E /* MyAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotationView.m; sourceTree = "<group>"; };
+		9BC390CF1AC4BA4200B3351E /* CalloutViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalloutViewCell.xib; sourceTree = "<group>"; };
+		9BC390D51AC4BB2000B3351E /* CalloutViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalloutViewCell.h; sourceTree = "<group>"; };
+		9BC390D61AC4BB2000B3351E /* CalloutViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalloutViewCell.m; sourceTree = "<group>"; };
 		9BC3C6DE1AC1D84B0042E2D5 /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		9BC3C6EA1AC1E4B20042E2D5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9BC3C6EF1AC1EEEF0042E2D5 /* sg_pop_images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = sg_pop_images.xcassets; sourceTree = "<group>"; };
@@ -568,6 +576,11 @@
 				2061D1F219919440001C7E08 /* Reachability.m */,
 				9BC3C6F41AC1F58C0042E2D5 /* SaveToDocument.h */,
 				9BC3C6F51AC1F58C0042E2D5 /* SaveToDocument.m */,
+				9BC390CA1AC48C8200B3351E /* MyAnnotationView.h */,
+				9BC390CB1AC48C8200B3351E /* MyAnnotationView.m */,
+				9BC390CF1AC4BA4200B3351E /* CalloutViewCell.xib */,
+				9BC390D51AC4BB2000B3351E /* CalloutViewCell.h */,
+				9BC390D61AC4BB2000B3351E /* CalloutViewCell.m */,
 				9B1211411A79B13B0088CD3A /* SearchMapViewController.h */,
 				9B1211421A79B13B0088CD3A /* SearchMapViewController.m */,
 				9B4ADCB41A7C168500375C01 /* SearchResultsTableViewController.h */,
@@ -900,6 +913,7 @@
 				9BFDAAB71AAA72CE00C4E170 /* Overlay.png in Resources */,
 				9BFDAAB61AAA72CE00C4E170 /* ELCAssetTablePicker.xib in Resources */,
 				9BC3C6EB1AC1E4B20042E2D5 /* Main.storyboard in Resources */,
+				9BC390D01AC4BA4200B3351E /* CalloutViewCell.xib in Resources */,
 				20C3BBD51A687EFA0019DE40 /* flashing_on@2x.png in Resources */,
 				9BFDAAB81AAA72CE00C4E170 /* Overlay@2x.png in Resources */,
 				9BCD5A1E1AB0D3A400DEB39E /* pencil-7.png in Resources */,
@@ -961,6 +975,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9BCD5A251AB105C100DEB39E /* F3Swirly.m in Sources */,
+				9BC390CC1AC48C8200B3351E /* MyAnnotationView.m in Sources */,
 				2061D1DA199193CE001C7E08 /* CoreDataWrapper.m in Sources */,
 				9BC3C6F61AC1F58C0042E2D5 /* SaveToDocument.m in Sources */,
 				2061D1FE19919440001C7E08 /* UploadPhotosTask.m in Sources */,
@@ -969,6 +984,7 @@
 				9B6C88C61A829EAD00B50A21 /* CellLayout.m in Sources */,
 				2061D1D9199193CE001C7E08 /* CoreDataStore.m in Sources */,
 				D510B9641A364A8A00307184 /* DashboardViewController.m in Sources */,
+				9BC390D71AC4BB2100B3351E /* CalloutViewCell.m in Sources */,
 				9BC7B9571A94084300164F0E /* TWMessageBarManager.m in Sources */,
 				9BC0ABEF1AA7B6F300F430CB /* NetWorkCheck.m in Sources */,
 				20931B8519954B8900F57FB0 /* GridCell.m in Sources */,

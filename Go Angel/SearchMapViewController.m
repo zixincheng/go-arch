@@ -14,6 +14,8 @@
 
 @implementation SearchMapViewController
 
+@synthesize delegate;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -114,6 +116,29 @@
 
 #pragma mark - mapView delegate
 
+-(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    MKPointAnnotation *point  = view.annotation;
+    NSInteger index = [self.pins indexOfObject:point];
+    self.selectedLocation = [self.locations objectAtIndex:index];
+    if ([view.annotation isKindOfClass:[MKPointAnnotation class]]) {
+        self.callOutAnnotation = [[MyAnnotation alloc]initWithCoordinate:view.annotation.coordinate];
+        [self.mapView addAnnotation:self.callOutAnnotation];
+        [self.mapView setCenterCoordinate:self.callOutAnnotation.coordinate animated:YES];
+    } else {
+        NSLog(@"click here ");
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    if (self.callOutAnnotation) {
+        if (self.callOutAnnotation.coordinate.latitude == view.annotation.coordinate.latitude&&
+            self.callOutAnnotation.coordinate.longitude == view.annotation.coordinate.longitude) {
+            [mapView removeAnnotation:self.callOutAnnotation];
+            self.callOutAnnotation = nil;
+        }
+    }
+}
+
 -(void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
     
     //[self zoomToUserLocation:userLocation];
@@ -121,44 +146,74 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
     static NSString *identifier = @"Location";
-    if (annotation == mapView.userLocation) return nil;
-    MKPinAnnotationView *pin = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+    
+    
+    if ([annotation isKindOfClass:[MKPointAnnotation class]]) {
+        if (annotation == mapView.userLocation) return nil;
+        MKPinAnnotationView *pin = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
         if (pin == nil) {
             pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
         } else {
             pin.annotation = annotation;
         }
-    pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    pin.pinColor = MKPinAnnotationColorRed;
-    pin.enabled = YES;
-    pin.canShowCallout = YES;
-    pin.animatesDrop = YES;
-    
-    MKPointAnnotation *point  = pin.annotation;
-    NSUInteger index = [self.pins indexOfObject:point];
-    self.selectedLocation = [self.locations objectAtIndex:index];
-    UIView *imageView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
-    pin.leftCalloutAccessoryView = imageView;
-    
-    CSPhoto *p = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.selectedLocation];
-    if (p !=nil) {
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        [appDelegate.mediaLoader loadThumbnail:p completionHandler:^(UIImage *image) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                UIImage *newImage = [self resizeImage:image];
-                UIView *imgView = [[UIImageView alloc]initWithImage:newImage];
-                [imageView addSubview:imgView];
-            });
-        }];
+        pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        pin.pinColor = MKPinAnnotationColorRed;
+        pin.enabled = YES;
+        pin.canShowCallout = NO;
+        pin.animatesDrop = YES;
         
-    }
-    return pin;
+        return pin;
 
+
+    } else if ([annotation isKindOfClass:[MyAnnotation class]]){
+        MyAnnotationView *annotationView = (MyAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:@"CalloutView"];
+        annotationView = [[MyAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"CalloutView" delegate:self];
+        
+        CalloutViewCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"CalloutViewCell" owner:self options:nil] objectAtIndex:0];
+        cell.priceLabel.text = [self.selectedLocation formatPrice:self.selectedLocation.locationMeta.price];
+        cell.addressLabel.text = [NSString stringWithFormat:@"%@, %@, %@, %@", self.selectedLocation.name,self.selectedLocation.city,self.selectedLocation.province,self.selectedLocation.countryCode];
+        if (self.selectedLocation.locationMeta.bed != nil) {
+                    cell.bedLabel.text = [NSString stringWithFormat:@"%@ BD",self.selectedLocation.locationMeta.bed];
+        }
+        if (self.selectedLocation.locationMeta.bath != nil) {
+            cell.bathLabel.text = [NSString stringWithFormat:@"%@ BD",self.selectedLocation.locationMeta.bath];
+        }
+        if (self.selectedLocation.locationMeta.buildingSqft != nil) {
+            cell.buildingSQFT.text = [NSString stringWithFormat:@"%@ sq. ft.", self.selectedLocation.locationMeta.buildingSqft.stringValue];
+        }
+        if (self.selectedLocation.locationMeta.landSqft != nil) {
+            cell.landSQFT.text = [NSString stringWithFormat:@"%@ sq. ft.", self.selectedLocation.locationMeta.landSqft.stringValue];
+        }
+        CSPhoto *p = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.selectedLocation];
+        if (p !=nil) {
+            AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            [appDelegate.mediaLoader loadThumbnail:p completionHandler:^(UIImage *image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIImage *newImage = [self resizeImage:image];
+                    UIView *imgView = [[UIImageView alloc]initWithImage:newImage];
+                    [cell.coverImage addSubview:imgView];
+                });
+            }];
+            
+        }
+        
+        [annotationView.contentView addSubview:cell];
+        return annotationView;
+    }
+    return nil;
+}
+
+- (void)didSelectAnnotationView:(MyAnnotationView *)view
+{
+    //MyAnnotationView *annotation = (MyAnnotationView *)view.annotation;
+    [self performSegueWithIdentifier:@"locationSegue" sender:self];
+    
+    [self mapView:_mapView didDeselectAnnotationView:view];
 }
 
 -(UIImage *)resizeImage: (UIImage *) image{
     UIGraphicsBeginImageContext(image.size);
-    [image drawInRect:CGRectMake(0, 0, 30, 30)];
+    [image drawInRect:CGRectMake(0, 0, 93, 77)];
     
     image = UIGraphicsGetImageFromCurrentImageContext();
     
@@ -168,7 +223,7 @@
     
 }
 
--(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+-(void)mapView:(MKMapView *)mapView annotationView:(MyAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
     //id <MKAnnotation> annotation = [view annotation];
 
     MKPointAnnotation *point  = view.annotation;
@@ -215,7 +270,7 @@
       [singleLocContoller setHidesBottomBarWhenPushed:YES];
       
       NSString *title;
-      if (![self.selectedLocation.unit isEqualToString:@""]) {
+      if (self.selectedLocation.unit !=nil) {
         title = [NSString stringWithFormat:@"%@ - %@",self.selectedLocation.unit, self.selectedLocation.name];
       } else {
         title = [NSString stringWithFormat:@"%@", self.selectedLocation.name];

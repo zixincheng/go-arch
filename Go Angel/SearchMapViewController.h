@@ -14,8 +14,12 @@
 #import "CSLocation.h"
 #import "IndividualEntryViewController.h"
 #import "SingleLocationViewController.h"
+#import "MyAnnotationView.h"
+#import "MyAnnotation.h"
+#import "CalloutViewCell.h"
 
-@interface SearchMapViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate,UISearchBarDelegate,NSFetchedResultsControllerDelegate> {
+@protocol SearchMapViewController;
+@interface SearchMapViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate,UISearchBarDelegate,NSFetchedResultsControllerDelegate,MyAnnotationViewDelegate> {
     AccountDataWrapper *account;
 }
 
@@ -26,6 +30,9 @@
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSDevice *localDevice;
 @property (nonatomic, strong) CSLocation *selectedLocation;
+@property (nonatomic, strong) MyAnnotation *callOutAnnotation;
+
+@property(nonatomic,assign)id<SearchMapViewController> delegate;
 
 @property (nonatomic, strong) NSMutableArray *locations;
 @property (nonatomic, strong) NSMutableArray *searchResultLocations;
