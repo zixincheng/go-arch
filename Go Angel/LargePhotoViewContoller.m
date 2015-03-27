@@ -70,10 +70,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PHOTO_CELL];
   
-  UIImageView *imageView  = (UIImageView *)[cell viewWithTag:IMAGE_TAG];
-  UILabel *lblAddress     = (UILabel *)[cell viewWithTag:ADDRESS_TAG];
-  UILabel *lblCityState   = (UILabel *)[cell viewWithTag:CITY_STATE_TAG];
-  UILabel *lblCount       = (UILabel *)[cell viewWithTag:COUNT_TAG];
+  UIScrollView *scrollView      = (UIScrollView *)[cell viewWithTag:SCROLL_VEW];
+  UIImageView *coverImageView   = (UIImageView *)[cell viewWithTag:IMAGE_TAG];
+  UILabel *lblAddress           = (UILabel *)[cell viewWithTag:ADDRESS_TAG];
+  UILabel *lblCityState         = (UILabel *)[cell viewWithTag:CITY_STATE_TAG];
+  UILabel *lblCount             = (UILabel *)[cell viewWithTag:COUNT_TAG];
   
   CSLocation *l = [_locations objectAtIndex:indexPath.row];
   
@@ -81,21 +82,47 @@
   NSMutableArray *photos = [_dataWrapper getPhotosWithLocation:_localDevice.remoteId location:l];
   int count = photos.count;
   NSString *text = [NSString stringWithFormat:@"%d Photos", count];
-
+  
   // get home photo from db
   CSPhoto *homePhoto = [_dataWrapper getCoverPhoto:_localDevice.remoteId location:l];
   
   if (!homePhoto && photos.count > 0) {
     homePhoto = [photos objectAtIndex:0];
   }
-
+  
   // load the full screen image into the image view
   [appDelegate.mediaLoader loadThumbnail:homePhoto completionHandler:^(UIImage* image) {
     dispatch_async(dispatch_get_main_queue(), ^{
-      [imageView setImage:image];
+      [coverImageView setImage:image];
     });
   }];
-
+  
+  int index = 0;
+  for (CSPhoto *p in photos) {
+    
+    // don't display home photo twice
+    if ([p.remoteID isEqualToString:homePhoto.remoteID]) {
+      continue;
+    }
+    
+    CGRect newFrame = coverImageView.frame;
+    newFrame.origin.x = newFrame.origin.x + ((index + 1) * newFrame.size.width);
+    
+    UIImageView *view = [[UIImageView alloc] initWithFrame:newFrame];
+    [appDelegate.mediaLoader loadThumbnail:p completionHandler:^(UIImage* image) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [view setImage:image];
+      });
+    }];
+    
+    [scrollView addSubview:view];
+    index += 1;
+  }
+  
+  int totalWidth = coverImageView.frame.size.width + (coverImageView.frame.size.width * index) + 40;
+  NSLog(@"index: %d, total width: %d", index, totalWidth);
+  [scrollView setContentSize:CGSizeMake(totalWidth, coverImageView.frame.size.height)];
+  
   [lblCount setText:text];
   
   [lblAddress setText:l.name];
