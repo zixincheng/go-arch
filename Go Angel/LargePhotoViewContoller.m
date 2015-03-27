@@ -90,6 +90,10 @@
     homePhoto = [photos objectAtIndex:0];
   }
   
+  CGRect adjustedFrame = coverImageView.frame;
+  adjustedFrame.size.width = scrollView.frame.size.width;
+  adjustedFrame.origin.x = 0;
+  [coverImageView setFrame:adjustedFrame];
   // load the full screen image into the image view
   [appDelegate.mediaLoader loadThumbnail:homePhoto completionHandler:^(UIImage* image) {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -108,7 +112,11 @@
     CGRect newFrame = coverImageView.frame;
     newFrame.origin.x = newFrame.origin.x + ((index + 1) * newFrame.size.width);
     
+    NSLog(@"cover frame x: %f, cover frame width: %f", coverImageView.frame.origin.x, coverImageView.frame.size.width);
+    
     UIImageView *view = [[UIImageView alloc] initWithFrame:newFrame];
+    [view setContentMode:UIViewContentModeScaleAspectFill];
+    [view setClipsToBounds:YES];
     [appDelegate.mediaLoader loadThumbnail:p completionHandler:^(UIImage* image) {
       dispatch_async(dispatch_get_main_queue(), ^{
         [view setImage:image];
@@ -116,10 +124,11 @@
     }];
     
     [scrollView addSubview:view];
+    NSLog(@"view width: %f, x: %f", view.frame.size.width, view.frame.origin.x);
     index += 1;
   }
   
-  int totalWidth = coverImageView.frame.size.width + (coverImageView.frame.size.width * index) + 40;
+  int totalWidth = coverImageView.frame.size.width + (coverImageView.frame.size.width * index);
   NSLog(@"index: %d, total width: %d", index, totalWidth);
   [scrollView setContentSize:CGSizeMake(totalWidth, coverImageView.frame.size.height)];
   
@@ -127,7 +136,7 @@
   
   [lblAddress setText:l.name];
   [lblCityState setText:[NSString stringWithFormat:@"%@, %@", l.city, l.province]];
-  
+  NSLog(@"\n");
   return cell;
 }
 
