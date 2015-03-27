@@ -294,7 +294,8 @@ CGFloat animatedDistance;
 
 -(void) dataMapView:(CSLocation *)newlocation {
     NSLog(@"%@", newlocation.name);
-    //    self.location = newlocation;
+    
+    // populate the location object with details from map
     self.location.name = newlocation.name;
     self.location.city = newlocation.city;
     self.location.province = newlocation.province;
