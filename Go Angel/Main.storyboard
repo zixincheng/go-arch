@@ -2079,12 +2079,12 @@
                                 </items>
                             </toolbar>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L47-5k-5dH">
-                                <rect key="frame" x="0.0" y="105" width="320" height="463"/>
+                                <rect key="frame" x="0.0" y="85" width="320" height="483"/>
                                 <connections>
                                     <segue destination="3Ho-Ou-WvU" kind="embed" identifier="location_page_embed" id="jJX-MS-Vgx"/>
                                 </connections>
                             </containerView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="gsw-YA-UDa">
+                            <segmentedControl hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="gsw-YA-UDa">
                                 <rect key="frame" x="54" y="69" width="212" height="29"/>
                                 <segments>
                                     <segment title="Overview"/>
@@ -2095,6 +2095,10 @@
                                     <action selector="segmentChanged:" destination="WoV-lp-H9b" eventType="valueChanged" id="SMJ-e1-NSY"/>
                                 </connections>
                             </segmentedControl>
+                            <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="3pD-IA-HoS">
+                                <rect key="frame" x="141" y="58" width="39" height="37"/>
+                                <color key="pageIndicatorTintColor" cocoaTouchSystemColor="darkTextColor"/>
+                            </pageControl>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -2108,6 +2112,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="containerView" destination="L47-5k-5dH" id="dIB-YQ-2ad"/>
+                        <outlet property="pageControl" destination="3pD-IA-HoS" id="VYz-jZ-Jv0"/>
                         <outlet property="rightButton" destination="N5f-nI-r1y" id="hsD-zc-328"/>
                         <outlet property="segmentControl" destination="gsw-YA-UDa" id="T9b-U6-fRK"/>
                     </connections>

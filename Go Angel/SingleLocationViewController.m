@@ -45,6 +45,9 @@
   
   _rightButton.title = @"";
   
+  [_pageControl setNumberOfPages:3];
+  [_pageControl setCurrentPage:0];
+  
   // register for notifications from child controllers providing info
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRightButtonText:) name:@"SetRightButtonText" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showShareDelete:) name:@"ShowShareDelete" object:nil];
@@ -93,6 +96,7 @@
   if ([segueName isEqualToString: @"location_page_embed"]) {
     _pageController = (SingleLocationPageViewController *) [segue destinationViewController];
     _pageController.segmentControl = _segmentControl;
+    _pageController.pageControl = _pageControl;
     _pageController.coinsorter = _coinsorter;
     _pageController.dataWrapper = _dataWrapper;
     _pageController.localDevice = _localDevice;

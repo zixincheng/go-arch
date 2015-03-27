@@ -62,13 +62,16 @@
 
 - (void) pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
   UIViewController *currentController = [[pageViewController viewControllers] objectAtIndex:0];
+  int index = 0;
   if ([currentController isKindOfClass:[OverviewViewController class]]) {
-    [_segmentControl setSelectedSegmentIndex:0];
+    index = 0;
   } else if ([currentController isKindOfClass:[DetailsViewController class]]) {
-    [_segmentControl setSelectedSegmentIndex:1];
+    index = 1;
   } else if ([currentController isKindOfClass:[PhotosViewController class]]) {
-    [_segmentControl setSelectedSegmentIndex:2];
+    index = 2;
   }
+  [_segmentControl setSelectedSegmentIndex:index];
+  [_pageControl setCurrentPage:index];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController

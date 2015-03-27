@@ -29,5 +29,6 @@
 @property (nonatomic, strong) PhotosViewController *photosController;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
+@property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 
 @end
