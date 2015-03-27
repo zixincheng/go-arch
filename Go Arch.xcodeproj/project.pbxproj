@@ -365,7 +365,7 @@
 		9BE03EC01A9FD722007ADCDC /* roll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roll.png; sourceTree = "<group>"; };
 		9BE03EC11A9FD722007ADCDC /* roll@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "roll@2x.png"; sourceTree = "<group>"; };
 		9BE4F6FC1A717F1D009FEB3F /* MainLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainLocationViewController.h; sourceTree = "<group>"; };
-		9BE4F6FD1A717F1D009FEB3F /* MainLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainLocationViewController.m; sourceTree = "<group>"; };
+		9BE4F6FD1A717F1D009FEB3F /* MainLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MainLocationViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		9BE4F7031A71AC02009FEB3F /* AddingLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddingLocationViewController.h; sourceTree = "<group>"; };
 		9BE4F7041A71AC02009FEB3F /* AddingLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddingLocationViewController.m; sourceTree = "<group>"; };
 		9BEA5B521A1EB26100CC14FF /* CSStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSStorage.h; sourceTree = "<group>"; };
@@ -531,8 +531,8 @@
 				2061D2011991947D001C7E08 /* Images.xcassets */,
 				2061D1E719919428001C7E08 /* InAppSettings.bundle */,
 				9B4C12921A72DCC6004CC973 /* IndividualEntryViewController.h */,
-				9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */,
 				2093C9B41AC0C10100F16948 /* LargePhotoViewContoller.h */,
+				9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */,
 				2093C9B51AC0C10100F16948 /* LargePhotoViewContoller.m */,
 				2061D1E919919430001C7E08 /* LocalLibrary.h */,
 				2061D1EA19919430001C7E08 /* LocalLibrary.m */,

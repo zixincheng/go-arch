@@ -480,7 +480,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mPt-T4-aga" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2666" y="823"/>
+            <point key="canvasLocation" x="2685" y="823"/>
         </scene>
         <!--History Table View Controller-->
         <scene sceneID="1sH-Ie-G2K">
