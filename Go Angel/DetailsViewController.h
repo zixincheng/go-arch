@@ -43,5 +43,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) AddNewEntryViewController *embedController;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 
 @end
