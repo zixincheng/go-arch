@@ -261,7 +261,7 @@
             NSString *urlString = [NSString
                                    stringWithFormat:@"%@%@%@%@", @"https://",
                                    appDelegate.account.currentIp,@":8443", @"/videos"];
-            
+          
             NSURL *url = [NSURL URLWithString:urlString];
             
             NSArray * keys;
@@ -276,6 +276,9 @@
             NSString *longitude = p.location.longitude;
             NSString *latitude = p.location.latitude;
             NSString *sublocation = name;
+            if (!unit) {
+                unit = @"";
+            }
             if (![unit isEqualToString:@""]) {
                 sublocation = [NSString stringWithFormat:@"Unit %@ - %@", unit, name];
             }
@@ -292,8 +295,7 @@
             [request setAllHTTPHeaderFields:headers];
             
             // get documents directory
-            NSArray *pathArray = NSSearchPathForDirectoriesInDomains(
-                                                                     NSDocumentDirectory, NSUserDomainMask, YES);
+            NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             //NSString *documentsDirectory = [pathArray objectAtIndex:0];
             NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyVideo"];
             NSString *textPath = [documentsDirectory
@@ -454,9 +456,13 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSString *longitude = p.location.longitude;
                 NSString *latitude = p.location.latitude;
                 NSString *sublocation = name;
+                if (!unit) {
+                    unit = @"";
+                }
                 if (![unit isEqualToString:@""]) {
                     sublocation = [NSString stringWithFormat:@"Unit %@ - %@", unit, name];
                 }
+                NSLog(@"SUBLOCATION: %@\n", sublocation);
                 //if (tagLocation) {
                 keys = [NSArray
                         arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
@@ -527,6 +533,9 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSString *longitude = p.location.longitude;
                 NSString *latitude = p.location.latitude;
                 NSString *sublocation = name;
+                if (!unit) {
+                    unit = @"";
+                }
                 if (![unit isEqualToString:@""]) {
                     sublocation = [NSString stringWithFormat:@"Unit %@ - %@", unit, name];
                 }
@@ -633,6 +642,9 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             NSString *longitude = photo.location.longitude;
             NSString *latitude = photo.location.latitude;
             NSString *sublocation = name;
+            if (!unit) {
+                unit = @"";
+            }
             if (![unit isEqualToString:@""]) {
                 sublocation = [NSString stringWithFormat:@"Unit %@ - %@", unit, name];
             }
@@ -705,6 +717,9 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             NSString *longitude = photo.location.longitude;
             NSString *latitude = photo.location.latitude;
             NSString *sublocation = name;
+            if (!unit) {
+                unit = @"";
+            }
             if (![unit isEqualToString:@""]) {
                 sublocation = [NSString stringWithFormat:@"Unit %@ - %@", unit, name];
             }
