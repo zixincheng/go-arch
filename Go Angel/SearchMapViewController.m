@@ -39,6 +39,13 @@
                                    action:@selector(dismissKeyboard)];
     
     [self.view addGestureRecognizer:tap];
+    
+    UIButton *userLocationBtn = [[UIButton alloc]initWithFrame:CGRectMake(500, 10, 30, 30)];
+    [userLocationBtn setImage:[UIImage imageNamed:@"paper-plane-7.png"]
+                     forState:UIControlStateNormal];
+    [userLocationBtn addTarget:self action:@selector(backToUserLocation) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.mapView addSubview:userLocationBtn];
 
     // Do any additional setup after loading the view.
 }
@@ -88,6 +95,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)backToUserLocation {
+    [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+}
 
 - (void)locationManager:(CLLocationManager *)manager
      didUpdateLocations:(NSArray *)locations {

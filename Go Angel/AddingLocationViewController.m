@@ -73,7 +73,7 @@
     lpgr.minimumPressDuration = 1.0;
     [self.mapView addGestureRecognizer:lpgr];
     UIButton *userLocationBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 10, 30, 30)];
-    [userLocationBtn setImage:[UIImage imageNamed:@"pin-map-7.png"]
+    [userLocationBtn setImage:[UIImage imageNamed:@"paper-plane-7.png"]
                      forState:UIControlStateNormal];
     [userLocationBtn addTarget:self action:@selector(backToUserLocation) forControlEvents:UIControlEventTouchUpInside];
 

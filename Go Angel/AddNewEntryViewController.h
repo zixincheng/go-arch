@@ -17,10 +17,13 @@
 #import "SGPopSelectView.h"
 #import "CSLocationMeta.h"
 #import "SaveToDocument.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface AddNewEntryViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,AddingLocationViewControllerDelegate,UIGestureRecognizerDelegate>{
+@interface AddNewEntryViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,AddingLocationViewControllerDelegate,UIGestureRecognizerDelegate,CLLocationManagerDelegate>{
   
   AppDelegate *appDelegate;
+    
+  CLGeocoder *geocoder;
 }
 
 - (void) updateCoverPhoto:(CSPhoto *)image;

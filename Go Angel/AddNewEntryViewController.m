@@ -225,7 +225,8 @@ CGFloat animatedDistance;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
-{/*
+{
+    /*
   CGRect viewFrame = self.view.frame;
   viewFrame.origin.y += animatedDistance;
   
@@ -255,6 +256,7 @@ CGFloat animatedDistance;
     format.numberStyle = NSNumberFormatterDecimalStyle;
     if (sender == self.addressTextField) {
         self.location.name = self.addressTextField.text;
+        [self geocodeAddress];
     } else if (sender == self.cityTextField) {
         self.location.city = self.cityTextField.text;
     } else if (sender == self.stateTextField) {
@@ -291,6 +293,53 @@ CGFloat animatedDistance;
         [alert show];
     }
 }
+
+-(void) geocodeAddress {
+    geocoder = [[CLGeocoder alloc]init];
+    [geocoder geocodeAddressString:self.addressTextField.text completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (error) {
+            NSLog(@"%@", error);
+        } else {
+           CLPlacemark *placemark = [placemarks lastObject];
+            [NSString stringWithFormat:@"%f", placemark.location.coordinate.latitude];
+            self.location.longitude = [NSString stringWithFormat:@"%f", placemark.location.coordinate.longitude];
+            self.location.latitude = [NSString stringWithFormat:@"%f", placemark.location.coordinate.latitude];
+            self.location.postCode = [placemark.addressDictionary objectForKey:@"ZIP"];
+            self.location.country =
+            [placemark.addressDictionary objectForKey:@"Country"];
+            self.location.countryCode =
+            [placemark.addressDictionary objectForKey:@"CountryCode"];
+            self.location.city = [placemark.addressDictionary objectForKey:@"City"];
+            self.location.province = [placemark.addressDictionary objectForKey:@"State"];
+            [self fillLocationData];
+        }
+    }];
+}
+
+- (void)geocodeLocation:(CLLocation *)lac {
+    if (!geocoder)
+        geocoder = [[CLGeocoder alloc] init];
+    
+    [geocoder reverseGeocodeLocation:lac
+                   completionHandler:^(NSArray *placemarks, NSError *error) {
+                       if ([placemarks count] > 0) {
+                           
+                           // get address properties of location
+                           CLPlacemark *p = [placemarks lastObject];
+                           self.location.postCode = [p.addressDictionary objectForKey:@"ZIP"];
+                           self.location.country =
+                           [p.addressDictionary objectForKey:@"Country"];
+                           self.location.countryCode =
+                           [p.addressDictionary objectForKey:@"CountryCode"];
+                           self.location.city = [p.addressDictionary objectForKey:@"City"];
+                           self.location.name = [p.addressDictionary objectForKey:@"Name"];
+                           self.location.province = [p.addressDictionary objectForKey:@"State"];
+                          
+                       }
+                   }];
+    [self fillLocationData];
+}
+
 
 -(void) dataMapView:(CSLocation *)newlocation {
     NSLog(@"%@", newlocation.name);
