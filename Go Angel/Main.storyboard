@@ -67,7 +67,7 @@
                         <viewControllerLayoutGuide type="bottom" id="kbP-i5-MuF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uRD-uV-26k">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="435"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kj3-Yu-BLD">
@@ -1709,7 +1709,7 @@
                         <viewControllerLayoutGuide type="bottom" id="N4b-S1-hD8"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Mhh-aH-ZVg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="435"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ady-Vo-5JW">
@@ -2337,9 +2337,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="c39-wG-K3f"/>
-        <segue reference="tEf-I2-FXe"/>
-        <segue reference="9hW-BI-atU"/>
         <segue reference="DAY-r1-7lS"/>
+        <segue reference="c39-wG-K3f"/>
+        <segue reference="TfQ-Ln-q7R"/>
+        <segue reference="tEf-I2-FXe"/>
     </inferredMetricsTieBreakers>
 </document>
