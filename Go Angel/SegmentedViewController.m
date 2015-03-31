@@ -42,6 +42,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPhotoChanged:) name:@"addNewPhoto"object:nil];
     [defaults addObserver:self forKeyPath:UPLOAD_3G options:NSKeyValueObservingOptionNew context:NULL];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetWork:) name:@"networkStatusChanged"object:nil];
+    
+    [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

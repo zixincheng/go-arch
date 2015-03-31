@@ -74,7 +74,7 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:YES animated:NO];
+    [self.navigationController setToolbarHidden:NO animated:NO];
     self.locations = [self.dataWrapper getLocations];
     [self.tableView reloadData];
 }
@@ -231,7 +231,7 @@
       singleLocContoller.localDevice = self.localDevice;
       singleLocContoller.location = self.selectedlocation;
       singleLocContoller.coinsorter = self.coinsorter;
-      [singleLocContoller setHidesBottomBarWhenPushed:YES];
+      //[singleLocContoller setHidesBottomBarWhenPushed:YES];
 
       NSString *title;
       if (self.selectedlocation.unit !=nil) {

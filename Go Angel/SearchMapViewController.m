@@ -277,7 +277,7 @@
       singleLocContoller.localDevice = self.localDevice;
       singleLocContoller.location = self.selectedLocation;
       singleLocContoller.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
-      [singleLocContoller setHidesBottomBarWhenPushed:YES];
+      //[singleLocContoller setHidesBottomBarWhenPushed:YES];
       
       NSString *title;
       if (self.selectedLocation.unit !=nil) {

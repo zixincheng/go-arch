@@ -90,6 +90,8 @@
 		9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BB0F20D1A27A91900DF40E3 /* StorageTableViewCell.m */; };
 		9BC0ABEF1AA7B6F300F430CB /* NetWorkCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC0ABEE1AA7B6F300F430CB /* NetWorkCheck.m */; };
 		9BC10AFC1AC9C7E40019C6BA /* paper-plane-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC10AFB1AC9C7E40019C6BA /* paper-plane-7.png */; };
+		9BC10B091ACA0A680019C6BA /* FilterStepper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC10B081ACA0A680019C6BA /* FilterStepper.m */; };
+		9BC10B0C1ACA0FF80019C6BA /* FilterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC10B0B1ACA0FF80019C6BA /* FilterTableViewController.m */; };
 		9BC1B0FD1AA8E670002FE705 /* QRPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1B0FC1AA8E670002FE705 /* QRPreviewViewController.m */; };
 		9BC1B1051AA8E6CC002FE705 /* qrcode.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC1B1021AA8E6CC002FE705 /* qrcode.png */; };
 		9BC1B1061AA8E6CC002FE705 /* qrcode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC1B1031AA8E6CC002FE705 /* qrcode@2x.png */; };
@@ -329,6 +331,10 @@
 		9BC0ABED1AA7B6F300F430CB /* NetWorkCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkCheck.h; sourceTree = "<group>"; };
 		9BC0ABEE1AA7B6F300F430CB /* NetWorkCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkCheck.m; sourceTree = "<group>"; };
 		9BC10AFB1AC9C7E40019C6BA /* paper-plane-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paper-plane-7.png"; sourceTree = "<group>"; };
+		9BC10B071ACA0A680019C6BA /* FilterStepper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterStepper.h; sourceTree = "<group>"; };
+		9BC10B081ACA0A680019C6BA /* FilterStepper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterStepper.m; sourceTree = "<group>"; };
+		9BC10B0A1ACA0FF80019C6BA /* FilterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterTableViewController.h; sourceTree = "<group>"; };
+		9BC10B0B1ACA0FF80019C6BA /* FilterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterTableViewController.m; sourceTree = "<group>"; };
 		9BC1B0FB1AA8E670002FE705 /* QRPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRPreviewViewController.h; sourceTree = "<group>"; };
 		9BC1B0FC1AA8E670002FE705 /* QRPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRPreviewViewController.m; sourceTree = "<group>"; };
 		9BC1B1021AA8E6CC002FE705 /* qrcode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qrcode.png; sourceTree = "<group>"; };
@@ -492,6 +498,9 @@
 				9B568DD11ABB4E9E00D398A9 /* AddNewEntryViewController.m */,
 				2053974A199192FE00B1D9AD /* AppDelegate.h */,
 				2053974B199192FE00B1D9AD /* AppDelegate.m */,
+				9BC390D51AC4BB2000B3351E /* CalloutViewCell.h */,
+				9BC390D61AC4BB2000B3351E /* CalloutViewCell.m */,
+				9BC390CF1AC4BA4200B3351E /* CalloutViewCell.xib */,
 				9B6C88C41A829EAD00B50A21 /* CellLayout.h */,
 				9B6C88C51A829EAD00B50A21 /* CellLayout.m */,
 				9B6C88CC1A829FA500B50A21 /* CellLayoutDelegate.h */,
@@ -541,14 +550,18 @@
 				2061D2011991947D001C7E08 /* Images.xcassets */,
 				2061D1E719919428001C7E08 /* InAppSettings.bundle */,
 				9B4C12921A72DCC6004CC973 /* IndividualEntryViewController.h */,
-				2093C9B41AC0C10100F16948 /* LargePhotoViewContoller.h */,
 				9B4C12931A72DCC6004CC973 /* IndividualEntryViewController.m */,
+				2093C9B41AC0C10100F16948 /* LargePhotoViewContoller.h */,
 				2093C9B51AC0C10100F16948 /* LargePhotoViewContoller.m */,
 				2061D1E919919430001C7E08 /* LocalLibrary.h */,
 				2061D1EA19919430001C7E08 /* LocalLibrary.m */,
 				2040D2231A6058EA00E490F3 /* LocationTableViewController.h */,
 				2040D2241A6058EA00E490F3 /* LocationTableViewController.m */,
 				9BC3C6EA1AC1E4B20042E2D5 /* Main.storyboard */,
+				9BC10B0A1ACA0FF80019C6BA /* FilterTableViewController.h */,
+				9BC10B0B1ACA0FF80019C6BA /* FilterTableViewController.m */,
+				9BC10B071ACA0A680019C6BA /* FilterStepper.h */,
+				9BC10B081ACA0A680019C6BA /* FilterStepper.m */,
 				9BE4F6FC1A717F1D009FEB3F /* MainLocationViewController.h */,
 				9BE4F6FD1A717F1D009FEB3F /* MainLocationViewController.m */,
 				20931B8619954FF000F57FB0 /* MediaLoader.h */,
@@ -556,6 +569,8 @@
 				2061D1EE19919436001C7E08 /* Model.xcdatamodeld */,
 				9BA18C711AAE421D006CEC25 /* MyAnnotation.h */,
 				9BA18C721AAE421D006CEC25 /* MyAnnotation.m */,
+				9BC390CA1AC48C8200B3351E /* MyAnnotationView.h */,
+				9BC390CB1AC48C8200B3351E /* MyAnnotationView.m */,
 				9BC0ABED1AA7B6F300F430CB /* NetWorkCheck.h */,
 				9BC0ABEE1AA7B6F300F430CB /* NetWorkCheck.m */,
 				2093C9A71ABB3A4900F16948 /* OverviewViewController.h */,
@@ -578,11 +593,6 @@
 				2061D1F219919440001C7E08 /* Reachability.m */,
 				9BC3C6F41AC1F58C0042E2D5 /* SaveToDocument.h */,
 				9BC3C6F51AC1F58C0042E2D5 /* SaveToDocument.m */,
-				9BC390CA1AC48C8200B3351E /* MyAnnotationView.h */,
-				9BC390CB1AC48C8200B3351E /* MyAnnotationView.m */,
-				9BC390CF1AC4BA4200B3351E /* CalloutViewCell.xib */,
-				9BC390D51AC4BB2000B3351E /* CalloutViewCell.h */,
-				9BC390D61AC4BB2000B3351E /* CalloutViewCell.m */,
 				9B1211411A79B13B0088CD3A /* SearchMapViewController.h */,
 				9B1211421A79B13B0088CD3A /* SearchMapViewController.m */,
 				9B4ADCB41A7C168500375C01 /* SearchResultsTableViewController.h */,
@@ -984,6 +994,7 @@
 				9BC3C6F61AC1F58C0042E2D5 /* SaveToDocument.m in Sources */,
 				2061D1FE19919440001C7E08 /* UploadPhotosTask.m in Sources */,
 				9BEA5B571A1EB26100CC14FF /* StorageViewController.m in Sources */,
+				9BC10B0C1ACA0FF80019C6BA /* FilterTableViewController.m in Sources */,
 				9BFDAAAE1AAA72CE00C4E170 /* ELCAsset.m in Sources */,
 				9B6C88C61A829EAD00B50A21 /* CellLayout.m in Sources */,
 				2061D1D9199193CE001C7E08 /* CoreDataStore.m in Sources */,
@@ -1003,6 +1014,7 @@
 				9BC3C6F91AC211300042E2D5 /* UploadFunctions.m in Sources */,
 				2093C9A91ABB3A4900F16948 /* OverviewViewController.m in Sources */,
 				9BFDAAAD1AAA72CD00C4E170 /* ELCAlbumPickerController.m in Sources */,
+				9BC10B091ACA0A680019C6BA /* FilterStepper.m in Sources */,
 				9BA18C731AAE421D006CEC25 /* MyAnnotation.m in Sources */,
 				9BB0F20E1A27A91900DF40E3 /* StorageTableViewCell.m in Sources */,
 				9BC3C6F31AC1EEEF0042E2D5 /* SGPopSelectView.m in Sources */,
