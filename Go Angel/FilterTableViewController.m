@@ -9,13 +9,19 @@
 #import "FilterTableViewController.h"
 
 @interface FilterTableViewController ()
-
 @end
 
-@implementation FilterTableViewController
+@implementation FilterTableViewController {
+    BOOL homeSizepickerHidden;
+    BOOL lotSizepickerHidden;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBarHidden = NO;
+    homeSizepickerHidden = true;
+    lotSizepickerHidden = true;
+    [self createPickerView];
     
     self.bedroomStepper.value = 0;
     self.bedroomStepper.stepInterval = 1;
@@ -89,6 +95,23 @@
     };
     [self.type setUp];
     
+    self.priceMaxSlider.maximumValue = 2500000;
+    self.priceMinSlider.maximumValue = 2500000;
+    self.priceMaxSlider.value = 2500000;
+    self.priceMinSlider.value = 0;
+    self.priceMaxLabel.text = @"No Max Price";
+    self.priceMinLabel.text = @"No Min Price";
+    
+    self.yearBuiltSilder.maximumValue = 2015;
+    self.yearBuiltSilder.minimumValue = 1965;
+    self.yearBuiltSilder.value = 1965;
+    self.yearBuiltLabel.text = @"1965 or early";
+    
+    self.homeSize = 0;
+    self.lotSize = 0;
+    self.homeSizeLabel.text = @"Any";
+    self.lotSizeLabel.text = @"Any";
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -101,72 +124,261 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 8;
+#pragma slide bar functions
+- (IBAction)priceMaxSliderChanged:(id)sender {
+    NSLocale *locale = [NSLocale currentLocale];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setLocale:locale];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setNegativeFormat:@"-¤#,##0.00"];
+    [formatter setMaximumFractionDigits:0];
+    if (self.priceMaxSlider.value >= self.priceMinSlider.value) {
+        self.priceMaxSlider.value = roundf(self.priceMaxSlider.value*0.01)*100;
+        NSNumber *sliderValue = [NSNumber numberWithInt:(int)roundf(self.priceMaxSlider.value)];
+        
+        NSString *formatted = [formatter stringFromNumber:sliderValue];
+        self.priceMaxLabel.text = [NSString stringWithFormat:@"%@",formatted];
+    } else {
+        self.priceMaxSlider.value = self.priceMinSlider.value;
+    }
+    
+    if (self.priceMaxSlider.value == 2500000) {
+        self.priceMaxLabel.text = [NSString stringWithFormat:@"No Max Price"];
+    }
+}
+- (IBAction)priceMinSliderChanged:(id)sender {
+    NSLocale *locale = [NSLocale currentLocale];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setLocale:locale];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setNegativeFormat:@"-¤#,##0.00"];
+    [formatter setMaximumFractionDigits:0];
+    if (self.priceMinSlider.value <= self.priceMaxSlider.value) {
+        self.priceMinSlider.value = roundf(self.priceMinSlider.value*0.001)*1000;
+        NSNumber *sliderValue = [NSNumber numberWithInt:(int)roundf(self.priceMinSlider.value)];
+        
+        NSString *formatted = [formatter stringFromNumber:sliderValue];
+        self.priceMinLabel.text = [NSString stringWithFormat:@"%@",formatted ];
+    } else {
+        self.priceMinSlider.value = self.priceMaxSlider.value;
+    }
+    
+    if (self.priceMinSlider.value == 0) {
+        self.priceMinLabel.text = [NSString stringWithFormat:@"No Min Price"];
+    }
+}
+- (IBAction)yearBuiltSliderChanged:(id)sender {
+    
+    if (self.yearBuiltSilder.value == 1965) {
+        self.yearBuiltLabel.text = @"1965 or early";
+    } else {
+        self.yearBuiltLabel.text = [NSString stringWithFormat:@"%d or younger",(int)self.yearBuiltSilder.value];
+    }
+    
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
+#pragma cancel cand save button functions
+- (IBAction)cancelBtnAction:(id)sender {
+    
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)saveBtnAction:(id)sender {
+    
+}
+
+#pragma picker view functions
+# pragma picker view datasource and delegate
+// Number of components.
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     return 1;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"filterCell" forIndexPath:indexPath];
- 
-    // Configure the cell...
+// Total rows in our component.
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    if (pickerView.tag == 0) {
+        return self.homeSizedataArray.count;
+    } else{
+        return self.lotSizedataArray.count;
+    }
+}
+
+// Display each row's data.
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+    if (pickerView.tag == 0) {
+        self.homeSize =[self.homeSizedataArray objectAtIndex:row];
+        if ([self.homeSizedataArray objectAtIndex:row] == [NSNumber numberWithInt:0]) {
+             return @"Any";
+        } else {
+        return [NSString stringWithFormat:@"%@+ Sq Ft",[self formatArea:[self.homeSizedataArray objectAtIndex:row]]];
+        }
+    } else {
+        self.lotSize =[self.lotSizedataArray objectAtIndex:row];
+        if ([self.lotSizedataArray objectAtIndex:row] == [NSNumber numberWithInt:0]) {
+            return @"Any";
+        } else if ([self.lotSizedataArray objectAtIndex:row] < [NSNumber numberWithInt:10000]){
+            return [NSString stringWithFormat:@"%@+ Sq Ft",[self formatArea:[self.lotSizedataArray objectAtIndex:row]]];
+        } else {
+            NSNumber *x = [self.lotSizedataArray objectAtIndex:row];
+            double y = [x doubleValue];
+            NSNumber *arcers = [NSNumber numberWithDouble:y/43560];
+            return [NSString stringWithFormat:@"%@+ Acres",[self formatArea:arcers]];
+        }
+    }
+}
+
+// Do something with the selected row.
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
+    if (pickerView.tag == 0) {
+        if ([self.homeSizedataArray objectAtIndex:row] == [NSNumber numberWithInt:0]) {
+            self.homeSizeLabel.text =  @"Any";
+        } else {
+            self.homeSizeLabel.text = [NSString stringWithFormat:@"%@+ Sq Ft",[self formatArea:[self.homeSizedataArray objectAtIndex:row]]];
+        }
+    } else {
+        NSLog(@"You selected this: %@", [self.lotSizedataArray objectAtIndex: row]);
+        if ([self.lotSizedataArray objectAtIndex:row] == [NSNumber numberWithInt:0]) {
+            self.lotSizeLabel.text = @"Any";
+        } else if ([self.lotSizedataArray objectAtIndex:row] < [NSNumber numberWithInt:10000]){
+            self.lotSizeLabel.text = [NSString stringWithFormat:@"%@+ Sq Ft",[self formatArea:[self.lotSizedataArray objectAtIndex:row]]];
+        } else {
+            NSNumber *x = [self.lotSizedataArray objectAtIndex:row];
+            double y = [x doubleValue];
+            NSNumber *arcers = [NSNumber numberWithDouble:y/43560];
+            self.lotSizeLabel.text = [NSString stringWithFormat:@"%@+ Acres",[self formatArea:arcers]];
+
+        }
+    }
+
+}
+
+-(void) togglePicker:(NSIndexPath *) indexPath {
+    if (indexPath == [NSIndexPath indexPathForRow:0 inSection:6]) {
+        homeSizepickerHidden = !homeSizepickerHidden;
+    } else {
+        lotSizepickerHidden = !lotSizepickerHidden;
+    }
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+    [self.tableView reloadData];
+}
+
+-(void) createPickerView {
     
-    return cell;
+    
+    self.homeSizedataArray = [[NSMutableArray alloc] init];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:0]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:600]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:800]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:1000]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:1200]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:1200]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:1400]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:1600]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:1800]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:2000]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:2250]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:2500]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:2750]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:3000]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:3500]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:4000]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:5000]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:6000]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:7000]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:8000]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:9000]];
+    [self.homeSizedataArray addObject:[NSNumber numberWithInt:10000]];
+    
+    
+    self.lotSizedataArray = [[NSMutableArray alloc] init];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:0]];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:4000]];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:6000]];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:8000]];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:43560/4]];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:43560/2]];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:43560]];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:43560*2]];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:43560*5]];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:43560*5]];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:43560*10]];
+    [self.lotSizedataArray addObject:[NSNumber numberWithInt:43560*20]];
+    
+    
 }
 
-*/
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (NSString *) formatArea:(NSNumber *)area {
+    NSNumberFormatter *formatSQFT = [[NSNumberFormatter alloc] init];
+    [formatSQFT setNumberStyle:NSNumberFormatterDecimalStyle];
+    [formatSQFT setMaximumFractionDigits:2];
+    [formatSQFT setRoundingMode:NSNumberFormatterRoundHalfUp];
+    
+    NSString *result = [formatSQFT stringFromNumber:area];
+    return result;
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+
+    // Return the number of sections.
+    return 7;
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Return the number of rows in the section.
+    switch (section) {
+        case 0:
+            return 2;
+            break;
+        case 6:
+            return 4;
+            break;
+        default:
+            return 1;
+            break;
+    }
 }
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath == [NSIndexPath indexPathForRow:0 inSection:0] || indexPath==[NSIndexPath indexPathForRow:1 inSection:0] || indexPath==[NSIndexPath indexPathForRow:0 inSection:5]) {
+        return 60;
+    } else if (indexPath == [NSIndexPath indexPathForRow:1 inSection:6]){
+        if (homeSizepickerHidden) {
+            return 0;
+        } else {
+            return 200;
+        }
+    } else if (indexPath == [NSIndexPath indexPathForRow:3 inSection:6]) {
+        if (lotSizepickerHidden) {
+            return 0;
+        } else {
+            return 200;
+        }
+    }
+    else {
+        return 44;
+    }
 }
-*/
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSIndexPath *homesizeIndex = [NSIndexPath indexPathForRow:0 inSection:6];
+    NSIndexPath *lotsizeIndex = [NSIndexPath indexPathForRow:2 inSection:6];
+    if (indexPath == homesizeIndex) {
+        NSLog(@"home size");
+        [self togglePicker: indexPath];
+        /*
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.3];
+        self.pickerViewContainer.frame = CGRectMake(0, 580, 320, 300);
+        [UIView commitAnimations];*/
+    } else if (indexPath == lotsizeIndex) {
+        NSLog(@"lot size ");
+        [self togglePicker: indexPath];
+    }
 }
-*/
 
 @end
