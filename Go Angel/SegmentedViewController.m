@@ -51,7 +51,9 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    self.locations = [self.dataWrapper getLocations];
+    if (filterFlag != 1) {
+        self.locations = [self.dataWrapper getLocations];
+    }
     if (sortFlag != nil) {
         [self sortarrays:sortFlag];
     } else {
@@ -245,12 +247,14 @@
 }
 
 - (IBAction)resetFilter:(id)sender {
+    filterFlag = 0;
     sortFlag =nil;
     self.locations = [self.dataWrapper getLocations];
     [self getViewController];
 }
 
 -(void) filterInfo:(NSMutableArray *)data {
+    filterFlag = 1;
     self.locations = data;
     [self getViewController];
     

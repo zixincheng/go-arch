@@ -30,6 +30,7 @@
     AccountDataWrapper *account;
     NSUserDefaults *defaults;
     NSString *sortFlag;
+    int filterFlag;
 }
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *typeSegmentedControl;
