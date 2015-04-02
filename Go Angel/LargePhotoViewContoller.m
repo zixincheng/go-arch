@@ -108,7 +108,7 @@
   adjustedFrame.size.width = scrollView.frame.size.width;
   adjustedFrame.origin.x = 0;
   [coverImageView setFrame:adjustedFrame];
-  
+  coverImageView.image = nil;
   // load the full screen image into the image view
   [appDelegate.mediaLoader loadThumbnail:homePhoto completionHandler:^(UIImage* image) {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -121,7 +121,7 @@
   for (CSPhoto *p in photos) {
     
     // don't display home photo twice
-    if ([p.remoteID isEqualToString:homePhoto.remoteID]) {
+    if ([p.imageURL isEqualToString:homePhoto.imageURL]) {
       continue;
     }
     
