@@ -55,7 +55,7 @@
 
 -(void) viewDidAppear:(BOOL)animated {
     // setup pins for each location in map
-    self.locations = [self.dataWrapper getLocations];
+    //self.locations = [self.dataWrapper getLocations];
     self.points = [[NSMutableArray alloc]init];
     
     for (CSLocation *l in self.locations) {

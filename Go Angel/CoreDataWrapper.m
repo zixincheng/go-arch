@@ -948,6 +948,91 @@
     return arr;
 }
 
+-(NSMutableArray *)filterLocations: (NSMutableDictionary *)filterInfo {
+    
+    NSPredicate *predicate = [self getPredicate:filterInfo];
+    
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    __block NSMutableArray *arr = [[NSMutableArray alloc]init];
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
+        
+    NSPredicate *pred =predicate;
+        //[NSPredicate predicateWithFormat:@"(metaData.bed = %@ AND )",bedRoom];
+        
+    [request setPredicate:pred];
+        // set sort
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:YES];
+    NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
+    [request setSortDescriptors: descriptors];
+        
+    NSArray *locations = [context executeFetchRequest:request error:nil];
+        
+    if (locations == nil) {
+        NSLog(@"error with core data request");
+        abort();
+    }
+        
+    // add all of the log objects to the local log list
+    for (int i =0; i < [locations count]; i++) {
+        NSManagedObject *locationObj = locations[i];
+        [arr addObject:[self getLocationFromObject:locationObj]];
+    }
+    
+    return arr;
+}
+
+-(NSPredicate *)getPredicate: (NSMutableDictionary *)filterInfo {
+    NSNumber *priceMax = [filterInfo objectForKey:@"MaxPrice"];
+    NSNumber *priceMin = [filterInfo objectForKey:@"MinPrice"];
+    NSNumber *buildingSize = [filterInfo objectForKey:@"homeSize"];
+    NSNumber *landSize = [filterInfo objectForKey:@"lotSize"];
+    NSString *yearBuilt = [filterInfo objectForKey:@"yearBuilt"];
+    NSString *bedRoom = [filterInfo objectForKey:@"bedRoom"];
+    NSString *bathRoom = [filterInfo objectForKey:@"bathRoom"];
+    NSString *type = [filterInfo objectForKey:@"type"];
+    NSString *listing = [filterInfo objectForKey:@"listing"];
+    
+    NSPredicate *predicateBed;
+    if ([bedRoom integerValue] == 0 || [bedRoom integerValue] == 7) {
+        predicateBed = [NSPredicate predicateWithFormat:@"metaData.bed > %@",bedRoom];
+    } else {
+        predicateBed = [NSPredicate predicateWithFormat:@"metaData.bed = %@",bedRoom];
+    }
+    NSPredicate *predicateBath;
+    if ([bedRoom integerValue] == 0 || [bedRoom integerValue] == 6) {
+        predicateBath = [NSPredicate predicateWithFormat:@"metaData.bed > %@",bathRoom];
+    } else {
+        predicateBath = [NSPredicate predicateWithFormat:@"metaData.bed = %@",bathRoom];
+    }
+    NSPredicate *predicatePrice = [NSPredicate predicateWithFormat:@"metaData.price < %@ AND metaData.price > %@",priceMax,priceMin];
+    
+    NSPredicate *predicateHomeSize = [NSPredicate predicateWithFormat:@"metaData.buildingSqft > %@",buildingSize];
+    NSPredicate *predicateLotSize = [NSPredicate predicateWithFormat:@"metaData.landSqft.integerValue > %@",landSize];
+    NSPredicate *predicateYearBuilt;
+    if ([yearBuilt isEqualToString: @"1965"]) {
+        predicateYearBuilt = [NSPredicate predicateWithFormat:@"metaData.yearBuilt <= %@",yearBuilt];
+    } else {
+        predicateYearBuilt = [NSPredicate predicateWithFormat:@"metaData.yearBuilt > %@",yearBuilt];
+    }
+    
+    NSPredicate *predicateType;
+    if ([type isEqualToString:@"Any"]) {
+        predicateType = [NSPredicate predicateWithFormat:@"metaData.yearBuilt > %@",@"0"];;
+    } else {
+        predicateType = [NSPredicate predicateWithFormat:@"metaData.type = %@",type];
+    }
+    
+    NSPredicate *predicateList;
+    if ([listing isEqualToString:@"Any"]) {
+        predicateList = [NSPredicate predicateWithFormat:@"metaData.yearBuilt > %@",@"0"];
+    } else {
+        predicateList = [NSPredicate predicateWithFormat:@"metaData.listing = %@",listing];
+    }
+    NSPredicate *pre = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicateBed,predicateBath,predicatePrice,predicateYearBuilt,predicateType,predicateList,predicateHomeSize,predicateLotSize]];
+    return pre;
+}
+
 - (void) deleteLocation:(CSLocation *) location {
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     [context performBlock: ^{

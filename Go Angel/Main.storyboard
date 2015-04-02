@@ -9,7 +9,7 @@
             <objects>
                 <tableViewController id="KCn-sc-qQW" customClass="FilterTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="bqu-hA-Hch">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -164,7 +164,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IME-bI-3uG" id="FM0-Qr-PNr">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Home Size" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YlJ-Ni-ZlE">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Building Size" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YlJ-Ni-ZlE">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -199,7 +199,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KOn-9z-mZh" id="ZyB-Y1-cVQ">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Lot Size" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Otl-O5-ip7">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Land Size" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Otl-O5-ip7">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -820,10 +820,15 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="PSb-Nq-Yko"/>
                         <barButtonItem title="Filter" id="yuh-sa-Y2G">
                             <connections>
-                                <segue destination="CwZ-Y7-mdy" kind="modal" id="mNr-yX-W1W"/>
+                                <segue destination="KCn-sc-qQW" kind="push" identifier="filterSegue" id="1be-D7-Jfm"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="KNc-h9-gFI"/>
+                        <barButtonItem title="Reset" id="fb5-S1-DEb">
+                            <connections>
+                                <action selector="resetFilter:" destination="k5h-4K-jLN" id="bTY-dI-vxB"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="uwG-WQ-72e">
                         <nil key="title"/>
@@ -2273,7 +2278,7 @@
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fAQ-b6-wqZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1014" y="859.5"/>
+            <point key="canvasLocation" x="1344" y="867.5"/>
         </scene>
         <!--Single Location View Controller-->
         <scene sceneID="B9R-fV-oP2">
@@ -2341,7 +2346,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C2F-dj-U3f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="618" y="868"/>
+            <point key="canvasLocation" x="948" y="868"/>
         </scene>
         <!--Photos-->
         <scene sceneID="bQV-XN-mgK">
@@ -2552,24 +2557,6 @@
             </objects>
             <point key="canvasLocation" x="1305" y="2436"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="jAO-k8-2V8">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="CwZ-Y7-mdy" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="q5P-fw-cUW">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="KCn-sc-qQW" kind="relationship" relationship="rootViewController" id="lbY-DG-kab"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mcc-4S-RbM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-670" y="1520"/>
-        </scene>
     </scenes>
     <resources>
         <image name="earth-america-7.png" width="30" height="30"/>
@@ -2584,6 +2571,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="TfQ-Ln-q7R"/>
         <segue reference="alz-Yd-zJz"/>
-        <segue reference="BbE-pQ-nvc"/>
+        <segue reference="eR0-n2-Tma"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -25,7 +25,7 @@
   self.dataWrapper = appDelegate.dataWrapper;
   self.localDevice = [self.dataWrapper getDevice:account.cid];
   
-  [self loadLocations];
+  //[self loadLocations];
 }
 
 - (void) viewDidAppear:(BOOL)animated {

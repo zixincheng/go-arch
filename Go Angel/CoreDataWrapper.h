@@ -49,4 +49,5 @@
 - (NSMutableArray *) searchLocation: (NSString *) location;
 -(void) updatePhotoTag: (NSString *) tag photoId: (NSString *) photoid photo: (CSPhoto *) photo;
 - (CSPhoto *)getPhoto: (NSString *) imageURL;
+-(NSMutableArray *)filterLocations: (NSMutableDictionary *)filterInfo;
 @end

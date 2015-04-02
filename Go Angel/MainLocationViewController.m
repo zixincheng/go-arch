@@ -45,7 +45,7 @@
     
     //init object
     self.devices = [[NSMutableArray alloc] init];
-    self.locations = [self.dataWrapper getLocations];
+    //self.locations = [self.dataWrapper getLocations];
     
     // add the refresh control to the table view
     UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
@@ -75,7 +75,7 @@
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:NO animated:NO];
-    self.locations = [self.dataWrapper getLocations];
+    //self.locations = [self.dataWrapper getLocations];
     [self.tableView reloadData];
 }
 

@@ -7,14 +7,17 @@
 //
 
 #import "FilterTableViewController.h"
+#import "SegmentedViewController.h"
 
 @interface FilterTableViewController ()
+
 @end
 
 @implementation FilterTableViewController {
     BOOL homeSizepickerHidden;
     BOOL lotSizepickerHidden;
 }
+@synthesize delegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -22,6 +25,9 @@
     homeSizepickerHidden = true;
     lotSizepickerHidden = true;
     [self createPickerView];
+    appDelegate = [[UIApplication sharedApplication] delegate];
+    //self.buildingSize = [[NSNumber alloc]init];
+    //self.landSize = [[NSNumber alloc]init];
     
     self.bedroomStepper.value = 0;
     self.bedroomStepper.stepInterval = 1;
@@ -62,7 +68,7 @@
         } else if (number == 2) {
             stepper.countLabel.text = @"For Sale";
         } else if (number == 3) {
-            stepper.countLabel.text = @"For Rent Or Sale";
+            stepper.countLabel.text = @"For Sale Or Rent";
         }
     };
     [self.listing setUp];
@@ -107,8 +113,8 @@
     self.yearBuiltSilder.value = 1965;
     self.yearBuiltLabel.text = @"1965 or early";
     
-    self.homeSize = 0;
-    self.lotSize = 0;
+    self.buildingSize = [NSNumber numberWithInt: 0];
+    self.landSize = [NSNumber numberWithInt: 0];
     self.homeSizeLabel.text = @"Any";
     self.lotSizeLabel.text = @"Any";
     
@@ -177,18 +183,36 @@
     
 }
 
-#pragma cancel cand save button functions
+
+#pragma mark -  cancel cand save button functions
 - (IBAction)cancelBtnAction:(id)sender {
     
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)saveBtnAction:(id)sender {
+    NSMutableDictionary *filterInfo = [[NSMutableDictionary alloc]init];
+    [filterInfo setValue:[NSNumber numberWithInt:(int)roundf(self.priceMaxSlider.value)] forKey:@"MaxPrice"];
+    [filterInfo setValue:[NSNumber numberWithInt:(int)roundf(self.priceMinSlider.value)] forKey:@"MinPrice"];
+    [filterInfo setValue:[NSString stringWithFormat:@"%@",@(self.bedroomStepper.value)] forKey:@"bedRoom"];
+    [filterInfo setValue:[NSString stringWithFormat:@"%@",@(self.bathroomsStepper.value)] forKey:@"bathRoom"];
+    [filterInfo setValue:self.listing.countLabel.text forKey:@"listing"];
+    [filterInfo setValue:self.type.countLabel.text forKey:@"type"];
+    [filterInfo setValue:[NSString stringWithFormat:@"%@",@(self.yearBuiltSilder.value)] forKey:@"yearBuilt"];
+    [filterInfo setValue:self.buildingSize forKey:@"homeSize"];
+    [filterInfo setValue:self.landSize forKey:@"lotSize"];
+    
+    NSMutableArray *filterLocationArray = [appDelegate.dataWrapper filterLocations:filterInfo];
+    
+    if ([delegate respondsToSelector:@selector(filterInfo:)]) {
+        [delegate filterInfo:filterLocationArray];
+    }
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 
-#pragma picker view functions
-# pragma picker view datasource and delegate
+#pragma mark - picker view functions
+#pragma mark - picker view datasource and delegate
 // Number of components.
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     return 1;
@@ -206,14 +230,14 @@
 // Display each row's data.
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
     if (pickerView.tag == 0) {
-        self.homeSize =[self.homeSizedataArray objectAtIndex:row];
+        self.buildingSize =[self.homeSizedataArray objectAtIndex:row];
         if ([self.homeSizedataArray objectAtIndex:row] == [NSNumber numberWithInt:0]) {
              return @"Any";
         } else {
         return [NSString stringWithFormat:@"%@+ Sq Ft",[self formatArea:[self.homeSizedataArray objectAtIndex:row]]];
         }
     } else {
-        self.lotSize =[self.lotSizedataArray objectAtIndex:row];
+        self.landSize =[self.lotSizedataArray objectAtIndex:row];
         if ([self.lotSizedataArray objectAtIndex:row] == [NSNumber numberWithInt:0]) {
             return @"Any";
         } else if ([self.lotSizedataArray objectAtIndex:row] < [NSNumber numberWithInt:10000]){

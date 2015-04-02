@@ -7,6 +7,7 @@
 //
 
 #import "SegmentedViewController.h"
+#import "FilterTableViewController.h"
 
 @interface SegmentedViewController ()
 
@@ -18,11 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIViewController *vc = [self viewControllerForSegmentIndex:self.typeSegmentedControl.selectedSegmentIndex];
-    [self addChildViewController:vc];
-    vc.view.frame = self.containerView.bounds;
-    [self.view addSubview:vc.view];
-    self.currentViewController = vc;
+
                                                                 
     // Do any additional setup after loading the view.
     // init vars
@@ -34,9 +31,11 @@
     self.netWorkCheck = appDelegate.netWorkCheck;
     self.uploadFunction = [[UploadFunctions alloc]init];
     defaults = [NSUserDefaults standardUserDefaults];
-    
+    self.locations = [self.dataWrapper getLocations];
     // setup network notification
     [self.netWorkCheck setupNet];
+    
+    [self getViewController];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePass) name:@"passwordChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPhotoChanged:) name:@"addNewPhoto"object:nil];
@@ -75,15 +74,26 @@
 
 - (UIViewController *)viewControllerForSegmentIndex:(NSInteger)index {
     UIViewController *vc;
+    MainLocationViewController *mainvc;
+    SearchMapViewController *mapvc;
+    LargePhotoViewContoller *largevc;
+
     switch (index) {
         case 0:
-            vc = [self.storyboard instantiateViewControllerWithIdentifier:@"mainLocationViewController"];
+            mainvc = (MainLocationViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"mainLocationViewController"];
+            mainvc.locations = self.locations;
+            vc = mainvc;
             break;
         case 1:
-            vc = [self.storyboard instantiateViewControllerWithIdentifier:@"MapView"];
+            mapvc = (SearchMapViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"MapView"];
+            mapvc.locations = self.locations;
+            vc = mapvc;
             break;
         case 2:
-            vc = [self.storyboard instantiateViewControllerWithIdentifier:@"LargePhotoViewContoller"];
+            largevc = (LargePhotoViewContoller *)[self.storyboard instantiateViewControllerWithIdentifier:@"LargePhotoViewContoller"];
+            largevc.locations = self.locations;
+            vc = largevc;
+            break;
     }
     return vc;
 }
@@ -223,14 +233,40 @@
     return bssid;
 }
 
-/*
+- (IBAction)resetFilter:(id)sender {
+    
+    self.locations = [self.dataWrapper getLocations];
+    [self getViewController];
+}
+
+-(void) filterInfo:(NSMutableArray *)data {
+    self.locations = data;
+    [self getViewController];
+    
+
+}
+
+
+-(void) getViewController {
+    UIViewController *vc = [self viewControllerForSegmentIndex:self.typeSegmentedControl.selectedSegmentIndex];
+    [self addChildViewController:vc];
+    vc.view.frame = self.containerView.bounds;
+    [self.view addSubview:vc.view];
+    self.currentViewController = vc;
+}
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"filterSegue"]) {
+        
+        FilterTableViewController *vc = (FilterTableViewController *)segue.destinationViewController;
+        vc.delegate = self;
+        vc.hidesBottomBarWhenPushed = YES;
+    }
+
 }
-*/
+
 
 @end

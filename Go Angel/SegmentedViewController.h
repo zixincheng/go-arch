@@ -17,9 +17,13 @@
 #import "Reachability.h"
 #import "UploadFunctions.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import "FilterTableViewController.h"
+#import "MainLocationViewController.h"
+#import "SearchMapViewController.h"
+#import "LargePhotoViewContoller.h"
 
 
-@interface SegmentedViewController : UIViewController{
+@interface SegmentedViewController : UIViewController<FilterTableViewControllerDelegate>{
     AppDelegate *appDelegate;
     AccountDataWrapper *account;
     NSUserDefaults *defaults;
@@ -37,6 +41,7 @@
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CSDevice *localDevice;
 @property (nonatomic, strong) UploadFunctions *uploadFunction;
+@property (nonatomic, strong) NSMutableArray *locations;
 
 @property (nonatomic) NSString *networkStatus;
 @property (nonatomic, assign) BOOL canConnect;

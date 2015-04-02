@@ -8,8 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "FilterStepper.h"
+#import "AppDelegate.h"
 
-@interface FilterTableViewController : UITableViewController <UIPickerViewDataSource, UIPickerViewDelegate>
+@protocol FilterTableViewControllerDelegate <NSObject>
+@required
+
+- (void)filterInfo:(NSMutableArray *)data;
+@end
+
+
+@interface FilterTableViewController : UITableViewController <UIPickerViewDataSource, UIPickerViewDelegate>{
+    AppDelegate *appDelegate;
+}
 @property (weak, nonatomic) IBOutlet FilterStepper *bathroomsStepper;
 @property (weak, nonatomic) IBOutlet FilterStepper *listing;
 @property (weak, nonatomic) IBOutlet FilterStepper *type;
@@ -29,8 +39,10 @@
 @property (nonatomic, retain) NSMutableArray *homeSizedataArray;
 @property (nonatomic, retain) NSMutableArray *lotSizedataArray;
 
-@property (nonatomic, retain) NSNumber *homeSize;
-@property (nonatomic, retain) NSNumber *lotSize;
+@property (nonatomic, retain) NSNumber *buildingSize;
+@property (nonatomic, retain) NSNumber *landSize;
+
+@property (nonatomic, weak) id<FilterTableViewControllerDelegate> delegate;
 
 
 @end
