@@ -21,12 +21,15 @@
 #import "MainLocationViewController.h"
 #import "SearchMapViewController.h"
 #import "LargePhotoViewContoller.h"
+#import "CSLocation.h"
+#import "CSLocationMeta.h"
 
 
-@interface SegmentedViewController : UIViewController<FilterTableViewControllerDelegate>{
+@interface SegmentedViewController : UIViewController<FilterTableViewControllerDelegate,UIActionSheetDelegate>{
     AppDelegate *appDelegate;
     AccountDataWrapper *account;
     NSUserDefaults *defaults;
+    NSString *sortFlag;
 }
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *typeSegmentedControl;

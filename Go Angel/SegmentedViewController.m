@@ -9,6 +9,11 @@
 #import "SegmentedViewController.h"
 #import "FilterTableViewController.h"
 
+
+#define SORTNAME @"sortName"
+#define SORTPRICEHIGH @"sortPriceHigh"
+#define SORTPRICELOW @"sortPriceLow"
+
 @interface SegmentedViewController ()
 
 - (UIViewController *)viewControllerForSegmentIndex:(NSInteger)index;
@@ -46,6 +51,12 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    self.locations = [self.dataWrapper getLocations];
+    if (sortFlag != nil) {
+        [self sortarrays:sortFlag];
+    } else {
+    [self getViewController];
+    }
 }
 
 - (void) dealloc {
@@ -234,7 +245,7 @@
 }
 
 - (IBAction)resetFilter:(id)sender {
-    
+    sortFlag =nil;
     self.locations = [self.dataWrapper getLocations];
     [self getViewController];
 }
@@ -244,6 +255,72 @@
     [self getViewController];
     
 
+}
+
+#pragma mark - sort functions
+
+-(void) sortarrays:(NSString *) sortBase {
+    NSArray *sortedArray;
+    
+    if ([sortBase isEqualToString:SORTNAME]) {
+        sortedArray = [self.locations sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            NSString *first = [(CSLocation *)obj1 name];
+            NSString *second = [(CSLocation *)obj2 name];
+            return [first compare:second];
+        }];
+
+    } else if ([sortBase isEqualToString:SORTPRICEHIGH]){
+        sortedArray = [self.locations sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            CSLocationMeta *first = [(CSLocation *)obj1 locationMeta];
+            CSLocationMeta *second = [(CSLocation *)obj2 locationMeta];
+            return [second.price compare:first.price];
+        }];
+        
+    } else if ([sortBase isEqualToString:SORTPRICELOW]){
+        sortedArray = [self.locations sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            CSLocationMeta *first = [(CSLocation *)obj1 locationMeta];
+            CSLocationMeta *second = [(CSLocation *)obj2 locationMeta];
+            return [first.price compare:second.price];
+        }];
+    }
+    
+    self.locations = [NSMutableArray arrayWithArray:sortedArray];
+    [self getViewController];
+
+    
+}
+
+- (IBAction)sortLocations:(id)sender {
+    UIActionSheet *shareActionSheet = [[UIActionSheet alloc] initWithTitle:@"Sort" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Sort By Name",@"Sort By Price(High to Low)",@"Sort By Price(Low to High)", nil];
+    [shareActionSheet showInView:self.view];
+    
+}
+
+-(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+
+    switch (buttonIndex) {
+        case 0:
+        {
+            [self sortarrays:SORTNAME];
+            sortFlag = SORTNAME;
+            break;
+        }
+        case 1:
+        {
+            [self sortarrays:SORTPRICEHIGH];
+            sortFlag = SORTPRICEHIGH;
+            break;
+        }
+        case 2:
+        {
+            [self sortarrays:SORTPRICELOW];
+            sortFlag = SORTPRICELOW;
+            break;
+    
+        }
+        default:
+            break;
+    }
 }
 
 

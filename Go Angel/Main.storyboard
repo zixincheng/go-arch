@@ -279,7 +279,7 @@
                         <viewControllerLayoutGuide type="bottom" id="kbP-i5-MuF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uRD-uV-26k">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="652"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kj3-Yu-BLD">
@@ -817,6 +817,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems>
+                        <barButtonItem title="Sort" id="avL-Ga-cMX">
+                            <connections>
+                                <action selector="sortLocations:" destination="k5h-4K-jLN" id="bWq-eP-R3a"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="PSb-Nq-Yko"/>
                         <barButtonItem title="Filter" id="yuh-sa-Y2G">
                             <connections>
@@ -1938,7 +1943,7 @@
                         <viewControllerLayoutGuide type="bottom" id="N4b-S1-hD8"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Mhh-aH-ZVg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="652"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ady-Vo-5JW">
@@ -2571,8 +2576,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="9hW-BI-atU"/>
-        <segue reference="eR0-n2-Tma"/>
+        <segue reference="TfQ-Ln-q7R"/>
         <segue reference="alz-Yd-zJz"/>
+        <segue reference="eR0-n2-Tma"/>
     </inferredMetricsTieBreakers>
 </document>
