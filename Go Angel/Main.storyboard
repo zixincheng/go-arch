@@ -9,7 +9,7 @@
             <objects>
                 <tableViewController id="KCn-sc-qQW" customClass="FilterTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="bqu-hA-Hch">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -268,7 +268,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CTj-ly-Utw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-242" y="1454"/>
+            <point key="canvasLocation" x="-416" y="1464"/>
         </scene>
         <!--Add New Entry-->
         <scene sceneID="IYC-7Y-u0g">
@@ -279,7 +279,7 @@
                         <viewControllerLayoutGuide type="bottom" id="kbP-i5-MuF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uRD-uV-26k">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="652"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kj3-Yu-BLD">
@@ -820,7 +820,9 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="PSb-Nq-Yko"/>
                         <barButtonItem title="Filter" id="yuh-sa-Y2G">
                             <connections>
-                                <segue destination="KCn-sc-qQW" kind="push" identifier="filterSegue" id="1be-D7-Jfm"/>
+                                <segue destination="KCn-sc-qQW" kind="popover" identifier="filterSegue" popoverAnchorBarButtonItem="yuh-sa-Y2G" id="1be-D7-Jfm">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="KNc-h9-gFI"/>
@@ -1936,7 +1938,7 @@
                         <viewControllerLayoutGuide type="bottom" id="N4b-S1-hD8"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Mhh-aH-ZVg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="652"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ady-Vo-5JW">
@@ -2437,7 +2439,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SLp-FY-cbJ">
-                                <rect key="frame" x="0.0" y="-84" width="320" height="435"/>
+                                <rect key="frame" x="0.0" y="-84" width="320" height="652"/>
                                 <connections>
                                     <segue destination="Es7-zU-7K0" kind="embed" identifier="detailsEmbedSegue" id="9hW-BI-atU"/>
                                 </connections>
@@ -2450,7 +2452,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3wT-Du-xyj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1428" y="252"/>
+            <point key="canvasLocation" x="1974" y="244"/>
         </scene>
         <!--Photos View Controller-->
         <scene sceneID="j8j-2G-gLq">
@@ -2569,8 +2571,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="TfQ-Ln-q7R"/>
-        <segue reference="alz-Yd-zJz"/>
+        <segue reference="9hW-BI-atU"/>
         <segue reference="eR0-n2-Tma"/>
+        <segue reference="alz-Yd-zJz"/>
     </inferredMetricsTieBreakers>
 </document>

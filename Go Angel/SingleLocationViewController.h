@@ -50,8 +50,7 @@
 @property (nonatomic) UIImagePickerController *picker;
 @property (nonatomic) UIView *overlay;
 @property (nonatomic) AVCaptureSession *session;
-@property (nonatomic, strong) UIView *doneCameraDownView;
-@property (nonatomic, strong) UIView *doneCameraUpView;
+
 @property (nonatomic, strong) UIView *topContainerView;
 @property (nonatomic, strong) UILabel *topLbl;
 @property (nonatomic, strong) UIView *cameraMenuView;

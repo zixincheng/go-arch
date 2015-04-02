@@ -142,6 +142,33 @@
 
 # pragma mark - camera selectors
 
+// text message at top of the custom camera view
+- (void)addTopViewWithText:(NSString*)text{
+    //if (!_topContainerView) {
+        CGRect topFrame = CGRectMake(0, 0, APP_SIZE.width, CAMERA_TOPVIEW_HEIGHT);
+        
+        UIView *tView = [[UIView alloc] initWithFrame:topFrame];
+        tView.backgroundColor = [UIColor clearColor];
+        [self.overlay addSubview:tView];
+        self.topContainerView = tView;
+        
+        UIView *emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, topFrame.size.width, topFrame.size.height)];
+        emptyView.backgroundColor = [UIColor blackColor];
+        emptyView.alpha = 0.4f;
+        [_topContainerView addSubview:emptyView];
+        
+        topFrame.origin.x += 10;
+        UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 500, topFrame.size.height)];
+        lbl.backgroundColor = [UIColor clearColor];
+        lbl.textColor = [UIColor whiteColor];
+        lbl.font = [UIFont systemFontOfSize:25.f];
+        lbl.textAlignment = NSTextAlignmentNatural;
+        [_topContainerView addSubview:lbl];
+        self.topLbl = lbl;
+   // }
+    _topLbl.text = text;
+}
+
 -(void) flashScreen {
   CGFloat height = DEVICE_SIZE.height - CAMERA_MENU_VIEW_HEIGH - 95;
   UIWindow* wnd = [UIApplication sharedApplication].keyWindow;
@@ -290,6 +317,8 @@
   [self.overlay addSubview:menuView];
   
   self.cameraMenuView = menuView;
+    
+  [self addTopViewWithText:@"Taking Photo"];
   
   [self addMenuViewButtons];
   
