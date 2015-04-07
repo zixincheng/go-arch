@@ -52,6 +52,7 @@
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRightButtonText:) name:@"SetRightButtonText" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showShareDelete:) name:@"ShowShareDelete" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(metaChanged) name:@"LocationMetadataUpdate" object:nil];
+    [self.navigationController setNavigationBarHidden:NO];
 }
 
 - (void)metaChanged {

@@ -52,14 +52,11 @@
     
     CSLocation *location = [self.searchResults objectAtIndex:indexPath.row];
     
-        if (![location.unit isEqualToString:@""]) {
-            cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@",location.unit, location.name];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",location.city,location.province];
-        } else {
-            cell.textLabel.text = location.name;
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",location.city,location.province];
+
+    cell.textLabel.text = location.name;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",location.city,location.province];
             // Configure the cell...
-        }
+
 
     }
     return cell;
@@ -69,39 +66,29 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.row == [self.searchResults count]) {
-        AddingLocationViewController *vc = [[self storyboard] instantiateViewControllerWithIdentifier:@"LocationTagging"];
+        AddingLocationViewController *vc = [[self storyboard] instantiateViewControllerWithIdentifier:@"AddNewLocation"];
+        [self.searchController.searchBar resignFirstResponder];
         [self.presentingViewController.navigationController pushViewController:vc animated:YES];
 
     } else {
         self.selectedlocation = [self.searchResults objectAtIndex:indexPath.row];
-        IndividualEntryViewController *individualViewControll = [[self storyboard] instantiateViewControllerWithIdentifier:@"IndividualViewController"];
-        individualViewControll.dataWrapper = self.dataWrapper;
-        individualViewControll.localDevice = self.localDevice;
-        individualViewControll.location = self.selectedlocation;
+        SingleLocationViewController *singleLocContoller = [[self storyboard] instantiateViewControllerWithIdentifier:@"SingleLocationViewController"];
+        singleLocContoller.dataWrapper = self.dataWrapper;
+        singleLocContoller.localDevice = self.localDevice;
+        singleLocContoller.location = self.selectedlocation;
+        singleLocContoller.coinsorter = self.coinsorter;
         NSString *title;
-        if (![self.selectedlocation.unit isEqualToString:@""]) {
-            title = [NSString stringWithFormat:@"%@ - %@",self.selectedlocation.unit, self.selectedlocation.name];
-        } else {
-            title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];
-        }
-        individualViewControll.navigationItem.title = title;
 
-        [self.presentingViewController.navigationController pushViewController:individualViewControll animated:YES];
+        title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];
+
+        singleLocContoller.navigationItem.title = title;
+        [self.searchController.searchBar resignFirstResponder];
+        [self.presentingViewController.navigationController pushViewController:singleLocContoller animated:YES];
+        
+
     }
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"individualSegue"]) {
-        
-        IndividualEntryViewController *individualViewControll = (IndividualEntryViewController *)segue.destinationViewController;
-        
-        individualViewControll.dataWrapper = self.dataWrapper;
-        individualViewControll.localDevice = self.localDevice;
-        individualViewControll.location = self.selectedlocation;
-        
-        
-    }
-}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

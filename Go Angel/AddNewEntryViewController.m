@@ -32,7 +32,7 @@ CGFloat animatedDistance;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self.navigationController setNavigationBarHidden:NO];
     [self setup];
     // Do any additional setup after loading the view.
 }

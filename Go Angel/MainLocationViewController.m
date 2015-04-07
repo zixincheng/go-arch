@@ -24,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //init search controller
-    
+    [self.searchController.navigationController setNavigationBarHidden:NO];
     UINavigationController *searchResultsController = [[self storyboard] instantiateViewControllerWithIdentifier:@"TableSearchResultsNavController"];
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:searchResultsController];
     self.searchController.searchResultsUpdater = self;
@@ -74,7 +74,7 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:NO animated:NO];
+    //[self.navigationController setToolbarHidden:NO animated:NO];
     //self.locations = [self.dataWrapper getLocations];
     [self.tableView reloadData];
 }
@@ -269,6 +269,8 @@
         vc.localDevice = self.localDevice;
         vc.dataWrapper = self.dataWrapper;
         vc.selectedlocation = self.selectedlocation;
+        vc.coinsorter = self.coinsorter;
+        vc.searchController = self.searchController;
         
         [vc.tableView reloadData];
     }
