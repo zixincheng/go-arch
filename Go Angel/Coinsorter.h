@@ -10,6 +10,7 @@
 #import "CSDevice.h"
 #import "CSPhoto.h"
 #import "CSStorage.h"
+#import "CSLocationMeta.h"
 #import "AccountDataWrapper.h"
 #import "CoreDataWrapper.h"
 #import "AppDelegate.h"
@@ -55,5 +56,7 @@
 
 - (void) uploadOnePhoto:(CSPhoto *)photo upCallback:(void (^)())upCallback;
 - (void) uploadOneThumb:(CSPhoto *)photo upCallback:(void (^)())upCallback;
+
+- (void) createAlbum: (CSLocationMeta *) album;
 
 @end

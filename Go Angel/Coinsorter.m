@@ -69,6 +69,10 @@
   return request;
 }
 
+
+#pragma mark -
+#pragma mark Auth APIs
+
 - (void) getQRCode: (void (^) (NSString *base64Image))callback {
   NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
   NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
@@ -151,6 +155,9 @@
 }
 
 
+#pragma mark -
+#pragma mark Storage APIs
+
 -(void) updateStorage: (NSString*) queryAction stoUUID:(NSString *) uuid crontime: (NSString *) crontime infoCallback: (void (^) (NSDictionary *)) infoCallback{
     NSString *query = [NSString stringWithFormat:@"?action=%@&uuid=%@",queryAction,uuid];
     
@@ -209,6 +216,56 @@
     
 }
 
+- (void) getStorages: (void (^) (NSMutableArray *storages)) callback {
+    NSOperationQueue *background = [[NSOperationQueue alloc] init];
+    
+    
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
+    NSMutableURLRequest *request = [self getHTTPGetRequest:@"/storage"];
+    
+    //    ^(NSData *data, NSURLResponse *response, NSError *error)
+    NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error == nil) {
+            NSError *jsonError;
+            NSDictionary *respon = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            NSLog(@"%@",respon);
+            NSArray *storageArr = [respon objectForKey:@"stores"];
+            NSMutableArray *storages = [[NSMutableArray alloc] init];
+            NSLog(@"%@",storageArr);
+            for (NSDictionary *d in storageArr) {
+                NSString *storageLabel = [d objectForKey:@"label"];
+                NSString *uuid = [d objectForKey:@"uuid"];
+                NSString *plugged_in = [d objectForKey:@"plugged_in"];
+                NSString *mounted = [d objectForKey:@"mounted"];
+                NSString *primary = [d objectForKey:@"primaryflag"];
+                NSString *backup = [d objectForKey:@"backupflag"];
+                NSNumber *freeSpace = [d objectForKey:@"free"];
+                NSNumber *totalSpace = [d objectForKey:@"total"];
+                
+                CSStorage *newSto = [[CSStorage alloc] init];
+                newSto.storageLabel = storageLabel;
+                newSto.uuid = uuid;
+                newSto.pluged_in = plugged_in;
+                newSto.mounted = mounted;
+                newSto.freeSpace = freeSpace;
+                newSto.totalSpace = totalSpace;
+                newSto.primary = primary;
+                newSto.backup = backup;
+                
+                [storages addObject:newSto];
+            }
+            
+            NSLog(@"sent %lu storages to callback", (unsigned long)storages.count);
+            callback(storages);
+        }
+    }];
+    
+    [dataTask resume];
+}
+
+#pragma mark -
+#pragma mark Device APIs
 // update the device information on server
 - (void) updateDevice {
   NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -274,54 +331,9 @@
   [dataTask resume];
 }
 
-- (void) getStorages: (void (^) (NSMutableArray *storages)) callback {
-    NSOperationQueue *background = [[NSOperationQueue alloc] init];
-    
-    
-    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
-    NSMutableURLRequest *request = [self getHTTPGetRequest:@"/storage"];
-    
-    //    ^(NSData *data, NSURLResponse *response, NSError *error)
-    NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error == nil) {
-            NSError *jsonError;
-            NSDictionary *respon = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-            NSLog(@"%@",respon);
-            NSArray *storageArr = [respon objectForKey:@"stores"];
-            NSMutableArray *storages = [[NSMutableArray alloc] init];
-            NSLog(@"%@",storageArr);
-            for (NSDictionary *d in storageArr) {
-                NSString *storageLabel = [d objectForKey:@"label"];
-                NSString *uuid = [d objectForKey:@"uuid"];
-                NSString *plugged_in = [d objectForKey:@"plugged_in"];
-                NSString *mounted = [d objectForKey:@"mounted"];
-                NSString *primary = [d objectForKey:@"primaryflag"];
-                NSString *backup = [d objectForKey:@"backupflag"];
-                NSNumber *freeSpace = [d objectForKey:@"free"];
-                NSNumber *totalSpace = [d objectForKey:@"total"];
-                
-                CSStorage *newSto = [[CSStorage alloc] init];
-                newSto.storageLabel = storageLabel;
-                newSto.uuid = uuid;
-                newSto.pluged_in = plugged_in;
-                newSto.mounted = mounted;
-                newSto.freeSpace = freeSpace;
-                newSto.totalSpace = totalSpace;
-                newSto.primary = primary;
-                newSto.backup = backup;
-                
-                [storages addObject:newSto];
-            }
-            
-            NSLog(@"sent %lu storages to callback", (unsigned long)storages.count);
-            callback(storages);
-        }
-    }];
-    
-    [dataTask resume];
-}
 
+#pragma mark -
+#pragma mark photo/video meta APIs
 // update the device information on server
 - (void) updateMeta: (CSPhoto *) photo entity:(NSString *)entity value:(NSString *)value  {
     NSString* TextEscaped = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -449,6 +461,9 @@
     //}
 }
 
+#pragma mark -
+#pragma mark Password APIs
+
 -(void) setPassword: (NSString *)oldPass newPass:(NSString *)newPass callback: (void (^) (NSDictionary *)) callback{
 
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -508,6 +523,9 @@
   return mapData;
 }
 
+
+#pragma mark -
+#pragma mark Photo APIs
 - (void) DeletePhoto:(NSMutableArray*) deletePhotos {
      NSLog(@"delete");
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -770,6 +788,46 @@
                 failureBlock:failureBlock];
   
 }
+
+#pragma mark -
+#pragma mark Album APIs
+
+- (void) createAlbum: (CSLocationMeta *) album{
+    CSDevice *localDevice = [self.dataWrapper getDevice:account.cid];
+    NSString* nameTextEscaped = [album.location.name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSMutableArray *photos = [self.dataWrapper getPhotosWithLocation:localDevice.remoteId location:album.location];
+    NSString *count = [NSString stringWithFormat:@"%lu",(unsigned long)photos.count];
+    NSString *query = [NSString stringWithFormat:@"?name=%@&type=%@&alb_size=%@&alb_latitude=%@&alb_longitude=%@&alb_altitude=%@&alb_sublocation=%@&alb_city=%@&alb_state=%@&alb_country=%@&alb_cover=%@",nameTextEscaped,album.type,count,album.location.latitude,album.location.longitude,@"0",nameTextEscaped,album.location.city,album.location.province,album.location.country,@"0"];
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
+    NSMutableURLRequest *request;
+    
+
+    request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/albums/%@",query]];
+    
+    NSArray *objects =
+    [NSArray arrayWithObjects:localDevice.remoteId, account.token, nil];
+    
+    // set headers
+    NSArray *keys = [NSArray
+                     arrayWithObjects:@"cid",@"token", nil];
+    NSDictionary *headers =
+    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    [request setAllHTTPHeaderFields:headers];
+    
+    NSURLSessionDataTask *postDataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSError *jsonError;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        NSLog(@"create album stat %@",jsonData);
+        // TODO: check to see if metadata update worked
+        // by reading json response
+    }];
+    
+    [postDataTask resume];
+}
+
+#pragma mark -
+#pragma mark Get token APIs
 
 - (void) getToken:(NSString *)ip pass:(NSString *)pass callback: (void (^) (NSDictionary *authData)) callback {
   NSString *urlString = [NSString stringWithFormat:@"%@%@%@%@", FRONT_URL, ip,PORT, @"/auth"];

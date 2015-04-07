@@ -283,6 +283,7 @@ CGFloat animatedDistance;
     if (self.location.name !=nil && self.location.city !=nil && self.location.province != nil) {
         self.locationMeta.location = self.location;
         [appDelegate.dataWrapper addLocation:self.location locationmeta:self.locationMeta];
+        [appDelegate.coinsorter createAlbum:self.locationMeta];
         if (self.photoImage != nil) {
             [self.saveFunction saveImageIntoDocument:self.photoImage metadata:metadata location:self.location];
         }
