@@ -39,7 +39,6 @@ CGFloat animatedDistance;
 
 - (void) setup {
     [self createViewContent];
-    
     appDelegate = [[UIApplication sharedApplication] delegate];
     self.saveFunction = [[SaveToDocument alloc]init];
     
@@ -215,35 +214,40 @@ CGFloat animatedDistance;
     }
     
     //get the scrollview’s current size, and add the distance we want to scroll to it
-    CGSize newSize = self.scrollView.contentSize;
+    CGSize newSize = self.tableView.contentSize;
     newSize.height += animatedDistance;
-    self.scrollView.contentSize = newSize;
+    self.tableView.contentSize = newSize;
     
     //finally, scroll that distance
-    CGPoint p = self.scrollView.contentOffset;
+    CGPoint p = self.tableView.contentOffset;
     p.y += animatedDistance;
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];
     
-    [self.scrollView setContentOffset:p animated:NO];
+    [self.tableView setContentOffset:p animated:NO];
     
     [UIView commitAnimations];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    /*
-  CGRect viewFrame = self.view.frame;
-  viewFrame.origin.y += animatedDistance;
-  
-  [UIView beginAnimations:nil context:NULL];
-  [UIView setAnimationBeginsFromCurrentState:YES];
-  [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];
-  
-  [self.view setFrame:viewFrame];
-  
-  [UIView commitAnimations];*/
+
+    CGSize newSize = self.tableView.contentSize;
+    newSize.height -= animatedDistance;
+    self.tableView.contentSize = newSize;
+    
+    //finally, scroll that distance
+    CGPoint p = self.tableView.contentOffset;
+    p.y -= animatedDistance;
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];
+    
+    [self.tableView setContentOffset:p animated:NO];
+    
+    [UIView commitAnimations];
+
    //self.priceTextField.text = [self getPriceText];
 }
 
@@ -861,7 +865,7 @@ CGFloat animatedDistance;
 }
 
 -(void)doneWithNumberPad:(id) sender{
-
+ 
         [self.priceTextField resignFirstResponder];
     [self.yearBuiltTextField resignFirstResponder];
     [self.buildingSqftTextField resignFirstResponder];
