@@ -148,21 +148,21 @@
     [priceLable setText:priceString];
     
     if (l.locationMeta.bed !=nil) {
-        [bdLbel setText:[NSString stringWithFormat:@"%@ BD",l.locationMeta.bed]];
+        [bdLbel setText:[NSString stringWithFormat:@"%@ Bedroom",l.locationMeta.bed]];
     }
     if (l.locationMeta.bed !=nil) {
-        [baLbel setText:[NSString stringWithFormat:@"%@ BA",l.locationMeta.bath]];
+        [baLbel setText:[NSString stringWithFormat:@"%@ Bathroom",l.locationMeta.bath]];
     }
     [addressLbel setText:[NSString stringWithFormat:@"%@, %@, %@, %@",l.name,l.city,l.province,l.country]];
   
     if (l.locationMeta.buildingSqft !=nil) {
         NSString *buildingString = [l formatArea:l.locationMeta.buildingSqft];
-        [buildingLbel setText:[NSString stringWithFormat:@"Fl. %@ sq. ft.",buildingString]];
+        [buildingLbel setText:[NSString stringWithFormat:@"Floor Size %@ sq.ft.",buildingString]];
     }
     
     if (l.locationMeta.buildingSqft !=nil) {
         NSString *landString = [l formatArea:l.locationMeta.landSqft];
-        [landLbel setText:[NSString stringWithFormat:@"Lt. %@ sq. ft.",landString]];
+        [landLbel setText:[NSString stringWithFormat:@"Lot Size %@ sq.ft.",landString]];
     }
     
     return cell;

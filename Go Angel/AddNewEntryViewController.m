@@ -16,6 +16,11 @@
 @implementation AddNewEntryViewController {
     NSDictionary *metadata;
     BOOL editEnabled;
+    UIBarButtonItem *applyBtnmls;
+    UIBarButtonItem *applyBtnprice;
+    UIBarButtonItem *applyBtnyear;
+    UIBarButtonItem *applyBtnbuilding;
+    UIBarButtonItem *applyBtnland;
 }
 @synthesize location;
 static const CGFloat KEYBOARD_ANIMATION_DURATION = 0.3;
@@ -74,6 +79,8 @@ CGFloat animatedDistance;
                                    action:@selector(dismissKeyboard)];
     tap.delegate = self;
     [self.view addGestureRecognizer:tap];
+    
+    [self addToolBarOnKeyboard];
 }
 
 - (void) setEditEnabled:(BOOL)enabled {
@@ -237,6 +244,7 @@ CGFloat animatedDistance;
   [self.view setFrame:viewFrame];
   
   [UIView commitAnimations];*/
+   //self.priceTextField.text = [self getPriceText];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -279,6 +287,8 @@ CGFloat animatedDistance;
         self.locationMeta.mls = self.mlsTextField.text;
     }
 }
+
+
 - (IBAction)saveData:(id)sender {
     if (self.location.name !=nil && self.location.city !=nil && self.location.province != nil) {
         self.locationMeta.location = self.location;
@@ -631,6 +641,7 @@ CGFloat animatedDistance;
                     [cell.contentView addSubview:priceLabel];
                     
                     self.priceTextField.borderStyle = UITextBorderStyleRoundedRect;
+                    self.priceTextField.keyboardType = UIKeyboardTypeNumberPad;
                     self.priceTextField.delegate = self;
                     [cell.contentView addSubview:self.priceTextField];
                     break;
@@ -678,6 +689,7 @@ CGFloat animatedDistance;
                     [cell.contentView addSubview:yearBuilt];
                     
                     self.yearBuiltTextField.borderStyle = UITextBorderStyleRoundedRect;
+                    self.yearBuiltTextField.keyboardType = UIKeyboardTypeNumberPad;
                     self.yearBuiltTextField.delegate = self;
                     [cell.contentView addSubview:self.yearBuiltTextField];
                     break;
@@ -685,7 +697,7 @@ CGFloat animatedDistance;
                 case 1:
                 {
                     UILabel *bed = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 90, 30.0)];
-                    bed.text = @"Bed";
+                    bed.text = @"Bedroom";
                     
                     [cell.contentView addSubview:bed];
                     
@@ -697,7 +709,7 @@ CGFloat animatedDistance;
                 case 2:
                 {
                     UILabel *bath = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 90, 30.0)];
-                    bath.text = @"Bath";
+                    bath.text = @"Bathroom";
                     
                     [cell.contentView addSubview:bath];
                     
@@ -709,7 +721,7 @@ CGFloat animatedDistance;
                 case 3:
                 {
                     UILabel *buildSqft = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 110, 30.0)];
-                    buildSqft.text = @"Building Sqft";
+                    buildSqft.text = @"Floor Size";
                     
                     [cell.contentView addSubview:buildSqft];
                     
@@ -722,7 +734,7 @@ CGFloat animatedDistance;
                 case 4:
                 {
                     UILabel *landSqft = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 110, 30.0)];
-                    landSqft.text = @"Land Sqft";
+                    landSqft.text = @"Lot Size";
                     
                     [cell.contentView addSubview:landSqft];
                     
@@ -828,6 +840,33 @@ CGFloat animatedDistance;
     
     self.mlsTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 115, 30.0)];
     [self.mlsTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+}
+
+
+-(void)addToolBarOnKeyboard {
+    
+    UIToolbar* numberToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
+    numberToolbar.barStyle = UIBarStyleBlackTranslucent;
+    numberToolbar.items = [NSArray arrayWithObjects:
+                           [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+                           [[UIBarButtonItem alloc]initWithTitle:@"Apply" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithNumberPad:)],
+                           nil];
+    [numberToolbar sizeToFit];
+    self.priceTextField.inputAccessoryView = numberToolbar;
+    self.yearBuiltTextField.inputAccessoryView = numberToolbar;
+    self.buildingSqftTextField.inputAccessoryView = numberToolbar;
+    self.landSqftTextField.inputAccessoryView = numberToolbar;
+    self.mlsTextField.inputAccessoryView = numberToolbar;
+    
+}
+
+-(void)doneWithNumberPad:(id) sender{
+
+        [self.priceTextField resignFirstResponder];
+    [self.yearBuiltTextField resignFirstResponder];
+    [self.buildingSqftTextField resignFirstResponder];
+    [self.landSqftTextField resignFirstResponder];
+    [self.mlsTextField resignFirstResponder];
 }
 /*
  #pragma mark - Navigation
