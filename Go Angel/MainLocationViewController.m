@@ -132,6 +132,9 @@
         photo = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:l];
         if (photo == nil) {
             photo = [self.photos objectAtIndex:0];
+            photo.cover = @"1";
+            [self.dataWrapper addUpdatePhoto:photo];
+            [self.coinsorter updateMeta:photo entity:@"home" value:@"1"];
         }
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [appDelegate.mediaLoader loadThumbnail:photo completionHandler:^(UIImage *image) {
