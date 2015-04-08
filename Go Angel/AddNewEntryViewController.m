@@ -834,8 +834,8 @@ CGFloat animatedDistance;
     self.yearBuiltTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 115, 30.0)];
     [self.yearBuiltTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
     
-    self.bedLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
-    self.bathLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
+    self.bedLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 9, 150, 30.0)];
+    self.bathLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 9, 150, 30.0)];
     self.buildingSqftTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 115, 30.0)];
     [self.buildingSqftTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
     
