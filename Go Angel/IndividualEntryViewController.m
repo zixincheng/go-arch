@@ -648,10 +648,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             if (oldCover == nil) {
                 
             } else {
-                oldCover.cover = @"0";
+               
                 [self.dataWrapper addUpdatePhoto:oldCover];
             }
-            self.selectedCoverPhoto.cover = @"1";
+            
             [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
             [self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"home" value:@"1"];
             break;
@@ -665,10 +665,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (oldCover == nil) {
 
     } else {
-        oldCover.cover = @"0";
+     
         [self.dataWrapper addUpdatePhoto:oldCover];
     }
-    self.selectedCoverPhoto.cover = @"1";
+    
     [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
     [self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"home" value:@"1"];
     self.setCoverPageViewContainer.frame = CGRectMake(0, 1600, 320, 150);

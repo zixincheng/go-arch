@@ -343,6 +343,7 @@
 		9BC1B1081AA8E74D002FE705 /* QRReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRReaderViewController.h; sourceTree = "<group>"; };
 		9BC1B1091AA8E74D002FE705 /* QRReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRReaderViewController.m; sourceTree = "<group>"; };
 		9BC32ED61AD59913002B49E6 /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
+		9BC32EDB1AD5EADB002B49E6 /* Model 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 5.xcdatamodel"; sourceTree = "<group>"; };
 		9BC390CA1AC48C8200B3351E /* MyAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnnotationView.h; sourceTree = "<group>"; };
 		9BC390CB1AC48C8200B3351E /* MyAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotationView.m; sourceTree = "<group>"; };
 		9BC390CF1AC4BA4200B3351E /* CalloutViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalloutViewCell.xib; sourceTree = "<group>"; };
@@ -1248,8 +1249,9 @@
 				2061D1EF19919436001C7E08 /* Model.xcdatamodel */,
 				9BC3C6DE1AC1D84B0042E2D5 /* Model 3.xcdatamodel */,
 				9BC32ED61AD59913002B49E6 /* Model 4.xcdatamodel */,
+				9BC32EDB1AD5EADB002B49E6 /* Model 5.xcdatamodel */,
 			);
-			currentVersion = 9BC32ED61AD59913002B49E6 /* Model 4.xcdatamodel */;
+			currentVersion = 9BC32EDB1AD5EADB002B49E6 /* Model 5.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

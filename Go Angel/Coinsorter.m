@@ -795,9 +795,8 @@
 - (void) createAlbum: (CSAlbum *) album{
     CSDevice *localDevice = [self.dataWrapper getDevice:account.cid];
     NSString* nameTextEscaped = [album.location.sublocation stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSMutableArray *photos = [self.dataWrapper getPhotosWithLocation:localDevice.remoteId location:album.location];
-    NSString *count = [NSString stringWithFormat:@"%lu",(unsigned long)photos.count];
-    NSString *query = [NSString stringWithFormat:@"?name=%@&type=%@&alb_size=%@&alb_latitude=%@&alb_longitude=%@&alb_altitude=%@&alb_sublocation=%@&alb_city=%@&alb_state=%@&alb_country=%@&alb_cover=%@",nameTextEscaped,album.type,count,album.location.latitude,album.location.longitude,@"0",nameTextEscaped,album.location.city,album.location.province,album.location.country,@"0"];
+    NSString* typeTextEscaped = [album.type stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *query = [NSString stringWithFormat:@"?name=%@&description=%@&alb_latitude=%@&alb_longitude=%@&alb_altitude=%@&alb_sublocation=%@&alb_city=%@&alb_state=%@&alb_country=%@&alb_cover=%@&bath=%@&bed=%@&buildingsqft=%@&landsqft=%@&listing=%@&mls=%@&price=%@&tag=%@&type=%@&yearbuilt=%@",nameTextEscaped,@"asdf",album.location.latitude,album.location.longitude,@"1",nameTextEscaped,album.location.city,album.location.province,album.location.country,@"1",album.bath,album.bed,album.buildingSqft,album.landSqft,album.listing,album.mls,album.price,album.tag,typeTextEscaped,album.yearBuilt];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
     NSMutableURLRequest *request;

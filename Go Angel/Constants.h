@@ -43,7 +43,7 @@
 #define LOCATION @"Location"
 #define ALBUM @"Album"
 
-// location metadta attributes
+// album attributes
 #define BATH @"bath"
 #define BED @"bed"
 #define BUILDINGSQFT @"buildingSqft"
@@ -58,6 +58,7 @@
 #define DESCRIPTION @"albumDescription"
 #define ALBUMID @"albumId"
 #define NAME @"name"
+#define COVERIMAGE @"coverImage"
 
 // location entity attributes
 #define POSTALCODE @"postalCode"

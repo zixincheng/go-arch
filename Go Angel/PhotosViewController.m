@@ -95,17 +95,10 @@
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
   switch (buttonIndex) {
     case 0:
-    {CSPhoto *oldCover = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
-      if (oldCover == nil) {
-        
-      } else {
-        oldCover.cover = @"0";
-        [self.dataWrapper addUpdatePhoto:oldCover];
-        [self.coinsorter updateMeta:oldCover entity:@"home" value:@"0"];
-      }
-      self.selectedCoverPhoto.cover = @"1";
-      [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
-      [self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"home" value:@"1"];
+    {
+      self.location.album.coverImage =  self.selectedCoverPhoto.imageURL;
+      [self.dataWrapper updateLocation:self.location album:self.location.album];
+      //[self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"home" value:@"1"];
       
       [[NSNotificationCenter defaultCenter] postNotificationName:@"CoverPhotoChange" object:nil];
       break;

@@ -123,7 +123,6 @@
   [object setValue:photo.fileName forKey:FILE_NAME];
   [object setValue:photo.isVideo forKey:@"isVideo"];
   [object setValue:photo.tag forKey:@"tag"];
-  [object setValue:photo.cover forKey:@"cover"];
   [object setValue:photo.thumbnailName forKey:@"thumbnailName"];
     
   //object = [self relationLocation:photo.location object:object];
@@ -353,7 +352,6 @@
   p.fileName     = [object valueForKey:FILE_NAME];
   p.isVideo      = [object valueForKey:@"isVideo"];
   p.tag          = [object valueForKey:@"tag"];
-  p.cover        = [object valueForKey:@"cover"];
   NSManagedObject *locationObj = [object valueForKey:@"location"];
   p.location =  [self getLocationFromObject:locationObj];
   p.thumbnailName = [object valueForKey:@"thumbnailName"];
@@ -466,7 +464,6 @@
     return photo;
 }
 
-
 - (CSPhoto *)getCoverPhoto: (NSString *) deviceId location:(CSLocation *)location{
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     __block CSPhoto *coverPhoto = [[CSPhoto alloc] init];
@@ -475,7 +472,7 @@
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
         
         // set query
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@) AND (cover = 1)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.sublocation, PHOTO_CITY, location.city];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.sublocation, PHOTO_CITY, location.city,IMAGE_URL,location.album.coverImage];
         [request setPredicate:pred];
         // set sort
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:YES];
@@ -495,13 +492,14 @@
         if (phs.count == 0) {
             coverPhoto = nil;
         } else {
-        NSManagedObject *p = phs[0];
-        coverPhoto = [self getPhotoFromObject:p];
+            NSManagedObject *p = phs[0];
+            coverPhoto = [self getPhotoFromObject:p];
         }
     }];
     
     return coverPhoto;
 }
+
 
 - (NSString *) getCurrentPhotoOnServerVaule: (NSString *) deviceId CurrentIndex:(int)index{
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
@@ -895,6 +893,7 @@
     album.albumDescritpion = [object valueForKey:DESCRIPTION];
     album.albumId = [object valueForKey:ALBUMID];
     album.name = [object valueForKey:NAME];
+    album.coverImage = [object valueForKey:COVERIMAGE];
     
     return album;
     
@@ -1109,7 +1108,8 @@
         [meta setValue:album.bath forKey:BATH];
         [meta setValue:album.buildingSqft forKey:BUILDINGSQFT];
         [meta setValue:album.mls forKey:MLS];
-        
+        [meta setValue:album.coverImage forKey:COVERIMAGE];
+    
         
         [context save:nil];
         return meta;

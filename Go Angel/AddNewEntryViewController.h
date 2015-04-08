@@ -47,6 +47,8 @@
 @property (nonatomic,strong) UITextField *buildingSqftTextField;
 @property (nonatomic,strong) UITextField *landSqftTextField;
 @property (nonatomic,strong) UITextField *mlsTextField;
+@property (nonatomic,strong) UITextField *nameTextField;
+@property (nonatomic,strong) UITextField *descriptionTextField;
 
 @property (nonatomic,strong) UILabel *typeLabel;
 @property (nonatomic,strong) UILabel *statusLabel;

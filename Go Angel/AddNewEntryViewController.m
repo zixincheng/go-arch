@@ -97,6 +97,8 @@ CGFloat animatedDistance;
     [self.buildingSqftTextField setEnabled:enabled];
     [self.landSqftTextField setEnabled:enabled];
     [self.mlsTextField setEnabled:enabled];
+    [self.nameTextField setEnabled:enabled];
+    [self.descriptionTextField setEnabled:enabled];
     
     [self.mapAddingBtn setHidden:hidden];
     [self.historySelectBtn setHidden:hidden];
@@ -289,6 +291,10 @@ CGFloat animatedDistance;
         self.album.landSqft = [format numberFromString: self.landSqftTextField.text];
     } else if (sender == self.mlsTextField) {
         self.album.mls = self.mlsTextField.text;
+    } else if (sender == self.nameTextField) {
+        self.album.name = self.nameTextField.text;
+    } else if (sender == self.descriptionTextField) {
+        self.album.name = self.descriptionTextField.text;
     }
 }
 
@@ -493,18 +499,21 @@ CGFloat animatedDistance;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     // Return the number of sections.
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0:
-            return 5;
+            return 2;
             break;
         case 1:
-            return 4;
+            return 5;
             break;
         case 2:
+            return 4;
+            break;
+        case 3:
             return 6;
             break;
         default:
@@ -521,12 +530,15 @@ CGFloat animatedDistance;
     switch (section)
     {
         case 0:
-            sectionName = NSLocalizedString(@"Location", @"Location");
+             sectionName = NSLocalizedString(@"Album", @"Album");
             break;
         case 1:
-            sectionName = NSLocalizedString(@"Status", @"Status");
+            sectionName = NSLocalizedString(@"Location", @"Location");
             break;
         case 2:
+            sectionName = NSLocalizedString(@"Status", @"Status");
+            break;
+        case 3:
             sectionName = NSLocalizedString(@"Building", @"Building");
             break;
             // ...
@@ -544,6 +556,40 @@ CGFloat animatedDistance;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     switch (indexPath.section) {
         case 0:
+        {
+            for (UIView *subviews in cell.contentView.subviews){
+                [subviews removeFromSuperview];
+            }
+            switch (indexPath.row) {
+                case 0:
+                {
+                    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 110, 30.0)];
+                    nameLabel.text = @"Name";
+                    [cell.contentView addSubview:nameLabel];
+                    
+                    self.nameTextField.borderStyle = UITextBorderStyleRoundedRect;
+                    self.nameTextField.delegate = self;
+                    [cell.contentView addSubview:self.nameTextField];
+                    break;
+                }
+                case 1:
+                {
+                    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, 110, 30.0)];
+                    descriptionLabel.text = @"Description";
+                    [cell.contentView addSubview:descriptionLabel];
+                    
+                    self.descriptionTextField.borderStyle = UITextBorderStyleRoundedRect;
+                    self.descriptionTextField.delegate = self;
+                    [cell.contentView addSubview:self.descriptionTextField];
+                    break;
+                }
+                default:
+                    break;
+            }
+
+        }
+            break;
+        case 1:
         {
             for (UIView *subviews in cell.contentView.subviews){
                 [subviews removeFromSuperview];
@@ -619,7 +665,7 @@ CGFloat animatedDistance;
             
         }
             break;
-        case 1:
+        case 2:
         {
             for (UIView *subviews in cell.contentView.subviews){
                 [subviews removeFromSuperview];
@@ -679,7 +725,7 @@ CGFloat animatedDistance;
             }
             break;
         }
-        case 2:
+        case 3:
         {
             for (UIView *subviews in cell.contentView.subviews){
                 [subviews removeFromSuperview];
@@ -811,6 +857,12 @@ CGFloat animatedDistance;
     self.addressTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
     [self.addressTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
     
+    self.nameTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 150, 30.0)];
+    [self.nameTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
+    self.descriptionTextField = [[UITextField alloc] initWithFrame:CGRectMake(120, 9, 150, 30.0)];
+    [self.descriptionTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
+    
     self.cityTextField = [[UITextField alloc] initWithFrame:CGRectMake(85, 9, 150, 30.0)];
     [self.cityTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventAllEditingEvents];
     
@@ -866,7 +918,7 @@ CGFloat animatedDistance;
 
 -(void)doneWithNumberPad:(id) sender{
  
-        [self.priceTextField resignFirstResponder];
+    [self.priceTextField resignFirstResponder];
     [self.yearBuiltTextField resignFirstResponder];
     [self.buildingSqftTextField resignFirstResponder];
     [self.landSqftTextField resignFirstResponder];

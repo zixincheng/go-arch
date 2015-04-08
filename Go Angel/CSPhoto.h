@@ -31,7 +31,6 @@ typedef enum {
 @property (nonatomic, strong) NSDate *dateUploaded;
 @property (nonatomic, strong) NSString *isVideo;
 @property (nonatomic, strong) NSString *tag;
-@property (nonatomic, strong) NSString *cover;
 @property (nonatomic, strong) CSLocation *location;
 @property (assign) cellLayoutType layoutType;
 @property (assign) float relativeHeight;

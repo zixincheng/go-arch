@@ -49,7 +49,6 @@
     p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];
     p.thumbnailName = [NSString stringWithFormat:@"thumb_%@.jpg", photoUID];
     p.isVideo = @"0";
-    p.cover = @"0";
     p.location = location;
     
     NSString *tmpFullPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
@@ -132,7 +131,6 @@
     p.fileName = [NSString stringWithFormat:@"%@.mov",photoUID];
     p.thumbnailName = [NSString stringWithFormat:@"thumb_%@.jpg", photoUID];
     p.isVideo = @"1";
-    p.cover = @"0";
     p.location = location;
     
     [self.dataWrapper addPhoto:p];

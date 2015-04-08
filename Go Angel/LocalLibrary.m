@@ -104,7 +104,6 @@
   
   photo.thumbURL = filePath;
   photo.location = location;
-  photo.cover = @"0";
   
   // add photo to db
   BOOL added = [self.dataWrapper addPhoto:photo];

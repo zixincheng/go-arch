@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSString *albumDescritpion;
 @property (nonatomic, strong) NSString *albumId;
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *coverImage;
 @property (nonatomic, strong) CSLocation *location;
 
 @end

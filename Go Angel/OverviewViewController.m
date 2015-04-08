@@ -101,7 +101,7 @@
       });
     }];
     
-    [self.coinsorter updateMeta:coverPhoto entity:@"home" value:@"1"];
+   // [self.coinsorter updateMeta:coverPhoto entity:@"home" value:@"1"];
   } else {
     hasCover = NO;
   }
