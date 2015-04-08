@@ -56,7 +56,7 @@
 }
 
 - (void)metaChanged {
-  [self setTitle:_location.name];
+  [self setTitle:_location.sublocation];
 }
 
 // show the share and delete buttons in toolbar

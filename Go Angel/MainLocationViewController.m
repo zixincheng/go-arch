@@ -147,24 +147,24 @@
     [format setNumberStyle:NSNumberFormatterCurrencyStyle];
     [format setMaximumFractionDigits:0];
     [format setRoundingMode:NSNumberFormatterRoundHalfUp];
-    NSString *priceString = [format stringFromNumber:l.locationMeta.price];
+    NSString *priceString = [format stringFromNumber:l.album.price];
     [priceLable setText:priceString];
     
-    if (l.locationMeta.bed !=nil) {
-        [bdLbel setText:[NSString stringWithFormat:@"%@ Bedroom",l.locationMeta.bed]];
+    if (l.album.bed !=nil) {
+        [bdLbel setText:[NSString stringWithFormat:@"%@ Bedroom",l.album.bed]];
     }
-    if (l.locationMeta.bed !=nil) {
-        [baLbel setText:[NSString stringWithFormat:@"%@ Bathroom",l.locationMeta.bath]];
+    if (l.album.bed !=nil) {
+        [baLbel setText:[NSString stringWithFormat:@"%@ Bathroom",l.album.bath]];
     }
-    [addressLbel setText:[NSString stringWithFormat:@"%@, %@, %@, %@",l.name,l.city,l.province,l.country]];
+    [addressLbel setText:[NSString stringWithFormat:@"%@, %@, %@, %@",l.sublocation,l.city,l.province,l.country]];
   
-    if (l.locationMeta.buildingSqft !=nil) {
-        NSString *buildingString = [l formatArea:l.locationMeta.buildingSqft];
+    if (l.album.buildingSqft !=nil) {
+        NSString *buildingString = [l formatArea:l.album.buildingSqft];
         [buildingLbel setText:[NSString stringWithFormat:@"Floor Size %@ sq.ft.",buildingString]];
     }
     
-    if (l.locationMeta.buildingSqft !=nil) {
-        NSString *landString = [l formatArea:l.locationMeta.landSqft];
+    if (l.album.buildingSqft !=nil) {
+        NSString *landString = [l formatArea:l.album.landSqft];
         [landLbel setText:[NSString stringWithFormat:@"Lot Size %@ sq.ft.",landString]];
     }
     
@@ -238,9 +238,9 @@
 
       NSString *title;
       if (self.selectedlocation.unit !=nil) {
-        title = [NSString stringWithFormat:@"%@ - %@",self.selectedlocation.unit, self.selectedlocation.name];
+        title = [NSString stringWithFormat:@"%@ - %@",self.selectedlocation.unit, self.selectedlocation.sublocation];
       } else {
-        title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];
+        title = [NSString stringWithFormat:@"%@", self.selectedlocation.sublocation];
       }
       singleLocContoller.title = title;
         
@@ -291,9 +291,9 @@
         
         for (CSLocation *locaion in self.locations) {
             NSUInteger searchOptions = NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch;
-            NSRange addressRange = NSMakeRange(0, locaion.name.length);
+            NSRange addressRange = NSMakeRange(0, locaion.sublocation.length);
             NSRange unitRange = NSMakeRange(0, locaion.unit.length);
-            NSRange foundNameRange = [locaion.name rangeOfString:address options:searchOptions range:addressRange];
+            NSRange foundNameRange = [locaion.sublocation rangeOfString:address options:searchOptions range:addressRange];
             NSRange foundUnitRange = NSRangeFromString(@"");
             if (![locaion.unit isEqualToString:@""]) {
                 foundUnitRange= [locaion.unit rangeOfString:address options:searchOptions range:unitRange];

@@ -15,7 +15,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "AddingLocationViewController.h"
 #import "SGPopSelectView.h"
-#import "CSLocationMeta.h"
+#import "CSAlbum.h"
 #import "SaveToDocument.h"
 #import <CoreLocation/CoreLocation.h>
 
@@ -63,7 +63,7 @@
 @property (nonatomic,strong) CSDevice *localDevice;
 @property (nonatomic,strong) CSLocation *location;
 @property (nonatomic,strong) CSPhoto *coverPhoto;
-@property (nonatomic,strong) CSLocationMeta *locationMeta;
+@property (nonatomic,strong) CSAlbum *album;
 @property (nonatomic,strong) SaveToDocument *saveFunction;
 
 @property (nonatomic,strong) UIImage *photoImage;

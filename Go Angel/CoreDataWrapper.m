@@ -369,7 +369,7 @@
    // [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"Location", nil]];
     
     // set query
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.name, PHOTO_CITY, location.city];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.sublocation, PHOTO_CITY, location.city];
     [request setPredicate:pred];
     // set sort
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:YES];
@@ -475,7 +475,7 @@
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
         
         // set query
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@) AND (cover = 1)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.name, PHOTO_CITY, location.city];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@) AND (cover = 1)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.sublocation, PHOTO_CITY, location.city];
         [request setPredicate:pred];
         // set sort
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:YES];
@@ -781,7 +781,7 @@
 
 
 // uses the the location.objectUri to lookup object and update to latest values in cslocation
-- (void) updateLocation:(CSLocation *)location locationmeta:(CSLocationMeta *)locationMeta {
+- (void) updateLocation:(CSLocation *)location album:(CSAlbum *)album {
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     
     [context performBlockAndWait:^{
@@ -799,12 +799,12 @@
         [obj setValue:location.city forKey:CITY];
         [obj setValue:location.province forKey:PROVINCE];
         [obj setValue:location.unit forKey:UNIT];
-        [obj setValue:location.name forKey:NAME];
+        [obj setValue:location.sublocation forKey:SUBLOCATION];
         [obj setValue:location.longitude forKey:LONG];
         [obj setValue:location.latitude forKey:LAT];
         [obj setValue:location.postCode forKey:POSTALCODE];
         
-        NSManagedObject *meta = [self updateLocationMeta:obj locationMeta:locationMeta];
+        NSManagedObject *meta = [self updateAlbum:obj album:album];
         
         [obj setValue:meta forKey:@"metaData"];
         
@@ -814,13 +814,13 @@
     }];
 }
 
-- (void) addLocation:(CSLocation *)location locationmeta :(CSLocationMeta *) locationMeta{
+- (void) addLocation:(CSLocation *)location album :(CSAlbum *) album{
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     
     [context performBlockAndWait: ^{
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
         
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",UNIT,location.unit,CITY,location.city,NAME,location.name];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",UNIT,location.unit,CITY,location.city,SUBLOCATION,location.sublocation];
         [request setPredicate:pred];
         
 
@@ -838,7 +838,7 @@
             NSLog(@"created new Location");
         }else {
             locationObj = result[0];
-            NSLog(@"updated Location - %@", location.name);
+            NSLog(@"updated Location - %@", location.sublocation);
         }
 
         [locationObj setValue:location.country forKey:COUNTRY];
@@ -846,12 +846,12 @@
         [locationObj setValue:location.city forKey:CITY];
         [locationObj setValue:location.province forKey:PROVINCE];
         [locationObj setValue:location.unit forKey:UNIT];
-        [locationObj setValue:location.name forKey:NAME];
+        [locationObj setValue:location.sublocation forKey:SUBLOCATION];
         [locationObj setValue:location.longitude forKey:LONG];
         [locationObj setValue:location.latitude forKey:LAT];
         [locationObj setValue:location.postCode forKey:POSTALCODE];
         
-        NSManagedObject *meta =[self updateLocationMeta:locationObj locationMeta:locationMeta];
+        NSManagedObject *meta =[self updateAlbum:locationObj album:album];
         
         [locationObj setValue:meta forKey:@"metaData"];
 
@@ -866,12 +866,12 @@
     location.city = [object valueForKey:CITY];
     location.province = [object valueForKey:PROVINCE];
     location.unit = [object valueForKey:UNIT];
-    location.name = [object valueForKey:NAME];
+    location.sublocation = [object valueForKey:SUBLOCATION];
     location.longitude = [object valueForKey:LONG];
     location.latitude = [object valueForKey:LAT];
     location.postCode = [object valueForKey:POSTALCODE];
     NSManagedObject *locationMetaObj = [object valueForKey:@"metaData"];
-    location.locationMeta =  [self getLocationMetaFromObject:locationMetaObj];
+    location.album =  [self getLocationMetaFromObject:locationMetaObj];
 
     // store nsmanagedobject uri into location
     location.objectUri = [[[object objectID] URIRepresentation] absoluteString];
@@ -879,21 +879,24 @@
     return location;
 }
 
--(CSLocationMeta *)getLocationMetaFromObject: (NSManagedObject *) object {
-    CSLocationMeta *locationMeta = [[CSLocationMeta alloc]init];
+-(CSAlbum *)getLocationMetaFromObject: (NSManagedObject *) object {
+    CSAlbum *album = [[CSAlbum alloc]init];
 
-    locationMeta.bed = [object valueForKey:BED];
-    locationMeta.tag = [object valueForKey:TAG];
-    locationMeta.type = [object valueForKey:TYPE];
-    locationMeta.price = [object valueForKey:PRICE];
-    locationMeta.listing = [object valueForKey:LISTING];
-    locationMeta.yearBuilt = [object valueForKey:YEARBUILT];
-    locationMeta.landSqft = [object valueForKey:LANDSQFT];
-    locationMeta.bath = [object valueForKey:BATH];
-    locationMeta.buildingSqft = [object valueForKey:BUILDINGSQFT];
-    locationMeta.mls = [object valueForKey:MLS];
+    album.bed = [object valueForKey:BED];
+    album.tag = [object valueForKey:TAG];
+    album.type = [object valueForKey:TYPE];
+    album.price = [object valueForKey:PRICE];
+    album.listing = [object valueForKey:LISTING];
+    album.yearBuilt = [object valueForKey:YEARBUILT];
+    album.landSqft = [object valueForKey:LANDSQFT];
+    album.bath = [object valueForKey:BATH];
+    album.buildingSqft = [object valueForKey:BUILDINGSQFT];
+    album.mls = [object valueForKey:MLS];
+    album.albumDescritpion = [object valueForKey:DESCRIPTION];
+    album.albumId = [object valueForKey:ALBUMID];
+    album.name = [object valueForKey:NAME];
     
-    return locationMeta;
+    return album;
     
 }
 
@@ -902,7 +905,7 @@
 
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
         
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",UNIT,location.unit,CITY,location.city,NAME,location.name];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",UNIT,location.unit,CITY,location.city,SUBLOCATION,location.sublocation];
         [request setPredicate:pred];
         
         NSError *err;
@@ -927,7 +930,7 @@
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
         
         // set sort
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:YES];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:SUBLOCATION ascending:YES];
         NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
         [request setSortDescriptors: descriptors];
         
@@ -962,7 +965,7 @@
         
     [request setPredicate:pred];
         // set sort
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:YES];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:SUBLOCATION ascending:YES];
     NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
     [request setSortDescriptors: descriptors];
         
@@ -1038,7 +1041,7 @@
     [context performBlock: ^{
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
         
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",UNIT,location.unit,CITY,location.city,NAME,location.name];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",UNIT,location.unit,CITY,location.city,SUBLOCATION,location.sublocation];
         [request setPredicate:pred];
         
         NSError *err;
@@ -1063,12 +1066,12 @@
     [context performBlockAndWait: ^{
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
         
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(ANY %K CONTAINS[c] %@)",NAME, location];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(ANY %K CONTAINS[c] %@)",SUBLOCATION, location];
         [request setPredicate:pred];
 
         
         // set sort
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:YES];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:SUBLOCATION ascending:YES];
         NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
         [request setSortDescriptors: descriptors];
         
@@ -1091,21 +1094,21 @@
 
 #pragma location metadata functions
 
-- (NSManagedObject *) updateLocationMeta:(NSManagedObject*) locationObj locationMeta : (CSLocationMeta *)locationMeta  {
+- (NSManagedObject *) updateAlbum:(NSManagedObject*) locationObj album : (CSAlbum *)album  {
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     
-        NSManagedObject *meta = [NSEntityDescription insertNewObjectForEntityForName:LOCATIONMETA inManagedObjectContext:context];
+        NSManagedObject *meta = [NSEntityDescription insertNewObjectForEntityForName:ALBUM inManagedObjectContext:context];
         
-        [meta setValue:locationMeta.bed forKey:BED];
-        [meta setValue:locationMeta.tag forKey:TAG];
-        [meta setValue:locationMeta.type forKey:TYPE];
-        [meta setValue:locationMeta.price forKey:PRICE];
-        [meta setValue:locationMeta.listing forKey:LISTING];
-        [meta setValue:locationMeta.yearBuilt forKey:YEARBUILT];
-        [meta setValue:locationMeta.landSqft forKey:LANDSQFT];
-        [meta setValue:locationMeta.bath forKey:BATH];
-        [meta setValue:locationMeta.buildingSqft forKey:BUILDINGSQFT];
-        [meta setValue:locationMeta.mls forKey:MLS];
+        [meta setValue:album.bed forKey:BED];
+        [meta setValue:album.tag forKey:TAG];
+        [meta setValue:album.type forKey:TYPE];
+        [meta setValue:album.price forKey:PRICE];
+        [meta setValue:album.listing forKey:LISTING];
+        [meta setValue:album.yearBuilt forKey:YEARBUILT];
+        [meta setValue:album.landSqft forKey:LANDSQFT];
+        [meta setValue:album.bath forKey:BATH];
+        [meta setValue:album.buildingSqft forKey:BUILDINGSQFT];
+        [meta setValue:album.mls forKey:MLS];
         
         
         [context save:nil];

@@ -95,7 +95,7 @@
     [self.point setCoordinate:touchMapCoordinate];
     CLLocation *newlocation = [[CLLocation alloc] initWithLatitude:touchMapCoordinate.latitude longitude:touchMapCoordinate.longitude];
     [self geocodeLocation:newlocation];
-    self.point.title = self.location.name;
+    self.point.title = self.location.sublocation;
     //[self.streetName setText:self.location.name];
     [self.mapView addAnnotation:self.point];
 }
@@ -310,7 +310,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
                            self.location.countryCode =
                            [p.addressDictionary objectForKey:@"CountryCode"];
                            self.location.city = [p.addressDictionary objectForKey:@"City"];
-                           self.location.name = [p.addressDictionary objectForKey:@"Name"];
+                           self.location.sublocation = [p.addressDictionary objectForKey:@"Name"];
                            self.location.province = [p.addressDictionary objectForKey:@"State"];
                            self.location.longitude = [NSString stringWithFormat:@"%f", location.coordinate
                                                        .longitude];
@@ -323,7 +323,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
                            //[//self saveLocation];
                            //generate pins on map
                            self.point.coordinate = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude);
-                           self.point.title = self.location.name;
+                           self.point.title = self.location.sublocation;
                            [self.mapView addAnnotation:self.point];
                            NSLog(@"post %@",self.location.postCode);
                        }
@@ -359,7 +359,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     [defaults
      setObject:self.location.longitude
      forKey:CURR_LOC_LONG];
-    [defaults setObject:self.location.name forKey:CURR_LOC_NAME];
+    [defaults setObject:self.location.sublocation forKey:CURR_LOC_NAME];
     [defaults setObject:self.location.unit forKey:CURR_LOC_UNIT];
     [defaults setObject:self.location.country forKey:CURR_LOC_COUNTRY];
     [defaults setObject:self.location.countryCode forKey:CURR_LOC_COUN_CODE];
@@ -370,7 +370,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     
     // save defaults to disk
     [defaults synchronize];
-    NSLog(@"location %@",self.location.name);
+    NSLog(@"location %@",self.location.sublocation);
     NSLog(@"saving location settings to defaults");
 }
 
@@ -387,7 +387,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     return numberSections;
 }
 - (IBAction)AddBtn:(id)sender {
-    if (self.location.name !=nil) {
+    if (self.location.sublocation !=nil) {
         if ([delegate respondsToSelector:@selector(dataMapView:)]) {
             [delegate dataMapView:self.location];
         }
@@ -442,7 +442,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
     [self.point setCoordinate:annotationView.annotation.coordinate];
     CLLocation *newlocation = [[CLLocation alloc] initWithLatitude:annotationView.annotation.coordinate.latitude longitude:annotationView.annotation.coordinate.longitude];
     [self geocodeLocation:newlocation];
-    self.point.title = self.location.name;
+    self.point.title = self.location.sublocation;
     //[self.streetName setText:self.location.name];
     if (newState == MKAnnotationViewDragStateEnding)
     {

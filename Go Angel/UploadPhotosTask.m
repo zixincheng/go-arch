@@ -72,7 +72,7 @@
     
     // if the user wants to tag the photo with location
     if (tagLocation) {
-        NSString *name = photo.location.name;
+        NSString *name = photo.location.sublocation;
         NSString *unit = photo.location.unit;
         NSString *city = photo.location.city;
         NSString *state = photo.location.province;
@@ -267,7 +267,7 @@
             NSArray * keys;
             NSArray *objects;
             
-            NSString *name = p.location.name;
+            NSString *name = p.location.sublocation;
             NSString *unit = p.location.unit;
             NSString *city = p.location.city;
             NSString *state = p.location.province;
@@ -447,7 +447,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSArray * keys;
                 NSArray *objects;
                 
-                NSString *name = p.location.name;
+                NSString *name = p.location.sublocation;
                 NSString *unit = p.location.unit;
                 NSString *city = p.location.city;
                 NSString *state = p.location.province;
@@ -524,7 +524,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSArray * keys;
                 NSArray *objects;
                 
-                NSString *name = p.location.name;
+                NSString *name = p.location.sublocation;
                 NSString *unit = p.location.unit;
                 NSString *city = p.location.city;
                 NSString *state = p.location.province;
@@ -633,7 +633,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             NSArray * keys;
             NSArray *objects;
             
-            NSString *name = photo.location.name;
+            NSString *name = photo.location.sublocation;
             NSString *unit = photo.location.unit;
             NSString *city = photo.location.city;
             NSString *state = photo.location.province;
@@ -708,7 +708,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             NSArray * keys;
             NSArray *objects;
             
-            NSString *name = photo.location.name;
+            NSString *name = photo.location.sublocation;
             NSString *unit = photo.location.unit;
             NSString *city = photo.location.city;
             NSString *state = photo.location.province;

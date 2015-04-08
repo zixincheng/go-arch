@@ -22,7 +22,7 @@
 #import "SearchMapViewController.h"
 #import "LargePhotoViewContoller.h"
 #import "CSLocation.h"
-#import "CSLocationMeta.h"
+#import "CSAlbum.h"
 
 
 @interface SegmentedViewController : UIViewController<FilterTableViewControllerDelegate,UIActionSheetDelegate>{

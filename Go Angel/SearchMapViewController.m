@@ -63,7 +63,7 @@
         float longitude = [l.longitude floatValue];
         MKPointAnnotation *point = [[MKPointAnnotation alloc]init];
         point.coordinate =CLLocationCoordinate2DMake(latitude, longitude);
-        point.title = l.name;
+        point.title = l.sublocation;
         if (![l.unit isEqualToString:@""]) {
             point.subtitle = [NSString stringWithFormat:@"Unit %@",l.unit];
         }
@@ -127,14 +127,15 @@
 #pragma mark - mapView delegate
 
 -(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-    MKPointAnnotation *point  = view.annotation;
-    NSInteger index = [self.pins indexOfObject:point];
-    self.selectedLocation = [self.locations objectAtIndex:index];
+
     if ([view.annotation isKindOfClass:[MKPointAnnotation class]]) {
+        MKPointAnnotation *point  = view.annotation;
+        NSInteger index = [self.pins indexOfObject:point];
+        self.selectedLocation = [self.locations objectAtIndex:index];
         self.callOutAnnotation = [[MyAnnotation alloc]initWithCoordinate:view.annotation.coordinate];
         [self.mapView addAnnotation:self.callOutAnnotation];
         [self.mapView setCenterCoordinate:self.callOutAnnotation.coordinate animated:YES];
-    } else {
+    } else if ([view.annotation isKindOfClass:[MKUserLocation class]]) {
         NSLog(@"click here ");
     }
 }
@@ -180,19 +181,19 @@
         annotationView = [[MyAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"CalloutView" delegate:self];
         
         CalloutViewCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"CalloutViewCell" owner:self options:nil] objectAtIndex:0];
-        cell.priceLabel.text = [self.selectedLocation formatPrice:self.selectedLocation.locationMeta.price];
-        cell.addressLabel.text = [NSString stringWithFormat:@"%@, %@, %@, %@", self.selectedLocation.name,self.selectedLocation.city,self.selectedLocation.province,self.selectedLocation.countryCode];
-        if (self.selectedLocation.locationMeta.bed != nil) {
-                    cell.bedLabel.text = [NSString stringWithFormat:@"%@ BD",self.selectedLocation.locationMeta.bed];
+        cell.priceLabel.text = [self.selectedLocation formatPrice:self.selectedLocation.album.price];
+        cell.addressLabel.text = [NSString stringWithFormat:@"%@, %@, %@, %@", self.selectedLocation.sublocation,self.selectedLocation.city,self.selectedLocation.province,self.selectedLocation.countryCode];
+        if (self.selectedLocation.album.bed != nil) {
+                    cell.bedLabel.text = [NSString stringWithFormat:@"%@ BD",self.selectedLocation.album.bed];
         }
-        if (self.selectedLocation.locationMeta.bath != nil) {
-            cell.bathLabel.text = [NSString stringWithFormat:@"%@ BD",self.selectedLocation.locationMeta.bath];
+        if (self.selectedLocation.album.bath != nil) {
+            cell.bathLabel.text = [NSString stringWithFormat:@"%@ BD",self.selectedLocation.album.bath];
         }
-        if (self.selectedLocation.locationMeta.buildingSqft != nil) {
-            cell.buildingSQFT.text = [NSString stringWithFormat:@"%@ sq. ft.", self.selectedLocation.locationMeta.buildingSqft.stringValue];
+        if (self.selectedLocation.album.buildingSqft != nil) {
+            cell.buildingSQFT.text = [NSString stringWithFormat:@"%@ sq. ft.", self.selectedLocation.album.buildingSqft.stringValue];
         }
-        if (self.selectedLocation.locationMeta.landSqft != nil) {
-            cell.landSQFT.text = [NSString stringWithFormat:@"%@ sq. ft.", self.selectedLocation.locationMeta.landSqft.stringValue];
+        if (self.selectedLocation.album.landSqft != nil) {
+            cell.landSQFT.text = [NSString stringWithFormat:@"%@ sq. ft.", self.selectedLocation.album.landSqft.stringValue];
         }
         CSPhoto *p = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.selectedLocation];
         if (p !=nil) {
@@ -251,7 +252,7 @@
         float longitude = [l.longitude floatValue];
         MKPointAnnotation *point = [[MKPointAnnotation alloc]init];
         point.coordinate =CLLocationCoordinate2DMake(latitude, longitude);
-        point.title = l.name;
+        point.title = l.sublocation;
         if (![l.unit isEqualToString:@""]) {
             point.subtitle = [NSString stringWithFormat:@"Unit %@",l.unit];
         }
@@ -281,9 +282,9 @@
       
       NSString *title;
       if (self.selectedLocation.unit !=nil) {
-        title = [NSString stringWithFormat:@"%@ - %@",self.selectedLocation.unit, self.selectedLocation.name];
+        title = [NSString stringWithFormat:@"%@ - %@",self.selectedLocation.unit, self.selectedLocation.sublocation];
       } else {
-        title = [NSString stringWithFormat:@"%@", self.selectedLocation.name];
+        title = [NSString stringWithFormat:@"%@", self.selectedLocation.sublocation];
       }
       singleLocContoller.title = title;
     }

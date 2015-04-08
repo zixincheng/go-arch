@@ -53,7 +53,7 @@
     CSLocation *location = [self.searchResults objectAtIndex:indexPath.row];
     
 
-    cell.textLabel.text = location.name;
+    cell.textLabel.text = location.sublocation;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",location.city,location.province];
             // Configure the cell...
 
@@ -79,7 +79,7 @@
         singleLocContoller.coinsorter = self.coinsorter;
         NSString *title;
 
-        title = [NSString stringWithFormat:@"%@", self.selectedlocation.name];
+        title = [NSString stringWithFormat:@"%@", self.selectedlocation.sublocation];
 
         singleLocContoller.navigationItem.title = title;
         [self.searchController.searchBar resignFirstResponder];

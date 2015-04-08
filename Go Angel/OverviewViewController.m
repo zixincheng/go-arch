@@ -32,27 +32,27 @@
 
 - (void) setValues {
   NSString *cityState = [NSString stringWithFormat:@"%@, %@", _location.city, _location.province];
-  NSString *price = [_location formatPrice:_location.locationMeta.price];
-  NSString *buildingSqft = [NSString stringWithFormat:@"%@ sq. ft.", _location.locationMeta.buildingSqft.stringValue];
-  NSString *landSqft = [NSString stringWithFormat:@"%@ sq. ft.", _location.locationMeta.landSqft.stringValue];
-  NSString *beds = [NSString stringWithFormat:@"%@", _location.locationMeta.bed];
-  NSString *baths = [NSString stringWithFormat:@"%@", _location.locationMeta.bath];
+  NSString *price = [_location formatPrice:_location.album.price];
+  NSString *buildingSqft = [NSString stringWithFormat:@"%@ sq. ft.", _location.album.buildingSqft.stringValue];
+  NSString *landSqft = [NSString stringWithFormat:@"%@ sq. ft.", _location.album.landSqft.stringValue];
+  NSString *beds = [NSString stringWithFormat:@"%@", _location.album.bed];
+  NSString *baths = [NSString stringWithFormat:@"%@", _location.album.bath];
   
-  if (!_location.locationMeta.bed) {
+  if (!_location.album.bed) {
     beds = @"";
   }
-  if (!_location.locationMeta.bath) {
+  if (!_location.album.bath) {
     baths = @"";
   }
-  if (!_location.locationMeta.buildingSqft) {
+  if (!_location.album.buildingSqft) {
     buildingSqft = @"";
   }
-  if (!_location.locationMeta.landSqft) {
+  if (!_location.album.landSqft) {
     landSqft = @"";
   }
   
   dispatch_async(dispatch_get_main_queue(), ^{
-    [_lblAddress setText:_location.name];
+    [_lblAddress setText:_location.sublocation];
     [_lblCityState setText:cityState];
     [_lblCountry setText:_location.countryCode];
     [_lblPrice setText:price];

@@ -111,7 +111,7 @@
 		9BC7B95A1A940F4E00164F0E /* icon-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC7B9581A940F4E00164F0E /* icon-error.png */; };
 		9BC7B95B1A940F4E00164F0E /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BC7B9591A940F4E00164F0E /* icon-success.png */; };
 		9BCA685E1AC082B600982DC9 /* book-cover-plus-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCA685D1AC082B600982DC9 /* book-cover-plus-7.png */; };
-		9BCA68651AC0A2DD00982DC9 /* CSLocationMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCA68641AC0A2DD00982DC9 /* CSLocationMeta.m */; };
+		9BCA68651AC0A2DD00982DC9 /* CSAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCA68641AC0A2DD00982DC9 /* CSAlbum.m */; };
 		9BCD5A1A1AB0D38700DEB39E /* earth-america-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A191AB0D38700DEB39E /* earth-america-7.png */; };
 		9BCD5A1C1AB0D39200DEB39E /* house-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A1B1AB0D39200DEB39E /* house-7.png */; };
 		9BCD5A1E1AB0D3A400DEB39E /* pencil-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCD5A1D1AB0D3A400DEB39E /* pencil-7.png */; };
@@ -342,6 +342,7 @@
 		9BC1B1041AA8E6CC002FE705 /* qroverlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qroverlay.png; sourceTree = "<group>"; };
 		9BC1B1081AA8E74D002FE705 /* QRReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRReaderViewController.h; sourceTree = "<group>"; };
 		9BC1B1091AA8E74D002FE705 /* QRReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRReaderViewController.m; sourceTree = "<group>"; };
+		9BC32ED61AD59913002B49E6 /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
 		9BC390CA1AC48C8200B3351E /* MyAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnnotationView.h; sourceTree = "<group>"; };
 		9BC390CB1AC48C8200B3351E /* MyAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotationView.m; sourceTree = "<group>"; };
 		9BC390CF1AC4BA4200B3351E /* CalloutViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalloutViewCell.xib; sourceTree = "<group>"; };
@@ -365,8 +366,8 @@
 		9BC7B9581A940F4E00164F0E /* icon-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error.png"; sourceTree = "<group>"; };
 		9BC7B9591A940F4E00164F0E /* icon-success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success.png"; sourceTree = "<group>"; };
 		9BCA685D1AC082B600982DC9 /* book-cover-plus-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book-cover-plus-7.png"; sourceTree = "<group>"; };
-		9BCA68631AC0A2DD00982DC9 /* CSLocationMeta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSLocationMeta.h; sourceTree = "<group>"; };
-		9BCA68641AC0A2DD00982DC9 /* CSLocationMeta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSLocationMeta.m; sourceTree = "<group>"; };
+		9BCA68631AC0A2DD00982DC9 /* CSAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAlbum.h; sourceTree = "<group>"; };
+		9BCA68641AC0A2DD00982DC9 /* CSAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAlbum.m; sourceTree = "<group>"; };
 		9BCA68661AC0B8D000982DC9 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		9BCD5A191AB0D38700DEB39E /* earth-america-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "earth-america-7.png"; sourceTree = "<group>"; };
 		9BCD5A1B1AB0D39200DEB39E /* house-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house-7.png"; sourceTree = "<group>"; };
@@ -520,8 +521,8 @@
 				2061D1D2199193CE001C7E08 /* CSDevice.m */,
 				9BDDBAF31A70827900697C25 /* CSLocation.h */,
 				9BDDBAF41A70827900697C25 /* CSLocation.m */,
-				9BCA68631AC0A2DD00982DC9 /* CSLocationMeta.h */,
-				9BCA68641AC0A2DD00982DC9 /* CSLocationMeta.m */,
+				9BCA68631AC0A2DD00982DC9 /* CSAlbum.h */,
+				9BCA68641AC0A2DD00982DC9 /* CSAlbum.m */,
 				2061D1D3199193CE001C7E08 /* CSPhoto.h */,
 				2061D1D4199193CE001C7E08 /* CSPhoto.m */,
 				9BEA5B521A1EB26100CC14FF /* CSStorage.h */,
@@ -1045,7 +1046,7 @@
 				9BFDAAB21AAA72CE00C4E170 /* ELCImagePickerController.m in Sources */,
 				D5E2672B1A410EDE00611A67 /* HistoryTableViewController.m in Sources */,
 				2061D1F019919436001C7E08 /* Model.xcdatamodeld in Sources */,
-				9BCA68651AC0A2DD00982DC9 /* CSLocationMeta.m in Sources */,
+				9BCA68651AC0A2DD00982DC9 /* CSAlbum.m in Sources */,
 				2061D1DC199193CE001C7E08 /* CSPhoto.m in Sources */,
 				2061D1E6199193DB001C7E08 /* HandshakeTableViewController.m in Sources */,
 				9BC1B0FD1AA8E670002FE705 /* QRPreviewViewController.m in Sources */,
@@ -1246,8 +1247,9 @@
 				9BCA68661AC0B8D000982DC9 /* Model 2.xcdatamodel */,
 				2061D1EF19919436001C7E08 /* Model.xcdatamodel */,
 				9BC3C6DE1AC1D84B0042E2D5 /* Model 3.xcdatamodel */,
+				9BC32ED61AD59913002B49E6 /* Model 4.xcdatamodel */,
 			);
-			currentVersion = 9BC3C6DE1AC1D84B0042E2D5 /* Model 3.xcdatamodel */;
+			currentVersion = 9BC32ED61AD59913002B49E6 /* Model 4.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

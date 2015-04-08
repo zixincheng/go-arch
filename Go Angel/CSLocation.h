@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class CSPhoto;
-@class CSLocationMeta;
+@class CSAlbum;
 @interface CSLocation : NSObject
 
 
@@ -19,12 +19,13 @@
 @property (nonatomic, strong) NSString *city;
 @property (nonatomic, strong) NSString *province;
 @property (nonatomic, strong) NSString *unit;
-@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *sublocation;
 @property (nonatomic, strong) NSString *postCode;
 @property (nonatomic, strong) NSString *longitude;
 @property (nonatomic, strong) NSString *latitude;
+@property (nonatomic, strong) NSString *altitude;
 @property (nonatomic, strong) CSPhoto *photo;
-@property (nonatomic, strong) CSLocationMeta *locationMeta;
+@property (nonatomic, strong) CSAlbum *album;
 
 // the nsmanagedobject uri
 @property (nonatomic, strong) NSString *objectUri;

@@ -56,9 +56,9 @@
     
     NSString *title;
     if (_selectedLocation.unit !=nil) {
-      title = [NSString stringWithFormat:@"%@ - %@", _selectedLocation.unit, _selectedLocation.name];
+      title = [NSString stringWithFormat:@"%@ - %@", _selectedLocation.unit, _selectedLocation.sublocation];
     } else {
-      title = [NSString stringWithFormat:@"%@", _selectedLocation.name];
+      title = [NSString stringWithFormat:@"%@", _selectedLocation.sublocation];
     }
     singleLocContoller.title = title;
     
@@ -152,7 +152,7 @@
   
   [lblCount setText:text];
   
-  [lblAddress setText:l.name];
+  [lblAddress setText:l.sublocation];
   [lblCityState setText:[NSString stringWithFormat:@"%@, %@", l.city, l.province]];
   return cell;
 }

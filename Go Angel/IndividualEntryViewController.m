@@ -138,9 +138,9 @@
     
     NSString *title;
     if (![self.location.unit isEqualToString:@""]) {
-        title = [NSString stringWithFormat:@"%@ - %@",self.location.unit, self.location.name];
+        title = [NSString stringWithFormat:@"%@ - %@",self.location.unit, self.location.sublocation];
     } else {
-        title = [NSString stringWithFormat:@"%@", self.location.name];
+        title = [NSString stringWithFormat:@"%@", self.location.sublocation];
     }
     self.navigationItem.title = title;
 
@@ -510,11 +510,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     self.locationArray = [[NSMutableArray alloc]init];
     self.locationArray = [self.dataWrapper getLocations];
  
-    NSArray *currentLocation = [self.locationArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", self.location.name]];
+    NSArray *currentLocation = [self.locationArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", self.location.sublocation]];
     [self.locationArray removeObject:currentLocation[0]];
     
     for (CSLocation *l in self.locationArray) {
-                CTPopoutMenuItem *item = [[CTPopoutMenuItem alloc]initWithTitle:l.name image:nil];
+                CTPopoutMenuItem *item = [[CTPopoutMenuItem alloc]initWithTitle:l.sublocation image:nil];
                 [items addObject:item];
     }
     CTPopoutMenuItem *new = [[CTPopoutMenuItem alloc]initWithTitle:@"Add New Location" image:nil];
@@ -531,7 +531,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (index != menu.items.count-1) {
         NSLog(@"menu dismiss with index %ld",index);
         CSLocation *destLocation = [self.locationArray objectAtIndex:index];
-        NSLog(@"dest location %@",destLocation.name);
+        NSLog(@"dest location %@",destLocation.sublocation);
         for (CSPhoto *p in selectedPhotos) {
             p.location = destLocation;
             [self.dataWrapper addUpdatePhoto:p];

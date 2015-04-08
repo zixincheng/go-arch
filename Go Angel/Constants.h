@@ -41,7 +41,7 @@
 #define DEVICE @"Device"
 #define LOG @"Log"
 #define LOCATION @"Location"
-#define LOCATIONMETA @"LocationMeta"
+#define ALBUM @"Album"
 
 // location metadta attributes
 #define BATH @"bath"
@@ -55,6 +55,9 @@
 #define TAG @"tag"
 #define TYPE @"type"
 #define YEARBUILT @"yearBuilt"
+#define DESCRIPTION @"albumDescription"
+#define ALBUMID @"albumId"
+#define NAME @"name"
 
 // location entity attributes
 #define POSTALCODE @"postalCode"
@@ -63,7 +66,7 @@
 #define CITY @"city"
 #define PROVINCE @"province"
 #define UNIT @"unit"
-#define NAME @"name"
+#define SUBLOCATION @"sublocation"
 #define LONG @"longitude"
 #define LAT @"latitude"
 
@@ -84,7 +87,7 @@
 #define PHOTO_CITY @"location.city"
 #define PHOTO_PROVINCE @"location.province"
 #define PHOTO_UNIT @"location.unit"
-#define PHOTO_NAME @"location.name"
+#define PHOTO_NAME @"location.sublocation"
 #define PHOTO_LONG @"location.longitude"
 #define PHOTO_LAT @"location.latitude"
 

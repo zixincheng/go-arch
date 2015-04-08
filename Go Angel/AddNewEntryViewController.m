@@ -46,9 +46,9 @@ CGFloat animatedDistance;
     if (!self.location) {
         self.location = [[CSLocation alloc]init];
         self.coverPhoto = [[CSPhoto alloc]init];
-        self.locationMeta = [[CSLocationMeta alloc]init];
+        self.album = [[CSAlbum alloc]init];
     } else {
-        self.locationMeta = self.location.locationMeta;
+        self.album = self.location.album;
         
         if (self.coverPhoto) {
             [self updateCoverPhoto:self.coverPhoto];
@@ -267,7 +267,7 @@ CGFloat animatedDistance;
     NSNumberFormatter *format = [[NSNumberFormatter alloc]init];
     format.numberStyle = NSNumberFormatterDecimalStyle;
     if (sender == self.addressTextField) {
-        self.location.name = self.addressTextField.text;
+        self.location.sublocation = self.addressTextField.text;
         [self geocodeAddress];
     } else if (sender == self.cityTextField) {
         self.location.city = self.cityTextField.text;
@@ -278,26 +278,26 @@ CGFloat animatedDistance;
     } else if (sender == self.postcodeTextField) {
         self.location.postCode = self.postcodeTextField.text;
     } else if (sender == self.tagTextField) {
-        self.locationMeta.tag = self.tagTextField.text;
+        self.album.tag = self.tagTextField.text;
     } else if (sender == self.priceTextField) {
-        self.locationMeta.price = [format numberFromString: self.priceTextField.text];
+        self.album.price = [format numberFromString: self.priceTextField.text];
     } else if (sender == self.yearBuiltTextField) {
-        self.locationMeta.yearBuilt = self.yearBuiltTextField.text;
+        self.album.yearBuilt = self.yearBuiltTextField.text;
     } else if (sender == self.buildingSqftTextField) {
-        self.locationMeta.buildingSqft = [format numberFromString: self.buildingSqftTextField.text];
+        self.album.buildingSqft = [format numberFromString: self.buildingSqftTextField.text];
     } else if (sender == self.landSqftTextField) {
-        self.locationMeta.landSqft = [format numberFromString: self.landSqftTextField.text];
+        self.album.landSqft = [format numberFromString: self.landSqftTextField.text];
     } else if (sender == self.mlsTextField) {
-        self.locationMeta.mls = self.mlsTextField.text;
+        self.album.mls = self.mlsTextField.text;
     }
 }
 
 
 - (IBAction)saveData:(id)sender {
-    if (self.location.name !=nil && self.location.city !=nil && self.location.province != nil) {
-        self.locationMeta.location = self.location;
-        [appDelegate.dataWrapper addLocation:self.location locationmeta:self.locationMeta];
-        [appDelegate.coinsorter createAlbum:self.locationMeta];
+    if (self.location.sublocation !=nil && self.location.city !=nil && self.location.province != nil) {
+        self.album.location = self.location;
+        [appDelegate.dataWrapper addLocation:self.location album:self.album];
+        [appDelegate.coinsorter createAlbum:self.album];
         if (self.photoImage != nil) {
             [self.saveFunction saveImageIntoDocument:self.photoImage metadata:metadata location:self.location];
         }
@@ -347,7 +347,7 @@ CGFloat animatedDistance;
                            self.location.countryCode =
                            [p.addressDictionary objectForKey:@"CountryCode"];
                            self.location.city = [p.addressDictionary objectForKey:@"City"];
-                           self.location.name = [p.addressDictionary objectForKey:@"Name"];
+                           self.location.sublocation = [p.addressDictionary objectForKey:@"Name"];
                            self.location.province = [p.addressDictionary objectForKey:@"State"];
                           
                        }
@@ -357,10 +357,10 @@ CGFloat animatedDistance;
 
 
 -(void) dataMapView:(CSLocation *)newlocation {
-    NSLog(@"%@", newlocation.name);
+    NSLog(@"%@", newlocation.sublocation);
     
     // populate the location object with details from map
-    self.location.name = newlocation.name;
+    self.location.sublocation = newlocation.sublocation;
     self.location.city = newlocation.city;
     self.location.province = newlocation.province;
     self.location.latitude = newlocation.latitude;
@@ -393,7 +393,7 @@ CGFloat animatedDistance;
         NSArray *locationArray =[appDelegate.dataWrapper getLocations];
         NSMutableArray *name = [[NSMutableArray alloc] init];
         for (CSLocation *l in locationArray) {
-            [name addObject:l.name];
+            [name addObject:l.sublocation];
         }
         [self.view addSubview:self.popView];
         self.popView.selections = name;
@@ -401,8 +401,8 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,locationArray[selectedIndex]);
             weakSelf.location = [locationArray objectAtIndex:selectedIndex];
-            weakSelf.locationMeta = weakSelf.location.locationMeta;
-            NSLog(@"self locat %@",weakSelf.location.name);
+            weakSelf.album = weakSelf.location.album;
+            NSLog(@"self locat %@",weakSelf.location.sublocation);
             [weakSelf fillLocationData];
         };
     } else if (sender == self.typeSelectBtn) {
@@ -413,7 +413,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.typeLabel setText:[type objectAtIndex:selectedIndex]];
-            weakSelf.locationMeta.type = weakSelf.typeLabel.text;
+            weakSelf.album.type = weakSelf.typeLabel.text;
         };
     } else if (sender == self.statusSelectBtn) {
         
@@ -424,7 +424,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.statusLabel setText:[type objectAtIndex:selectedIndex]];
-            weakSelf.locationMeta.listing = weakSelf.statusLabel.text;
+            weakSelf.album.listing = weakSelf.statusLabel.text;
         };
     } else if (sender == self.bedSelectBtn) {
         NSArray *type = @[@"1",@"2",@"3",@"4",@"5",@"6",@"6+"];
@@ -434,7 +434,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.bedLabel setText:[type objectAtIndex:selectedIndex]];
-            weakSelf.locationMeta.bed = weakSelf.bedLabel.text;
+            weakSelf.album.bed = weakSelf.bedLabel.text;
         };
     } else if (sender == self.bathSelectBtn) {
         NSArray *type = @[@"1",@"2",@"3",@"4",@"5",@"5+"];
@@ -444,7 +444,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.bathLabel setText:[type objectAtIndex:selectedIndex]];
-            weakSelf.locationMeta.bath = weakSelf.bathLabel.text;
+            weakSelf.album.bath = weakSelf.bathLabel.text;
         };
     }
     CGPoint p = [self.view center];
@@ -454,28 +454,28 @@ CGFloat animatedDistance;
 
 - (NSString *) getPriceText {
     if (editEnabled) {
-        return [self.locationMeta.price stringValue];
+        return [self.album.price stringValue];
     } else {
-        return [self.location formatPrice:self.locationMeta.price];
+        return [self.location formatPrice:self.album.price];
     }
 }
 
 -(void) fillLocationData {
-    self.addressTextField.text = self.location.name;
+    self.addressTextField.text = self.location.sublocation;
     self.cityTextField.text = self.location.city;
     self.countryTextField.text = self.location.country;
     self.stateTextField.text = self.location.province;
     self.postcodeTextField.text = self.location.postCode;
-    self.tagTextField.text = self.locationMeta.tag;
+    self.tagTextField.text = self.album.tag;
     self.priceTextField.text = [self getPriceText];
-    self.yearBuiltTextField.text = self.locationMeta.yearBuilt;
-    self.buildingSqftTextField.text = [self.locationMeta.buildingSqft stringValue];
-    self.landSqftTextField.text = [self.locationMeta.landSqft stringValue];
-    self.mlsTextField.text = [self.locationMeta.landSqft stringValue];
-    self.typeLabel.text = self.locationMeta.type;
-    self.statusLabel.text = self.locationMeta.listing;
-    self.bedLabel.text = self.locationMeta.bed;
-    self.bathLabel.text = self.locationMeta.bath;
+    self.yearBuiltTextField.text = self.album.yearBuilt;
+    self.buildingSqftTextField.text = [self.album.buildingSqft stringValue];
+    self.landSqftTextField.text = [self.album.landSqft stringValue];
+    self.mlsTextField.text = [self.album.landSqft stringValue];
+    self.typeLabel.text = self.album.type;
+    self.statusLabel.text = self.album.listing;
+    self.bedLabel.text = self.album.bed;
+    self.bathLabel.text = self.album.bath;
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer

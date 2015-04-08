@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class CSLocation;
-@interface CSLocationMeta : NSObject
+@interface CSAlbum : NSObject
 
 @property (nonatomic, strong) NSString *tag;
 @property (nonatomic, strong) NSString *type;
@@ -21,6 +21,9 @@
 @property (nonatomic, strong) NSNumber *buildingSqft;
 @property (nonatomic, strong) NSNumber *landSqft;
 @property (nonatomic, strong) NSString *mls;
+@property (nonatomic, strong) NSString *albumDescritpion;
+@property (nonatomic, strong) NSString *albumId;
+@property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) CSLocation *location;
 
 @end

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 acdGO Software Ltd. All rights reserved.
 //
 
-#import "CSLocationMeta.h"
+#import "CSAlbum.h"
 
-@implementation CSLocationMeta
+@implementation CSAlbum
 
 @end

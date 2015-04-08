@@ -174,12 +174,12 @@
     //  }
     //
     
-    if ([_location.name isEqualToString:@""] || [_location.city isEqualToString:@""] || [_location.province isEqualToString:@""]) {
+    if ([_location.sublocation isEqualToString:@""] || [_location.city isEqualToString:@""] || [_location.province isEqualToString:@""]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Address or City or State Can't be Empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self enableEditing];
     } else {
-        [appDelegate.dataWrapper updateLocation:_location locationmeta:_location.locationMeta];
+        [appDelegate.dataWrapper updateLocation:_location album:_location.album];
         
         NSLog(@"updated location");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"LocationMetadataUpdate" object:nil];

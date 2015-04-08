@@ -268,22 +268,22 @@
     
     if ([sortBase isEqualToString:SORTNAME]) {
         sortedArray = [self.locations sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            NSString *first = [(CSLocation *)obj1 name];
-            NSString *second = [(CSLocation *)obj2 name];
+            NSString *first = [(CSLocation *)obj1 sublocation];
+            NSString *second = [(CSLocation *)obj2 sublocation];
             return [first compare:second];
         }];
 
     } else if ([sortBase isEqualToString:SORTPRICEHIGH]){
         sortedArray = [self.locations sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            CSLocationMeta *first = [(CSLocation *)obj1 locationMeta];
-            CSLocationMeta *second = [(CSLocation *)obj2 locationMeta];
+            CSAlbum *first = [(CSLocation *)obj1 album];
+            CSAlbum *second = [(CSLocation *)obj2 album];
             return [second.price compare:first.price];
         }];
         
     } else if ([sortBase isEqualToString:SORTPRICELOW]){
         sortedArray = [self.locations sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            CSLocationMeta *first = [(CSLocation *)obj1 locationMeta];
-            CSLocationMeta *second = [(CSLocation *)obj2 locationMeta];
+            CSAlbum *first = [(CSLocation *)obj1 album];
+            CSAlbum *second = [(CSLocation *)obj2 album];
             return [first.price compare:second.price];
         }];
     }
