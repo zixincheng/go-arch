@@ -848,7 +848,6 @@
         [locationObj setValue:location.longitude forKey:LONG];
         [locationObj setValue:location.latitude forKey:LAT];
         [locationObj setValue:location.postCode forKey:POSTALCODE];
-        location.objectUri = [[[locationObj objectID] URIRepresentation] absoluteString];
         
         NSManagedObject *meta =[self updateAlbum:locationObj album:album];
         
@@ -873,7 +872,7 @@
     location.album =  [self getLocationMetaFromObject:locationMetaObj];
 
     // store nsmanagedobject uri into location
-    //location.objectUri = [[[object objectID] URIRepresentation] absoluteString];
+    location.objectUri = [[[object objectID] URIRepresentation] absoluteString];
   
     return location;
 }

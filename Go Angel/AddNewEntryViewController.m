@@ -303,10 +303,14 @@ CGFloat animatedDistance;
     if (self.location.sublocation !=nil && self.location.city !=nil && self.location.province != nil) {
         self.album.location = self.location;
         [appDelegate.dataWrapper addLocation:self.location album:self.album];
-        [appDelegate.coinsorter createAlbum:self.album];
-        if (self.photoImage != nil) {
-            [self.saveFunction saveImageIntoDocument:self.photoImage metadata:metadata location:self.location];
-        }
+        [appDelegate.coinsorter createAlbum:self.album callback:^(NSString *album_id) {
+            if (album_id != nil) {
+                if (self.photoImage != nil) {
+                    [self.saveFunction saveImageIntoDocument:self.photoImage metadata:metadata location:self.location];
+                     [[NSNotificationCenter defaultCenter] postNotificationName:@"CoverPhotoChange" object:nil];
+                }
+            }
+        }];
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Address or City or State Can't be Empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

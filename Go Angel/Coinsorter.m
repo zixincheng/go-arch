@@ -802,7 +802,7 @@
     
 }
 
-- (void) createAlbum: (CSAlbum *) album{
+- (void) createAlbum: (CSAlbum *) album callback: (void (^) (NSString *album_id)) callback {
     CSDevice *localDevice = [self.dataWrapper getDevice:account.cid];
     NSString* nameTextEscaped = [album.location.sublocation stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString* typeTextEscaped = [album.type stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -850,6 +850,8 @@
         album.albumId = albumId;
         
         [self.dataWrapper addLocation:album.location album:album];
+        
+        callback(albumId);
         // TODO: check to see if metadata update worked
         // by reading json response
     }];
