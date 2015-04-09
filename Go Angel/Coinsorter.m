@@ -792,11 +792,37 @@
 #pragma mark -
 #pragma mark Album APIs
 
+-(NSString *) getKey:(NSString *) key value:(NSString *)value {
+    
+    if (value == nil) {
+        return @"";
+    } else {
+            return [NSString stringWithFormat:@"%@=%@&",key,value];
+    }
+    
+}
+
 - (void) createAlbum: (CSAlbum *) album{
     CSDevice *localDevice = [self.dataWrapper getDevice:account.cid];
     NSString* nameTextEscaped = [album.location.sublocation stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString* typeTextEscaped = [album.type stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *query = [NSString stringWithFormat:@"?name=%@&description=%@&alb_latitude=%@&alb_longitude=%@&alb_altitude=%@&alb_sublocation=%@&alb_city=%@&alb_state=%@&alb_country=%@&alb_cover=%@&bath=%@&bed=%@&buildingsqft=%@&landsqft=%@&listing=%@&mls=%@&price=%@&tag=%@&type=%@&yearbuilt=%@",nameTextEscaped,@"asdf",album.location.latitude,album.location.longitude,@"1",nameTextEscaped,album.location.city,album.location.province,album.location.country,@"1",album.bath,album.bed,album.buildingSqft,album.landSqft,album.listing,album.mls,album.price,album.tag,typeTextEscaped,album.yearBuilt];
+    
+    NSString *bedquery = [self getKey:@"bed" value:album.bed];
+    NSString *bathquery = [self getKey:@"bath" value:album.bath];
+    NSString *namequery = [self getKey:@"name" value:album.name];
+    NSString *descriptionquery = [self getKey:@"description" value:album.albumDescritpion];
+    NSString *coverquery = [self getKey:@"alb_cover" value:album.coverImage];
+    NSString *buildingsqftquery = [self getKey:@"buildingsqft" value:[album.buildingSqft stringValue]];
+    NSString *landsqftquery = [self getKey:@"landsqft" value:[album.landSqft stringValue]];
+    NSString *listingquery = [self getKey:@"listing" value:album.listing];
+    NSString *mlsquery = [self getKey:@"mls" value:album.mls];
+    NSString *pricequery = [self getKey:@"price" value:[album.price stringValue]];
+    NSString *tagquery = [self getKey:@"tag" value:album.tag];
+    NSString *typequery = [self getKey:@"type" value:typeTextEscaped];
+    NSString *yearbuiltquery = [self getKey:@"yearbuilt" value:album.yearBuilt];
+    
+    
+    NSString *query = [NSString stringWithFormat:@"?%@%@alb_latitude=%@&alb_longitude=%@&alb_altitude=%@&alb_sublocation=%@&alb_city=%@&alb_state=%@&alb_country=%@&%@%@%@%@%@%@%@%@%@%@%@",namequery,descriptionquery,album.location.latitude,album.location.longitude,@"0",nameTextEscaped,album.location.city,album.location.province,album.location.country,coverquery,bathquery,bedquery,buildingsqftquery,landsqftquery,listingquery,mlsquery,pricequery,tagquery,typequery,yearbuiltquery];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
     NSMutableURLRequest *request;
@@ -818,6 +844,12 @@
         NSError *jsonError;
         NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
         NSLog(@"create album stat %@",jsonData);
+        
+        NSString * albumId = [[jsonData valueForKey:@"album_id"] stringValue];
+        NSLog(@"%@",albumId);
+        album.albumId = albumId;
+        
+        [self.dataWrapper addLocation:album.location album:album];
         // TODO: check to see if metadata update worked
         // by reading json response
     }];

@@ -456,6 +456,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSString *longitude = p.location.longitude;
                 NSString *latitude = p.location.latitude;
                 NSString *sublocation = name;
+                NSString *albumId = p.location.album.albumId;
                 if (!unit) {
                     unit = @"";
                 }
@@ -465,8 +466,8 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSLog(@"SUBLOCATION: %@\n", sublocation);
                 //if (tagLocation) {
                 keys = [NSArray
-                        arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
-                objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation, nil];
+                        arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",@"album_id",nil];
+                objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation,albumId, nil];
                 
                 NSDictionary *headers =
                 [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -533,6 +534,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSString *longitude = p.location.longitude;
                 NSString *latitude = p.location.latitude;
                 NSString *sublocation = name;
+                NSString *albumId = p.location.album.albumId;
                 if (!unit) {
                     unit = @"";
                 }
@@ -541,8 +543,8 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 }
                 //if (tagLocation) {
                 keys = [NSArray
-                        arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
-                objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation, nil];
+                        arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",@"album_id",nil];
+                objects = [NSArray arrayWithObjects:p.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation,albumId, nil];
                 
                 NSDictionary *headers =
                 [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -642,6 +644,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             NSString *longitude = photo.location.longitude;
             NSString *latitude = photo.location.latitude;
             NSString *sublocation = name;
+            NSString *albumId = photo.location.album.albumId;
             if (!unit) {
                 unit = @"";
             }
@@ -650,8 +653,8 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             }
             //if (tagLocation) {
             keys = [NSArray
-                    arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
-            objects = [NSArray arrayWithObjects:photo.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation, nil];
+                    arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",@"album_id",nil];
+            objects = [NSArray arrayWithObjects:photo.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation,albumId, nil];
             
             NSDictionary *headers =
             [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -717,6 +720,7 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             NSString *longitude = photo.location.longitude;
             NSString *latitude = photo.location.latitude;
             NSString *sublocation = name;
+            NSString *albumId = photo.location.album.albumId;
             if (!unit) {
                 unit = @"";
             }
@@ -725,8 +729,8 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             }
             //if (tagLocation) {
             keys = [NSArray
-                    arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",nil];
-            objects = [NSArray arrayWithObjects:photo.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation, nil];
+                    arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",@"album_id",nil];
+            objects = [NSArray arrayWithObjects:photo.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation,albumId, nil];
             
             NSDictionary *headers =
             [NSDictionary dictionaryWithObjects:objects forKeys:keys];
