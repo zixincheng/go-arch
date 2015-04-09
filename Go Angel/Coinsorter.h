@@ -58,5 +58,6 @@
 - (void) uploadOneThumb:(CSPhoto *)photo upCallback:(void (^)())upCallback;
 
 - (void) createAlbum: (CSAlbum *) album callback: (void (^) (NSString *album_id)) callback;
+-(void) getAlbumInfo;
 
 @end

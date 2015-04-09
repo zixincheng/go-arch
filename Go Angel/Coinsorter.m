@@ -859,6 +859,63 @@
     [postDataTask resume];
 }
 
+-(void) getAlbumInfo {
+    
+    NSOperationQueue *background = [[NSOperationQueue alloc] init];
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
+    NSMutableURLRequest *request;
+    
+    //NSString *query = [NSString stringWithFormat:@"?photo_id=0"];
+    request = [self getHTTPGetRequest:@"/albums"];
+    
+    
+    NSArray *objects =
+    [NSArray arrayWithObjects:account.cid, account.token, nil];
+    
+    // set headers
+    NSArray *keys = [NSArray
+                     arrayWithObjects:@"cid",@"token", nil];
+    NSDictionary *headers =
+    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    [request setAllHTTPHeaderFields:headers];
+    
+    NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error == nil) {
+            NSError *jsonError;
+            NSArray *albumArr = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+
+            for (NSDictionary *p in albumArr) {
+                CSLocation *location = [[CSLocation alloc]init];
+                location.latitude = [p objectForKey:@"latitude"];
+                location.longitude = [p objectForKey:@"longitude"];
+                location.altitude = [p objectForKey:@"altitude"];
+                location.sublocation = [p objectForKey:@"sublocation"];
+                location.city = [p objectForKey:@"city"];
+                location.province = [p objectForKey:@"state"];
+                location.country = [p objectForKey:@"country"];
+                location.album.name = [p objectForKey:@"name"];
+                location.album.albumDescritpion = [p objectForKey:@"description"];
+                location.album.coverImage = [p objectForKey:@"cover"];
+                location.album.albumId = [p objectForKey:@"_id"];
+                location.album.bath = [p objectForKey:@"bath"];
+                location.album.bed = [p objectForKey:@"bed"];
+                location.album.buildingSqft = [p objectForKey:@"buildingsqft"];
+                location.album.landSqft = [p objectForKey:@"landsqft"];
+                location.album.mls = [p objectForKey:@"mls"];
+                location.album.price = [p objectForKey:@"price"];
+                location.album.yearBuilt = [p objectForKey:@"yearbuilt"];
+                
+                
+                
+                [self.dataWrapper addLocation:location album:location.album];
+            }
+        }
+    }];
+    NSLog(@"update album finished");
+    [dataTask resume];
+    
+}
 #pragma mark -
 #pragma mark Get token APIs
 
