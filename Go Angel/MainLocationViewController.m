@@ -132,8 +132,8 @@
         photo = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:l];
         if (photo == nil) {
             photo = [self.photos objectAtIndex:0];
-            l.album.coverImage = photo.imageURL;
-            [self.dataWrapper updateLocation:l album:l.album];
+            //l.album.coverImage = photo.remoteID;
+            //[self.dataWrapper updateLocation:l album:l.album];
             //[self.coinsorter updateMeta:photo entity:@"home" value:@"1"];
         }
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];

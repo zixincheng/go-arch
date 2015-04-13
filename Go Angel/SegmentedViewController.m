@@ -90,7 +90,7 @@
     MainLocationViewController *mainvc;
     SearchMapViewController *mapvc;
     LargePhotoViewContoller *largevc;
-    [self.coinsorter getAlbumInfo];
+    //[self.coinsorter getAlbumInfo];
 
     switch (index) {
         case 0:
@@ -179,24 +179,51 @@
     if (![networkstat isEqualToString:OFFLINE]) {
         self.canConnect = YES;
         if ([networkstat isEqualToString:WIFILOCAL] || [networkstat isEqualToString:WIFIEXTERNAL]) {
-            int unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
-            int unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
-            if (unUploadedThumbnail != 0 || unUploadedFullPhotos !=0) {
-                [self.uploadFunction uploadPhotosToApi:self.networkStatus];
+            //int unUploadedThumbnail = [self.dataWrapper getCountUnUploaded];
+            //int unUploadedFullPhotos = [self.dataWrapper getFullImageCountUnUploaded];
+            NSMutableArray *unUploadarray = [self.dataWrapper getAlbumsToUpload];
+            NSMutableArray *alreadyUploaded = [self.dataWrapper getAlbumsAlreadyUploaded];
+            for (CSAlbum *a in unUploadarray) {
+                
+                    [self.coinsorter createAlbum:a callback:^(NSString *album_id) {
+                        if (album_id !=nil) {
+                            NSMutableArray *unuploadphotos = [self.dataWrapper getPhotosToUploadWithLocation:self.localDevice.remoteId location:a.location];
+                            for (CSPhoto *p in unuploadphotos) {
+                                [self.uploadFunction onePhotoThumbToApi:p networkStatus:self.networkStatus];
+                            }
+                        }
+                    }];
+                }
+
+            for (CSAlbum *a in alreadyUploaded) {
+                NSMutableArray *unuploadphotos = [self.dataWrapper getPhotosToUploadWithLocation:self.localDevice.remoteId location:a.location];
+                for (CSPhoto *p in unuploadphotos) {
+                    [self.uploadFunction onePhotoThumbToApi:p networkStatus:self.networkStatus];
+                }
+
             }
         }
     } else {
         self.canConnect = NO;
     }
 }
-
 #pragma mark - upload one photo notification from coredata
 
 -(void) uploadPhotoChanged: (NSNotification *)notification{
     
     CSPhoto *p = [self.dataWrapper getPhoto:[notification.userInfo objectForKey:IMAGE_URL]];
     if (self.canConnect) {
-        [self.uploadFunction onePhotoThumbToApi:p networkStatus:self.networkStatus];
+        if (p.location.album.albumId != nil) {
+            [self.uploadFunction onePhotoThumbToApi:p networkStatus:self.networkStatus];
+        } else {
+            CSAlbum *album = p.location.album;
+            album.location = p.location;
+            [self.coinsorter createAlbum:album callback:^(NSString *album_id) {
+                if (album_id !=nil) {
+                    [self.uploadFunction onePhotoThumbToApi:p networkStatus:self.networkStatus];
+                }
+            }];
+        }
     }
 }
 

@@ -304,11 +304,9 @@ CGFloat animatedDistance;
         self.album.location = self.location;
         [appDelegate.dataWrapper addLocation:self.location album:self.album];
         [appDelegate.coinsorter createAlbum:self.album callback:^(NSString *album_id) {
-            if (album_id != nil) {
-                if (self.photoImage != nil) {
-                    [self.saveFunction saveImageIntoDocument:self.photoImage metadata:metadata location:self.location];
-                     [[NSNotificationCenter defaultCenter] postNotificationName:@"CoverPhotoChange" object:nil];
-                }
+            if (self.photoImage != nil) {
+                [self.saveFunction saveImageIntoDocument:self.photoImage metadata:metadata location:self.location];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CoverPhotoChange" object:nil];
             }
         }];
         [self.navigationController popToRootViewControllerAnimated:YES];

@@ -59,6 +59,7 @@
 #define ALBUMID @"albumId"
 #define NAME @"name"
 #define COVERIMAGE @"coverImage"
+#define ONSERVER @"onServer"
 
 // location entity attributes
 #define POSTALCODE @"postalCode"

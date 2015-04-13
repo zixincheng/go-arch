@@ -50,4 +50,7 @@
 -(void) updatePhotoTag: (NSString *) tag photoId: (NSString *) photoid photo: (CSPhoto *) photo;
 - (CSPhoto *)getPhoto: (NSString *) imageURL;
 -(NSMutableArray *)filterLocations: (NSMutableDictionary *)filterInfo;
+- (NSMutableArray *) getAlbumsToUpload;
+- (NSMutableArray *)getPhotosToUploadWithLocation: (NSString *) deviceId location:(CSLocation *)location;
+- (NSMutableArray *) getAlbumsAlreadyUploaded;
 @end

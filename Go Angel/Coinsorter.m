@@ -811,7 +811,7 @@
     NSString *bathquery = [self getKey:@"bath" value:album.bath];
     NSString *namequery = [self getKey:@"name" value:album.name];
     NSString *descriptionquery = [self getKey:@"description" value:album.albumDescritpion];
-    NSString *coverquery = [self getKey:@"alb_cover" value:album.coverImage];
+    //NSString *coverquery = [self getKey:@"alb_cover" value:album.coverImage];
     NSString *buildingsqftquery = [self getKey:@"buildingsqft" value:[album.buildingSqft stringValue]];
     NSString *landsqftquery = [self getKey:@"landsqft" value:[album.landSqft stringValue]];
     NSString *listingquery = [self getKey:@"listing" value:album.listing];
@@ -822,7 +822,7 @@
     NSString *yearbuiltquery = [self getKey:@"yearbuilt" value:album.yearBuilt];
     
     
-    NSString *query = [NSString stringWithFormat:@"?%@%@alb_latitude=%@&alb_longitude=%@&alb_altitude=%@&alb_sublocation=%@&alb_city=%@&alb_state=%@&alb_country=%@&%@%@%@%@%@%@%@%@%@%@%@",namequery,descriptionquery,album.location.latitude,album.location.longitude,@"0",nameTextEscaped,album.location.city,album.location.province,album.location.country,coverquery,bathquery,bedquery,buildingsqftquery,landsqftquery,listingquery,mlsquery,pricequery,tagquery,typequery,yearbuiltquery];
+    NSString *query = [NSString stringWithFormat:@"?%@%@alb_latitude=%@&alb_longitude=%@&alb_altitude=%@&alb_sublocation=%@&alb_city=%@&alb_state=%@&alb_country=%@&%@%@%@%@%@%@%@%@%@%@",namequery,descriptionquery,album.location.latitude,album.location.longitude,@"0",nameTextEscaped,album.location.city,album.location.province,album.location.country,bathquery,bedquery,buildingsqftquery,landsqftquery,listingquery,mlsquery,pricequery,tagquery,typequery,yearbuiltquery];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
     NSMutableURLRequest *request;

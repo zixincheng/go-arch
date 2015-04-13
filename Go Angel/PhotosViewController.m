@@ -96,7 +96,7 @@
   switch (buttonIndex) {
     case 0:
     {
-      self.location.album.coverImage =  self.selectedCoverPhoto.imageURL;
+      self.location.album.coverImage =  self.selectedCoverPhoto.remoteID;
       [self.dataWrapper updateLocation:self.location album:self.location.album];
       //[self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"home" value:@"1"];
       
