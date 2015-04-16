@@ -7,24 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CSEntry.h"
 
-@class CSLocation;
 @interface CSAlbum : NSObject
 
-@property (nonatomic, strong) NSString *tag;
-@property (nonatomic, strong) NSString *type;
-@property (nonatomic, strong) NSNumber *price;
-@property (nonatomic, strong) NSString *listing;
-@property (nonatomic, strong) NSString *yearBuilt;
-@property (nonatomic, strong) NSString *bed;
-@property (nonatomic, strong) NSString *bath;
-@property (nonatomic, strong) NSNumber *buildingSqft;
-@property (nonatomic, strong) NSNumber *landSqft;
-@property (nonatomic, strong) NSString *mls;
 @property (nonatomic, strong) NSString *albumDescritpion;
 @property (nonatomic, strong) NSString *albumId;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *coverImage;
-@property (nonatomic, strong) CSLocation *location;
-
+@property (nonatomic, strong) CSEntry *entry;
+// the nsmanagedobject id
+@property (nonatomic, strong) NSString *objectId;
 @end

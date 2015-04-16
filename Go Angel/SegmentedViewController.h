@@ -45,7 +45,8 @@
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CSDevice *localDevice;
 @property (nonatomic, strong) UploadFunctions *uploadFunction;
-@property (nonatomic, strong) NSMutableArray *locations;
+//@property (nonatomic, strong) NSMutableArray *locations;
+@property (nonatomic, strong) NSMutableArray *albums;
 
 @property (nonatomic) NSString *networkStatus;
 @property (nonatomic, assign) BOOL canConnect;

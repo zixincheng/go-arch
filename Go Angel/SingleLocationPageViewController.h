@@ -21,7 +21,8 @@
 
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
-@property (nonatomic, strong) CSLocation *location;
+//@property (nonatomic, strong) CSLocation *location;
+@property (nonatomic, strong) CSAlbum *album;
 @property (nonatomic, strong) CSDevice *localDevice;
 
 @property (nonatomic, strong) OverviewViewController *overviewController;

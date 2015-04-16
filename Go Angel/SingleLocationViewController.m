@@ -56,7 +56,7 @@
 }
 
 - (void)metaChanged {
-  [self setTitle:_location.sublocation];
+  [self setTitle:self.album.entry.location.sublocation];
 }
 
 // show the share and delete buttons in toolbar
@@ -101,7 +101,7 @@
     _pageController.coinsorter = _coinsorter;
     _pageController.dataWrapper = _dataWrapper;
     _pageController.localDevice = _localDevice;
-    _pageController.location = _location;
+    _pageController.album = _album;
   }
 }
 
@@ -421,11 +421,11 @@
           if (self.saveInAlbum) {
             NSLog(@"save photos into album");
             
-            [localLibrary saveImage:image metadata:metadata location:self.location];
+            //[localLibrary saveImage:image metadata:metadata location:self.location];
           }else{
             NSLog(@"save photos into application folder");
             //[self saveImageIntoDocument:image metadata:metadata];
-            [self.saveFunction saveImageIntoDocument:image metadata:metadata location:self.location];
+            [self.saveFunction saveImageIntoDocument:image metadata:metadata album:self.album];
           }
         });
         
@@ -443,11 +443,11 @@
             //NSLog(@"number of video taken count %lu",(unsigned long)self.videoUrl.count);
             if (self.saveInAlbum) {
               NSLog(@"save video into album");
-              [localLibrary saveVideo:moviePath location:self.location];
+              //[localLibrary saveVideo:moviePath location:self.location];
             } else {
               NSLog(@"save video into application folder");              
               //[self saveVideoIntoDocument:moviePath];
-              [self.saveFunction saveVideoIntoDocument:moviePath location:self.location];
+              [self.saveFunction saveVideoIntoDocument:moviePath album:self.album];
             }
             
           }
@@ -482,11 +482,11 @@
       if (self.saveInAlbum) {
         NSLog(@"save photos into album");
         
-        [localLibrary saveImage:image metadata:metadata location:self.location];
+        //[localLibrary saveImage:image metadata:metadata location:self.location];
       }else{
         NSLog(@"save photos into application folder");
         //[self saveImageIntoDocument:image metadata:metadata];
-        [self.saveFunction saveImageIntoDocument:image metadata:metadata location:self.location];
+        [self.saveFunction saveImageIntoDocument:image metadata:metadata album:self.album];
       }
     } else {
       NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
@@ -497,10 +497,10 @@
         //NSLog(@"number of video taken count %lu",(unsigned long)self.videoUrl.count);
         if (self.saveInAlbum) {
           NSLog(@"save video into album");
-          [localLibrary saveVideo:moviePath location:self.location];
+          //[localLibrary saveVideo:moviePath location:self.location];
         } else {
           NSLog(@"save video into application folder");
-          [self.saveFunction saveVideoIntoDocument:moviePath location:self.location];
+          [self.saveFunction saveVideoIntoDocument:moviePath album:self.album];
           //[self saveVideoIntoDocument:moviePath];
         }
         

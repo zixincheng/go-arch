@@ -27,21 +27,52 @@
     __block int currentFullPhotoUploaded = 0;
     BOOL upload3G = [defaults boolForKey:UPLOAD_3G];
     //upload photo thumb no matter under 3g or wifi
-    [self.coinsorter uploadOneThumb:photo upCallback:^(CSPhoto *p){
-        NSLog(@"remote id %@", p.remoteID );
-        if (p.tag != nil) {
-            [self.coinsorter updateMeta:p entity:@"tag" value:p.tag];
-            NSLog(@"updating the tags");
-        }
-        currentthumbnailUploaded += 1;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-            
-        });
-        // if it is under wifi, upload RAW image
+    if ([photo.thumbOnServer isEqualToString:@"0"]) {
+        [self.coinsorter uploadOneThumb:photo upCallback:^(CSPhoto *p){
+            NSLog(@"remote id %@", p.remoteID );
+            if (p.tag != nil) {
+                [self.coinsorter updateMeta:p entity:@"tag" value:p.tag];
+                NSLog(@"updating the tags");
+            }
+            currentthumbnailUploaded += 1;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+                
+            });
+            // if it is under wifi, upload RAW image
+            if ([networkStatus isEqualToString:WIFIEXTERNAL] || [networkStatus isEqualToString:WIFILOCAL]) {
+                [self.coinsorter uploadOnePhoto:p upCallback:^{
+                    currentFullPhotoUploaded +=1;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+                        
+                    });
+                    
+                    NSLog(@"upload full res image");
+                }];
+            }
+            // if it is under 3g and option is ture, then upload RAW image
+            else {
+                if (upload3G) {
+                    [self.coinsorter uploadOnePhoto:p upCallback:^{
+                        currentFullPhotoUploaded +=1;
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+                        });
+                        NSLog(@"upload full res image using 3G");
+                    }];
+                }
+                // if it is unser 3g and option is false, don't upload RAW image
+                else {
+                    NSLog(@"dont upload full res because it using 3g");
+                }
+            }
+        }];
+    } else if([photo.thumbOnServer isEqualToString:@"1"] && [photo.fullOnServer isEqualToString:@"0"]){
         if ([networkStatus isEqualToString:WIFIEXTERNAL] || [networkStatus isEqualToString:WIFILOCAL]) {
-            [self.coinsorter uploadOnePhoto:p upCallback:^{
+            [self.coinsorter uploadOnePhoto:photo upCallback:^{
                 currentFullPhotoUploaded +=1;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
@@ -55,7 +86,7 @@
         // if it is under 3g and option is ture, then upload RAW image
         else {
             if (upload3G) {
-                [self.coinsorter uploadOnePhoto:p upCallback:^{
+                [self.coinsorter uploadOnePhoto:photo upCallback:^{
                     currentFullPhotoUploaded +=1;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
@@ -63,12 +94,14 @@
                     NSLog(@"upload full res image using 3G");
                 }];
             }
-        // if it is unser 3g and option is false, don't upload RAW image
+            // if it is unser 3g and option is false, don't upload RAW image
             else {
                 NSLog(@"dont upload full res because it using 3g");
             }
         }
-    }];
+
+    }
+
 }
 - (void) uploadPhotosToApi:(NSString *)networkStatus {
     // Always upload thumbnails - maybe turn this into a pref later

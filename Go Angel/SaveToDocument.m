@@ -21,7 +21,7 @@
     return self;
 }
 
-- (void) saveImageIntoDocument:(UIImage *)image metadata:(NSDictionary *)metadata location:(CSLocation *)location{
+- (void) saveImageIntoDocument:(UIImage *)image metadata:(NSDictionary *)metadata album:(CSAlbum *)album{
     
     //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
@@ -49,7 +49,7 @@
     p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];
     p.thumbnailName = [NSString stringWithFormat:@"thumb_%@.jpg", photoUID];
     p.isVideo = @"0";
-    p.location = location;
+    p.album = album;
     
     NSString *tmpFullPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
     NSString *tmpThumbPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
@@ -84,7 +84,7 @@
     //self.unUploadedPhotos++;
 }
 
--(void) saveVideoIntoDocument:(NSURL *)moviePath location:(CSLocation *)location{
+-(void) saveVideoIntoDocument:(NSURL *)moviePath album:(CSAlbum *)album{
     
     NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyVideo"];
     if (![[NSFileManager defaultManager] fileExistsAtPath:documentsPath]){
@@ -131,7 +131,7 @@
     p.fileName = [NSString stringWithFormat:@"%@.mov",photoUID];
     p.thumbnailName = [NSString stringWithFormat:@"thumb_%@.jpg", photoUID];
     p.isVideo = @"1";
-    p.location = location;
+    p.album = album;
     
     [self.dataWrapper addPhoto:p];
     

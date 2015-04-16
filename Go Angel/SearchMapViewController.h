@@ -30,11 +30,13 @@
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSDevice *localDevice;
 @property (nonatomic, strong) CSLocation *selectedLocation;
+@property (nonatomic, strong) CSAlbum *selectedAlbum;
 @property (nonatomic, strong) MyAnnotation *callOutAnnotation;
 
 @property(nonatomic,assign)id<SearchMapViewController> delegate;
 
-@property (nonatomic, strong) NSMutableArray *locations;
+//@property (nonatomic, strong) NSMutableArray *locations;
+@property (nonatomic, strong) NSMutableArray *albums;
 @property (nonatomic, strong) NSMutableArray *searchResultLocations;
 @property (nonatomic, strong) NSArray *pins;
 @property (nonatomic, strong) NSMutableArray *points;

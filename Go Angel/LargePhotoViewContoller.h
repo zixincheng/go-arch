@@ -19,8 +19,10 @@
   AppDelegate *appDelegate;
 }
 
-@property (nonatomic, strong) NSMutableArray *locations;
-@property (nonatomic, strong) CSLocation *selectedLocation;
+//@property (nonatomic, strong) NSMutableArray *locations;
+@property (nonatomic, strong) NSMutableArray *albums;
+//@property (nonatomic, strong) CSLocation *selectedLocation;
+@property (nonatomic, strong) CSAlbum *selectedAlbum;
 
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSDevice *localDevice;

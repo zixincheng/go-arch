@@ -107,7 +107,7 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     account = appDelegate.account;
     NSLog(@"id %@",self.localDevice.remoteId);
-    self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    //self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     [self.coinsorter getMetaPhoto:self.photos];
     [self.coinsorter getMetaVideo:self.photos];
@@ -167,7 +167,7 @@
 
 -(void) tagStored: (NSNotification *) notification {
     NSMutableArray *indexset = [NSMutableArray array];
-    self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    //self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     CSPhoto *p = [self.dataWrapper getPhoto:[notification.userInfo objectForKey:IMAGE_URL]];
     NSUInteger index = [self.photos indexOfObject:p];
     [indexset addObject:[NSIndexPath indexPathForRow:index inSection:0]];
@@ -508,7 +508,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     self.exportBtn.enabled = NO;
     NSMutableArray * items = [NSMutableArray new];
     self.locationArray = [[NSMutableArray alloc]init];
-    self.locationArray = [self.dataWrapper getLocations];
+    //self.locationArray = [self.dataWrapper getLocations];
  
     NSArray *currentLocation = [self.locationArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", self.location.sublocation]];
     [self.locationArray removeObject:currentLocation[0]];
@@ -533,7 +533,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         CSLocation *destLocation = [self.locationArray objectAtIndex:index];
         NSLog(@"dest location %@",destLocation.sublocation);
         for (CSPhoto *p in selectedPhotos) {
-            p.location = destLocation;
+            //p.location = destLocation;
             [self.dataWrapper addUpdatePhoto:p];
             [self.photos removeObject:p];
         }
@@ -644,30 +644,30 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0:
-        {CSPhoto *oldCover = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
-            if (oldCover == nil) {
+        //{CSPhoto *oldCover = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+            //if (oldCover == nil) {
                 
-            } else {
+           // } else {
                
-                [self.dataWrapper addUpdatePhoto:oldCover];
-            }
+                //[self.dataWrapper addUpdatePhoto:oldCover];
+           // }
             
             [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
             [self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"home" value:@"1"];
             break;
-        }
-        default:
-            break;
+        //}
+        //default:
+          //  break;
     }
 }
 -(void) donesetCover:(id) sender {
-    CSPhoto *oldCover = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
-    if (oldCover == nil) {
+    //CSPhoto *oldCover = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+    //if (oldCover == nil) {
 
-    } else {
+    //} else {
      
-        [self.dataWrapper addUpdatePhoto:oldCover];
-    }
+       // [self.dataWrapper addUpdatePhoto:oldCover];
+   // }
     
     [self.dataWrapper addUpdatePhoto:self.selectedCoverPhoto];
     [self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"home" value:@"1"];
@@ -719,7 +719,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             }else{
                 NSLog(@"save photos into application folder");
                 //[self saveImageIntoDocument:image metadata:metadata];
-                [self.saveFunction saveImageIntoDocument:image metadata:metadata location:self.location];
+                //[//self.saveFunction saveImageIntoDocument:image metadata:metadata location:self.location];
             }
         } else {
             NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
@@ -737,7 +737,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                 } else {
                     NSLog(@"save video into application folder");
                     // NSURL *moviePath = [self.videoUrl objectAtIndex:count];
-                    [self.saveFunction saveVideoIntoDocument:moviePath location:self.location];
+                    //[self.saveFunction saveVideoIntoDocument:moviePath location:self.location];
                     //[self saveVideoIntoDocument:moviePath];
                 }
                 
@@ -760,7 +760,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 //update the collection view cell
 -(void) addNewcell{
     int Size = (int)self.photos.count;
-    self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    //self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
     //__block int total = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
     dispatch_async(dispatch_get_main_queue(), ^ {
     [self.collectionView performBatchUpdates:^{
@@ -832,11 +832,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                     if (self.saveInAlbum) {
                         NSLog(@"save photos into album");
                         
-                        [localLibrary saveImage:image metadata:metadata location:self.location];
+                        //[localLibrary saveImage:image metadata:metadata location:self.location];
                     }else{
                         NSLog(@"save photos into application folder");
                         //[self saveImageIntoDocument:image metadata:metadata];
-                        [self.saveFunction saveImageIntoDocument:image metadata:metadata location:self.location];
+                        //[self.saveFunction saveImageIntoDocument:image metadata:metadata location:self.location];
                     }
                 });
                 
@@ -861,7 +861,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                         } else {
                             NSLog(@"save video into application folder");
                             // NSURL *moviePath = [self.videoUrl objectAtIndex:count];
-                            [self.saveFunction saveVideoIntoDocument:moviePath location:self.location];
+                            //[self.saveFunction saveVideoIntoDocument:moviePath location:self.location];
                             //[self saveVideoIntoDocument:moviePath];
                         }
                         

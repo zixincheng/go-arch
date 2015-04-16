@@ -17,6 +17,7 @@ typedef enum {
 } cellLayoutType;
 // simple photo object class
 @class CSLocation;
+@class CSAlbum;
 @interface CSPhoto : NSObject
 
 @property (nonatomic, strong) NSString *deviceId;
@@ -31,7 +32,7 @@ typedef enum {
 @property (nonatomic, strong) NSDate *dateUploaded;
 @property (nonatomic, strong) NSString *isVideo;
 @property (nonatomic, strong) NSString *tag;
-@property (nonatomic, strong) CSLocation *location;
+@property (nonatomic, strong) CSAlbum *album;
 @property (assign) cellLayoutType layoutType;
 @property (assign) float relativeHeight;
 

@@ -43,13 +43,15 @@ CGFloat animatedDistance;
     self.saveFunction = [[SaveToDocument alloc]init];
     
     [self.navigationController setToolbarHidden:NO];
-    if (!self.location) {
+    if (!self.album) {
         self.location = [[CSLocation alloc]init];
+        self.entry = [[CSEntry alloc]init];
         self.coverPhoto = [[CSPhoto alloc]init];
         self.album = [[CSAlbum alloc]init];
     } else {
-        self.album = self.location.album;
-        
+        //self.album = self.location.album;
+        self.entry = self.album.entry;
+        self.location = self.album.entry.location;
         if (self.coverPhoto) {
             [self updateCoverPhoto:self.coverPhoto];
         }
@@ -280,32 +282,33 @@ CGFloat animatedDistance;
     } else if (sender == self.postcodeTextField) {
         self.location.postCode = self.postcodeTextField.text;
     } else if (sender == self.tagTextField) {
-        self.album.tag = self.tagTextField.text;
+        self.entry.tag = self.tagTextField.text;
     } else if (sender == self.priceTextField) {
-        self.album.price = [format numberFromString: self.priceTextField.text];
+        self.entry.price = [format numberFromString: self.priceTextField.text];
     } else if (sender == self.yearBuiltTextField) {
-        self.album.yearBuilt = self.yearBuiltTextField.text;
+        self.entry.yearBuilt = self.yearBuiltTextField.text;
     } else if (sender == self.buildingSqftTextField) {
-        self.album.buildingSqft = [format numberFromString: self.buildingSqftTextField.text];
+        self.entry.buildingSqft = [format numberFromString: self.buildingSqftTextField.text];
     } else if (sender == self.landSqftTextField) {
-        self.album.landSqft = [format numberFromString: self.landSqftTextField.text];
+        self.entry.landSqft = [format numberFromString: self.landSqftTextField.text];
     } else if (sender == self.mlsTextField) {
-        self.album.mls = self.mlsTextField.text;
+        self.entry.mls = self.mlsTextField.text;
     } else if (sender == self.nameTextField) {
         self.album.name = self.nameTextField.text;
     } else if (sender == self.descriptionTextField) {
-        self.album.name = self.descriptionTextField.text;
+        self.album.albumDescritpion = self.descriptionTextField.text;
     }
 }
 
 
 - (IBAction)saveData:(id)sender {
     if (self.location.sublocation !=nil && self.location.city !=nil && self.location.province != nil) {
-        self.album.location = self.location;
-        [appDelegate.dataWrapper addLocation:self.location album:self.album];
+        self.album.entry = self.entry;
+        self.album.entry.location = self.location;
+        [appDelegate.dataWrapper addAlbum:self.album];
         [appDelegate.coinsorter createAlbum:self.album callback:^(NSString *album_id) {
             if (self.photoImage != nil) {
-                [self.saveFunction saveImageIntoDocument:self.photoImage metadata:metadata location:self.location];
+                [self.saveFunction saveImageIntoDocument:self.photoImage metadata:metadata album:self.album];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"CoverPhotoChange" object:nil];
             }
         }];
@@ -398,18 +401,19 @@ CGFloat animatedDistance;
     }
     self.popView = [[SGPopSelectView alloc] init];
     if (sender == self.historySelectBtn) {
-        NSArray *locationArray =[appDelegate.dataWrapper getLocations];
+        NSArray *locationArray =[appDelegate.dataWrapper getAllAlbums];
         NSMutableArray *name = [[NSMutableArray alloc] init];
-        for (CSLocation *l in locationArray) {
-            [name addObject:l.sublocation];
+        for (CSAlbum *a in locationArray) {
+            [name addObject:a.entry.location.sublocation];
         }
         [self.view addSubview:self.popView];
         self.popView.selections = name;
         typeof(self) __weak weakSelf = self;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,locationArray[selectedIndex]);
-            weakSelf.location = [locationArray objectAtIndex:selectedIndex];
-            weakSelf.album = weakSelf.location.album;
+            weakSelf.album = [locationArray objectAtIndex:selectedIndex];
+            weakSelf.location = weakSelf.album.entry.location;
+            weakSelf.entry = weakSelf.album.entry;
             NSLog(@"self locat %@",weakSelf.location.sublocation);
             [weakSelf fillLocationData];
         };
@@ -421,7 +425,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.typeLabel setText:[type objectAtIndex:selectedIndex]];
-            weakSelf.album.type = weakSelf.typeLabel.text;
+            weakSelf.entry.type = weakSelf.typeLabel.text;
         };
     } else if (sender == self.statusSelectBtn) {
         
@@ -432,7 +436,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.statusLabel setText:[type objectAtIndex:selectedIndex]];
-            weakSelf.album.listing = weakSelf.statusLabel.text;
+            weakSelf.entry.listing = weakSelf.statusLabel.text;
         };
     } else if (sender == self.bedSelectBtn) {
         NSArray *type = @[@"1",@"2",@"3",@"4",@"5",@"6",@"6+"];
@@ -442,7 +446,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.bedLabel setText:[type objectAtIndex:selectedIndex]];
-            weakSelf.album.bed = weakSelf.bedLabel.text;
+            weakSelf.entry.bed = weakSelf.bedLabel.text;
         };
     } else if (sender == self.bathSelectBtn) {
         NSArray *type = @[@"1",@"2",@"3",@"4",@"5",@"5+"];
@@ -452,7 +456,7 @@ CGFloat animatedDistance;
         self.popView.selectedHandle = ^(NSInteger selectedIndex){
             NSLog(@"selected index %ld, content is %@", selectedIndex,type[selectedIndex]);
             [weakSelf.bathLabel setText:[type objectAtIndex:selectedIndex]];
-            weakSelf.album.bath = weakSelf.bathLabel.text;
+            weakSelf.entry.bath = weakSelf.bathLabel.text;
         };
     }
     CGPoint p = [self.view center];
@@ -462,9 +466,9 @@ CGFloat animatedDistance;
 
 - (NSString *) getPriceText {
     if (editEnabled) {
-        return [self.album.price stringValue];
+        return [self.entry.price stringValue];
     } else {
-        return [self.location formatPrice:self.album.price];
+        return [self.entry formatPrice:self.entry.price];
     }
 }
 
@@ -474,16 +478,16 @@ CGFloat animatedDistance;
     self.countryTextField.text = self.location.country;
     self.stateTextField.text = self.location.province;
     self.postcodeTextField.text = self.location.postCode;
-    self.tagTextField.text = self.album.tag;
+    self.tagTextField.text = self.entry.tag;
     self.priceTextField.text = [self getPriceText];
-    self.yearBuiltTextField.text = self.album.yearBuilt;
-    self.buildingSqftTextField.text = [self.album.buildingSqft stringValue];
-    self.landSqftTextField.text = [self.album.landSqft stringValue];
-    self.mlsTextField.text = [self.album.landSqft stringValue];
-    self.typeLabel.text = self.album.type;
-    self.statusLabel.text = self.album.listing;
-    self.bedLabel.text = self.album.bed;
-    self.bathLabel.text = self.album.bath;
+    self.yearBuiltTextField.text = self.entry.yearBuilt;
+    self.buildingSqftTextField.text = [self.entry.buildingSqft stringValue];
+    self.landSqftTextField.text = [self.entry.landSqft stringValue];
+    self.mlsTextField.text = [self.entry.landSqft stringValue];
+    self.typeLabel.text = self.entry.type;
+    self.statusLabel.text = self.entry.listing;
+    self.bedLabel.text = self.entry.bed;
+    self.bathLabel.text = self.entry.bath;
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer

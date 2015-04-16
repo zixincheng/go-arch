@@ -22,7 +22,7 @@
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSDevice *localDevice;
 
-- (void) saveImageIntoDocument:(UIImage *)image metadata:(NSDictionary *)metadata location:(CSLocation *)location;
+- (void) saveImageIntoDocument:(UIImage *)image metadata:(NSDictionary *)metadata album:(CSAlbum *)album;
 
--(void) saveVideoIntoDocument:(NSURL *)moviePath location:(CSLocation *)location;
+-(void) saveVideoIntoDocument:(NSURL *)moviePath album:(CSAlbum *)album;
 @end

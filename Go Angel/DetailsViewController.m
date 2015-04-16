@@ -23,7 +23,7 @@
     
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    _photos = [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:self.album];
     
     [self setCoverPhoto];
     
@@ -42,7 +42,7 @@
     if ([segueName isEqualToString: @"detailsEmbedSegue"]) {
         _embedController = (AddNewEntryViewController *)[segue destinationViewController];
         _embedController.usePreviousLocation = YES;
-        _embedController.location = _location;
+        _embedController.album = _album;
         _embedController.localDevice = _localDevice;
         
         if (!_photos) {
@@ -55,7 +55,7 @@
 }
 
 - (void) updatePhotos {
-    _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+    _photos = [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:self.album];
     
     if (!hasCover && _photos.count > 0) {
         [self setCoverPhoto];
@@ -63,7 +63,7 @@
 }
 
 - (void) coverUpdated {
-    _coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+    _coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId album:self.album];
     if (_embedController) {
         [_embedController updateCoverPhoto:_coverPhoto];
     }
@@ -75,7 +75,7 @@
             hasCover = NO;
             return;
         }
-        _coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+        _coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId album:self.album];
         if (_coverPhoto == nil) {
             _coverPhoto = [self.photos objectAtIndex:0];
         }
@@ -174,12 +174,12 @@
     //  }
     //
     
-    if ([_location.sublocation isEqualToString:@""] || [_location.city isEqualToString:@""] || [_location.province isEqualToString:@""]) {
+    if ([self.album.entry.location.sublocation isEqualToString:@""] || [self.album.entry.location.city isEqualToString:@""] || [self.album.entry.location.province isEqualToString:@""]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Address or City or State Can't be Empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self enableEditing];
     } else {
-        [appDelegate.dataWrapper updateLocation:_location album:_location.album];
+        [appDelegate.dataWrapper updateAlbum:self.album];
         
         NSLog(@"updated location");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"LocationMetadataUpdate" object:nil];

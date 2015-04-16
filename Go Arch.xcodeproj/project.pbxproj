@@ -82,6 +82,7 @@
 		9B52EB451ABA10F4002F19A4 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B52EB441ABA10F4002F19A4 /* SegmentedViewController.m */; };
 		9B568DD21ABB4E9E00D398A9 /* AddNewEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B568DD11ABB4E9E00D398A9 /* AddNewEntryViewController.m */; };
 		9B6C88C61A829EAD00B50A21 /* CellLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C88C51A829EAD00B50A21 /* CellLayout.m */; };
+		9B8D24E21ADC7A58009EFA0D /* CSEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8D24E11ADC7A58009EFA0D /* CSEntry.m */; };
 		9BA18C731AAE421D006CEC25 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA18C721AAE421D006CEC25 /* MyAnnotation.m */; };
 		9BA18C821AAF72B9006CEC25 /* PopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA18C811AAF72B9006CEC25 /* PopOverMenu.m */; };
 		9BAF13811A3F6388000B780B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BAF13801A3F6388000B780B /* CoreMotion.framework */; };
@@ -318,6 +319,9 @@
 		9B6C88C41A829EAD00B50A21 /* CellLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellLayout.h; sourceTree = "<group>"; };
 		9B6C88C51A829EAD00B50A21 /* CellLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellLayout.m; sourceTree = "<group>"; };
 		9B6C88CC1A829FA500B50A21 /* CellLayoutDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellLayoutDelegate.h; sourceTree = "<group>"; };
+		9B8D24E01ADC7A58009EFA0D /* CSEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSEntry.h; sourceTree = "<group>"; };
+		9B8D24E11ADC7A58009EFA0D /* CSEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSEntry.m; sourceTree = "<group>"; };
+		9B8D24E81ADC8067009EFA0D /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
 		9BA18C711AAE421D006CEC25 /* MyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnnotation.h; sourceTree = "<group>"; };
 		9BA18C721AAE421D006CEC25 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotation.m; sourceTree = "<group>"; };
 		9BA18C801AAF72B9006CEC25 /* PopOverMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopOverMenu.h; sourceTree = "<group>"; };
@@ -524,6 +528,8 @@
 				9BDDBAF41A70827900697C25 /* CSLocation.m */,
 				9BCA68631AC0A2DD00982DC9 /* CSAlbum.h */,
 				9BCA68641AC0A2DD00982DC9 /* CSAlbum.m */,
+				9B8D24E01ADC7A58009EFA0D /* CSEntry.h */,
+				9B8D24E11ADC7A58009EFA0D /* CSEntry.m */,
 				2061D1D3199193CE001C7E08 /* CSPhoto.h */,
 				2061D1D4199193CE001C7E08 /* CSPhoto.m */,
 				9BEA5B521A1EB26100CC14FF /* CSStorage.h */,
@@ -1006,6 +1012,7 @@
 				9BC0ABEF1AA7B6F300F430CB /* NetWorkCheck.m in Sources */,
 				20931B8519954B8900F57FB0 /* GridCell.m in Sources */,
 				2061D1D8199193CE001C7E08 /* ConnectViewController.m in Sources */,
+				9B8D24E21ADC7A58009EFA0D /* CSEntry.m in Sources */,
 				9BB0F20B1A26A52A00DF40E3 /* StorageDetailViewController.m in Sources */,
 				2061D1EC19919430001C7E08 /* LocalLibrary.m in Sources */,
 				2053974C199192FE00B1D9AD /* AppDelegate.m in Sources */,
@@ -1245,13 +1252,14 @@
 		2061D1EE19919436001C7E08 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				9B8D24E81ADC8067009EFA0D /* Model 6.xcdatamodel */,
 				9BCA68661AC0B8D000982DC9 /* Model 2.xcdatamodel */,
 				2061D1EF19919436001C7E08 /* Model.xcdatamodel */,
 				9BC3C6DE1AC1D84B0042E2D5 /* Model 3.xcdatamodel */,
 				9BC32ED61AD59913002B49E6 /* Model 4.xcdatamodel */,
 				9BC32EDB1AD5EADB002B49E6 /* Model 5.xcdatamodel */,
 			);
-			currentVersion = 9BC32EDB1AD5EADB002B49E6 /* Model 5.xcdatamodel */;
+			currentVersion = 9B8D24E81ADC8067009EFA0D /* Model 6.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

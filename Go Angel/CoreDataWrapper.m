@@ -287,7 +287,7 @@
     }
     
     photoObj = [self setObjectValues:photo object:photoObj];
-    photoObj = [self relationLocation:photo.location object:photoObj];
+    photoObj = [self relationAlbum:photo.album object:photoObj];
 
     [context save:nil];
   }];
@@ -317,7 +317,7 @@
           //  NSLog(@"obj %@",location);
           newPhoto = [self setObjectValues:photo object:newPhoto];
           
-          newPhoto = [self relationLocation:photo.location object:newPhoto];
+          newPhoto = [self relationAlbum:photo.album object:newPhoto];
           // save context to updated other threads
           [context save:nil];
           NSArray *objects =
@@ -352,31 +352,25 @@
   p.fileName     = [object valueForKey:FILE_NAME];
   p.isVideo      = [object valueForKey:@"isVideo"];
   p.tag          = [object valueForKey:@"tag"];
-  NSManagedObject *locationObj = [object valueForKey:@"location"];
-  p.location =  [self getLocationFromObject:locationObj];
+  NSManagedObject *albumObj = [object valueForKey:@"album"];
+  p.album =  [self getAlbumFromObject:albumObj];
   p.thumbnailName = [object valueForKey:@"thumbnailName"];
   return p;
 }
 
-- (NSMutableArray *)getPhotosWithLocation: (NSString *) deviceId location:(CSLocation *)location{
+- (NSMutableArray *)getPhotosWithAlbum: (NSString *) deviceId album:(CSAlbum *)album{
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
   __block NSMutableArray *arr = [[NSMutableArray alloc] init];
   
   [context performBlockAndWait: ^{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-   // [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"Location", nil]];
-    
-    // set query
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.sublocation, PHOTO_CITY, location.city];
-    [request setPredicate:pred];
-    // set sort
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:YES];
-    NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
-    [request setSortDescriptors: descriptors];
-    
-    NSArray*phs = [context executeFetchRequest:request error:nil];
+
+    NSURL *url = [NSURL URLWithString:album.objectId];
+    NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:url];
+    NSManagedObject *albumObj = [context objectWithID:objectID];
+    NSSet *phs = [albumObj valueForKey:@"photo"];
 
 
+    NSArray *array = [phs allObjects];
     
     if (phs == nil) {
       NSLog(@"error with core data request");
@@ -384,8 +378,8 @@
     }
     
     // add all of the photo objects to the local photo list
-    for (int i =0; i < [phs count]; i++) {
-      NSManagedObject *p = phs[i];
+    for (int i =0; i < [array count]; i++) {
+      NSManagedObject *p = array[i];
       [arr addObject:[self getPhotoFromObject:p]];
     }
   }];
@@ -393,23 +387,19 @@
   return arr;
 }
 
-- (NSMutableArray *)getPhotosToUploadWithLocation: (NSString *) deviceId location:(CSLocation *)location{
+- (NSMutableArray *)getThumbsToUploadWithAlbum: (NSString *) deviceId album:(CSAlbum *)album{
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     __block NSMutableArray *arr = [[NSMutableArray alloc] init];
     
     [context performBlockAndWait: ^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
-        // [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"Location", nil]];
         
-        // set query
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.sublocation, PHOTO_CITY, location.city,THUMB_ON_SERVER, @"0"];
-        [request setPredicate:pred];
-        // set sort
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:YES];
-        NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
-        [request setSortDescriptors: descriptors];
+        NSURL *url = [NSURL URLWithString:album.objectId];
+        NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:url];
+        NSManagedObject *albumObj = [context objectWithID:objectID];
+        NSSet *phs = [albumObj valueForKey:@"photo"];
         
-        NSArray*phs = [context executeFetchRequest:request error:nil];
+        
+        NSArray *array = [phs allObjects];
         
         
         
@@ -419,9 +409,12 @@
         }
         
         // add all of the photo objects to the local photo list
-        for (int i =0; i < [phs count]; i++) {
-            NSManagedObject *p = phs[i];
-            [arr addObject:[self getPhotoFromObject:p]];
+        for (int i =0; i < [array count]; i++) {
+            NSManagedObject *p = array[i];
+            CSPhoto *photo = [self getPhotoFromObject:p];
+            if ([photo.thumbOnServer isEqualToString:@"0"]) {
+                [arr addObject:photo];
+            }
         }
     }];
     
@@ -499,7 +492,7 @@
     return photo;
 }
 
-- (CSPhoto *)getCoverPhoto: (NSString *) deviceId location:(CSLocation *)location{
+- (CSPhoto *)getCoverPhoto: (NSString *) deviceId album:(CSAlbum *)album{
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     __block CSPhoto *coverPhoto = [[CSPhoto alloc] init];
     
@@ -507,7 +500,7 @@
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
         
         // set query
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@) AND (%K = %@)", DEVICE_ID, deviceId, PHOTO_UNIT, location.unit, PHOTO_NAME, location.sublocation, PHOTO_CITY, location.city,IMAGE_URL,location.album.coverImage];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@) AND (%K = %@)", DEVICE_ID, deviceId, REMOTE_ID, album.coverImage];
         [request setPredicate:pred];
         // set sort
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:DATE_CREATED ascending:YES];
@@ -808,13 +801,236 @@
         
     }];
 }
+#pragma mark -
+#pragma mark Create Album functions
 
+- (void) addAlbum:(CSAlbum *) album {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+    [context performBlockAndWait: ^{
+
+        NSManagedObject *albumObj = [NSEntityDescription insertNewObjectForEntityForName:ALBUM inManagedObjectContext:context];
+     
+        [albumObj setValue:album.name forKey:NAME];
+        [albumObj setValue:album.albumDescritpion forKey:DESCRIPTION];
+        [albumObj setValue:album.albumId forKey:ALBUMID];
+        [albumObj setValue:album.coverImage forKey:COVERIMAGE];
+        
+        // store nsmanagedobject uri into location
+        //album.objectId = [[[albumObj objectID] URIRepresentation] absoluteString];
+        //[albumObj setValue:album.objectId forKey:@"objectId"];
+        NSManagedObject *entryObj = [albumObj valueForKey:@"entry"];
+        entryObj = [self setEntryObject:album entryObj:entryObj];
+        
+        [albumObj setValue:entryObj forKey:@"entry"];
+
+        [context save:nil];
+
+        album.objectId = [[[albumObj objectID] URIRepresentation] absoluteString];
+    }];
+}
+
+-(NSManagedObject *) setEntryObject:(CSAlbum *) album entryObj :(NSManagedObject *) entryObj{
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+
+    if (entryObj == nil) {
+        entryObj = [NSEntityDescription insertNewObjectForEntityForName:ENTRY inManagedObjectContext:context];
+    }
+
+    [entryObj setValue:album.entry.bed forKey:BED];
+    [entryObj setValue:album.entry.tag forKey:TAG];
+    [entryObj setValue:album.entry.type forKey:TYPE];
+    [entryObj setValue:album.entry.price forKey:PRICE];
+    [entryObj setValue:album.entry.listing forKey:LISTING];
+    [entryObj setValue:album.entry.yearBuilt forKey:YEARBUILT];
+    [entryObj setValue:album.entry.landSqft forKey:LANDSQFT];
+    [entryObj setValue:album.entry.bath forKey:BATH];
+    [entryObj setValue:album.entry.buildingSqft forKey:BUILDINGSQFT];
+    [entryObj setValue:album.entry.mls forKey:MLS];
+    
+    
+    NSManagedObject * locationObj = [entryObj valueForKey:@"locationEntry"];
+    locationObj= [self setLocationObject:album locationObj:locationObj];
+    
+    [entryObj setValue:locationObj forKey:@"locationEntry"];
+    
+    [context save:nil];
+    return entryObj;
+}
+
+
+-(NSManagedObject *) setLocationObject:(CSAlbum *) album locationObj: (NSManagedObject *) locationObj{
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+
+    if (locationObj == nil) {
+        locationObj = [NSEntityDescription insertNewObjectForEntityForName:LOCATION inManagedObjectContext:context];
+    }
+
+    [locationObj setValue:album.entry.location.country forKey:COUNTRY];
+    [locationObj setValue:album.entry.location.countryCode forKey:COUNTRYCODE];
+    [locationObj setValue:album.entry.location.city forKey:CITY];
+    [locationObj setValue:album.entry.location.province forKey:PROVINCE];
+    [locationObj setValue:album.entry.location.unit forKey:UNIT];
+    [locationObj setValue:album.entry.location.sublocation forKey:SUBLOCATION];
+    [locationObj setValue:album.entry.location.longitude forKey:LONG];
+    [locationObj setValue:album.entry.location.latitude forKey:LAT];
+    [locationObj setValue:album.entry.location.postCode forKey:POSTALCODE];
+    [locationObj setValue:album.entry.location.altitude forKey:ALTITUDE];
+    
+    [context save:nil];
+    return locationObj;
+}
+
+#pragma mark -
+#pragma mark Update Album functions
+
+- (void) updateAlbum:(CSAlbum *)album {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+    [context performBlockAndWait:^{
+        NSURL *url = [NSURL URLWithString:album.objectId];
+        NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:url];
+        NSManagedObject *albumObj = [context objectWithID:objectID];
+        if (albumObj == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        [albumObj setValue:album.name forKey:NAME];
+        [albumObj setValue:album.albumDescritpion forKey:DESCRIPTION];
+        [albumObj setValue:album.albumId forKey:ALBUMID];
+        [albumObj setValue:album.coverImage forKey:COVERIMAGE];
+         
+         NSManagedObject *entryObj = [albumObj valueForKey:ENTRY];
+        
+        entryObj = [self setEntryObject:album entryObj:entryObj];
+        [albumObj setValue:entryObj forKey:@"entry"];
+         
+        [context save:nil];
+        NSLog(@"updated album object in db");
+    }];
+}
+
+
+#pragma mark -
+#pragma mark Get Album functions
+
+- (NSMutableArray *) getAllAlbums{
+    
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    __block NSMutableArray *arr = [[NSMutableArray alloc] init];
+    
+    [context performBlockAndWait: ^{
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ALBUM];
+        
+        // set sort
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:YES];
+        NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
+        [request setSortDescriptors: descriptors];
+        
+        NSArray *locations = [context executeFetchRequest:request error:nil];
+        
+        if (locations == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        }
+        
+        // add all of the log objects to the local log list
+        for (int i =0; i < [locations count]; i++) {
+            NSManagedObject *locationObj = locations[i];
+            [arr addObject:[self getAlbumFromObject:locationObj]];
+        }
+    }];
+    
+    return arr;
+}
+
+- (CSAlbum *) getAlbumFromObject: (NSManagedObject *) object {
+    CSAlbum *album     = [[CSAlbum alloc] init];
+    album.albumDescritpion = [object valueForKey:DESCRIPTION];
+    album.albumId = [object valueForKey:ALBUMID];
+    album.name = [object valueForKey:NAME];
+    album.coverImage = [object valueForKey:COVERIMAGE];
+    album.objectId = [[[object objectID] URIRepresentation] absoluteString];
+    NSManagedObject *entryObjcet = [object valueForKey:@"entry"];
+    album.entry =  [self getEntryFromObject:entryObjcet];
+
+    
+    return album;
+}
+
+-(CSEntry *)getEntryFromObject: (NSManagedObject *) object {
+    CSEntry *entry = [[CSEntry alloc]init];
+    
+    entry.bed = [object valueForKey:BED];
+    entry.tag = [object valueForKey:TAG];
+    entry.type = [object valueForKey:TYPE];
+    entry.price = [object valueForKey:PRICE];
+    entry.listing = [object valueForKey:LISTING];
+    entry.yearBuilt = [object valueForKey:YEARBUILT];
+    entry.landSqft = [object valueForKey:LANDSQFT];
+    entry.bath = [object valueForKey:BATH];
+    entry.buildingSqft = [object valueForKey:BUILDINGSQFT];
+    entry.mls = [object valueForKey:MLS];
+    
+    NSManagedObject *entryObjcet = [object valueForKey:@"locationEntry"];
+    entry.location =  [self getLocationFromObject:entryObjcet];
+    
+    return entry;
+    
+}
+
+- (CSLocation *) getLocationFromObject: (NSManagedObject *) object {
+    CSLocation *location     = [[CSLocation alloc] init];
+    location.country = [object valueForKey:COUNTRY];
+    location.countryCode = [object valueForKey:COUNTRYCODE];
+    location.city = [object valueForKey:CITY];
+    location.province = [object valueForKey:PROVINCE];
+    location.unit = [object valueForKey:UNIT];
+    location.sublocation = [object valueForKey:SUBLOCATION];
+    location.longitude = [object valueForKey:LONG];
+    location.latitude = [object valueForKey:LAT];
+    location.postCode = [object valueForKey:POSTALCODE];
+    
+    // store nsmanagedobject uri into location
+    location.objectUri = [[[object objectID] URIRepresentation] absoluteString];
+    
+    return location;
+}
+
+
+#pragma mark -
+#pragma mark Delete Album functions
+
+- (void) deleteAlbum:(CSAlbum *) album {
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    [context performBlock: ^{
+        NSURL *url = [NSURL URLWithString:album.objectId];
+        NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:url];
+        NSManagedObject *albumObj = [context objectWithID:objectID];
+        
+        if (albumObj == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        } else {
+            [context deleteObject:albumObj];
+        }
+        [context save:nil];
+    }];
+    
+}
+
+/*####################
+####################
+####################
+####################
+*/
 #pragma mark -
 #pragma mark Location functions
 
-
+/*
 // uses the the location.objectUri to lookup object and update to latest values in cslocation
-- (void) updateLocation:(CSLocation *)location album:(CSAlbum *)album {
+- (void) updateLocation:(CSLocation *)location album:(CSEntry *)entry {
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     
     [context performBlockAndWait:^{
@@ -837,7 +1053,7 @@
         [obj setValue:location.latitude forKey:LAT];
         [obj setValue:location.postCode forKey:POSTALCODE];
         
-        NSManagedObject *meta = [self updateAlbum:obj album:album];
+        NSManagedObject *meta = [self updateAlbum:obj entry:entry];
         
         [obj setValue:meta forKey:@"metaData"];
         
@@ -847,7 +1063,7 @@
     }];
 }
 
-- (void) addLocation:(CSLocation *)location album :(CSAlbum *) album{
+- (void) addLocation:(CSLocation *)location album :(CSEntry *) entry{
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     
     [context performBlockAndWait: ^{
@@ -884,9 +1100,9 @@
         [locationObj setValue:location.latitude forKey:LAT];
         [locationObj setValue:location.postCode forKey:POSTALCODE];
         
-        NSManagedObject *meta =[self updateAlbum:locationObj album:album];
+        NSManagedObject *meta =[self updateAlbum:locationObj entry:entry];
         
-        [locationObj setValue:meta forKey:@"metaData"];
+        [locationObj setValue:meta forKey:@"entry"];
 
         [context save:nil];
         
@@ -903,8 +1119,8 @@
     location.longitude = [object valueForKey:LONG];
     location.latitude = [object valueForKey:LAT];
     location.postCode = [object valueForKey:POSTALCODE];
-    NSManagedObject *locationMetaObj = [object valueForKey:@"metaData"];
-    location.album =  [self getLocationMetaFromObject:locationMetaObj];
+    NSManagedObject *locationMetaObj = [object valueForKey:@"entry"];
+    location.entry =  [self getLocationMetaFromObject:locationMetaObj];
 
     // store nsmanagedobject uri into location
     location.objectUri = [[[object objectID] URIRepresentation] absoluteString];
@@ -912,73 +1128,68 @@
     return location;
 }
 
--(CSAlbum *)getLocationMetaFromObject: (NSManagedObject *) object {
-    CSAlbum *album = [[CSAlbum alloc]init];
+-(CSEntry *)getLocationMetaFromObject: (NSManagedObject *) object {
+    CSEntry *entry = [[CSEntry alloc]init];
 
-    album.bed = [object valueForKey:BED];
-    album.tag = [object valueForKey:TAG];
-    album.type = [object valueForKey:TYPE];
-    album.price = [object valueForKey:PRICE];
-    album.listing = [object valueForKey:LISTING];
-    album.yearBuilt = [object valueForKey:YEARBUILT];
-    album.landSqft = [object valueForKey:LANDSQFT];
-    album.bath = [object valueForKey:BATH];
-    album.buildingSqft = [object valueForKey:BUILDINGSQFT];
-    album.mls = [object valueForKey:MLS];
+    entry.bed = [object valueForKey:BED];
+    entry.tag = [object valueForKey:TAG];
+    entry.type = [object valueForKey:TYPE];
+    entry.price = [object valueForKey:PRICE];
+    entry.listing = [object valueForKey:LISTING];
+    entry.yearBuilt = [object valueForKey:YEARBUILT];
+    entry.landSqft = [object valueForKey:LANDSQFT];
+    entry.bath = [object valueForKey:BATH];
+    entry.buildingSqft = [object valueForKey:BUILDINGSQFT];
+    entry.mls = [object valueForKey:MLS];
     album.albumDescritpion = [object valueForKey:DESCRIPTION];
     album.albumId = [object valueForKey:ALBUMID];
     album.name = [object valueForKey:NAME];
-    album.coverImage = [object valueForKey:COVERIMAGE];
+    entry.coverImage = [object valueForKey:COVERIMAGE];
     
-    return album;
+    return entry;
     
 }
 
--(CSAlbum *)getAlbumFromObject: (NSManagedObject *) object {
-    CSAlbum *album = [[CSAlbum alloc]init];
+-(CSEntry *)getAlbumFromObject: (NSManagedObject *) object {
+    CSEntry *entry = [[CSEntry alloc]init];
     
-    album.bed = [object valueForKey:BED];
-    album.tag = [object valueForKey:TAG];
-    album.type = [object valueForKey:TYPE];
-    album.price = [object valueForKey:PRICE];
-    album.listing = [object valueForKey:LISTING];
-    album.yearBuilt = [object valueForKey:YEARBUILT];
-    album.landSqft = [object valueForKey:LANDSQFT];
-    album.bath = [object valueForKey:BATH];
-    album.buildingSqft = [object valueForKey:BUILDINGSQFT];
-    album.mls = [object valueForKey:MLS];
+    entry.bed = [object valueForKey:BED];
+    entry.tag = [object valueForKey:TAG];
+    entry.type = [object valueForKey:TYPE];
+    entry.price = [object valueForKey:PRICE];
+    entry.listing = [object valueForKey:LISTING];
+    entry.yearBuilt = [object valueForKey:YEARBUILT];
+    entry.landSqft = [object valueForKey:LANDSQFT];
+    entry.bath = [object valueForKey:BATH];
+    entry.buildingSqft = [object valueForKey:BUILDINGSQFT];
+    entry.mls = [object valueForKey:MLS];
     album.albumDescritpion = [object valueForKey:DESCRIPTION];
     album.albumId = [object valueForKey:ALBUMID];
     album.name = [object valueForKey:NAME];
-    album.coverImage = [object valueForKey:COVERIMAGE];
+    entry.coverImage = [object valueForKey:COVERIMAGE];
     NSManagedObject *locationObj = [object valueForKey:@"Location"];
-    album.location =  [self getLocationFromObject:locationObj];
+    entry.location =  [self getLocationFromObject:locationObj];
     
-    return album;
+    return entry;
     
 }
-
-- (NSManagedObject *) relationLocation: (CSLocation *) location object:(NSManagedObject *) object {
+*/
+- (NSManagedObject *) relationAlbum: (CSAlbum *) album object:(NSManagedObject *) object {
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
 
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
+    NSURL *url = [NSURL URLWithString:album.objectId];
+    NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:url];
+    NSManagedObject *obj = [context objectWithID:objectID];
         
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",UNIT,location.unit,CITY,location.city,SUBLOCATION,location.sublocation];
-        [request setPredicate:pred];
-        
-        NSError *err;
-        NSArray *result = [context executeFetchRequest:request error:&err];
-        
-        if (result == nil) {
+        if (obj == nil) {
             NSLog(@"error with core data request");
             abort();
         }
-        
-        NSManagedObject* resultObj = result[0];
-        [object setValue:resultObj forKey:@"location"];
+    
+        [object setValue:obj forKey:@"album"];
     return object;
 }
-
+/*
 - (NSMutableArray *) getLocations{
     
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
@@ -1008,7 +1219,7 @@
     
     return arr;
 }
-
+*/
 -(NSMutableArray *)filterLocations: (NSMutableDictionary *)filterInfo {
     
     NSPredicate *predicate = [self getPredicate:filterInfo];
@@ -1016,14 +1227,14 @@
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     __block NSMutableArray *arr = [[NSMutableArray alloc]init];
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:LOCATION];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ALBUM];
         
     NSPredicate *pred =predicate;
         //[NSPredicate predicateWithFormat:@"(metaData.bed = %@ AND )",bedRoom];
         
     [request setPredicate:pred];
         // set sort
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:SUBLOCATION ascending:YES];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:NAME ascending:YES];
     NSArray *descriptors = [[NSArray alloc] initWithObjects:sort, nil];
     [request setSortDescriptors: descriptors];
         
@@ -1037,7 +1248,7 @@
     // add all of the log objects to the local log list
     for (int i =0; i < [locations count]; i++) {
         NSManagedObject *locationObj = locations[i];
-        [arr addObject:[self getLocationFromObject:locationObj]];
+        [arr addObject:[self getAlbumFromObject:locationObj]];
     }
     
     return arr;
@@ -1056,44 +1267,44 @@
     
     NSPredicate *predicateBed;
     if ([bedRoom integerValue] == 0 || [bedRoom integerValue] == 7) {
-        predicateBed = [NSPredicate predicateWithFormat:@"metaData.bed > %@",bedRoom];
+        predicateBed = [NSPredicate predicateWithFormat:@"entry.bed > %@",bedRoom];
     } else {
-        predicateBed = [NSPredicate predicateWithFormat:@"metaData.bed = %@",bedRoom];
+        predicateBed = [NSPredicate predicateWithFormat:@"entry.bed = %@",bedRoom];
     }
     NSPredicate *predicateBath;
     if ([bedRoom integerValue] == 0 || [bedRoom integerValue] == 6) {
-        predicateBath = [NSPredicate predicateWithFormat:@"metaData.bed > %@",bathRoom];
+        predicateBath = [NSPredicate predicateWithFormat:@"entry.bed > %@",bathRoom];
     } else {
-        predicateBath = [NSPredicate predicateWithFormat:@"metaData.bed = %@",bathRoom];
+        predicateBath = [NSPredicate predicateWithFormat:@"entry.bed = %@",bathRoom];
     }
-    NSPredicate *predicatePrice = [NSPredicate predicateWithFormat:@"metaData.price < %@ AND metaData.price > %@",priceMax,priceMin];
+    NSPredicate *predicatePrice = [NSPredicate predicateWithFormat:@"entry.price < %@ AND entry.price > %@",priceMax,priceMin];
     
-    NSPredicate *predicateHomeSize = [NSPredicate predicateWithFormat:@"metaData.buildingSqft > %@",buildingSize];
-    NSPredicate *predicateLotSize = [NSPredicate predicateWithFormat:@"metaData.landSqft.integerValue > %@",landSize];
+    NSPredicate *predicateHomeSize = [NSPredicate predicateWithFormat:@"entry.buildingSqft > %@",buildingSize];
+    NSPredicate *predicateLotSize = [NSPredicate predicateWithFormat:@"entry.landSqft.integerValue > %@",landSize];
     NSPredicate *predicateYearBuilt;
     if ([yearBuilt isEqualToString: @"1965"]) {
-        predicateYearBuilt = [NSPredicate predicateWithFormat:@"metaData.yearBuilt <= %@",yearBuilt];
+        predicateYearBuilt = [NSPredicate predicateWithFormat:@"entry.yearBuilt <= %@",yearBuilt];
     } else {
-        predicateYearBuilt = [NSPredicate predicateWithFormat:@"metaData.yearBuilt > %@",yearBuilt];
+        predicateYearBuilt = [NSPredicate predicateWithFormat:@"entry.yearBuilt > %@",yearBuilt];
     }
     
     NSPredicate *predicateType;
     if ([type isEqualToString:@"Any"]) {
-        predicateType = [NSPredicate predicateWithFormat:@"metaData.yearBuilt > %@",@"0"];;
+        predicateType = [NSPredicate predicateWithFormat:@"entry.yearBuilt > %@",@"0"];;
     } else {
-        predicateType = [NSPredicate predicateWithFormat:@"metaData.type = %@",type];
+        predicateType = [NSPredicate predicateWithFormat:@"entry.type = %@",type];
     }
     
     NSPredicate *predicateList;
     if ([listing isEqualToString:@"Any"]) {
-        predicateList = [NSPredicate predicateWithFormat:@"metaData.yearBuilt > %@",@"0"];
+        predicateList = [NSPredicate predicateWithFormat:@"entry.yearBuilt > %@",@"0"];
     } else {
-        predicateList = [NSPredicate predicateWithFormat:@"metaData.listing = %@",listing];
+        predicateList = [NSPredicate predicateWithFormat:@"entry.listing = %@",listing];
     }
     NSPredicate *pre = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicateBed,predicateBath,predicatePrice,predicateYearBuilt,predicateType,predicateList,predicateHomeSize,predicateLotSize]];
     return pre;
 }
-
+/*
 - (void) deleteLocation:(CSLocation *) location {
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     [context performBlock: ^{
@@ -1115,7 +1326,7 @@
     }];
     
 }
-
+*/
 - (NSMutableArray *) searchLocation: (NSString *) location {
     
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
@@ -1151,13 +1362,13 @@
 }
 
 #pragma location metadata functions
-
-- (NSManagedObject *) updateAlbum:(NSManagedObject*) locationObj album : (CSAlbum *)album  {
+/*
+- (NSManagedObject *) updateAlbum:(NSManagedObject*) locationObj entry : (CSEntry *)entry  {
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
-    NSManagedObject *albumObj;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ALBUM];
+    NSManagedObject *entryObj;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTRY];
     
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",PHOTO_UNIT,album.location.unit,PHOTO_CITY,album.location.city,PHOTO_NAME,album.location.sublocation];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)",PHOTO_UNIT,entry.location.unit,PHOTO_CITY,entry.location.city,PHOTO_NAME,entry.location.sublocation];
         [request setPredicate:pred];
         
         
@@ -1170,33 +1381,33 @@
     }
         
     if (result.count == 0) {
-        albumObj = [NSEntityDescription insertNewObjectForEntityForName:ALBUM inManagedObjectContext:context];
+        entryObj = [NSEntityDescription insertNewObjectForEntityForName:ENTRY inManagedObjectContext:context];
         NSLog(@"created new Album");
     }else {
-        albumObj = result[0];
-        NSLog(@"updated Album - %@", album.location.sublocation);
+        entryObj = result[0];
+        NSLog(@"updated Album - %@", entry.location.sublocation);
     }
 
-    [albumObj setValue:album.bed forKey:BED];
-    [albumObj setValue:album.tag forKey:TAG];
-    [albumObj setValue:album.type forKey:TYPE];
-    [albumObj setValue:album.price forKey:PRICE];
-    [albumObj setValue:album.listing forKey:LISTING];
-    [albumObj setValue:album.yearBuilt forKey:YEARBUILT];
-    [albumObj setValue:album.landSqft forKey:LANDSQFT];
-    [albumObj setValue:album.bath forKey:BATH];
-    [albumObj setValue:album.buildingSqft forKey:BUILDINGSQFT];
-    [albumObj setValue:album.mls forKey:MLS];
-    [albumObj setValue:album.coverImage forKey:COVERIMAGE];
+    [entryObj setValue:entry.bed forKey:BED];
+    [entryObj setValue:entry.tag forKey:TAG];
+    [entryObj setValue:entry.type forKey:TYPE];
+    [entryObj setValue:entry.price forKey:PRICE];
+    [entryObj setValue:entry.listing forKey:LISTING];
+    [entryObj setValue:entry.yearBuilt forKey:YEARBUILT];
+    [entryObj setValue:entry.landSqft forKey:LANDSQFT];
+    [entryObj setValue:entry.bath forKey:BATH];
+    [entryObj setValue:entry.buildingSqft forKey:BUILDINGSQFT];
+    [entryObj setValue:entry.mls forKey:MLS];
+    [entryObj setValue:entry.coverImage forKey:COVERIMAGE];
     [albumObj setValue:album.name forKey:NAME];
     [albumObj setValue:album.albumDescritpion forKey:DESCRIPTION];
     [albumObj setValue:album.albumId forKey:ALBUMID];
     
         
     [context save:nil];
-     return albumObj;
+     return entryObj;
 }
-
+*/
 - (NSMutableArray *) getAlbumsToUpload {
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     __block NSMutableArray *arr = [[NSMutableArray alloc] init];
@@ -1250,7 +1461,7 @@
     
     return arr;
 }
-
+/*
 - (NSManagedObject *) relationAlbum: (CSLocation *) location object:(NSManagedObject *) object {
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     
@@ -1272,5 +1483,5 @@
     return object;
 }
 
-
+*/
 @end

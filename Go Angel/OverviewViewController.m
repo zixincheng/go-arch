@@ -31,30 +31,30 @@
 }
 
 - (void) setValues {
-  NSString *cityState = [NSString stringWithFormat:@"%@, %@", _location.city, _location.province];
-  NSString *price = [_location formatPrice:_location.album.price];
-  NSString *buildingSqft = [NSString stringWithFormat:@"%@ sq. ft.", _location.album.buildingSqft.stringValue];
-  NSString *landSqft = [NSString stringWithFormat:@"%@ sq. ft.", _location.album.landSqft.stringValue];
-  NSString *beds = [NSString stringWithFormat:@"%@", _location.album.bed];
-  NSString *baths = [NSString stringWithFormat:@"%@", _location.album.bath];
+  NSString *cityState = [NSString stringWithFormat:@"%@, %@", self.album.entry.location.city, self.album.entry.location.province];
+  NSString *price = [self.album.entry formatPrice:self.album.entry.price];
+  NSString *buildingSqft = [NSString stringWithFormat:@"%@ sq. ft.", self.album.entry.buildingSqft.stringValue];
+  NSString *landSqft = [NSString stringWithFormat:@"%@ sq. ft.", self.album.entry.landSqft.stringValue];
+  NSString *beds = [NSString stringWithFormat:@"%@", self.album.entry.bed];
+  NSString *baths = [NSString stringWithFormat:@"%@", self.album.entry.bath];
   
-  if (!_location.album.bed) {
+  if (!self.album.entry.bed) {
     beds = @"";
   }
-  if (!_location.album.bath) {
+  if (!self.album.entry.bath) {
     baths = @"";
   }
-  if (!_location.album.buildingSqft) {
+  if (!self.album.entry.buildingSqft) {
     buildingSqft = @"";
   }
-  if (!_location.album.landSqft) {
+  if (!self.album.entry.landSqft) {
     landSqft = @"";
   }
   
   dispatch_async(dispatch_get_main_queue(), ^{
-    [_lblAddress setText:_location.sublocation];
+    [_lblAddress setText:self.album.entry.location.sublocation];
     [_lblCityState setText:cityState];
-    [_lblCountry setText:_location.countryCode];
+    [_lblCountry setText:self.album.entry.location.countryCode];
     [_lblPrice setText:price];
     [_lblFloor setText:buildingSqft];
     [_lblLot setText:landSqft];
@@ -66,9 +66,9 @@
 
 // update photo count labels
 - (void) updateCount {
-  _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+  _photos = [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:self.album];
   dispatch_async(dispatch_get_main_queue(), ^{
-    [_lblPhotosTotal setText:[NSString stringWithFormat:@"%d Photos", _photos.count]];
+    [_lblPhotosTotal setText:[NSString stringWithFormat:@"%lu Photos", (unsigned long)_photos.count]];
   });
 }
 
@@ -90,7 +90,7 @@
 - (void) setCoverPhoto {
   if (self.photos.count != 0) {
     hasCover = YES;
-    CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.location];
+    CSPhoto * coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId album:self.album];
     if (coverPhoto == nil) {
       coverPhoto = [self.photos objectAtIndex:0];
     }

@@ -33,7 +33,7 @@
   [_collectionView setDelegate:self];
   
   // get photos for this location from db
-  _photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+  _photos = [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:self.album];
  
   // init long press gesture
   // used to set home photo
@@ -96,8 +96,8 @@
   switch (buttonIndex) {
     case 0:
     {
-      self.location.album.coverImage =  self.selectedCoverPhoto.remoteID;
-      [self.dataWrapper updateLocation:self.location album:self.location.album];
+      self.album.coverImage =  self.selectedCoverPhoto.remoteID;
+      [self.dataWrapper updateAlbum:self.album];
       //[self.coinsorter updateMeta:self.selectedCoverPhoto entity:@"home" value:@"1"];
       
       [[NSNotificationCenter defaultCenter] postNotificationName:@"CoverPhotoChange" object:nil];
@@ -110,7 +110,7 @@
 
 -(void) addNewcell{
   int Size = (int)self.photos.count;
-  self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+  self.photos =  [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:self.album];
   //__block int total = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
   dispatch_async(dispatch_get_main_queue(), ^ {
 //    [self.collectionView performBatchUpdates:^{
@@ -127,7 +127,7 @@
 
 -(void) tagStored: (NSNotification *) notification {
   NSMutableArray *indexset = [NSMutableArray array];
-  self.photos =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:self.location];
+  self.photos =  [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:self.album];
   CSPhoto *p = [self.dataWrapper getPhoto:[notification.userInfo objectForKey:IMAGE_URL]];
   NSUInteger index = [self.photos indexOfObject:p];
   [indexset addObject:[NSIndexPath indexPathForRow:index inSection:0]];

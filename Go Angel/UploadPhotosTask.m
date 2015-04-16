@@ -72,14 +72,14 @@
     
     // if the user wants to tag the photo with location
     if (tagLocation) {
-        NSString *name = photo.location.sublocation;
-        NSString *unit = photo.location.unit;
-        NSString *city = photo.location.city;
-        NSString *state = photo.location.province;
-        NSString *countryCode = photo.location.countryCode;
-        NSString *country = photo.location.country;
-        NSString *longitude = photo.location.longitude;
-        NSString *latitude = photo.location.latitude;
+        NSString *name = photo.album.entry.location.sublocation;
+        NSString *unit = photo.album.entry.location.unit;
+        NSString *city = photo.album.entry.location.city;
+        NSString *state = photo.album.entry.location.province;
+        NSString *countryCode = photo.album.entry.location.countryCode;
+        NSString *country = photo.album.entry.location.country;
+        NSString *longitude = photo.album.entry.location.longitude;
+        NSString *latitude = photo.album.entry.location.latitude;
         NSString *sublocation = name;
         
         // if there is a unit to the location, then change the sublocation to be UNIT - ADDRESS
@@ -267,14 +267,14 @@
             NSArray * keys;
             NSArray *objects;
             
-            NSString *name = p.location.sublocation;
-            NSString *unit = p.location.unit;
-            NSString *city = p.location.city;
-            NSString *state = p.location.province;
-            NSString *countryCode = p.location.countryCode;
-            NSString *country = p.location.country;
-            NSString *longitude = p.location.longitude;
-            NSString *latitude = p.location.latitude;
+            NSString *name = p.album.entry.location.sublocation;
+            NSString *unit = p.album.entry.location.unit;
+            NSString *city = p.album.entry.location.city;
+            NSString *state = p.album.entry.location.province;
+            NSString *countryCode = p.album.entry.location.countryCode;
+            NSString *country = p.album.entry.location.country;
+            NSString *longitude = p.album.entry.location.longitude;
+            NSString *latitude = p.album.entry.location.latitude;
             NSString *sublocation = name;
             if (!unit) {
                 unit = @"";
@@ -447,16 +447,16 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSArray * keys;
                 NSArray *objects;
                 
-                NSString *name = p.location.sublocation;
-                NSString *unit = p.location.unit;
-                NSString *city = p.location.city;
-                NSString *state = p.location.province;
-                NSString *countryCode = p.location.countryCode;
-                NSString *country = p.location.country;
-                NSString *longitude = p.location.longitude;
-                NSString *latitude = p.location.latitude;
+                NSString *name = p.album.entry.location.sublocation;
+                NSString *unit = p.album.entry.location.unit;
+                NSString *city = p.album.entry.location.city;
+                NSString *state = p.album.entry.location.province;
+                NSString *countryCode = p.album.entry.location.countryCode;
+                NSString *country = p.album.entry.location.country;
+                NSString *longitude = p.album.entry.location.longitude;
+                NSString *latitude = p.album.entry.location.latitude;
                 NSString *sublocation = name;
-                NSString *albumId = p.location.album.albumId;
+                NSString *albumId = p.album.albumId;
                 if (!unit) {
                     unit = @"";
                 }
@@ -525,16 +525,16 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 NSArray * keys;
                 NSArray *objects;
                 
-                NSString *name = p.location.sublocation;
-                NSString *unit = p.location.unit;
-                NSString *city = p.location.city;
-                NSString *state = p.location.province;
-                NSString *countryCode = p.location.countryCode;
-                NSString *country = p.location.country;
-                NSString *longitude = p.location.longitude;
-                NSString *latitude = p.location.latitude;
+                NSString *name =p.album.entry.location.sublocation;
+                NSString *unit = p.album.entry.location.unit;
+                NSString *city = p.album.entry.location.city;
+                NSString *state = p.album.entry.location.province;
+                NSString *countryCode = p.album.entry.location.countryCode;
+                NSString *country = p.album.entry.location.country;
+                NSString *longitude = p.album.entry.location.longitude;
+                NSString *latitude = p.album.entry.location.latitude;
                 NSString *sublocation = name;
-                NSString *albumId = p.location.album.albumId;
+                NSString *albumId = p.album.albumId;
                 if (!unit) {
                     unit = @"";
                 }
@@ -635,16 +635,16 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             NSArray * keys;
             NSArray *objects;
             
-            NSString *name = photo.location.sublocation;
-            NSString *unit = photo.location.unit;
-            NSString *city = photo.location.city;
-            NSString *state = photo.location.province;
-            NSString *countryCode = photo.location.countryCode;
-            NSString *country = photo.location.country;
-            NSString *longitude = photo.location.longitude;
-            NSString *latitude = photo.location.latitude;
+            NSString *name = photo.album.entry.location.sublocation;
+            NSString *unit = photo.album.entry.location.unit;
+            NSString *city = photo.album.entry.location.city;
+            NSString *state = photo.album.entry.location.province;
+            NSString *countryCode = photo.album.entry.location.countryCode;
+            NSString *country = photo.album.entry.location.country;
+            NSString *longitude = photo.album.entry.location.longitude;
+            NSString *latitude = photo.album.entry.location.latitude;
             NSString *sublocation = name;
-            NSString *albumId = photo.location.album.albumId;
+            NSString *albumId = photo.album.albumId;
             if (!unit) {
                 unit = @"";
             }
@@ -711,16 +711,16 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
             NSArray * keys;
             NSArray *objects;
             
-            NSString *name = photo.location.sublocation;
-            NSString *unit = photo.location.unit;
-            NSString *city = photo.location.city;
-            NSString *state = photo.location.province;
-            NSString *countryCode = photo.location.countryCode;
-            NSString *country = photo.location.country;
-            NSString *longitude = photo.location.longitude;
-            NSString *latitude = photo.location.latitude;
+            NSString *name = photo.album.entry.location.sublocation;
+            NSString *unit = photo.album.entry.location.unit;
+            NSString *city = photo.album.entry.location.city;
+            NSString *state = photo.album.entry.location.province;
+            NSString *countryCode = photo.album.entry.location.countryCode;
+            NSString *country = photo.album.entry.location.country;
+            NSString *longitude = photo.album.entry.location.longitude;
+            NSString *latitude = photo.album.entry.location.latitude;
             NSString *sublocation = name;
-            NSString *albumId = photo.location.album.albumId;
+            NSString *albumId = photo.album.albumId;
             if (!unit) {
                 unit = @"";
             }

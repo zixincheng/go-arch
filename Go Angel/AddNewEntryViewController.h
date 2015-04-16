@@ -66,6 +66,7 @@
 @property (nonatomic,strong) CSLocation *location;
 @property (nonatomic,strong) CSPhoto *coverPhoto;
 @property (nonatomic,strong) CSAlbum *album;
+@property (nonatomic,strong) CSEntry *entry;
 @property (nonatomic,strong) SaveToDocument *saveFunction;
 
 @property (nonatomic,strong) UIImage *photoImage;

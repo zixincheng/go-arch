@@ -20,7 +20,8 @@
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, strong) CSDevice *localDevice;
-@property (nonatomic, strong) CSLocation *selectedlocation;
+//@property (nonatomic, strong) CSLocation *selectedlocation;
+@property (nonatomic, strong) CSAlbum *selectedAlbum;
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) UISearchController *searchController;
 

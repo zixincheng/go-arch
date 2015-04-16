@@ -34,10 +34,10 @@
 
 - (void) loadLocations {
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    NSMutableArray *ls = [_dataWrapper getLocations];
+    NSMutableArray *ls = [_dataWrapper getAllAlbums];
     
-    if (!_locations || ls.count != _locations.count) {
-      _locations = ls;
+    if (!self.albums || ls.count != self.albums.count) {
+      self.albums = ls;
       dispatch_async(dispatch_get_main_queue(), ^{
         [_tableView reloadData];
       });
@@ -50,16 +50,11 @@
     SingleLocationViewController *singleLocContoller = (SingleLocationViewController *)segue.destinationViewController;
     singleLocContoller.dataWrapper = self.dataWrapper;
     singleLocContoller.localDevice = self.localDevice;
-    singleLocContoller.location = _selectedLocation;
+    singleLocContoller.album = self.selectedAlbum;
     singleLocContoller.coinsorter = [[Coinsorter alloc] initWithWrapper:_dataWrapper];
     [singleLocContoller setHidesBottomBarWhenPushed:YES];
     
-    NSString *title;
-    if (_selectedLocation.unit !=nil) {
-      title = [NSString stringWithFormat:@"%@ - %@", _selectedLocation.unit, _selectedLocation.sublocation];
-    } else {
-      title = [NSString stringWithFormat:@"%@", _selectedLocation.sublocation];
-    }
+    NSString *title = [NSString stringWithFormat:@"%@", self.selectedAlbum.entry.location.sublocation];
     singleLocContoller.title = title;
     
   }
@@ -88,15 +83,15 @@
   [cell addGestureRecognizer:scrollView.panGestureRecognizer];
   
   // get location
-  CSLocation *l = [_locations objectAtIndex:indexPath.row];
+  CSAlbum *a = [self.albums objectAtIndex:indexPath.row];
   
   // load all photos for this locaiton to get count
-  NSMutableArray *photos = [_dataWrapper getPhotosWithLocation:_localDevice.remoteId location:l];
+  NSMutableArray *photos = [_dataWrapper getPhotosWithAlbum:_localDevice.remoteId album:a];
   int count = photos.count;
   NSString *text = [NSString stringWithFormat:@"%d Photos", count];
   
   // get home photo from db
-  CSPhoto *homePhoto = [_dataWrapper getCoverPhoto:_localDevice.remoteId location:l];
+  CSPhoto *homePhoto = [_dataWrapper getCoverPhoto:_localDevice.remoteId album:a];
   
   if (!homePhoto && photos.count > 0) {
     homePhoto = [photos objectAtIndex:0];
@@ -152,13 +147,13 @@
   
   [lblCount setText:text];
   
-  [lblAddress setText:l.sublocation];
-  [lblCityState setText:[NSString stringWithFormat:@"%@, %@", l.city, l.province]];
+  [lblAddress setText:a.entry.location.sublocation];
+  [lblCityState setText:[NSString stringWithFormat:@"%@, %@", a.entry.location.city, a.entry.location.province]];
   return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  _selectedLocation = _locations[[indexPath row]];
+  self.selectedAlbum = _albums[[indexPath row]];
   [self performSegueWithIdentifier:@"singleLocationSegue" sender:self];
   
   // Deselect
@@ -170,7 +165,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  return _locations.count;
+  return _albums.count;
 }
 
 @end

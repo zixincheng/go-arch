@@ -28,7 +28,7 @@
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) NSMutableArray *searchResults;
 
-@property (nonatomic, strong) CSLocation *selectedlocation;
+@property (nonatomic, strong) CSAlbum *selectedAlbum;
 @property (nonatomic, strong) CSDevice *localDevice;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -36,7 +36,8 @@
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 
 @property (nonatomic, strong) NSMutableArray *devices;
-@property (nonatomic, strong) NSMutableArray *locations;
+//@property (nonatomic, strong) NSMutableArray *locations;
+@property (nonatomic, strong) NSMutableArray *albums;
 @property (nonatomic, strong) NSMutableArray *photos;
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;

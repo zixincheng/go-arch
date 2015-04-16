@@ -33,7 +33,7 @@
     _overviewController.coinsorter = _coinsorter;
     _overviewController.dataWrapper = _dataWrapper;
     _overviewController.localDevice = _localDevice;
-    _overviewController.location = _location;
+    _overviewController.album = _album;
   }
   return _overviewController;
 }
@@ -44,7 +44,7 @@
     _detailsController.coinsorter = _coinsorter;
     _detailsController.dataWrapper = _dataWrapper;
     _detailsController.localDevice = _localDevice;
-    _detailsController.location = _location;
+    _detailsController.album = _album;
   }
   return _detailsController;
 }
@@ -55,7 +55,7 @@
     _photosController.coinsorter = _coinsorter;
     _photosController.dataWrapper = _dataWrapper;
     _photosController.localDevice = _localDevice;
-    _photosController.location = _location;
+    _photosController.album = _album;
   }
   return _photosController;
 }

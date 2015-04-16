@@ -42,6 +42,7 @@
 #define LOG @"Log"
 #define LOCATION @"Location"
 #define ALBUM @"Album"
+#define ENTRY @"Entry"
 
 // album attributes
 #define BATH @"bath"
@@ -71,6 +72,7 @@
 #define SUBLOCATION @"sublocation"
 #define LONG @"longitude"
 #define LAT @"latitude"
+#define ALTITUDE @"altitude"
 
 // photo entity attributes
 #define DATE_CREATED @"dateCreated"
@@ -92,6 +94,8 @@
 #define PHOTO_NAME @"location.sublocation"
 #define PHOTO_LONG @"location.longitude"
 #define PHOTO_LAT @"location.latitude"
+#define ALBUM_ALBUMID @"album.albumId"
+#define ALBUM_NAME @"album.name"
 
 // log entity attributes
 #define TIME_UPDATE @"timeUpdate"

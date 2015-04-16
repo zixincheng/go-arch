@@ -60,8 +60,8 @@
 
 -(void) addNewLocation: (NSNotification *)notification{
     
-    self.locations = [self.dataWrapper getLocations];
-    self.selectedlocation = [notification.userInfo objectForKey:LOCATION];
+    self.albums = [self.dataWrapper getAllAlbums];
+    self.selectedAlbum = [notification.userInfo objectForKey:LOCATION];
     loadCamera = 1;
     [self performSegueWithIdentifier:@"individualSegue" sender:self];
     loadCamera = 0;
@@ -107,7 +107,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
     // Return the number of rows in the section.
-    return self.locations.count;
+    return self.albums.count;
 }
 
 
@@ -121,15 +121,15 @@
     UILabel *addressLbel = (UILabel *)[cell viewWithTag:ADDRESS_TAG];
     UILabel *buildingLbel = (UILabel *)[cell viewWithTag:BUILDING_TAG];
     UILabel *landLbel = (UILabel *)[cell viewWithTag:LAND_TAG];
-    CSLocation *l = self.locations[[indexPath row]];
+    CSAlbum *a = self.albums[[indexPath row]];
     CSPhoto *photo;
-    self.photos = [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:l];
+    self.photos = [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:a];
     UIImage *defaultImage = [UIImage imageNamed:@"box.png"];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.clipsToBounds = YES;
     imageView.image = defaultImage;
     if (self.photos.count != 0) {
-        photo = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:l];
+        photo = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId album:a];
         if (photo == nil) {
             photo = [self.photos objectAtIndex:0];
             //l.album.coverImage = photo.remoteID;
@@ -147,24 +147,24 @@
     [format setNumberStyle:NSNumberFormatterCurrencyStyle];
     [format setMaximumFractionDigits:0];
     [format setRoundingMode:NSNumberFormatterRoundHalfUp];
-    NSString *priceString = [format stringFromNumber:l.album.price];
+    NSString *priceString = [format stringFromNumber:a.entry.price];
     [priceLable setText:priceString];
     
-    if (l.album.bed !=nil) {
-        [bdLbel setText:[NSString stringWithFormat:@"%@ Bedroom",l.album.bed]];
+    if (a.entry.bed !=nil) {
+        [bdLbel setText:[NSString stringWithFormat:@"%@ Bedroom",a.entry.bed]];
     }
-    if (l.album.bed !=nil) {
-        [baLbel setText:[NSString stringWithFormat:@"%@ Bathroom",l.album.bath]];
+    if (a.entry.bed !=nil) {
+        [baLbel setText:[NSString stringWithFormat:@"%@ Bathroom",a.entry.bath]];
     }
-    [addressLbel setText:[NSString stringWithFormat:@"%@, %@, %@, %@",l.sublocation,l.city,l.province,l.country]];
+    [addressLbel setText:[NSString stringWithFormat:@"%@, %@, %@, %@",a.entry.location.sublocation,a.entry.location.city,a.entry.location.province,a.entry.location.country]];
   
-    if (l.album.buildingSqft !=nil) {
-        NSString *buildingString = [l formatArea:l.album.buildingSqft];
+    if (a.entry.buildingSqft !=nil) {
+        NSString *buildingString = [a.entry formatArea:a.entry.buildingSqft];
         [buildingLbel setText:[NSString stringWithFormat:@"Floor Size %@ sq.ft.",buildingString]];
     }
     
-    if (l.album.buildingSqft !=nil) {
-        NSString *landString = [l formatArea:l.album.landSqft];
+    if (a.entry.buildingSqft !=nil) {
+        NSString *landString = [a.entry formatArea:a.entry.landSqft];
         [landLbel setText:[NSString stringWithFormat:@"Lot Size %@ sq.ft.",landString]];
     }
     
@@ -173,7 +173,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   
-    self.selectedlocation = self.locations[[indexPath row]];
+    self.selectedAlbum = self.albums[[indexPath row]];
     [self performSegueWithIdentifier:@"individualSegue" sender:self];
     
     // Deselect
@@ -189,11 +189,11 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        NSMutableArray *deletePhoto =  [self.dataWrapper getPhotosWithLocation:self.localDevice.remoteId location:[self.locations objectAtIndex:indexPath.row]];
+        NSMutableArray *deletePhoto =  [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:[self.albums objectAtIndex:indexPath.row]];
         NSLog(@"delete count %lu",(unsigned long)deletePhoto.count);
         [self deletePhotoFromFile:deletePhoto];
-        [self.dataWrapper deleteLocation:[self.locations objectAtIndex:indexPath.row]];
-        [self.locations removeObjectAtIndex:indexPath.row];
+        [self.dataWrapper deleteAlbum:[self.albums objectAtIndex:indexPath.row]];
+        [self.albums removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -232,16 +232,11 @@
       SingleLocationViewController *singleLocContoller = (SingleLocationViewController *)segue.destinationViewController;
       singleLocContoller.dataWrapper = self.dataWrapper;
       singleLocContoller.localDevice = self.localDevice;
-      singleLocContoller.location = self.selectedlocation;
+      singleLocContoller.album = self.selectedAlbum;
       singleLocContoller.coinsorter = self.coinsorter;
       //[singleLocContoller setHidesBottomBarWhenPushed:YES];
 
-      NSString *title;
-      if (self.selectedlocation.unit !=nil) {
-        title = [NSString stringWithFormat:@"%@ - %@",self.selectedlocation.unit, self.selectedlocation.sublocation];
-      } else {
-        title = [NSString stringWithFormat:@"%@", self.selectedlocation.sublocation];
-      }
+      NSString * title = [NSString stringWithFormat:@"%@", self.selectedAlbum.entry.location.sublocation];
       singleLocContoller.title = title;
         
     } else if ([segue.identifier isEqualToString:@"searchSegue"]) {
@@ -268,7 +263,7 @@
         vc.searchResults = self.searchResults;
         vc.localDevice = self.localDevice;
         vc.dataWrapper = self.dataWrapper;
-        vc.selectedlocation = self.selectedlocation;
+        vc.selectedAlbum = self.selectedAlbum;
         vc.coinsorter = self.coinsorter;
         vc.searchController = self.searchController;
         
@@ -284,22 +279,22 @@
     
     if ((address == nil) || [address length] == 0) {
         
-        self.searchResults = [self.locations mutableCopy];
+        self.searchResults = [self.albums mutableCopy];
         return;
     } else {
         [self.searchResults removeAllObjects]; // First clear the filtered array.
         
-        for (CSLocation *locaion in self.locations) {
+        for (CSAlbum *album in self.albums) {
             NSUInteger searchOptions = NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch;
-            NSRange addressRange = NSMakeRange(0, locaion.sublocation.length);
-            NSRange unitRange = NSMakeRange(0, locaion.unit.length);
-            NSRange foundNameRange = [locaion.sublocation rangeOfString:address options:searchOptions range:addressRange];
+            NSRange addressRange = NSMakeRange(0, album.entry.location.sublocation.length);
+            NSRange unitRange = NSMakeRange(0, album.entry.location.unit.length);
+            NSRange foundNameRange = [album.entry.location.sublocation rangeOfString:address options:searchOptions range:addressRange];
             NSRange foundUnitRange = NSRangeFromString(@"");
-            if (![locaion.unit isEqualToString:@""]) {
-                foundUnitRange= [locaion.unit rangeOfString:address options:searchOptions range:unitRange];
+            if (![album.entry.location.unit isEqualToString:@""]) {
+                foundUnitRange= [album.entry.location.unit rangeOfString:address options:searchOptions range:unitRange];
             }
             if ((foundNameRange.length > 0) || (foundUnitRange.length > 0)) {
-                [self.searchResults addObject:locaion];
+                [self.searchResults addObject:album];
             }
         }
     }

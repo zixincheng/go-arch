@@ -36,7 +36,7 @@
     self.netWorkCheck = appDelegate.netWorkCheck;
     self.uploadFunction = [[UploadFunctions alloc]init];
     defaults = [NSUserDefaults standardUserDefaults];
-    self.locations = [self.dataWrapper getLocations];
+    self.albums = [self.dataWrapper getAllAlbums];
     // setup network notification
     [self.netWorkCheck setupNet];
     
@@ -52,7 +52,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     if (filterFlag != 1) {
-        self.locations = [self.dataWrapper getLocations];
+        self.albums = [self.dataWrapper getAllAlbums];
     }
     if (sortFlag != nil) {
         [self sortarrays:sortFlag];
@@ -95,17 +95,17 @@
     switch (index) {
         case 0:
             mainvc = (MainLocationViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"mainLocationViewController"];
-            mainvc.locations = self.locations;
+            mainvc.albums = self.albums;
             vc = mainvc;
             break;
         case 1:
             mapvc = (SearchMapViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"MapView"];
-            mapvc.locations = self.locations;
+            mapvc.albums = self.albums;
             vc = mapvc;
             break;
         case 2:
             largevc = (LargePhotoViewContoller *)[self.storyboard instantiateViewControllerWithIdentifier:@"LargePhotoViewContoller"];
-            largevc.locations = self.locations;
+            largevc.albums = self.albums;
             vc = largevc;
             break;
     }
@@ -187,7 +187,7 @@
                 
                     [self.coinsorter createAlbum:a callback:^(NSString *album_id) {
                         if (album_id !=nil) {
-                            NSMutableArray *unuploadphotos = [self.dataWrapper getPhotosToUploadWithLocation:self.localDevice.remoteId location:a.location];
+                            NSMutableArray *unuploadphotos = [self.dataWrapper getThumbsToUploadWithAlbum:self.localDevice.remoteId album:a];
                             for (CSPhoto *p in unuploadphotos) {
                                 [self.uploadFunction onePhotoThumbToApi:p networkStatus:self.networkStatus];
                             }
@@ -196,7 +196,7 @@
                 }
 
             for (CSAlbum *a in alreadyUploaded) {
-                NSMutableArray *unuploadphotos = [self.dataWrapper getPhotosToUploadWithLocation:self.localDevice.remoteId location:a.location];
+                NSMutableArray *unuploadphotos = [self.dataWrapper getThumbsToUploadWithAlbum:self.localDevice.remoteId album:a];
                 for (CSPhoto *p in unuploadphotos) {
                     [self.uploadFunction onePhotoThumbToApi:p networkStatus:self.networkStatus];
                 }
@@ -213,11 +213,10 @@
     
     CSPhoto *p = [self.dataWrapper getPhoto:[notification.userInfo objectForKey:IMAGE_URL]];
     if (self.canConnect) {
-        if (p.location.album.albumId != nil) {
+        if (p.album.albumId != nil) {
             [self.uploadFunction onePhotoThumbToApi:p networkStatus:self.networkStatus];
         } else {
-            CSAlbum *album = p.location.album;
-            album.location = p.location;
+            CSAlbum *album = p.album;
             [self.coinsorter createAlbum:album callback:^(NSString *album_id) {
                 if (album_id !=nil) {
                     [self.uploadFunction onePhotoThumbToApi:p networkStatus:self.networkStatus];
@@ -277,13 +276,13 @@
 - (IBAction)resetFilter:(id)sender {
     filterFlag = 0;
     sortFlag =nil;
-    self.locations = [self.dataWrapper getLocations];
+    self.albums = [self.dataWrapper getAllAlbums];
     [self getViewController];
 }
 
 -(void) filterInfo:(NSMutableArray *)data {
     filterFlag = 1;
-    self.locations = data;
+    self.albums = data;
     [self getViewController];
     
 
@@ -295,28 +294,28 @@
     NSArray *sortedArray;
     
     if ([sortBase isEqualToString:SORTNAME]) {
-        sortedArray = [self.locations sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            NSString *first = [(CSLocation *)obj1 sublocation];
-            NSString *second = [(CSLocation *)obj2 sublocation];
+        sortedArray = [self.albums sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            NSString *first = [(CSAlbum *)obj1 name];
+            NSString *second = [(CSAlbum *)obj2 name];
             return [first compare:second];
         }];
 
     } else if ([sortBase isEqualToString:SORTPRICEHIGH]){
-        sortedArray = [self.locations sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            CSAlbum *first = [(CSLocation *)obj1 album];
-            CSAlbum *second = [(CSLocation *)obj2 album];
+        sortedArray = [self.albums sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            CSEntry *first = [(CSAlbum *)obj1 entry];
+            CSEntry *second = [(CSAlbum *)obj2 entry];
             return [second.price compare:first.price];
         }];
         
     } else if ([sortBase isEqualToString:SORTPRICELOW]){
-        sortedArray = [self.locations sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            CSAlbum *first = [(CSLocation *)obj1 album];
-            CSAlbum *second = [(CSLocation *)obj2 album];
+        sortedArray = [self.albums sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            CSEntry *first = [(CSAlbum *)obj1 entry];
+            CSEntry *second = [(CSAlbum *)obj2 entry];
             return [first.price compare:second.price];
         }];
     }
     
-    self.locations = [NSMutableArray arrayWithArray:sortedArray];
+    self.albums = [NSMutableArray arrayWithArray:sortedArray];
     [self getViewController];
 
     

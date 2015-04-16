@@ -804,25 +804,25 @@
 
 - (void) createAlbum: (CSAlbum *) album callback: (void (^) (NSString *album_id)) callback {
     CSDevice *localDevice = [self.dataWrapper getDevice:account.cid];
-    NSString* nameTextEscaped = [album.location.sublocation stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString* typeTextEscaped = [album.type stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString* nameTextEscaped = [album.entry.location.sublocation stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString* typeTextEscaped = [album.entry.type stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    NSString *bedquery = [self getKey:@"bed" value:album.bed];
-    NSString *bathquery = [self getKey:@"bath" value:album.bath];
+    NSString *bedquery = [self getKey:@"bed" value:album.entry.bed];
+    NSString *bathquery = [self getKey:@"bath" value:album.entry.bath];
     NSString *namequery = [self getKey:@"name" value:album.name];
     NSString *descriptionquery = [self getKey:@"description" value:album.albumDescritpion];
     //NSString *coverquery = [self getKey:@"alb_cover" value:album.coverImage];
-    NSString *buildingsqftquery = [self getKey:@"buildingsqft" value:[album.buildingSqft stringValue]];
-    NSString *landsqftquery = [self getKey:@"landsqft" value:[album.landSqft stringValue]];
-    NSString *listingquery = [self getKey:@"listing" value:album.listing];
-    NSString *mlsquery = [self getKey:@"mls" value:album.mls];
-    NSString *pricequery = [self getKey:@"price" value:[album.price stringValue]];
-    NSString *tagquery = [self getKey:@"tag" value:album.tag];
+    NSString *buildingsqftquery = [self getKey:@"buildingsqft" value:[album.entry.buildingSqft stringValue]];
+    NSString *landsqftquery = [self getKey:@"landsqft" value:[album.entry.landSqft stringValue]];
+    NSString *listingquery = [self getKey:@"listing" value:album.entry.listing];
+    NSString *mlsquery = [self getKey:@"mls" value:album.entry.mls];
+    NSString *pricequery = [self getKey:@"price" value:[album.entry.price stringValue]];
+    NSString *tagquery = [self getKey:@"tag" value:album.entry.tag];
     NSString *typequery = [self getKey:@"type" value:typeTextEscaped];
-    NSString *yearbuiltquery = [self getKey:@"yearbuilt" value:album.yearBuilt];
+    NSString *yearbuiltquery = [self getKey:@"yearbuilt" value:album.entry.yearBuilt];
     
     
-    NSString *query = [NSString stringWithFormat:@"?%@%@alb_latitude=%@&alb_longitude=%@&alb_altitude=%@&alb_sublocation=%@&alb_city=%@&alb_state=%@&alb_country=%@&%@%@%@%@%@%@%@%@%@%@",namequery,descriptionquery,album.location.latitude,album.location.longitude,@"0",nameTextEscaped,album.location.city,album.location.province,album.location.country,bathquery,bedquery,buildingsqftquery,landsqftquery,listingquery,mlsquery,pricequery,tagquery,typequery,yearbuiltquery];
+    NSString *query = [NSString stringWithFormat:@"?%@%@alb_latitude=%@&alb_longitude=%@&alb_altitude=%@&alb_sublocation=%@&alb_city=%@&alb_state=%@&alb_country=%@&%@%@%@%@%@%@%@%@%@%@",namequery,descriptionquery,album.entry.location.latitude,album.entry.location.longitude,@"0",nameTextEscaped,album.entry.location.city,album.entry.location.province,album.entry.location.country,bathquery,bedquery,buildingsqftquery,landsqftquery,listingquery,mlsquery,pricequery,tagquery,typequery,yearbuiltquery];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
     NSMutableURLRequest *request;
@@ -849,7 +849,7 @@
         NSLog(@"%@",albumId);
         album.albumId = albumId;
         
-        [self.dataWrapper addLocation:album.location album:album];
+        [self.dataWrapper updateAlbum:album];
         
         callback(albumId);
         // TODO: check to see if metadata update worked
@@ -886,29 +886,29 @@
             NSArray *albumArr = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
 
             for (NSDictionary *p in albumArr) {
-                CSLocation *location = [[CSLocation alloc]init];
-                location.latitude = [p objectForKey:@"latitude"];
-                location.longitude = [p objectForKey:@"longitude"];
-                location.altitude = [p objectForKey:@"altitude"];
-                location.sublocation = [p objectForKey:@"sublocation"];
-                location.city = [p objectForKey:@"city"];
-                location.province = [p objectForKey:@"state"];
-                location.country = [p objectForKey:@"country"];
-                location.album.name = [p objectForKey:@"name"];
-                location.album.albumDescritpion = [p objectForKey:@"description"];
-                location.album.coverImage = [p objectForKey:@"cover"];
-                location.album.albumId = [p objectForKey:@"_id"];
-                location.album.bath = [p objectForKey:@"bath"];
-                location.album.bed = [p objectForKey:@"bed"];
-                location.album.buildingSqft = [p objectForKey:@"buildingsqft"];
-                location.album.landSqft = [p objectForKey:@"landsqft"];
-                location.album.mls = [p objectForKey:@"mls"];
-                location.album.price = [p objectForKey:@"price"];
-                location.album.yearBuilt = [p objectForKey:@"yearbuilt"];
+                CSAlbum *album = [[CSAlbum alloc]init];
+                album.entry.location.latitude = [p objectForKey:@"latitude"];
+                album.entry.location.longitude = [p objectForKey:@"longitude"];
+                album.entry.location.altitude = [p objectForKey:@"altitude"];
+                album.entry.location.sublocation = [p objectForKey:@"sublocation"];
+                album.entry.location.city = [p objectForKey:@"city"];
+                album.entry.location.province = [p objectForKey:@"state"];
+                album.entry.location.country = [p objectForKey:@"country"];
+                album.name = [p objectForKey:@"name"];
+                album.albumDescritpion = [p objectForKey:@"description"];
+                album.coverImage = [p objectForKey:@"cover"];
+                album.albumId = [p objectForKey:@"_id"];
+                album.entry.bath = [p objectForKey:@"bath"];
+                album.entry.bed = [p objectForKey:@"bed"];
+                album.entry.buildingSqft = [p objectForKey:@"buildingsqft"];
+                album.entry.landSqft = [p objectForKey:@"landsqft"];
+                album.entry.mls = [p objectForKey:@"mls"];
+                album.entry.price = [p objectForKey:@"price"];
+                album.entry.yearBuilt = [p objectForKey:@"yearbuilt"];
                 
                 
                 
-                [self.dataWrapper addLocation:location album:location.album];
+                [self.dataWrapper updateAlbum:album];
             }
         }
     }];

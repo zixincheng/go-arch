@@ -28,13 +28,13 @@
 - (void) addUpdateLog:(ActivityHistory *)log;
 - (NSMutableArray *) getAllPhotos;
 - (NSMutableArray *) getAllDevices;
-- (NSMutableArray *) getPhotosWithLocation: (NSString *) deviceId location:(CSLocation *)location;
-- (CSPhoto *)getCoverPhoto: (NSString *) deviceId location:(CSLocation *)location;
+- (NSMutableArray *) getPhotosWithAlbum: (NSString *) deviceId album:(CSAlbum *)album;
+- (CSPhoto *)getCoverPhoto: (NSString *) deviceId album:(CSAlbum *)album;
 - (NSMutableArray *) getPhotos: (NSString *) deviceId;
 - (NSMutableArray *) getPhotosToUpload;
 - (NSMutableArray *) getFullSizePhotosToUpload;
 - (NSMutableArray *) getLogs;
-- (NSMutableArray *) getLocations;
+- (NSMutableArray *) getAllAlbums;
 - (int) getCountUnUploaded;
 - (int) getCountUploaded:(NSString *) deviceId;
 - (int) getFullImageCountUnUploaded;
@@ -43,14 +43,14 @@
 - (NSString *) getLatestId;
 - (NSString *) getCurrentPhotoOnServerVaule: (NSString *) deviceId CurrentIndex:(int)index;
 - (void) deletePhotos:(CSPhoto *) photo;
-- (void) updateLocation:(CSLocation *)location album:(CSAlbum *)album;
-- (void) addLocation:(CSLocation *)location album :(CSAlbum *)album;
-- (void) deleteLocation:(CSLocation *) location;
+- (void) updateAlbum:(CSAlbum *)album;
+- (void) addAlbum:(CSAlbum *)album;
+- (void) deleteAlbum:(CSAlbum *) album;
 - (NSMutableArray *) searchLocation: (NSString *) location;
 -(void) updatePhotoTag: (NSString *) tag photoId: (NSString *) photoid photo: (CSPhoto *) photo;
 - (CSPhoto *)getPhoto: (NSString *) imageURL;
 -(NSMutableArray *)filterLocations: (NSMutableDictionary *)filterInfo;
 - (NSMutableArray *) getAlbumsToUpload;
-- (NSMutableArray *)getPhotosToUploadWithLocation: (NSString *) deviceId location:(CSLocation *)location;
+- (NSMutableArray *)getThumbsToUploadWithAlbum: (NSString *) deviceId album:(CSAlbum *)album;
 - (NSMutableArray *) getAlbumsAlreadyUploaded;
 @end

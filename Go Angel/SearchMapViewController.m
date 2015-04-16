@@ -58,14 +58,14 @@
     //self.locations = [self.dataWrapper getLocations];
     self.points = [[NSMutableArray alloc]init];
     
-    for (CSLocation *l in self.locations) {
-        float latitude = [l.latitude floatValue];
-        float longitude = [l.longitude floatValue];
+    for (CSAlbum *a in self.albums) {
+        float latitude = [a.entry.location.latitude floatValue];
+        float longitude = [a.entry.location.longitude floatValue];
         MKPointAnnotation *point = [[MKPointAnnotation alloc]init];
         point.coordinate =CLLocationCoordinate2DMake(latitude, longitude);
-        point.title = l.sublocation;
-        if (![l.unit isEqualToString:@""]) {
-            point.subtitle = [NSString stringWithFormat:@"Unit %@",l.unit];
+        point.title = a.entry.location.sublocation;
+        if (![a.entry.location.unit isEqualToString:@""]) {
+            point.subtitle = [NSString stringWithFormat:@"Unit %@",a.entry.location.unit];
         }
         [self.points addObject:point];
     }
@@ -131,7 +131,8 @@
     if ([view.annotation isKindOfClass:[MKPointAnnotation class]]) {
         MKPointAnnotation *point  = view.annotation;
         NSInteger index = [self.pins indexOfObject:point];
-        self.selectedLocation = [self.locations objectAtIndex:index];
+        self.selectedAlbum = [self.albums objectAtIndex:index];
+        self.selectedLocation = self.selectedAlbum.entry.location;
         self.callOutAnnotation = [[MyAnnotation alloc]initWithCoordinate:view.annotation.coordinate];
         [self.mapView addAnnotation:self.callOutAnnotation];
         [self.mapView setCenterCoordinate:self.callOutAnnotation.coordinate animated:YES];
@@ -181,22 +182,26 @@
         annotationView = [[MyAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"CalloutView" delegate:self];
         
         CalloutViewCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"CalloutViewCell" owner:self options:nil] objectAtIndex:0];
-        cell.priceLabel.text = [self.selectedLocation formatPrice:self.selectedLocation.album.price];
+        cell.priceLabel.text = [self.selectedAlbum.entry formatPrice:self.selectedAlbum.entry.price];
         cell.addressLabel.text = [NSString stringWithFormat:@"%@, %@, %@, %@", self.selectedLocation.sublocation,self.selectedLocation.city,self.selectedLocation.province,self.selectedLocation.countryCode];
-        if (self.selectedLocation.album.bed != nil) {
-                    cell.bedLabel.text = [NSString stringWithFormat:@"%@ BD",self.selectedLocation.album.bed];
+        if (self.selectedAlbum.entry.bed != nil) {
+                    cell.bedLabel.text = [NSString stringWithFormat:@"%@ BD",self.self.selectedAlbum.entry.bed];
         }
-        if (self.selectedLocation.album.bath != nil) {
-            cell.bathLabel.text = [NSString stringWithFormat:@"%@ BD",self.selectedLocation.album.bath];
+        if (self.selectedAlbum.entry.bath != nil) {
+            cell.bathLabel.text = [NSString stringWithFormat:@"%@ BD",self.self.selectedAlbum.entry.bath];
         }
-        if (self.selectedLocation.album.buildingSqft != nil) {
-            cell.buildingSQFT.text = [NSString stringWithFormat:@"%@ sq. ft.", self.selectedLocation.album.buildingSqft.stringValue];
+        if (self.selectedAlbum.entry.buildingSqft != nil) {
+            cell.buildingSQFT.text = [NSString stringWithFormat:@"%@ sq. ft.", self.self.selectedAlbum.entry.buildingSqft.stringValue];
         }
-        if (self.selectedLocation.album.landSqft != nil) {
-            cell.landSQFT.text = [NSString stringWithFormat:@"%@ sq. ft.", self.selectedLocation.album.landSqft.stringValue];
+        if (self.selectedAlbum.entry.landSqft != nil) {
+            cell.landSQFT.text = [NSString stringWithFormat:@"%@ sq. ft.", self.self.selectedAlbum.entry.landSqft.stringValue];
         }
-        CSPhoto *p = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId location:self.selectedLocation];
-        if (p !=nil) {
+        NSMutableArray *photoarray = [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:self.selectedAlbum];
+        if (photoarray.count != 0) {
+            CSPhoto *p = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId album:self.selectedAlbum];
+            if (p == nil) {
+                p = [photoarray objectAtIndex:0];
+            }
             AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
             [appDelegate.mediaLoader loadThumbnail:p completionHandler:^(UIImage *image) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -205,7 +210,7 @@
                     [cell.coverImage addSubview:imgView];
                 });
             }];
-            
+
         }
         
         [annotationView.contentView addSubview:cell];
@@ -239,8 +244,8 @@
 
     MKPointAnnotation *point  = view.annotation;
     NSUInteger index = [self.pins indexOfObject:point];
-    self.selectedLocation = [self.locations objectAtIndex:index];
-    
+    self.selectedAlbum = [self.albums objectAtIndex:index];
+    self.selectedLocation = self.selectedAlbum.entry.location;
     [self performSegueWithIdentifier:@"locationSegue" sender:self];
 }
 
@@ -276,7 +281,7 @@
       SingleLocationViewController *singleLocContoller = (SingleLocationViewController *)segue.destinationViewController;
       singleLocContoller.dataWrapper = self.dataWrapper;
       singleLocContoller.localDevice = self.localDevice;
-      singleLocContoller.location = self.selectedLocation;
+      singleLocContoller.album = self.selectedAlbum;
       singleLocContoller.coinsorter = [[Coinsorter alloc] initWithWrapper:self.dataWrapper];
       //[singleLocContoller setHidesBottomBarWhenPushed:YES];
       

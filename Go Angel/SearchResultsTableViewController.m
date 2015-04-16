@@ -50,11 +50,11 @@
         cell.textLabel.text = @"Add Location ...";
     } else {
     
-    CSLocation *location = [self.searchResults objectAtIndex:indexPath.row];
+    CSAlbum *album = [self.searchResults objectAtIndex:indexPath.row];
     
 
-    cell.textLabel.text = location.sublocation;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@",location.city,location.province];
+    cell.textLabel.text = album.entry.location.sublocation;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@", album.entry.location.city, album.entry.location.province];
             // Configure the cell...
 
 
@@ -71,15 +71,15 @@
         [self.presentingViewController.navigationController pushViewController:vc animated:YES];
 
     } else {
-        self.selectedlocation = [self.searchResults objectAtIndex:indexPath.row];
+        self.selectedAlbum = [self.searchResults objectAtIndex:indexPath.row];
         SingleLocationViewController *singleLocContoller = [[self storyboard] instantiateViewControllerWithIdentifier:@"SingleLocationViewController"];
         singleLocContoller.dataWrapper = self.dataWrapper;
         singleLocContoller.localDevice = self.localDevice;
-        singleLocContoller.location = self.selectedlocation;
+        singleLocContoller.album = self.selectedAlbum;
         singleLocContoller.coinsorter = self.coinsorter;
         NSString *title;
 
-        title = [NSString stringWithFormat:@"%@", self.selectedlocation.sublocation];
+        title = [NSString stringWithFormat:@"%@", self.selectedAlbum.entry.location.sublocation];
 
         singleLocContoller.navigationItem.title = title;
         [self.searchController.searchBar resignFirstResponder];
