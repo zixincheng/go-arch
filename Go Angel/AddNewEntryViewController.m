@@ -488,6 +488,8 @@ CGFloat animatedDistance;
     self.statusLabel.text = self.entry.listing;
     self.bedLabel.text = self.entry.bed;
     self.bathLabel.text = self.entry.bath;
+    self.nameTextField.text = self.album.name;
+    self.descriptionTextField.text = self.album.albumDescritpion;
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
