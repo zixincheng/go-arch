@@ -180,7 +180,7 @@
         [self enableEditing];
     } else {
         [appDelegate.dataWrapper updateAlbum:self.album];
-        
+        [self.coinsorter updateAlbum:self.album];
         NSLog(@"updated location");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"LocationMetadataUpdate" object:nil];
     }

@@ -889,11 +889,36 @@
     
     [context performBlockAndWait:^{
         NSURL *url = [NSURL URLWithString:album.objectId];
-        NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:url];
-        NSManagedObject *albumObj = [context objectWithID:objectID];
+        NSManagedObject *albumObj;
+
+        if (album.albumId == nil) {
+            NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:url];
+            albumObj = [context objectWithID:objectID];
+        } else {
+            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ALBUM];
+            
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)",ALBUMID,album.albumId];
+            [request setPredicate:pred];
+            
+            
+            NSArray *result = [context executeFetchRequest:request error:nil];
+            
+            if (result.count == 0) {
+                NSURL *url = [NSURL URLWithString:album.objectId];
+                if (url !=nil) {
+                    NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:url];
+                    albumObj = [context objectWithID:objectID];
+                } else{
+                    return;
+                }
+
+            } else {
+            albumObj = [result objectAtIndex:0];
+            }
+        }
         if (albumObj == nil) {
             NSLog(@"error with core data request");
-            abort();
+            return;
         }
         
         [albumObj setValue:album.name forKey:NAME];

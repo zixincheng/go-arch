@@ -59,5 +59,5 @@
 
 - (void) createAlbum: (CSAlbum *) album callback: (void (^) (NSString *album_id)) callback;
 -(void) getAlbumInfo;
-
+- (void) updateAlbum: (CSAlbum *) album;
 @end

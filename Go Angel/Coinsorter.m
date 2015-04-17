@@ -337,15 +337,25 @@
 // update the device information on server
 - (void) updateMeta: (CSPhoto *) photo entity:(NSString *)entity value:(NSString *)value  {
     NSString* TextEscaped = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *query = [NSString stringWithFormat:@"?photo_id=%@&entity=%@&value=%@",photo.remoteID,entity,TextEscaped];
+
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
     NSMutableURLRequest *request;
-    if ([photo.isVideo isEqualToString:@"1"]) {
-        request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/update/videos/metadata/%@",query]];
-    } else{
-        request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/update/photos/metadata/%@",query]];
-    }
+
+    request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/update/photos/metadata"]];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSDictionary *updateContent = [[NSDictionary alloc] initWithObjectsAndKeys: photo.remoteID, @"photo_id", entity, @"entity", TextEscaped, @"value",nil];
+    
+    NSArray *updatearray = [NSArray arrayWithObject:updateContent];
+    
+    NSDictionary *updateDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:updatearray,@"updates",nil];
+    NSLog(@"%@",updateDictionary);
+    NSError *error;
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:updateDictionary options:0 error:&error];
+    [request setHTTPBody:postData];
+    
     NSArray *objects =
     [NSArray arrayWithObjects:photo.deviceId, account.token, nil];
     
@@ -859,6 +869,87 @@
     [postDataTask resume];
 }
 
+-(NSDictionary *) createUpdateArray:(NSString *)object key:(NSString *)key album: (CSAlbum *)album{
+    
+    NSDictionary *content = [[NSDictionary alloc] initWithObjectsAndKeys:album.albumId,@"photo_id",key,@"entity",object,@"value", nil];
+    
+    return content;
+}
+
+- (void) updateAlbum: (CSAlbum *) album{
+    
+    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
+    NSMutableURLRequest *request;
+    
+    request = [self getHTTPPostRequest:[NSString stringWithFormat:@"/update/albums/metadata"]];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    
+    
+   // NSString* typeTextEscaped = [album.entry.type stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+    NSMutableArray *updatearray =[[NSMutableArray alloc] init];
+    [updatearray addObject:[self createUpdateArray:album.entry.bed key:@"bed" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.bath key:@"bath" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.name key:@"name" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.coverImage key:@"cover" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.albumDescritpion key:@"description" album:album]];
+    [updatearray addObject:[self createUpdateArray:[album.entry.buildingSqft stringValue] key:@"buildingsqft" album:album]];
+    [updatearray addObject:[self createUpdateArray:[album.entry.landSqft stringValue] key:@"landSqft" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.listing key:@"listing" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.mls key:@"mls" album:album]];
+    [updatearray addObject:[self createUpdateArray:[album.entry.price stringValue] key:@"price" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.tag key:@"tag" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.type key:@"type" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.yearBuilt key:@"yearbuilt" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.location.city key:@"city" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.location.sublocation key:@"sublocation" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.location.province key:@"state" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.location.countryCode key:@"countryCode" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.location.country key:@"country" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.location.longitude key:@"longitude" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.location.latitude key:@"latitude" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.location.altitude key:@"altitude" album:album]];
+    [updatearray addObject:[self createUpdateArray:album.entry.location.longitude key:@"longitude" album:album]];
+    NSDictionary *updateDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:updatearray,@"updates",nil];
+    
+    NSLog(@"%@",updateDictionary);
+    NSError *error;
+    
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:updateDictionary options:0 error:&error];
+    [request setHTTPBody:postData];
+    
+    NSArray *objects =
+    [NSArray arrayWithObjects:account.cid, account.token, nil];
+    
+    // set headers
+    NSArray *keys = [NSArray
+                     arrayWithObjects:@"cid",@"token", nil];
+    NSDictionary *headers =
+    [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    [request setAllHTTPHeaderFields:headers];
+    
+    NSURLSessionDataTask *postDataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSError *jsonError;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        NSLog(@"update album stat %@",jsonData);
+        
+        //NSString * albumId = [[jsonData valueForKey:@"album_id"] stringValue];
+        //NSLog(@"%@",albumId);
+        //album.albumId = albumId;
+        
+        //[self.dataWrapper updateAlbum:album];
+        
+        // TODO: check to see if metadata update worked
+        // by reading json response
+    }];
+    
+    [postDataTask resume];
+}
+
+
 -(void) getAlbumInfo {
     
     NSOperationQueue *background = [[NSOperationQueue alloc] init];
@@ -879,14 +970,19 @@
     NSDictionary *headers =
     [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [request setAllHTTPHeaderFields:headers];
-    
+    [self.dataWrapper getAllAlbums];
     NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error == nil) {
             NSError *jsonError;
             NSArray *albumArr = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-
             for (NSDictionary *p in albumArr) {
+                NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+                f.numberStyle = NSNumberFormatterDecimalStyle;
                 CSAlbum *album = [[CSAlbum alloc]init];
+                CSEntry *entry = [[CSEntry alloc]init];
+                CSLocation *location = [[CSLocation alloc]init];
+                album.entry = entry;
+                entry.location = location;
                 album.entry.location.latitude = [p objectForKey:@"latitude"];
                 album.entry.location.longitude = [p objectForKey:@"longitude"];
                 album.entry.location.altitude = [p objectForKey:@"altitude"];
@@ -900,14 +996,16 @@
                 album.albumId = [p objectForKey:@"_id"];
                 album.entry.bath = [p objectForKey:@"bath"];
                 album.entry.bed = [p objectForKey:@"bed"];
-                album.entry.buildingSqft = [p objectForKey:@"buildingsqft"];
-                album.entry.landSqft = [p objectForKey:@"landsqft"];
+                album.entry.buildingSqft = [f numberFromString:[p objectForKey:@"buildingsqft"]];
+                album.entry.landSqft = [f numberFromString:[p objectForKey:@"landsqft"]];
                 album.entry.mls = [p objectForKey:@"mls"];
-                album.entry.price = [p objectForKey:@"price"];
+                album.entry.price = [f numberFromString:[p objectForKey:@"price"]];
                 album.entry.yearBuilt = [p objectForKey:@"yearbuilt"];
-                
-                
-                
+                album.entry.location.longitude = [p objectForKey:@"longitude"];
+                album.entry.location.latitude = [p objectForKey:@"latitude"];
+                album.entry.location.altitude = [p objectForKey:@"altitude"];
+                album.entry.location.countryCode = [p objectForKey:@"countryCode"];
+
                 [self.dataWrapper updateAlbum:album];
             }
         }
