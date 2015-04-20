@@ -1,4 +1,3 @@
-
 //  CoreDataWrapper.m
 //  Go Arch
 //
@@ -968,6 +967,26 @@
     }];
     
     return arr;
+}
+
+- (CSAlbum *) getSingleAlbum:(CSAlbum *)album{
+    __block CSAlbum *returnAlbum = [[CSAlbum alloc]init];
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    [context performBlock: ^{
+        NSURL *url = [NSURL URLWithString:album.objectId];
+        NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:url];
+        NSManagedObject *albumObj = [context objectWithID:objectID];
+        
+        if (albumObj == nil) {
+            NSLog(@"error with core data request");
+            abort();
+        } else {
+            returnAlbum = [self getAlbumFromObject:albumObj];
+        }
+        [context save:nil];
+    }];
+    
+    return returnAlbum;
 }
 
 - (CSAlbum *) getAlbumFromObject: (NSManagedObject *) object {

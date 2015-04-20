@@ -90,7 +90,7 @@
     MainLocationViewController *mainvc;
     SearchMapViewController *mapvc;
     LargePhotoViewContoller *largevc;
-    [self.coinsorter getAlbumInfo];
+    [self.coinsorter getAlbumInfo:@"0"];
     self.albums = [self.dataWrapper getAllAlbums];
 
     switch (index) {

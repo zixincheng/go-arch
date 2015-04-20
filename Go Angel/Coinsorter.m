@@ -950,15 +950,15 @@
 }
 
 
--(void) getAlbumInfo {
+-(void) getAlbumInfo:(NSString *) album_id{
     
     NSOperationQueue *background = [[NSOperationQueue alloc] init];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:background];
     NSMutableURLRequest *request;
     
-    //NSString *query = [NSString stringWithFormat:@"?photo_id=0"];
-    request = [self getHTTPGetRequest:@"/albums"];
+    NSString *query = [NSString stringWithFormat:@"?album_id=%@",album_id];
+    request = [self getHTTPGetRequest:[NSString stringWithFormat:@"/albums/%@",query]];
     
     
     NSArray *objects =
@@ -970,7 +970,6 @@
     NSDictionary *headers =
     [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [request setAllHTTPHeaderFields:headers];
-    [self.dataWrapper getAllAlbums];
     NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error == nil) {
             NSError *jsonError;

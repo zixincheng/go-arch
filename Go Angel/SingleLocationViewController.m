@@ -26,7 +26,10 @@
   
   // init vars
   
-
+    if (self.album.albumId !=nil) {
+        [self.coinsorter getAlbumInfo:self.album.albumId];
+        self.album = [self.dataWrapper getSingleAlbum:self.album];
+    }
   localLibrary = [[LocalLibrary alloc] init];
   self.saveFunction = [[SaveToDocument alloc]init];
   defaults = [NSUserDefaults standardUserDefaults];
