@@ -25,7 +25,19 @@
 - (void) viewDidLoad {
   
   // init vars
-  
+    self.scrollView.contentSize =  CGSizeMake(320, 1500);
+    /*
+    OverviewViewController *overViewController = (OverviewViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"single_location_overview"];
+    UIView *overviewcontainer = [[UIView alloc]initWithFrame:CGRectMake(0, 500, 320, 500)];
+    overviewcontainer = overViewController.view;
+    overviewcontainer.backgroundColor = [UIColor greenColor];
+    [self.scrollView addSubview:overviewcontainer];
+    
+    DetailsViewController *detailviewController = (DetailsViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"single_location_details"];
+    UIView *detailviewcontainer = [[UIView alloc]initWithFrame:CGRectMake(0, 500, 320, 500)];
+    //detailviewcontainer = detailviewController.view;
+    //[self.scrollView addSubview:detailviewcontainer];
+*/
     if (self.album.albumId !=nil) {
         [self.coinsorter getAlbumInfo:self.album.albumId];
         self.album = [self.dataWrapper getSingleAlbum:self.album];

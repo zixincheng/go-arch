@@ -229,6 +229,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"individualSegue"]) {
+        /*
       SingleLocationViewController *singleLocContoller = (SingleLocationViewController *)segue.destinationViewController;
       singleLocContoller.dataWrapper = self.dataWrapper;
       singleLocContoller.localDevice = self.localDevice;
@@ -238,7 +239,17 @@
 
       NSString * title = [NSString stringWithFormat:@"%@", self.selectedAlbum.entry.location.sublocation];
       singleLocContoller.title = title;
+        */
+        SingleViewViewController *singleviewContoller = (SingleViewViewController *)segue.destinationViewController;
+        singleviewContoller.dataWrapper = self.dataWrapper;
+        singleviewContoller.localDevice = self.localDevice;
+        singleviewContoller.album = self.selectedAlbum;
+        singleviewContoller.coinsorter = self.coinsorter;
+        //[singleLocContoller setHidesBottomBarWhenPushed:YES];
         
+        NSString * title = [NSString stringWithFormat:@"%@", self.selectedAlbum.entry.location.sublocation];
+        singleviewContoller.title = title;
+
     } else if ([segue.identifier isEqualToString:@"searchSegue"]) {
         
         SearchMapViewController *searchVC = (SearchMapViewController *)segue.destinationViewController;

@@ -18,6 +18,7 @@
 #import "SingleLocationViewController.h"
 #import "SearchMapViewController.h"
 #import "SearchResultsTableViewController.h"
+#import "SingleViewViewController.h"
 
 @interface MainLocationViewController : UIViewController <UITableViewDelegate,UITableViewDataSource, UIAlertViewDelegate,UISearchResultsUpdating, UISearchBarDelegate,GCDAsyncUdpSocketDelegate> {
     AccountDataWrapper *account;

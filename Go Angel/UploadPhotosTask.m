@@ -728,10 +728,15 @@ enum { WDASSETURL_PENDINGREADS = 1, WDASSETURL_ALLFINISHED = 0 };
                 sublocation = [NSString stringWithFormat:@"Unit %@ - %@", unit, name];
             }
             //if (tagLocation) {
+            /*
             keys = [NSArray
                     arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"countryCode", @"country", @"sublocation",@"album_id",nil];
             objects = [NSArray arrayWithObjects:photo.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, countryCode, country, sublocation,albumId, nil];
             
+            */
+            keys = [NSArray
+                    arrayWithObjects:@"cid",@"token", @"filename", @"file-type", @"longitude", @"latitude", @"city", @"state", @"country", @"sublocation",@"album_id",nil];
+            objects = [NSArray arrayWithObjects:photo.deviceId, appDelegate.account.token, uniqueString, @"movie/mov", longitude,latitude, city, state, country, sublocation,albumId, nil];
             NSDictionary *headers =
             [NSDictionary dictionaryWithObjects:objects forKeys:keys];
             

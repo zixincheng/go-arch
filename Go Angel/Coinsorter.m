@@ -815,7 +815,8 @@
 - (void) createAlbum: (CSAlbum *) album callback: (void (^) (NSString *album_id)) callback {
     CSDevice *localDevice = [self.dataWrapper getDevice:account.cid];
     NSString* nameTextEscaped = [album.entry.location.sublocation stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString* typeTextEscaped = [album.entry.type stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString* listTextEscaped = [album.entry.listing stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString* countryTextEscaped = [album.entry.location.country stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     NSString *bedquery = [self getKey:@"bed" value:album.entry.bed];
     NSString *bathquery = [self getKey:@"bath" value:album.entry.bath];
@@ -824,15 +825,15 @@
     //NSString *coverquery = [self getKey:@"alb_cover" value:album.coverImage];
     NSString *buildingsqftquery = [self getKey:@"buildingsqft" value:[album.entry.buildingSqft stringValue]];
     NSString *landsqftquery = [self getKey:@"landsqft" value:[album.entry.landSqft stringValue]];
-    NSString *listingquery = [self getKey:@"listing" value:album.entry.listing];
+    NSString *listingquery = [self getKey:@"listing" value:listTextEscaped];
     NSString *mlsquery = [self getKey:@"mls" value:album.entry.mls];
     NSString *pricequery = [self getKey:@"price" value:[album.entry.price stringValue]];
     NSString *tagquery = [self getKey:@"tag" value:album.entry.tag];
-    NSString *typequery = [self getKey:@"type" value:typeTextEscaped];
+    NSString *typequery = [self getKey:@"type" value:album.entry.type];
     NSString *yearbuiltquery = [self getKey:@"yearbuilt" value:album.entry.yearBuilt];
     
     
-    NSString *query = [NSString stringWithFormat:@"?%@%@alb_latitude=%@&alb_longitude=%@&alb_altitude=%@&alb_sublocation=%@&alb_city=%@&alb_state=%@&alb_country=%@&%@%@%@%@%@%@%@%@%@%@",namequery,descriptionquery,album.entry.location.latitude,album.entry.location.longitude,@"0",nameTextEscaped,album.entry.location.city,album.entry.location.province,album.entry.location.country,bathquery,bedquery,buildingsqftquery,landsqftquery,listingquery,mlsquery,pricequery,tagquery,typequery,yearbuiltquery];
+    NSString *query = [NSString stringWithFormat:@"?%@%@alb_latitude=%@&alb_longitude=%@&alb_altitude=%@&alb_sublocation=%@&alb_city=%@&alb_state=%@&alb_country=%@&%@%@%@%@%@%@%@%@%@%@",namequery,descriptionquery,album.entry.location.latitude,album.entry.location.longitude,@"0",nameTextEscaped,album.entry.location.city,album.entry.location.province,countryTextEscaped,bathquery,bedquery,buildingsqftquery,landsqftquery,listingquery,mlsquery,pricequery,tagquery,typequery,yearbuiltquery];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:self delegateQueue:nil];
     NSMutableURLRequest *request;
@@ -870,7 +871,9 @@
 }
 
 -(NSDictionary *) createUpdateArray:(NSString *)object key:(NSString *)key album: (CSAlbum *)album{
-    
+    if (!object) {
+        object = @"";
+    }
     NSDictionary *content = [[NSDictionary alloc] initWithObjectsAndKeys:album.albumId,@"photo_id",key,@"entity",object,@"value", nil];
     
     return content;

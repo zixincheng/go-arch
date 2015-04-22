@@ -57,7 +57,7 @@
         <attribute name="thumbnailName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbOnServer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbURL" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="album" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Album" inverseName="photo" inverseEntity="Album" syncable="YES"/>
+        <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="photo" inverseEntity="Album" syncable="YES"/>
     </entity>
     <elements>
         <element name="Album" positionX="-144" positionY="-151" width="128" height="133"/>

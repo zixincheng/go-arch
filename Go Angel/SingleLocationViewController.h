@@ -43,9 +43,10 @@
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 @property (nonatomic, strong) SingleLocationPageViewController *pageController;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (nonatomic, strong) UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightButton;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 // camera vars
 @property (nonatomic) UIImagePickerController *picker;

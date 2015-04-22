@@ -120,6 +120,7 @@
 		9BCDE8B61A8035110017FD7A /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCDE8B51A8035110017FD7A /* video.png */; };
 		9BCDE8BC1A803C940017FD7A /* videoFinish.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCDE8BB1A803C940017FD7A /* videoFinish.png */; };
 		9BD61A7D1AB2665200A11833 /* pin-map-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BD61A7C1AB2665200A11833 /* pin-map-7.png */; };
+		9BD7E36C1AE5A02F00FC7C15 /* SingleViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BD7E36B1AE5A02F00FC7C15 /* SingleViewViewController.m */; };
 		9BDDBAF51A70827900697C25 /* CSLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDDBAF41A70827900697C25 /* CSLocation.m */; };
 		9BE03EC21A9FD722007ADCDC /* roll.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BE03EC01A9FD722007ADCDC /* roll.png */; };
 		9BE03EC31A9FD722007ADCDC /* roll@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BE03EC11A9FD722007ADCDC /* roll@2x.png */; };
@@ -382,6 +383,8 @@
 		9BCDE8B51A8035110017FD7A /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		9BCDE8BB1A803C940017FD7A /* videoFinish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoFinish.png; sourceTree = "<group>"; };
 		9BD61A7C1AB2665200A11833 /* pin-map-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin-map-7.png"; sourceTree = "<group>"; };
+		9BD7E36A1AE5A02F00FC7C15 /* SingleViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleViewViewController.h; sourceTree = "<group>"; };
+		9BD7E36B1AE5A02F00FC7C15 /* SingleViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleViewViewController.m; sourceTree = "<group>"; };
 		9BDDBAF31A70827900697C25 /* CSLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSLocation.h; sourceTree = "<group>"; };
 		9BDDBAF41A70827900697C25 /* CSLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSLocation.m; sourceTree = "<group>"; };
 		9BE03EC01A9FD722007ADCDC /* roll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roll.png; sourceTree = "<group>"; };
@@ -566,6 +569,8 @@
 				2040D2231A6058EA00E490F3 /* LocationTableViewController.h */,
 				2040D2241A6058EA00E490F3 /* LocationTableViewController.m */,
 				9BC3C6EA1AC1E4B20042E2D5 /* Main.storyboard */,
+				9BD7E36A1AE5A02F00FC7C15 /* SingleViewViewController.h */,
+				9BD7E36B1AE5A02F00FC7C15 /* SingleViewViewController.m */,
 				9BC10B0A1ACA0FF80019C6BA /* FilterTableViewController.h */,
 				9BC10B0B1ACA0FF80019C6BA /* FilterTableViewController.m */,
 				9BC10B071ACA0A680019C6BA /* FilterStepper.h */,
@@ -1020,6 +1025,7 @@
 				9B4ADCB61A7C168500375C01 /* SearchResultsTableViewController.m in Sources */,
 				2061D1D7199193CE001C7E08 /* Coinsorter.m in Sources */,
 				9BC5E6C41AB21FFA00FE3F42 /* SWTableViewCell.m in Sources */,
+				9BD7E36C1AE5A02F00FC7C15 /* SingleViewViewController.m in Sources */,
 				9BC3C6F91AC211300042E2D5 /* UploadFunctions.m in Sources */,
 				2093C9A91ABB3A4900F16948 /* OverviewViewController.m in Sources */,
 				9BFDAAAD1AAA72CD00C4E170 /* ELCAlbumPickerController.m in Sources */,
