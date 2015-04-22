@@ -316,6 +316,8 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
                                                        .longitude];
                            self.location.latitude = [NSString stringWithFormat:@"%f", location.coordinate
                                                       .latitude];
+                           
+                           self.location.altitude = [NSString stringWithFormat:@"%f",location.altitude];
                           // self.location.unit = self.txtUnit.text;
                            
                            //[self.streetName setText:self.location.name];
@@ -325,7 +327,7 @@ didDismissWithButtonIndex:(NSInteger)buttonIndex {
                            self.point.coordinate = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude);
                            self.point.title = self.location.sublocation;
                            [self.mapView addAnnotation:self.point];
-                           NSLog(@"post %@",self.location.postCode);
+                           NSLog(@"altitude %@",self.location.altitude  );
                        }
                    }];
 }

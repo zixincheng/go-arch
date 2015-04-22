@@ -379,6 +379,7 @@ CGFloat animatedDistance;
     self.location.postCode = newlocation.postCode;
     self.location.countryCode = newlocation.countryCode;
     self.location.country = newlocation.country;
+    self.location.altitude = newlocation.altitude;
     
     [self fillLocationData];
 }
