@@ -1008,8 +1008,12 @@
                 album.entry.location.latitude = [p objectForKey:@"latitude"];
                 album.entry.location.altitude = [p objectForKey:@"altitude"];
                 album.entry.location.countryCode = [p objectForKey:@"countryCode"];
-
-                [self.dataWrapper updateAlbum:album];
+                NSString *currentVersion = [p objectForKey:@"version"];
+                
+                if (currentVersion >= album.version) {
+                    album.version = currentVersion;
+                    [self.dataWrapper updateAlbum:album];
+                }
             }
         }
     }];

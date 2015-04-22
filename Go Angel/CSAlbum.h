@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *albumId;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *coverImage;
+@property (nonatomic, strong) NSString *version;
 @property (nonatomic, strong) CSEntry *entry;
 // the nsmanagedobject id
 @property (nonatomic, strong) NSString *objectId;

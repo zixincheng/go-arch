@@ -814,6 +814,7 @@
         [albumObj setValue:album.albumDescritpion forKey:DESCRIPTION];
         [albumObj setValue:album.albumId forKey:ALBUMID];
         [albumObj setValue:album.coverImage forKey:COVERIMAGE];
+        [albumObj setValue:album.version forKey:@"version"];
         
         // store nsmanagedobject uri into location
         //album.objectId = [[[albumObj objectID] URIRepresentation] absoluteString];
@@ -923,7 +924,8 @@
         [albumObj setValue:album.albumDescritpion forKey:DESCRIPTION];
         [albumObj setValue:album.albumId forKey:ALBUMID];
         [albumObj setValue:album.coverImage forKey:COVERIMAGE];
-         
+        [albumObj setValue:album.version forKey:@"version"];
+    
          NSManagedObject *entryObj = [albumObj valueForKey:ENTRY];
         
         entryObj = [self setEntryObject:album entryObj:entryObj];
@@ -991,6 +993,7 @@
     album.albumId = [object valueForKey:ALBUMID];
     album.name = [object valueForKey:NAME];
     album.coverImage = [object valueForKey:COVERIMAGE];
+    album.version = [object valueForKey:@"version"];
     album.objectId = [[[object objectID] URIRepresentation] absoluteString];
     NSManagedObject *entryObjcet = [object valueForKey:@"entry"];
     album.entry =  [self getEntryFromObject:entryObjcet];
@@ -1030,6 +1033,7 @@
     location.sublocation = [object valueForKey:SUBLOCATION];
     location.longitude = [object valueForKey:LONG];
     location.latitude = [object valueForKey:LAT];
+    location.altitude = [object valueForKey:ALTITUDE];
     location.postCode = [object valueForKey:POSTALCODE];
     
     // store nsmanagedobject uri into location
