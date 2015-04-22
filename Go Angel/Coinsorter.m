@@ -817,11 +817,12 @@
     NSString* nameTextEscaped = [album.entry.location.sublocation stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString* listTextEscaped = [album.entry.listing stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString* countryTextEscaped = [album.entry.location.country stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString* descriptionTextEscaped = [album.albumDescritpion stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     NSString *bedquery = [self getKey:@"bed" value:album.entry.bed];
     NSString *bathquery = [self getKey:@"bath" value:album.entry.bath];
     NSString *namequery = [self getKey:@"name" value:album.name];
-    NSString *descriptionquery = [self getKey:@"description" value:album.albumDescritpion];
+    NSString *descriptionquery = [self getKey:@"description" value:descriptionTextEscaped];
     //NSString *coverquery = [self getKey:@"alb_cover" value:album.coverImage];
     NSString *buildingsqftquery = [self getKey:@"buildingsqft" value:[album.entry.buildingSqft stringValue]];
     NSString *landsqftquery = [self getKey:@"landsqft" value:[album.entry.landSqft stringValue]];
