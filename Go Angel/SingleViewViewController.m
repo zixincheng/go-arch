@@ -39,10 +39,12 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     self.scrollview.contentSize = CGSizeMake(320, 1420);
     //self.coverImageView.backgroundColor = [UIColor greenColor];
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+/*
     if (self.album.albumId !=nil) {
         [self.coinsorter getAlbumInfo:self.album.albumId];
         self.album = [self.dataWrapper getSingleAlbum:self.album];
     }
+*/
     localLibrary = [[LocalLibrary alloc] init];
     self.saveFunction = [[SaveToDocument alloc]init];
     defaults = [NSUserDefaults standardUserDefaults];
