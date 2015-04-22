@@ -94,6 +94,10 @@
         [self.coinsorter getAlbumInfo:@"0"];
     }
     self.albums = [self.dataWrapper getAllAlbums];
+    
+    if (sortFlag !=nil) {
+        self.albums = [NSMutableArray arrayWithArray:self.sortArray];
+    }
 
     switch (index) {
         case 0:
@@ -294,31 +298,31 @@
 #pragma mark - sort functions
 
 -(void) sortarrays:(NSString *) sortBase {
-    NSArray *sortedArray;
+    //NSArray *sortedArray;
     
     if ([sortBase isEqualToString:SORTNAME]) {
-        sortedArray = [self.albums sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        self.sortArray = [self.albums sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSString *first = [(CSAlbum *)obj1 name];
             NSString *second = [(CSAlbum *)obj2 name];
             return [first compare:second];
         }];
 
     } else if ([sortBase isEqualToString:SORTPRICEHIGH]){
-        sortedArray = [self.albums sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        self.sortArray = [self.albums sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             CSEntry *first = [(CSAlbum *)obj1 entry];
             CSEntry *second = [(CSAlbum *)obj2 entry];
             return [second.price compare:first.price];
         }];
         
     } else if ([sortBase isEqualToString:SORTPRICELOW]){
-        sortedArray = [self.albums sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        self.sortArray = [self.albums sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             CSEntry *first = [(CSAlbum *)obj1 entry];
             CSEntry *second = [(CSAlbum *)obj2 entry];
             return [first.price compare:second.price];
         }];
     }
     
-    self.albums = [NSMutableArray arrayWithArray:sortedArray];
+    self.albums = [NSMutableArray arrayWithArray:self.sortArray];
     [self getViewController];
 
     
@@ -335,20 +339,20 @@
     switch (buttonIndex) {
         case 0:
         {
-            [self sortarrays:SORTNAME];
             sortFlag = SORTNAME;
+            [self sortarrays:SORTNAME];
             break;
         }
         case 1:
         {
-            [self sortarrays:SORTPRICEHIGH];
             sortFlag = SORTPRICEHIGH;
+            [self sortarrays:SORTPRICEHIGH];
             break;
         }
         case 2:
         {
-            [self sortarrays:SORTPRICELOW];
             sortFlag = SORTPRICELOW;
+            [self sortarrays:SORTPRICELOW];
             break;
     
         }
