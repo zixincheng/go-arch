@@ -48,6 +48,7 @@
 //@property (nonatomic, strong) NSMutableArray *locations;
 @property (nonatomic, strong) NSMutableArray *albums;
 @property (nonatomic, strong) NSArray *sortArray;
+@property (nonatomic, strong) NSArray *filterArray;
 
 @property (nonatomic) NSString *networkStatus;
 @property (nonatomic, assign) BOOL canConnect;

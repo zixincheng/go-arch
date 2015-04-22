@@ -98,6 +98,9 @@
     if (sortFlag !=nil) {
         self.albums = [NSMutableArray arrayWithArray:self.sortArray];
     }
+    if (filterFlag == 1) {
+        self.albums = [NSMutableArray arrayWithArray:self.filterArray];
+    }
 
     switch (index) {
         case 0:
@@ -289,7 +292,7 @@
 
 -(void) filterInfo:(NSMutableArray *)data {
     filterFlag = 1;
-    self.albums = data;
+    self.filterArray = data;
     [self getViewController];
     
 

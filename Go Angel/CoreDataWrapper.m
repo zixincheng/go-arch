@@ -1323,8 +1323,8 @@
     }
     NSPredicate *predicatePrice = [NSPredicate predicateWithFormat:@"entry.price < %@ AND entry.price > %@",priceMax,priceMin];
     
-    NSPredicate *predicateHomeSize = [NSPredicate predicateWithFormat:@"entry.buildingSqft > %@",buildingSize];
-    NSPredicate *predicateLotSize = [NSPredicate predicateWithFormat:@"entry.landSqft.integerValue > %@",landSize];
+    NSPredicate *predicateHomeSize = [NSPredicate predicateWithFormat:@"entry.buildingSqft >= %@",buildingSize];
+    NSPredicate *predicateLotSize = [NSPredicate predicateWithFormat:@"entry.landSqft.integerValue >= %@",landSize];
     NSPredicate *predicateYearBuilt;
     if ([yearBuilt isEqualToString: @"1965"]) {
         predicateYearBuilt = [NSPredicate predicateWithFormat:@"entry.yearBuilt <= %@",yearBuilt];
