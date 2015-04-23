@@ -265,7 +265,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     [self.lbltag setEnabled:enabled];
     [self.lblDescription setEditable:enabled];
     [self.lblPrice setText:[self getPriceText]];
-    
+    [self.lblName setText:self.album.name];
+    [self.lblDescription setText:self.album.albumDescritpion];
     if (enabled) {
         [self.lblAddress setBorderStyle:UITextBorderStyleRoundedRect];
         [self.lblPrice setBorderStyle:UITextBorderStyleRoundedRect];
@@ -296,6 +297,12 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
         [self.bathSelectBtn setHidden:YES];
         [self.lblFloor setText: [NSString stringWithFormat:@"%@ sq. ft.", self.album.entry.buildingSqft.stringValue]];
         [self.lblLot setText:[NSString stringWithFormat:@"%@ sq. ft.", self.album.entry.landSqft.stringValue]];
+        if (self.album.name == nil) {
+            [self.lblName setText:@"Name"];
+        }
+        if (self.album.albumDescritpion == nil) {
+            [self.lblDescription setText:@"No Description Yet"];
+        }
     }
 }
 
@@ -418,7 +425,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     CGSize newSize = self.scrollview.contentSize;
     newSize.height -= animatedDistance;
     CGPoint p = self.scrollview.contentOffset;
-    p.y = 0;
+    p.y -= animatedDistance;
     
     //note that we have to animate BOTH the scrollview resizing AND the offset change.
     [UIView beginAnimations:nil context:NULL];
