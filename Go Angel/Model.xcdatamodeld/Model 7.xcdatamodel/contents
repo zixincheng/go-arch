@@ -6,8 +6,8 @@
         <attribute name="coverImage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="entry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Entry" inverseName="album" inverseEntity="Entry" syncable="YES"/>
-        <relationship name="photo" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Photo" inverseName="album" inverseEntity="Photo" syncable="YES"/>
+        <relationship name="entry" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Entry" inverseName="album" inverseEntity="Entry" syncable="YES"/>
+        <relationship name="photo" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="album" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <entity name="Device" syncable="YES">
         <attribute name="deviceName" optional="YES" attributeType="String" syncable="YES"/>
@@ -25,7 +25,7 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="yearBuilt" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="entry" inverseEntity="Album" syncable="YES"/>
-        <relationship name="locationEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="entry" inverseEntity="Location" syncable="YES"/>
+        <relationship name="locationEntry" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Location" inverseName="entry" inverseEntity="Location" syncable="YES"/>
     </entity>
     <entity name="Location" syncable="YES">
         <attribute name="altitude" optional="YES" attributeType="String" syncable="YES"/>
@@ -61,7 +61,7 @@
         <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="photo" inverseEntity="Album" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Album" positionX="-144" positionY="-151" width="128" height="150"/>
+        <element name="Album" positionX="-144" positionY="-151" width="128" height="148"/>
         <element name="Device" positionX="-297" positionY="-262" width="128" height="73"/>
         <element name="Entry" positionX="63" positionY="-171" width="137" height="223"/>
         <element name="Location" positionX="61" positionY="80" width="128" height="208"/>
