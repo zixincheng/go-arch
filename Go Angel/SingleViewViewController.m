@@ -637,15 +637,6 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 - (void) setCoverPhoto {
     
     //  UILabel for title
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    titleLabel.textAlignment = NSTextAlignmentRight;
-    titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.shadowColor = [UIColor blackColor];
-    titleLabel.shadowOffset = CGSizeMake(0, 1);
-    titleLabel.numberOfLines = 1;
-    titleLabel.frame = CGRectMake(5, self.coverImageView.frame.size.height - 25, self.coverImageView.frame.size.width - 10, 20);
     CSPhoto * coverPhoto = [[CSPhoto alloc]init];
     if (self.photos.count !=0) {
         coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId album:self.album];
@@ -662,16 +653,35 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     adjustedFrame.origin.x = 0;
     [self.coverImageView setFrame:adjustedFrame];
     self.coverImageView.image = nil;
+
     [appDelegate.mediaLoader loadFullScreenImage:coverPhoto completionHandler:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^{
             _coverImageView.image = image;
+            UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+            titleLabel.textAlignment = NSTextAlignmentRight;
+            titleLabel.backgroundColor = [UIColor clearColor];
+            titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
+            titleLabel.textColor = [UIColor whiteColor];
+            titleLabel.shadowColor = [UIColor blackColor];
+            titleLabel.shadowOffset = CGSizeMake(0, 1);
+            titleLabel.numberOfLines = 1;
+            titleLabel.frame = CGRectMake(5, self.coverImageView.frame.size.height - 25, self.coverImageView.frame.size.width - 10, 20);
+            titleLabel.text = coverPhoto.tag;
+            [self.coverImageView addSubview:titleLabel];
         });
     }];
-
     // loop through all photos
     int index = 0;
     for (CSPhoto *p in self.photos) {
-        
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        titleLabel.textAlignment = NSTextAlignmentRight;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
+        titleLabel.textColor = [UIColor whiteColor];
+        titleLabel.shadowColor = [UIColor blackColor];
+        titleLabel.shadowOffset = CGSizeMake(0, 1);
+        titleLabel.numberOfLines = 1;
+        titleLabel.frame = CGRectMake(5, self.coverImageView.frame.size.height - 25, self.coverImageView.frame.size.width - 10, 20);
         // don't display home photo twice
         if ([p.imageURL isEqualToString:coverPhoto.imageURL]) {
             continue;
