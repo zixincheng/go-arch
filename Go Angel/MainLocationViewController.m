@@ -53,11 +53,15 @@
     [refresh addTarget:self action:@selector(PullTorefresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCoverPhoto) name:@"CoverPhotoChange" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCoverPhoto) name:@"CoverPhotoChange" object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoAdded) name:@"addNewPhoto" object:nil];
 
 }
-
-
+-(void)setCoverPhoto {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
 
 - (void) dealloc {
 }

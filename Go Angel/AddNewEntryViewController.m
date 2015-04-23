@@ -309,10 +309,10 @@ CGFloat animatedDistance;
         [appDelegate.coinsorter createAlbum:self.album callback:^(NSString *album_id) {
             if (self.photoImage != nil) {
                 [self.saveFunction saveImageIntoDocument:self.photoImage metadata:metadata album:self.album];
-                //[[NSNotificationCenter defaultCenter] postNotificationName:@"CoverPhotoChange" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CoverPhotoChange" object:nil];
             }
         }];
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:NO];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Address or City or State Can't be Empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
