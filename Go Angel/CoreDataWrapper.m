@@ -494,8 +494,10 @@
 - (CSPhoto *)getCoverPhoto: (NSString *) deviceId album:(CSAlbum *)album{
     NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
     __block CSPhoto *coverPhoto = [[CSPhoto alloc] init];
+    if (album.coverImage == nil) {
+        return nil;
+    }
     
-    [context performBlockAndWait: ^{
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
         
         // set query
@@ -522,8 +524,6 @@
             NSManagedObject *p = phs[0];
             coverPhoto = [self getPhotoFromObject:p];
         }
-    }];
-    
     return coverPhoto;
 }
 

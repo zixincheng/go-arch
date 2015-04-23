@@ -53,23 +53,13 @@
     [refresh addTarget:self action:@selector(PullTorefresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewLocation:) name:@"AddLocationSegue"object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCoverPhoto) name:@"CoverPhotoChange" object:nil];
 
 }
 
--(void) addNewLocation: (NSNotification *)notification{
-    
-    self.albums = [self.dataWrapper getAllAlbums];
-    self.selectedAlbum = [notification.userInfo objectForKey:LOCATION];
-    loadCamera = 1;
-    [self performSegueWithIdentifier:@"individualSegue" sender:self];
-    loadCamera = 0;
-}
 
 
 - (void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AddLocationSegue" object:nil];
 }
 
 -(void) viewWillAppear:(BOOL)animated {

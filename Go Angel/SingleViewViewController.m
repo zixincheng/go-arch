@@ -34,11 +34,13 @@ static const CGFloat MINIMUM_SCROLL_FRACTION = 0.2;
 static const CGFloat MAXIMUM_SCROLL_FRACTION = 0.8;
 static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.scrollview.contentSize = CGSizeMake(320, 1420);
     //self.coverImageView.backgroundColor = [UIColor greenColor];
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.photos = [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:self.album];
 /*
     if (self.album.albumId !=nil) {
         [self.coinsorter getAlbumInfo:self.album.albumId];
@@ -646,7 +648,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     titleLabel.frame = CGRectMake(5, self.coverImageView.frame.size.height - 25, self.coverImageView.frame.size.width - 10, 20);
     CSPhoto * coverPhoto = [[CSPhoto alloc]init];
     if (self.photos.count !=0) {
-            coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId album:self.album];
+        coverPhoto = [self.dataWrapper getCoverPhoto:self.localDevice.remoteId album:self.album];
         if (coverPhoto == nil) {
             coverPhoto = [self.photos objectAtIndex:0];
         }
@@ -654,7 +656,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     //[self.imageScrollView setUserInteractionEnabled:NO];
    //[cell addGestureRecognizer:scrollView.panGestureRecognizer];
     
-    
+
     CGRect adjustedFrame =self.coverImageView.frame;
     adjustedFrame.size.width = self.imageScrollView.frame.size.width;
     adjustedFrame.origin.x = 0;
@@ -665,7 +667,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
             _coverImageView.image = image;
         });
     }];
-    
+
     // loop through all photos
     int index = 0;
     for (CSPhoto *p in self.photos) {
