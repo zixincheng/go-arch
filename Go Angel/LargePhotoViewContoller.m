@@ -14,6 +14,7 @@
 #define CITY_STATE_TAG  3
 #define COUNT_TAG       4
 #define SCROLL_VEW      5
+#define NAME_TAG        6
 
 #define ROW_HEIGHT      220
 
@@ -77,6 +78,7 @@
   UILabel *lblAddress           = (UILabel *)[cell viewWithTag:ADDRESS_TAG];
   UILabel *lblCityState         = (UILabel *)[cell viewWithTag:CITY_STATE_TAG];
   UILabel *lblCount             = (UILabel *)[cell viewWithTag:COUNT_TAG];
+  UILabel *lblname             = (UILabel *)[cell viewWithTag:NAME_TAG];
   
   // disalbe tap on scroll view and set pan gesture on cell instead
   [scrollView setUserInteractionEnabled:NO];
@@ -146,7 +148,7 @@
   [scrollView setContentSize:CGSizeMake(totalWidth, coverImageView.frame.size.height)];
   
   [lblCount setText:text];
-  
+  [lblname setText:a.name];
   [lblAddress setText:a.entry.location.sublocation];
   [lblCityState setText:[NSString stringWithFormat:@"%@, %@", a.entry.location.city, a.entry.location.province]];
   return cell;

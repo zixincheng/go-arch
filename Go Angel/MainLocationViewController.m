@@ -14,6 +14,8 @@
 #define ADDRESS_TAG     5
 #define BUILDING_TAG    6
 #define LAND_TAG        7
+#define NAME_TAG        8
+#define PHOTOCOUNT_TAG  9
 
 @interface MainLocationViewController ()
 
@@ -115,6 +117,8 @@
     UILabel *addressLbel = (UILabel *)[cell viewWithTag:ADDRESS_TAG];
     UILabel *buildingLbel = (UILabel *)[cell viewWithTag:BUILDING_TAG];
     UILabel *landLbel = (UILabel *)[cell viewWithTag:LAND_TAG];
+    UILabel *nameLbel = (UILabel *)[cell viewWithTag:NAME_TAG];
+    UILabel *photocountLbel = (UILabel *)[cell viewWithTag:PHOTOCOUNT_TAG];
     CSAlbum *a = self.albums[[indexPath row]];
     CSPhoto *photo;
     self.photos = [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:a];
@@ -142,8 +146,15 @@
     [format setMaximumFractionDigits:0];
     [format setRoundingMode:NSNumberFormatterRoundHalfUp];
     NSString *priceString = [format stringFromNumber:a.entry.price];
+    int count = (int)self.photos.count;
+    NSString *text = [NSString stringWithFormat:@"%d Photos", count];
+    [photocountLbel setText:text];
     [priceLable setText:priceString];
-    
+    if (a.name == nil) {
+        [nameLbel setText:[NSString stringWithFormat:@""]];
+    } else {
+        [nameLbel setText:[NSString stringWithFormat:@"%@",a.name]];
+    }
     if (a.entry.bed !=nil) {
         [bdLbel setText:[NSString stringWithFormat:@"%@ Bedroom",a.entry.bed]];
     }
@@ -161,6 +172,7 @@
         NSString *landString = [a.entry formatArea:a.entry.landSqft];
         [landLbel setText:[NSString stringWithFormat:@"Lot Size %@ sq.ft.",landString]];
     }
+    
     
     return cell;
 }
