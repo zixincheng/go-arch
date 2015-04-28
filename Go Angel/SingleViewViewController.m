@@ -85,7 +85,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     [self addToolBarOnKeyboard];
     self.lblDescription.layer.borderWidth = 2.0f;
     self.lblDescription.layer.borderColor = [[UIColor grayColor] CGColor];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addnewPhoto) name:@"addNewPhoto" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addnewPhoto) name:@"finishingAdding" object:nil];
 }
 
 -(void)addToolBarOnKeyboard {
@@ -119,11 +119,11 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 
 -(void)addnewPhoto {
     self.photos = [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:self.album];
-    //[self setCoverPhoto];
+    [self setCoverPhoto];
 }
 
 - (void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"addNewPhoto" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"finishingAdding" object:nil];
 }
 # pragma mark - long press gesture and set to home image
 
@@ -1009,8 +1009,9 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
         [self dismissViewControllerAnimated:YES completion:nil];
     });
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-
+    int count = 0;
     for (ALAsset *asset in info) {
+        count ++;
         //ALAsset *asset = [dict objectForKey:@"asset"];
         id obj = [asset valueForProperty:ALAssetPropertyType];
         if (obj == ALAssetTypePhoto) {
@@ -1019,8 +1020,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
         } else if (obj == ALAssetTypeVideo) {
             [self.saveFunction saveVideoAssetIntoDocument:asset album:self.album];
         }
-
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"finishingAdding"object:nil];
     });
 }
 
