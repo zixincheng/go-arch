@@ -19,7 +19,7 @@
 #import "SaveToDocument.h"
 #import <CoreLocation/CoreLocation.h>
 
-@interface AddNewEntryViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,AddingLocationViewControllerDelegate,UIGestureRecognizerDelegate,CLLocationManagerDelegate>{
+@interface AddNewEntryViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,AddingLocationViewControllerDelegate,UIGestureRecognizerDelegate,CLLocationManagerDelegate,UINavigationControllerDelegate>{
   
   AppDelegate *appDelegate;
     

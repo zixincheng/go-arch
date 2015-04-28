@@ -141,7 +141,6 @@ CGFloat animatedDistance;
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.delegate = self;
     switch (buttonIndex) {
         case 0:

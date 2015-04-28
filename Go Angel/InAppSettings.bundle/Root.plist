@@ -18,6 +18,16 @@
 		</dict>
 		<dict>
 			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>Select Device Image</string>
+			<key>IASKViewControllerStoryBoardFile</key>
+			<string>Main</string>
+			<key>IASKViewControllerStoryBoardId</key>
+			<string>DeviceImage</string>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
 			<string>Upload GPS Metadata</string>

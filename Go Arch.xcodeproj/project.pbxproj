@@ -121,6 +121,7 @@
 		9BCDE8BC1A803C940017FD7A /* videoFinish.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BCDE8BB1A803C940017FD7A /* videoFinish.png */; };
 		9BD61A7D1AB2665200A11833 /* pin-map-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BD61A7C1AB2665200A11833 /* pin-map-7.png */; };
 		9BD7E36C1AE5A02F00FC7C15 /* SingleViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BD7E36B1AE5A02F00FC7C15 /* SingleViewViewController.m */; };
+		9BDCA3431AF0421D00D8CE1A /* SetDeviceImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDCA3421AF0421D00D8CE1A /* SetDeviceImageViewController.m */; };
 		9BDDBAF51A70827900697C25 /* CSLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDDBAF41A70827900697C25 /* CSLocation.m */; };
 		9BE03EC21A9FD722007ADCDC /* roll.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BE03EC01A9FD722007ADCDC /* roll.png */; };
 		9BE03EC31A9FD722007ADCDC /* roll@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BE03EC11A9FD722007ADCDC /* roll@2x.png */; };
@@ -386,6 +387,8 @@
 		9BD75B071AE82CF200558BD8 /* Model 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 7.xcdatamodel"; sourceTree = "<group>"; };
 		9BD7E36A1AE5A02F00FC7C15 /* SingleViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleViewViewController.h; sourceTree = "<group>"; };
 		9BD7E36B1AE5A02F00FC7C15 /* SingleViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleViewViewController.m; sourceTree = "<group>"; };
+		9BDCA3411AF0421D00D8CE1A /* SetDeviceImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetDeviceImageViewController.h; sourceTree = "<group>"; };
+		9BDCA3421AF0421D00D8CE1A /* SetDeviceImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetDeviceImageViewController.m; sourceTree = "<group>"; };
 		9BDDBAF31A70827900697C25 /* CSLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSLocation.h; sourceTree = "<group>"; };
 		9BDDBAF41A70827900697C25 /* CSLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSLocation.m; sourceTree = "<group>"; };
 		9BE03EC01A9FD722007ADCDC /* roll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roll.png; sourceTree = "<group>"; };
@@ -570,6 +573,8 @@
 				2040D2231A6058EA00E490F3 /* LocationTableViewController.h */,
 				2040D2241A6058EA00E490F3 /* LocationTableViewController.m */,
 				9BC3C6EA1AC1E4B20042E2D5 /* Main.storyboard */,
+				9BDCA3411AF0421D00D8CE1A /* SetDeviceImageViewController.h */,
+				9BDCA3421AF0421D00D8CE1A /* SetDeviceImageViewController.m */,
 				9BD7E36A1AE5A02F00FC7C15 /* SingleViewViewController.h */,
 				9BD7E36B1AE5A02F00FC7C15 /* SingleViewViewController.m */,
 				9BC10B0A1ACA0FF80019C6BA /* FilterTableViewController.h */,
@@ -1053,6 +1058,7 @@
 				2081697519959CC900EEC65C /* PhotoSwipeViewController.m in Sources */,
 				9BE4F6FE1A717F1D009FEB3F /* MainLocationViewController.m in Sources */,
 				D518B33B1A42046700E249E4 /* ActivityHistory.m in Sources */,
+				9BDCA3431AF0421D00D8CE1A /* SetDeviceImageViewController.m in Sources */,
 				D5296F251A27B1D80069555B /* createDefaultAlbum.m in Sources */,
 				9BFDAAAF1AAA72CE00C4E170 /* ELCAssetCell.m in Sources */,
 				9BA18C821AAF72B9006CEC25 /* PopOverMenu.m in Sources */,

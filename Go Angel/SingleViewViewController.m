@@ -158,7 +158,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
             }
             case 1:
             {
-                [appDelegate.mediaLoader loadFullResImage:self.selectedCoverPhoto completionHandler:^(UIImage *image) {
+                [appDelegate.mediaLoader loadFullScreenImage:self.selectedCoverPhoto completionHandler:^(UIImage *image) {
 
                         NSArray *objectsToShare = @[ image ];
                         
