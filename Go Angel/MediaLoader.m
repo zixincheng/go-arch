@@ -55,7 +55,7 @@
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
       NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
       NSString *fullPathImage = [documentsPath stringByAppendingPathComponent:photo.imageURL];
-      NSString *fullPathVideo = [documentsPath stringByAppendingPathComponent:photo.thumbURL];
+      NSString *fullThumbVideo = [documentsPath stringByAppendingPathComponent:photo.thumbURL];
 
       NSString *newUrl =[ @"file://"stringByAppendingString:fullPathImage];
       NSURL *url = [NSURL URLWithString:newUrl];
@@ -144,9 +144,13 @@
           // load the photo directly from path
           @try {
               if ([photo.isVideo isEqualToString:@"1"]) {
-                  url = [NSURL URLWithString:fullPathVideo];
+                  url = [NSURL URLWithString:fullThumbVideo];
               } else {
+                  if (fullRes) {
                   url = [NSURL URLWithString:fullPathImage];
+                  } else {
+                  url = [NSURL URLWithString:fullThumbVideo];
+                  }
               }
             image = [UIImage imageWithContentsOfFile:url.path];
             if (image) {
