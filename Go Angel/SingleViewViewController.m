@@ -212,12 +212,12 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 
 - (void) deletePhotoFromFile: (CSPhoto *) p {
     NSMutableArray *photoPath = [NSMutableArray array];
-    
+    NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
         // get documents directory
-        NSURL *imageUrl = [NSURL URLWithString:p.imageURL];
-        NSURL *thumUrl = [NSURL URLWithString:p.thumbURL];
-        [photoPath addObject:imageUrl.path];
-        [photoPath addObject:thumUrl.path];
+    NSString *imageUrl = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@", p.imageURL]];
+    NSString *thumUrl = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@", p.thumbURL]];
+        [photoPath addObject:imageUrl];
+        [photoPath addObject:thumUrl];
     
     for (NSString *currentpath in photoPath) {
         NSError *error;

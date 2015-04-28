@@ -208,14 +208,17 @@
 
 - (void) deletePhotoFromFile: (NSArray *) deletedPhoto {
     NSMutableArray *photoPath = [NSMutableArray array];
+    NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
     NSLog(@"delete count agign %lu",(unsigned long)deletedPhoto.count);
     for (CSPhoto *p in deletedPhoto) {
         // get documents directory
         
-        NSURL *imageUrl = [NSURL URLWithString:p.imageURL];
-        NSURL *thumUrl = [NSURL URLWithString:p.thumbURL];
-        [photoPath addObject:imageUrl.path];
-        [photoPath addObject:thumUrl.path];
+        NSString *imageUrl = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@", p.imageURL]];
+
+        NSString *thumUrl = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@", p.thumbURL]];
+
+        [photoPath addObject:imageUrl];
+        [photoPath addObject:thumUrl];
     }
     for (NSString *currentpath in photoPath) {
         NSError *error;
