@@ -49,7 +49,7 @@
                         [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
                         
                     });
-                    
+                    [self deleteRawPhotoFromFile:photo];
                     NSLog(@"upload full res image");
                 }];
             }
@@ -62,6 +62,7 @@
                             [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
                         });
                         NSLog(@"upload full res image using 3G");
+                        [self deleteRawPhotoFromFile:photo];
                     }];
                 }
                 // if it is unser 3g and option is false, don't upload RAW image
@@ -81,6 +82,7 @@
                 });
                 
                 NSLog(@"upload full res image");
+                [self deleteRawPhotoFromFile:photo];
             }];
         }
         // if it is under 3g and option is ture, then upload RAW image
@@ -92,6 +94,7 @@
                         [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
                     });
                     NSLog(@"upload full res image using 3G");
+                    [self deleteRawPhotoFromFile:photo];
                 }];
             }
             // if it is unser 3g and option is false, don't upload RAW image
@@ -171,6 +174,21 @@
         
         NSLog(@"there are no photos to upload");
     }
+}
+
+- (void) deleteRawPhotoFromFile: (CSPhoto *) p {
+    NSMutableArray *photoPath = [NSMutableArray array];
+    NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    // get documents directory
+    NSString *imageUrl = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@", p.imageURL]];
+    [photoPath addObject:imageUrl];
+    
+    for (NSString *currentpath in photoPath) {
+        NSError *error;
+        [[NSFileManager defaultManager] removeItemAtPath:currentpath error:&error];
+    }
+    
+    
 }
 
 

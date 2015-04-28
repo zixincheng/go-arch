@@ -45,6 +45,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePass) name:@"passwordChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPhotoChanged:) name:@"addNewPhoto"object:nil];
     [defaults addObserver:self forKeyPath:UPLOAD_3G options:NSKeyValueObservingOptionNew context:NULL];
+    [defaults addObserver:self forKeyPath:DEVICE_NAME options:NSKeyValueObservingOptionNew context:NULL];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetWork:) name:@"networkStatusChanged"object:nil];
     
     [self.navigationController setToolbarHidden:NO animated:YES];
@@ -269,6 +270,13 @@
             alertView.tag = 2;
             [alertView show];
         }
+    } else if ([keyPath isEqualToString:DEVICE_NAME]) {
+        // device name change
+        NSString *deviceName = [defaults valueForKey:DEVICE_NAME];
+        
+        self.localDevice.deviceName = deviceName;
+        
+        [self.coinsorter updateDevice];
     }
     
 }
