@@ -119,7 +119,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 
 -(void)addnewPhoto {
     self.photos = [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:self.album];
-    [self setCoverPhoto];
+    //[self setCoverPhoto];
 }
 
 - (void) dealloc {
@@ -990,7 +990,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 
 - (void) photoLibrary {
     ELCImagePickerController *elcpicker = [[ELCImagePickerController alloc] initImagePicker];
-    elcpicker.maximumImagesCount = 100;
+    elcpicker.maximumImagesCount = 1000;
     elcpicker.returnsImage = YES;
     elcpicker.returnsOriginalImage = YES;
     elcpicker.onOrder = NO;
@@ -1008,57 +1008,20 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:YES completion:nil];
     });
-    
-    for (NSDictionary *dict in info) {
-        if ([dict objectForKey:UIImagePickerControllerMediaType] == ALAssetTypePhoto){
-            if ([dict objectForKey:UIImagePickerControllerOriginalImage]){
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                    UIImage* image=[dict objectForKey:UIImagePickerControllerOriginalImage];
-                    NSDictionary *metadata = dict[UIImagePickerControllerMediaMetadata];
-                    
-                    if (self.saveInAlbum) {
-                        NSLog(@"save photos into album");
-                        
-                        //[localLibrary saveImage:image metadata:metadata location:self.location];
-                    }else{
-                        NSLog(@"save photos into application folder");
-                        //[self saveImageIntoDocument:image metadata:metadata];
-                        [self.saveFunction saveImageIntoDocument:image metadata:metadata album:self.album];
-                    }
-                });
-                
-            } else {
-                NSLog(@"UIImagePickerControllerReferenceURL = %@", dict);
-            }
-        } else if ([dict objectForKey:UIImagePickerControllerMediaType] == ALAssetTypeVideo){
-            if ([dict objectForKey:UIImagePickerControllerOriginalImage]){
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                    NSString *mediaType = [dict objectForKey: UIImagePickerControllerMediaType];
-                    // Handle a movie capture
-                    if (CFStringCompare ((__bridge_retained CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
-                        NSURL *moviePath = [dict objectForKey:UIImagePickerControllerMediaURL];
-                        // [self.videoUrl addObject:moviePath];
-                        //NSLog(@"number of video taken count %lu",(unsigned long)self.videoUrl.count);
-                        if (self.saveInAlbum) {
-                            NSLog(@"save video into album");
-                            //[localLibrary saveVideo:moviePath location:self.location];
-                        } else {
-                            NSLog(@"save video into application folder");
-                            //[self saveVideoIntoDocument:moviePath];
-                            [self.saveFunction saveVideoIntoDocument:moviePath album:self.album];
-                        }
-                        
-                    }
-                    CFRelease((__bridge CFTypeRef)(mediaType));
-                });
-                
-            } else {
-                NSLog(@"UIImagePickerControllerReferenceURL = %@", dict);
-            }
-        } else {
-            NSLog(@"Uknown asset type");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+
+    for (ALAsset *asset in info) {
+        //ALAsset *asset = [dict objectForKey:@"asset"];
+        id obj = [asset valueForProperty:ALAssetPropertyType];
+        if (obj == ALAssetTypePhoto) {
+            [self.saveFunction saveImageAssetIntoDocument:asset album:self.album];
+            
+        } else if (obj == ALAssetTypeVideo) {
+            [self.saveFunction saveVideoAssetIntoDocument:asset album:self.album];
         }
+
     }
+    });
 }
 
 - (void)elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker {

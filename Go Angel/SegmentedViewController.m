@@ -220,7 +220,29 @@
 #pragma mark - upload one photo notification from coredata
 
 -(void) uploadPhotoChanged: (NSNotification *)notification{
-    
+    if (notification.userInfo == nil) {
+        NSMutableArray *unUploadarray = [self.dataWrapper getAlbumsToUpload];
+        NSMutableArray *alreadyUploaded = [self.dataWrapper getAlbumsAlreadyUploaded];
+        for (CSAlbum *a in unUploadarray) {
+            
+            [self.coinsorter createAlbum:a callback:^(NSString *album_id) {
+                if (album_id !=nil) {
+                    NSMutableArray *unuploadphotos = [self.dataWrapper getThumbsToUploadWithAlbum:self.localDevice.remoteId album:a];
+                    for (CSPhoto *p in unuploadphotos) {
+                        [self.uploadFunction onePhotoThumbToApi:p networkStatus:self.networkStatus];
+                    }
+                }
+            }];
+        }
+        
+        for (CSAlbum *a in alreadyUploaded) {
+            NSMutableArray *unuploadphotos = [self.dataWrapper getThumbsToUploadWithAlbum:self.localDevice.remoteId album:a];
+            for (CSPhoto *p in unuploadphotos) {
+                [self.uploadFunction onePhotoThumbToApi:p networkStatus:self.networkStatus];
+            }
+            
+        }
+    } else {
     CSPhoto *p = [self.dataWrapper getPhoto:[notification.userInfo objectForKey:IMAGE_URL]];
     if (self.canConnect) {
         if (p.album.albumId != nil) {
@@ -233,6 +255,7 @@
                 }
             }];
         }
+    }
     }
 }
 

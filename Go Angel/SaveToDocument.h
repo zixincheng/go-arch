@@ -25,4 +25,6 @@
 - (void) saveImageIntoDocument:(UIImage *)image metadata:(NSDictionary *)metadata album:(CSAlbum *)album;
 
 -(void) saveVideoIntoDocument:(NSURL *)moviePath album:(CSAlbum *)album;
+- (void) saveImageAssetIntoDocument:(ALAsset *)asset album:(CSAlbum *)album;
+-(void) saveVideoAssetIntoDocument:(ALAsset *)assets album:(CSAlbum *)album;
 @end

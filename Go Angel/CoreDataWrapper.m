@@ -292,6 +292,59 @@
   }];
 }
 
+
+- (BOOL) addPhotoArray:(NSArray *)photoArray {
+    
+    NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
+    
+    __block BOOL added = NO;
+    __block int count = photoArray.count;
+    [context performBlockAndWait:^{
+        for (CSPhoto *photo in photoArray) {
+            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", IMAGE_URL, photo.imageURL];
+            [request setPredicate:pred];
+            
+            NSArray *results = [context executeFetchRequest:request error:nil];
+            
+            if (results == nil) {
+                NSLog(@"error with core data request");
+                abort();
+            }
+            if (results.count == 0) {
+                NSManagedObject *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
+                // NSManagedObject *location = [self relationLocation:photo.location];
+                //  NSLog(@"obj %@",location);
+                newPhoto = [self setObjectValues:photo object:newPhoto];
+                
+                newPhoto = [self relationAlbum:photo.album object:newPhoto];
+                // save context to updated other threads
+                [context save:nil];
+                NSArray *objects =
+                [NSArray arrayWithObjects:photo.imageURL, nil];
+                NSArray *keys = [NSArray
+                                 arrayWithObjects:IMAGE_URL, nil];
+                NSDictionary *photoDic =
+                [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+                
+                NSLog(@"added new photo to core data");
+                //[[NSNotificationCenter defaultCenter] postNotificationName:@"addNewPhoto" object:nil userInfo:photoDic];
+                count --;
+                if (count == 0) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"addNewPhoto" object:nil];
+                }
+                
+                added = YES;
+            }else {
+                NSLog(@"photo already in core data");
+            }
+
+        }
+            }];
+    return added;
+}
+
+
 - (BOOL) addPhoto:(CSPhoto *)photo {
   
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
@@ -309,7 +362,6 @@
       NSLog(@"error with core data request");
       abort();
     }
-      
       if (results.count == 0) {
           NSManagedObject *newPhoto = [NSEntityDescription insertNewObjectForEntityForName:PHOTO inManagedObjectContext:context];
           // NSManagedObject *location = [self relationLocation:photo.location];

@@ -44,7 +44,9 @@
         
     } else {
         UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
-        [self.navigationItem setRightBarButtonItem:doneButtonItem];
+        UIBarButtonItem* selectedallButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"SelectAll" style:UIBarButtonItemStylePlain target:self
+                                                                      action:@selector(selectall)];
+        [self.navigationItem setRightBarButtonItems:@[doneButtonItem,selectedallButtonItem]];
         [self.navigationItem setTitle:NSLocalizedString(@"Loading...", nil)];
     }
 
@@ -52,6 +54,22 @@
     
     // Register for notifications when the photo library has changed
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preparePhotos) name:ALAssetsLibraryChangedNotification object:nil];
+}
+
+-(void) selectall {
+    ELCAsset *elcAsset;
+    NSLog(@"number %lu",(unsigned long)self.elcAssets.count);
+    if (self.elcAssets.count >1000) {
+        BOOL shouldSelect = [self.parent shouldSelectAsset:elcAsset previousCount:self.elcAssets.count];
+        if (!shouldSelect) {
+            return;
+        }
+    } else {
+    for (ELCAsset *elcAsset in self.elcAssets) {
+        elcAsset.selected = YES;
+    }
+    [self.tableView reloadData];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

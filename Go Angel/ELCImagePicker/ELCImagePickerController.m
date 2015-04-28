@@ -89,16 +89,18 @@
 
 - (void)selectedAssets:(NSArray *)assets
 {
+    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 	NSMutableArray *returnArray = [[NSMutableArray alloc] init];
-	
 	for(ELCAsset *elcasset in assets) {
+            
         ALAsset *asset = elcasset.asset;
+        /*
 		id obj = [asset valueForProperty:ALAssetPropertyType];
 		if (!obj) {
 			continue;
-		}
-		NSMutableDictionary *workingDictionary = [[NSMutableDictionary alloc] init];
-		
+		}*/
+		//NSMutableDictionary *workingDictionary = [[NSMutableDictionary alloc] init];
+		/*
 		CLLocation* wgs84Location = [asset valueForProperty:ALAssetPropertyLocation];
 		if (wgs84Location) {
 			[workingDictionary setObject:wgs84Location forKey:ALAssetPropertyLocation];
@@ -108,7 +110,6 @@
 
         //This method returns nil for assets from a shared photo stream that are not yet available locally. If the asset becomes available in the future, an ALAssetsLibraryChangedNotification notification is posted.
         ALAssetRepresentation *assetRep = [asset defaultRepresentation];
-
         if(assetRep != nil) {
             if (_returnsImage) {
                 CGImageRef imgRef = nil;
@@ -126,18 +127,27 @@
                                                    scale:1.0f
                                              orientation:orientation];
                 [workingDictionary setObject:img forKey:UIImagePickerControllerOriginalImage];
+                CFRelease(imgRef);
+                //CGImageRelease(imgRef);
             }
 
             [workingDictionary setObject:[[asset valueForProperty:ALAssetPropertyURLs] valueForKey:[[[asset valueForProperty:ALAssetPropertyURLs] allKeys] objectAtIndex:0]] forKey:UIImagePickerControllerReferenceURL];
-            
-            [returnArray addObject:workingDictionary];
+            NSDictionary *metadata = asset.defaultRepresentation.metadata;
+            [workingDictionary setObject:metadata forKey:UIImagePickerControllerMediaMetadata];
+
+            //[returnArray addObject:workingDictionary];
+         */
+        //[workingDictionary setObject:asset forKey:@"asset"];
+        [returnArray addObject:asset];
+       // [_imagePickerDelegate performSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:) withObject:self withObject:asset];
+       // [_imagePickerDelegate performSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:) withObject:workingDictionary];
+
         }
-		
-	}    
+    
 	if (_imagePickerDelegate != nil && [_imagePickerDelegate respondsToSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:)]) {
 		[_imagePickerDelegate performSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:) withObject:self withObject:returnArray];
 	} else {
-        [self popToRootViewControllerAnimated:NO];
+    [self popToRootViewControllerAnimated:NO];
     }
 }
 

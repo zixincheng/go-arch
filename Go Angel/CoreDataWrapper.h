@@ -54,4 +54,5 @@
 - (NSMutableArray *)getThumbsToUploadWithAlbum: (NSString *) deviceId album:(CSAlbum *)album;
 - (NSMutableArray *) getAlbumsAlreadyUploaded;
 - (CSAlbum *) getSingleAlbum:(CSAlbum *)album;
+- (BOOL) addPhotoArray:(NSArray *)photoArray;
 @end
