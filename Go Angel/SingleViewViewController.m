@@ -1069,6 +1069,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
             }
             CFRelease((__bridge CFTypeRef)(mediaType));
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"finishingAdding"object:nil];
     });
     //totalAssets = (int)self.tmpPhotos.count +(int)self.videoUrl.count;
 }
