@@ -18,6 +18,7 @@
     account = appDelegate.account;
     self.coinsorter = appDelegate.coinsorter;
     self.networkStatus = appDelegate.netWorkCheck;
+    defaults = [NSUserDefaults standardUserDefaults];
     
     
     return self;
@@ -26,6 +27,7 @@
     __block int currentthumbnailUploaded = 0;
     __block int currentFullPhotoUploaded = 0;
     BOOL upload3G = [defaults boolForKey:UPLOAD_3G];
+    BOOL deleteRaw = [defaults boolForKey:DELETE_RAW];
     //upload photo thumb no matter under 3g or wifi
     if ([photo.thumbOnServer isEqualToString:@"0"]) {
         [self.coinsorter uploadOneThumb:photo upCallback:^(CSPhoto *p){
@@ -49,7 +51,10 @@
                         [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
                         
                     });
-                    [self deleteRawPhotoFromFile:photo];
+                    if (deleteRaw) {
+                        [self deleteRawPhotoFromFile:photo];
+                        NSLog(@"delete full res image");
+                    }
                     NSLog(@"upload full res image");
                 }];
             }
@@ -62,7 +67,10 @@
                             [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
                         });
                         NSLog(@"upload full res image using 3G");
-                        [self deleteRawPhotoFromFile:photo];
+                        if (deleteRaw) {
+                            [self deleteRawPhotoFromFile:photo];
+                            NSLog(@"delete full res image");
+                        }
                     }];
                 }
                 // if it is unser 3g and option is false, don't upload RAW image
@@ -82,7 +90,10 @@
                 });
                 
                 NSLog(@"upload full res image");
-                [self deleteRawPhotoFromFile:photo];
+                if (deleteRaw) {
+                    [self deleteRawPhotoFromFile:photo];
+                    NSLog(@"delete full res image");
+                }
             }];
         }
         // if it is under 3g and option is ture, then upload RAW image
@@ -94,7 +105,10 @@
                         [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
                     });
                     NSLog(@"upload full res image using 3G");
-                    [self deleteRawPhotoFromFile:photo];
+                    if (deleteRaw) {
+                        [self deleteRawPhotoFromFile:photo];
+                        NSLog(@"delete full res image");
+                    }
                 }];
             }
             // if it is unser 3g and option is false, don't upload RAW image

@@ -21,6 +21,7 @@
 
 // user defaults keys
 #define DEVICE_NAME @"deviceName"
+#define DELETE_RAW @"DeleteRaw"
 #define ALBUMS @"albums"
 #define DATE @"date"
 

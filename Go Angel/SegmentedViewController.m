@@ -20,7 +20,9 @@
 
 @end
 
-@implementation SegmentedViewController
+@implementation SegmentedViewController {
+    BOOL deleteRaw;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,6 +47,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePass) name:@"passwordChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPhotoChanged:) name:@"addNewPhoto"object:nil];
     [defaults addObserver:self forKeyPath:UPLOAD_3G options:NSKeyValueObservingOptionNew context:NULL];
+    [defaults addObserver:self forKeyPath:DELETE_RAW options:NSKeyValueObservingOptionNew context:NULL];
     [defaults addObserver:self forKeyPath:DEVICE_NAME options:NSKeyValueObservingOptionNew context:NULL];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetWork:) name:@"networkStatusChanged"object:nil];
     
@@ -277,6 +280,13 @@
         self.localDevice.deviceName = deviceName;
         
         [self.coinsorter updateDevice];
+    } else if ([keyPath isEqualToString:DELETE_RAW]) {
+        bool deletRaw = [defaults boolForKey:DELETE_RAW];
+        if (deletRaw) {
+            NSLog(@"delete raw yes");
+        } else {
+            NSLog(@"delete raw no");
+        }
     }
     
 }
