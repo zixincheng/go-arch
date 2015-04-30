@@ -348,10 +348,10 @@
 - (BOOL) addPhoto:(CSPhoto *)photo {
   
   NSManagedObjectContext *context = [CoreDataStore privateQueueContext];
-  
+    NSLog(@"photo objectid %@",photo.album.objectId);
   __block BOOL added = NO;
   
-  [context performBlockAndWait:^{
+  //[context performBlockAndWait:^{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:PHOTO];
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", IMAGE_URL, photo.imageURL];
     [request setPredicate:pred];
@@ -385,7 +385,7 @@
       }else {
           NSLog(@"photo already in core data");
       }
-  }];
+  //}];
   return added;
 }
 

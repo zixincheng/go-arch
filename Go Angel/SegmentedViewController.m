@@ -8,13 +8,14 @@
 
 #import "SegmentedViewController.h"
 #import "FilterTableViewController.h"
+#import <stdlib.h>
 
 
 #define SORTNAME @"sortName"
 #define SORTPRICEHIGH @"sortPriceHigh"
 #define SORTPRICELOW @"sortPriceLow"
 
-@interface SegmentedViewController ()
+@interface SegmentedViewController () <DBRestClientDelegate>
 
 - (UIViewController *)viewControllerForSegmentIndex:(NSInteger)index;
 
@@ -26,7 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    [self restClient];
                                                                 
     // Do any additional setup after loading the view.
     // init vars
@@ -39,6 +40,21 @@
     self.uploadFunction = [[UploadFunctions alloc]init];
     defaults = [NSUserDefaults standardUserDefaults];
     self.albums = [self.dataWrapper getAllAlbums];
+    
+    if (self.albums.count ==0) {
+        self.dropbox = [[CSAlbum alloc]init];
+        CSEntry *dropentry = [[CSEntry alloc]init];
+        self.dropbox.entry = dropentry;
+        CSLocation *droplocation = [[CSLocation alloc]init];
+        self.dropbox.entry.location = droplocation;
+        self.dropbox.name = @"DropBox";
+        [self getCurrentLocation];
+        //[self.dataWrapper addAlbum:self.dropbox];
+    } else {
+        self.dropbox = [self.albums objectAtIndex:0];
+    }
+    
+    self.saveFunction = [[SaveToDocument alloc]init];
     // setup network notification
     [self.netWorkCheck setupNet];
     
@@ -49,6 +65,7 @@
     [defaults addObserver:self forKeyPath:UPLOAD_3G options:NSKeyValueObservingOptionNew context:NULL];
     [defaults addObserver:self forKeyPath:DELETE_RAW options:NSKeyValueObservingOptionNew context:NULL];
     [defaults addObserver:self forKeyPath:DEVICE_NAME options:NSKeyValueObservingOptionNew context:NULL];
+    [defaults addObserver:self forKeyPath:IMPORT_DROPBOX options:NSKeyValueObservingOptionNew context:NULL];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetWork:) name:@"networkStatusChanged"object:nil];
     
     [self.navigationController setToolbarHidden:NO animated:YES];
@@ -287,6 +304,14 @@
         } else {
             NSLog(@"delete raw no");
         }
+    } else if ([keyPath isEqualToString:IMPORT_DROPBOX]){
+        bool dropboxImport = [defaults boolForKey:IMPORT_DROPBOX];
+        
+        if (dropboxImport) {
+             [[DBSession sharedSession] linkFromController:self];
+        } else {
+                [[DBSession sharedSession] unlinkAll];
+        }
     }
     
 }
@@ -309,6 +334,16 @@
             completionHandler(UIBackgroundFetchResultNoData);
         }
     }
+}
+- (IBAction)downloadDropbox:(id)sender {
+    NSString *photosRoot = nil;
+    if ([DBSession sharedSession].root == kDBRootDropbox) {
+        photosRoot = @"/Photos";
+    } else {
+        photosRoot = @"/";
+    }
+    
+    [restClient loadMetadata:photosRoot];
 }
 
 - (NSString *)currentWifiBSSID {
@@ -427,5 +462,158 @@
 
 }
 
+#pragma mark - Dropbox delegate
+
+- (DBRestClient*)restClient {
+    if (restClient == nil) {
+        restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+        restClient.delegate = self;
+    }
+    return restClient;
+}
+
+
+- (void)restClient:(DBRestClient*)client loadedMetadata:(DBMetadata*)metadata {
+
+    NSArray* validExtensions = [NSArray arrayWithObjects:@"jpg", @"jpeg", nil];
+    NSLog(@"Folder '%@' contains:", metadata.path);
+        for(DBMetadata *file in metadata.contents) {
+             NSString* extension = [[file.path pathExtension] lowercaseString];
+            if (!file.isDirectory && [validExtensions indexOfObject:extension] != NSNotFound) {
+                self.dropboxPath = file.path;
+                NSString *documentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyImage"];
+                
+                if (![[NSFileManager defaultManager] fileExistsAtPath:documentsPath]){
+                    [[NSFileManager defaultManager] createDirectoryAtPath:documentsPath withIntermediateDirectories:NO attributes:nil error:nil];}
+                
+                NSString *photoUID = [[NSProcessInfo processInfo] globallyUniqueString];
+                
+                NSString *tmpThumbPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
+                
+                NSString *tmpFullPath = [documentsPath stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
+                
+                [self.restClient loadThumbnail:self.dropboxPath  ofSize:@"iphone_bestfit" intoPath:tmpThumbPath];
+                [self.restClient loadFile:self.dropboxPath intoPath:tmpFullPath];
+            }
+
+            
+            NSLog(@"%@", file.filename);
+        }
+}
+- (void)restClient:(DBRestClient *)client loadMetadataFailedWithError:(NSError*)error {
+    NSLog(@"Error loading metadata: %@", error);
+}
+
+- (void)restClient:(DBRestClient*)client metadataUnchangedAtPath:(NSString*)path {
+}
+
+- (void)restClient:(DBRestClient*)client loadedThumbnail:(NSString*)destPath {
+     NSLog(@"dowload thumbnail");
+    
+
+
+    
+    //[restClient loadFile:path intoPath:tmpFullPath];
+    //[self.saveFunction saveImageIntoDocument:[UIImage imageWithContentsOfFile:destPath] metadata:self.dropboxMeta album:dropbox];
+}
+
+- (void)restClient:(DBRestClient*)client loadThumbnailFailedWithError:(NSError*)error {
+
+}
+
+- (void)restClient:(DBRestClient*)client loadedFile:(NSString*)destPath
+{
+    NSLog(@"dowload file");
+    
+    NSArray* firstSplit = [destPath componentsSeparatedByString: @"/"];
+    NSString *fileName = [firstSplit objectAtIndex:9];
+    
+    //NSArray *secondSplit = [fileName componentsSeparatedByString:@"_"];
+   // NSString *uidWithExt = [secondSplit objectAtIndex:1];
+    
+    NSArray *thirdSplit = [fileName componentsSeparatedByString:@"."];
+    NSString *photoUID = [thirdSplit objectAtIndex:0];
+    
+    NSString *filePath = [@"MyImage" stringByAppendingString:[NSString stringWithFormat:@"/%@.jpg", photoUID]];
+    
+    NSString *thumbPath = [@"MyImage" stringByAppendingString:[NSString stringWithFormat:@"/thumb_%@.jpg", photoUID]];
+    
+    CSPhoto *p = [[CSPhoto alloc] init];
+    
+    p.dateCreated = [NSDate date];
+    p.deviceId = self.localDevice.remoteId;
+    p.thumbOnServer = @"0";
+    p.fullOnServer = @"0";
+    p.thumbURL = thumbPath;
+    p.imageURL = filePath;
+    p.fileName = [NSString stringWithFormat:@"%@.jpg", photoUID];
+    p.thumbnailName = [NSString stringWithFormat:@"thumb_%@.jpg",photoUID];
+    p.isVideo = @"0";
+    p.album = self.dropbox;
+    [self.dataWrapper addPhoto:p];
+
+    
+    //Here destPath is the path at which place your image is downloaded
+}
+-(void)restClient:(DBRestClient *)client loadFileFailedWithError:(NSError *)error
+{
+NSLog(@"Error downloading file: %@", error);
+}
+
+#pragma mark - Get current location 
+
+-(void) getCurrentLocation {
+    locationManager = [[CLLocationManager alloc]init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.distanceFilter = 10;
+    [locationManager requestWhenInUseAuthorization];
+    [locationManager startUpdatingLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+    NSLog(@"OldLocation %f %f", oldLocation.coordinate.latitude, oldLocation.coordinate.longitude);
+    NSLog(@"NewLocation %f %f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
+    [self geocodeLocation:newLocation];
+}
+
+- (void)geocodeLocation:(CLLocation *)location {
+    if (!geocoder)
+        geocoder = [[CLGeocoder alloc] init];
+    
+    [geocoder reverseGeocodeLocation:location
+                   completionHandler:^(NSArray *placemarks, NSError *error) {
+                       if ([placemarks count] > 0) {
+                           
+                           // get address properties of location
+                           CLPlacemark *p = [placemarks lastObject];
+                           self.dropbox.entry.location.postCode = [p.addressDictionary objectForKey:@"ZIP"];
+                           self.dropbox.entry.location.country =
+                           [p.addressDictionary objectForKey:@"Country"];
+                           self.dropbox.entry.location.countryCode =
+                           [p.addressDictionary objectForKey:@"CountryCode"];
+                           self.dropbox.entry.location.city = [p.addressDictionary objectForKey:@"City"];
+                           self.dropbox.entry.location.sublocation = [p.addressDictionary objectForKey:@"Name"];
+                           self.dropbox.entry.location.province = [p.addressDictionary objectForKey:@"State"];
+                           self.dropbox.entry.location.longitude = [NSString stringWithFormat:@"%f", location.coordinate
+                                                      .longitude];
+                           self.dropbox.entry.location.latitude = [NSString stringWithFormat:@"%f", location.coordinate
+                                                     .latitude];
+                           
+                           self.dropbox.entry.location.altitude = [NSString stringWithFormat:@"%f",location.altitude];
+                           // self.location.unit = self.txtUnit.text;
+                           
+                           //[self.streetName setText:self.location.name];
+                           //[self.streetName setHidden:NO];
+                           //[//self saveLocation];
+                           //generate pins on map
+                           [self.dataWrapper addAlbum:self.dropbox];
+                           [self getViewController];
+
+                       }
+                   }];
+    [locationManager stopUpdatingLocation];
+
+}
 
 @end

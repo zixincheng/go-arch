@@ -41,6 +41,14 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     //self.coverImageView.backgroundColor = [UIColor greenColor];
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     self.photos = [self.dataWrapper getPhotosWithAlbum:self.localDevice.remoteId album:self.album];
+    NSArray *sort = [[NSArray alloc]init];
+    sort = [self.photos sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSDate *first = [(CSPhoto *)obj1 dateCreated];
+        NSDate *second = [(CSPhoto *)obj2 dateCreated];
+        return [first compare:second];
+        }];
+    self.photos = [NSMutableArray arrayWithArray:sort];
+
 /*
     if (self.album.albumId !=nil) {
         [self.coinsorter getAlbumInfo:self.album.albumId];

@@ -19,7 +19,9 @@
 @class NetWorkCheck;
 @class UploadPhotosTask;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate> {
+    NSString *relinkUserId;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 

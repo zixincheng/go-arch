@@ -129,6 +129,8 @@
 		9BE4F7051A71AC02009FEB3F /* AddingLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BE4F7041A71AC02009FEB3F /* AddingLocationViewController.m */; };
 		9BEA5B561A1EB26100CC14FF /* CSStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B531A1EB26100CC14FF /* CSStorage.m */; };
 		9BEA5B571A1EB26100CC14FF /* StorageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEA5B551A1EB26100CC14FF /* StorageViewController.m */; };
+		9BFAA5131AF15052001F7C79 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BFAA5121AF15051001F7C79 /* DropboxSDK.framework */; };
+		9BFAA5191AF1508B001F7C79 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BFAA5181AF1508B001F7C79 /* Security.framework */; };
 		9BFDAAAD1AAA72CD00C4E170 /* ELCAlbumPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BFDAA971AAA72CD00C4E170 /* ELCAlbumPickerController.m */; };
 		9BFDAAAE1AAA72CE00C4E170 /* ELCAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BFDAA991AAA72CD00C4E170 /* ELCAsset.m */; };
 		9BFDAAAF1AAA72CE00C4E170 /* ELCAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BFDAA9B1AAA72CD00C4E170 /* ELCAssetCell.m */; };
@@ -401,6 +403,8 @@
 		9BEA5B531A1EB26100CC14FF /* CSStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSStorage.m; sourceTree = "<group>"; };
 		9BEA5B541A1EB26100CC14FF /* StorageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageViewController.h; sourceTree = "<group>"; };
 		9BEA5B551A1EB26100CC14FF /* StorageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageViewController.m; sourceTree = "<group>"; };
+		9BFAA5121AF15051001F7C79 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
+		9BFAA5181AF1508B001F7C79 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		9BFDAA961AAA72CD00C4E170 /* ELCAlbumPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAlbumPickerController.h; sourceTree = "<group>"; };
 		9BFDAA971AAA72CD00C4E170 /* ELCAlbumPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCAlbumPickerController.m; sourceTree = "<group>"; };
 		9BFDAA981AAA72CD00C4E170 /* ELCAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAsset.h; sourceTree = "<group>"; };
@@ -442,6 +446,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BFAA5191AF1508B001F7C79 /* Security.framework in Frameworks */,
+				9BFAA5131AF15052001F7C79 /* DropboxSDK.framework in Frameworks */,
 				9B12113C1A79B0FD0088CD3A /* MapKit.framework in Frameworks */,
 				2040D22A1A6059BE00E490F3 /* CoreLocation.framework in Frameworks */,
 				9BAF13831A3F63A5000B780B /* QuartzCore.framework in Frameworks */,
@@ -462,6 +468,7 @@
 		205397091991924B00B1D9AD = {
 			isa = PBXGroup;
 			children = (
+				9BFAA5121AF15051001F7C79 /* DropboxSDK.framework */,
 				4D0F91301A2E9E8500C1936F /* Crashlytics.framework */,
 				4D0F91311A2E9E8500C1936F /* Fabric.framework */,
 				205397141991924B00B1D9AD /* Frameworks */,
@@ -484,6 +491,7 @@
 		205397141991924B00B1D9AD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9BFAA5181AF1508B001F7C79 /* Security.framework */,
 				9B12113B1A79B0FD0088CD3A /* MapKit.framework */,
 				2040D2291A6059BE00E490F3 /* CoreLocation.framework */,
 				9BAF13821A3F63A5000B780B /* QuartzCore.framework */,

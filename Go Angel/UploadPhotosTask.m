@@ -361,7 +361,7 @@
             NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyImage"];
             NSString *textPath = [documentsDirectory
                                   stringByAppendingPathComponent:p.fileName];
-            
+            NSLog(@"text paht %@",textPath);
             // get image data from file path
             NSData *imageData = [self getPhotoWithMetaDataFromFile:textPath photo:p];
             NSString *fileName = [NSString

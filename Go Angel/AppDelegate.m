@@ -10,6 +10,11 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import "SegmentedViewController.h"
+#import <DropboxSDK/DropboxSDK.h>
+
+@interface AppDelegate() <DBSessionDelegate, DBNetworkRequestDelegate>
+
+@end
 
 @implementation AppDelegate
 
@@ -24,6 +29,15 @@
   self.netWorkCheck = [[NetWorkCheck alloc] initWithCoinsorter:self.coinsorter];
   NSLog(@"reading settings");
   
+    NSString* appKey = @"iy6waa9tdrvejwh";
+    NSString* appSecret = @"axr8qdq0vezfqes";
+    NSString *root = kDBRootDropbox;
+    
+    DBSession* session =
+    [[DBSession alloc] initWithAppKey:appKey appSecret:appSecret root:root];
+    session.delegate = self; // DBSessionDelegate methods allow you to handle re-authenticating
+    [DBSession setSharedSession:session];
+    
   // initialize the image cache
   self.mediaLoader = [[MediaLoader alloc] init];
   
@@ -59,6 +73,18 @@
   //[self.defaultAlbum setDefaultAlbum];
 
   return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            NSLog(@"App linked successfully!");
+
+        }
+        return YES;
+    }
+    
+    return NO;
 }
 
 -(void) application:(UIApplication *)application performFetchWithCompletionHandler:
@@ -130,6 +156,48 @@
 {
   // Saves all the application's settings to a plist (XML) file
   [self.account saveSettings];
+}
+
+
+#pragma mark -
+#pragma mark DBSessionDelegate methods
+
+- (void)sessionDidReceiveAuthorizationFailure:(DBSession*)session userId:(NSString *)userId {
+    UIAlertView *view = [[UIAlertView alloc]
+       initWithTitle:@"Dropbox Session Ended" message:@"Do you want to relink?" delegate:self
+                           cancelButtonTitle:@"Cancel" otherButtonTitles:@"Relink", nil];
+    [view show];
+}
+
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index {
+    if (index != alertView.cancelButtonIndex) {
+      //  [[DBSession sharedSession] linkUserId:relinkUserId fromController:rootViewController];
+    }
+    relinkUserId = nil;
+}
+
+
+#pragma mark -
+#pragma mark DBNetworkRequestDelegate methods
+
+static int outstandingRequests;
+
+- (void)networkRequestStarted {
+    outstandingRequests++;
+    if (outstandingRequests == 1) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    }
+}
+
+- (void)networkRequestStopped {
+    outstandingRequests--;
+    if (outstandingRequests == 0) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    }
 }
 
 @end

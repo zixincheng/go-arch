@@ -23,14 +23,21 @@
 #import "LargePhotoViewContoller.h"
 #import "CSLocation.h"
 #import "CSAlbum.h"
+#import "SaveToDocument.h"
+#import <DropboxSDK/DropboxSDK.h>
 
+@class DBRestClient;
 
-@interface SegmentedViewController : UIViewController<FilterTableViewControllerDelegate,UIActionSheetDelegate>{
+@interface SegmentedViewController : UIViewController<FilterTableViewControllerDelegate,UIActionSheetDelegate,DBSessionDelegate, DBRestClientDelegate,CLLocationManagerDelegate>{
     AppDelegate *appDelegate;
     AccountDataWrapper *account;
     NSUserDefaults *defaults;
     NSString *sortFlag;
     int filterFlag;
+    DBRestClient* restClient;
+     NSString* photosHash;
+     CLLocationManager *locationManager;
+    CLGeocoder *geocoder;
 }
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *typeSegmentedControl;
@@ -41,14 +48,20 @@
 
 @property (nonatomic, strong) CoreDataWrapper *dataWrapper;
 @property (nonatomic, retain) Reachability *reach;
+@property (nonatomic, strong) SaveToDocument *saveFunction;
 @property (nonatomic, retain) NetWorkCheck *netWorkCheck;
 @property (nonatomic, strong) Coinsorter *coinsorter;
 @property (nonatomic, strong) CSDevice *localDevice;
+@property (nonatomic, strong) CSAlbum *dropbox;
 @property (nonatomic, strong) UploadFunctions *uploadFunction;
 //@property (nonatomic, strong) NSMutableArray *locations;
 @property (nonatomic, strong) NSMutableArray *albums;
 @property (nonatomic, strong) NSArray *sortArray;
 @property (nonatomic, strong) NSArray *filterArray;
+@property (nonatomic, retain) NSString *dropboxPath;
+@property (nonatomic, retain) NSString *photoUID;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *dropboxBtn;
 
 @property (nonatomic) NSString *networkStatus;
 @property (nonatomic, assign) BOOL canConnect;

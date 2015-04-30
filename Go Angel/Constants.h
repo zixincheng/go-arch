@@ -36,6 +36,7 @@
 #define UPLOAD_3G   @"3GEnable"
 #define DOWN_REMOTE @"downRemote"
 #define SAVE_INTO_ALBUM @"saveInAlbum"
+#define IMPORT_DROPBOX @"ImportDropBox"
 
 // core data entites
 #define PHOTO @"Photo"
